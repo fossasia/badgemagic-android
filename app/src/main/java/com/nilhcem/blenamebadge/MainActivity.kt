@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
+import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
 
 class MainActivity : AppCompatActivity() {
 
-    val content: EditText by bindView(R.id.text_to_send)
-    val send: Button by bindView(R.id.send_button)
+    private val content: EditText by bindView(R.id.text_to_send)
+    private val send: Button by bindView(R.id.send_button)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,5 +20,11 @@ class MainActivity : AppCompatActivity() {
         send.setOnClickListener {
             Timber.i { "Text to send: ${content.text.trim()}" }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        content.requestFocus()
+        content.showKeyboard()
     }
 }
