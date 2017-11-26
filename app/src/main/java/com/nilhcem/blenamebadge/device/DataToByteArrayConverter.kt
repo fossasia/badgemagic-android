@@ -1,7 +1,9 @@
 package com.nilhcem.blenamebadge.device
 
+import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
 import com.nilhcem.blenamebadge.device.model.DataToSend
+import kotlin.experimental.or
 
 object DataToByteArrayConverter {
 
@@ -128,7 +130,16 @@ object DataToByteArrayConverter {
                 .map { hexStringToByteArray(it) }
     }
 
-    private fun getMarquee(data: DataToSend) = "00"
+    private fun getMarquee(data: DataToSend): String {
+        val marqueeByte = ByteArray(1)
+
+        data.messages.forEachIndexed { index, message ->
+            val marqueeFlag = if (message.marquee) 1 else 0
+            marqueeByte[0] = marqueeByte[0] or (marqueeFlag shl index).toByte()
+        }
+
+        return ByteArrayUtils.byteArrayToHexString(marqueeByte)
+    }
 
     private fun getOptions(data: DataToSend): String {
         val sb = StringBuilder()
