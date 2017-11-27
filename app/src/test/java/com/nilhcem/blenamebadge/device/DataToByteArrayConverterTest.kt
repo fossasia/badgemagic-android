@@ -130,6 +130,24 @@ class DataToByteArrayConverterTest {
         result.slice(31..36) `should equal` listOf(0xE1.toByte(), 0x0B, 0x03, 0x17, 0x32, 0x02)
     }
 
+    @Test
+    fun `each packets should contain 16 bytes`() {
+        // Given
+        val data1 = DataToSend(listOf(Message("A")))
+        val data2 = DataToSend(listOf(Message("B"), Message("BBB")))
+        val data3 = DataToSend(listOf(Message("C"), Message("CCCCCCC"), Message("CCCCCCCCC")))
+
+        // When
+        val result1 = DataToByteArrayConverter.convert(data1)
+        val result2 = DataToByteArrayConverter.convert(data2)
+        val result3 = DataToByteArrayConverter.convert(data3)
+
+        // Then
+        result1.forEach { it.size `should equal` 16 }
+        result2.forEach { it.size `should equal` 16 }
+        result3.forEach { it.size `should equal` 16 }
+    }
+
     private fun List<ByteArray>.join(): ByteArray {
         var byteArray = ByteArray(0)
         forEach { byteArray = byteArray.plus(it) }
