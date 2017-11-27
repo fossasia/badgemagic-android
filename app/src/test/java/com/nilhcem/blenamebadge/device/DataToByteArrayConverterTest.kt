@@ -2,10 +2,12 @@ package com.nilhcem.blenamebadge.device
 
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should throw`
 import org.junit.Test
@@ -146,6 +148,19 @@ class DataToByteArrayConverterTest {
         result1.forEach { it.size `should equal` 16 }
         result2.forEach { it.size `should equal` 16 }
         result3.forEach { it.size `should equal` 16 }
+    }
+
+    @Test
+    fun `message should be located at the end and containing hex code for each character, skipping invalid characters`() {
+        // Given
+        val data = DataToSend(listOf(Message("AB"), Message("ÈC")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        val expected = "00386CC6C6FEC6C6C6C600" + "00FC6666667C666666FC00" + "007CC6C6C0C0C0C6C67C00" // A + B + C
+        ByteArrayUtils.byteArrayToHexString(result.slice(58..90).toByteArray()) `should be equal to` expected
     }
 
     private fun List<ByteArray>.join(): ByteArray {

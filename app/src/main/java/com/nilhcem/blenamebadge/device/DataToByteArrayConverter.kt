@@ -123,7 +123,7 @@ object DataToByteArrayConverter {
                     append(getTimestamp(calendar))
                     append("00000000")
                     append("00000000000000000000000000000000")
-                    append(getMessages())
+                    append(getMessages(data))
                     append(fillWithZeros(length))
                 }
                 .toString()
@@ -178,7 +178,15 @@ object DataToByteArrayConverter {
         })
     }
 
-    private fun getMessages(): String = CHAR_CODES['A']!!
+    private fun getMessages(data: DataToSend): String {
+        return data.messages
+                .map { it.text }
+                .joinToString(separator = "")
+                .toCharArray()
+                .filter { CHAR_CODES.containsKey(it) }
+                .map { CHAR_CODES[it] }
+                .joinToString(separator = "")
+    }
 
     private fun fillWithZeros(length: Int): String {
         val nbMissingZeros = ((length / PACKET_SIZE) + 1) * PACKET_SIZE - length
