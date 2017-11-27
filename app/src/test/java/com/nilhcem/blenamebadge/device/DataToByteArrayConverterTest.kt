@@ -28,7 +28,7 @@ class DataToByteArrayConverterTest {
     }
 
     @Test
-    fun `result should start with 77616E67000000`() {
+    fun `result should start with 77616E670000`() {
         // Given
         val data = DataToSend(listOf(Message("A")))
 
@@ -36,13 +36,46 @@ class DataToByteArrayConverterTest {
         val result = DataToByteArrayConverter.convert(data).join()
 
         // Then
-        result.slice(0..6) `should equal` listOf<Byte>(0x77, 0x61, 0x6E, 0x67, 0x00, 0x00, 0x00)
+        result.slice(0..5) `should equal` listOf<Byte>(0x77, 0x61, 0x6E, 0x67, 0x00, 0x00)
     }
 
     @Test
-    fun `marquee should be 00 when no messages have marquee option enabled`() {
+    fun `flash should be 0x00 when no messages have flash option enabled`() {
         // Given
-        val data = DataToSend(listOf(Message("A", false)))
+        val data = DataToSend(listOf(Message("A", flash = false)))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        result.slice(6..6) `should equal` listOf(0x00.toByte())
+    }
+
+    @Test
+    fun `flash should contain 8 bits, each bit representing the flash value of each message, 1 when flash is enabled, 0 otherwise`() {
+        // Given
+        val data = DataToSend(listOf(
+                Message("A", flash = true),
+                Message("A", flash = true),
+                Message("A", flash = false),
+                Message("A", flash = false),
+                Message("A", flash = true),
+                Message("A", flash = false),
+                Message("A", flash = true),
+                Message("A", flash = false)))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        val expected = 0x53.toByte() // Binary: 01010011
+        result.slice(6..6) `should equal` listOf(expected)
+    }
+
+    @Test
+    fun `marquee should be 0x00 when no messages have marquee option enabled`() {
+        // Given
+        val data = DataToSend(listOf(Message("A", marquee = false)))
 
         // When
         val result = DataToByteArrayConverter.convert(data).join()
@@ -76,13 +109,13 @@ class DataToByteArrayConverterTest {
     fun `option should be a single byte containing the speed and the mode, repeated for all 8 messages`() {
         // Given
         val data = DataToSend(listOf(
-                Message("A", false, Speed.ONE, Mode.RIGHT),
-                Message("A", false, Speed.TWO, Mode.LEFT),
-                Message("A", false, Speed.THREE, Mode.UP),
-                Message("A", false, Speed.FOUR, Mode.FIXED),
-                Message("A", false, Speed.SIX, Mode.LASER),
-                Message("A", false, Speed.SEVEN, Mode.SNOWFLAKE),
-                Message("A", false, Speed.EIGHT, Mode.PICTURE)))
+                Message("A", speed = Speed.ONE, mode = Mode.RIGHT),
+                Message("A", speed = Speed.TWO, mode = Mode.LEFT),
+                Message("A", speed = Speed.THREE, mode = Mode.UP),
+                Message("A", speed = Speed.FOUR, mode = Mode.FIXED),
+                Message("A", speed = Speed.SIX, mode = Mode.LASER),
+                Message("A", speed = Speed.SEVEN, mode = Mode.SNOWFLAKE),
+                Message("A", speed = Speed.EIGHT, mode = Mode.PICTURE)))
 
         // When
         val result = DataToByteArrayConverter.convert(data).join()

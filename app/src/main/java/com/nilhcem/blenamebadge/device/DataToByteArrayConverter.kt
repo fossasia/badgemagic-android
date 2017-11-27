@@ -9,7 +9,7 @@ import kotlin.experimental.or
 object DataToByteArrayConverter {
 
     private const val MAX_MESSAGES = 8
-    private const val PACKET_START = "77616E67000000"
+    private const val PACKET_START = "77616E670000"
     private const val PACKET_BYTE_SIZE = 16
 
     private val CHAR_CODES = mapOf(
@@ -116,6 +116,7 @@ object DataToByteArrayConverter {
         return StringBuilder()
                 .apply {
                     append(PACKET_START)
+                    append(getFlash(data))
                     append(getMarquee(data))
                     append(getOptions(data))
                     append(getSizes(data))
@@ -129,6 +130,17 @@ object DataToByteArrayConverter {
                 .toString()
                 .chunked(PACKET_BYTE_SIZE * 2)
                 .map { hexStringToByteArray(it) }
+    }
+
+    private fun getFlash(data: DataToSend): String {
+        val flashByte = ByteArray(1)
+
+        data.messages.forEachIndexed { index, message ->
+            val flashFlag = if (message.flash) 1 else 0
+            flashByte[0] = flashByte[0] or (flashFlag shl index).toByte()
+        }
+
+        return byteArrayToHexString(flashByte)
     }
 
     private fun getMarquee(data: DataToSend): String {
