@@ -142,14 +142,16 @@ object DataToByteArrayConverter {
     }
 
     private fun getOptions(data: DataToSend): String {
+        val nbMessages = data.messages.size
         return data.messages
                 .map { it.speed.hexValue or it.mode.hexValue }
                 .map { ByteArray(1).apply { set(0, it) } }
                 .map { byteArrayToHexString(it) }
-                .joinToString(separator = "")
+                .joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages))
     }
 
     private fun getSizes(data: DataToSend): String {
+        val nbMessages = data.messages.size
         return data.messages
                 .map { removeInvalidCharacters(it.text).length }
                 .map {
@@ -159,7 +161,7 @@ object DataToByteArrayConverter {
                     }
                 }
                 .map { byteArrayToHexString(it) }
-                .joinToString(separator = "")
+                .joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages))
     }
 
     private fun removeInvalidCharacters(str: String): String = str.toCharArray().filter { CHAR_CODES.containsKey(it) }.joinToString(separator = "")
