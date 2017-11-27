@@ -189,8 +189,7 @@ object DataToByteArrayConverter {
     }
 
     private fun fillWithZeros(length: Int): String {
-        val nbMissingZeros = ((length / PACKET_BYTE_SIZE * 2) + 1) * PACKET_BYTE_SIZE * 2 - length
-        return "0".repeat(nbMissingZeros)
+        return "0".repeat((length / (PACKET_BYTE_SIZE * 2) + 1) * PACKET_BYTE_SIZE * 2 - length)
     }
 
     // TODO: Remove once kotlin 1.2 is released
