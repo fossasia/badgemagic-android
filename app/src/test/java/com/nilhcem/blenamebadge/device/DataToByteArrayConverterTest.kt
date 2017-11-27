@@ -65,6 +65,26 @@ class DataToByteArrayConverterTest {
         result.slice(7..7) `should equal` listOf(expected)
     }
 
+    @Test
+    fun `size should contain the 2 bytes hexadecimal value for each message, skipping invalid characters if any`() {
+        // Given
+        val data = DataToSend(listOf(
+                Message("A"),
+                Message("..."),
+                Message("abcdefghijklmnopqrstuvwxyz"),
+                Message("-".repeat(500)),
+                Message("É"),
+                Message("ÇÇÇÇÇabc"),
+                Message("")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        val expected = listOf(0x00, 0x01, 0x00, 0x03, 0x00, 0x1A, 0x01, 0xF4.toByte(), 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00)
+        result.slice(16..31) `should equal` expected
+    }
+
     private fun List<ByteArray>.join(): ByteArray {
         var byteArray = ByteArray(0)
         forEach { byteArray = byteArray.plus(it) }
