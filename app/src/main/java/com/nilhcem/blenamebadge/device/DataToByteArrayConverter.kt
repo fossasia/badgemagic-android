@@ -3,6 +3,7 @@ package com.nilhcem.blenamebadge.device
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.byteArrayToHexString
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
 import com.nilhcem.blenamebadge.device.model.DataToSend
+import java.util.*
 import kotlin.experimental.or
 
 object DataToByteArrayConverter {
@@ -109,7 +110,7 @@ object DataToByteArrayConverter {
             'Z' to "00FEC6860C183062C6FE00"
     )
 
-    fun convert(data: DataToSend): List<ByteArray> {
+    fun convert(data: DataToSend, calendar: Calendar = Calendar.getInstance()): List<ByteArray> {
         check(data.messages.size <= MAX_MESSAGES) { "Max messages=$MAX_MESSAGES" }
 
         return StringBuilder()
@@ -119,7 +120,7 @@ object DataToByteArrayConverter {
                     append(getOptions(data))
                     append(getSizes(data))
                     append("000000000000")
-                    append(getTimestamp())
+                    append(getTimestamp(calendar))
                     append("00000000")
                     append("00000000000000000000000000000000")
                     append(getMessages())
@@ -166,7 +167,16 @@ object DataToByteArrayConverter {
 
     private fun removeInvalidCharacters(str: String): String = str.toCharArray().filter { CHAR_CODES.containsKey(it) }.joinToString(separator = "")
 
-    private fun getTimestamp(): String = "E10B03173202"
+    private fun getTimestamp(calendar: Calendar): String {
+        return byteArrayToHexString(ByteArray(6).apply {
+            set(0, (calendar[Calendar.YEAR] and 0xFF).toByte())
+            set(1, ((calendar[Calendar.MONTH] + 1) and 0xFF).toByte())
+            set(2, (calendar[Calendar.DAY_OF_MONTH] and 0xFF).toByte())
+            set(3, (calendar[Calendar.HOUR_OF_DAY] and 0xFF).toByte())
+            set(4, (calendar[Calendar.MINUTE] and 0xFF).toByte())
+            set(5, (calendar[Calendar.SECOND] and 0xFF).toByte())
+        })
+    }
 
     private fun getMessages(): String = CHAR_CODES['A']!!
 

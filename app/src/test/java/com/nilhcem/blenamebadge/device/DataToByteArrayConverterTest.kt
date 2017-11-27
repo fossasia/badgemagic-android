@@ -1,5 +1,7 @@
 package com.nilhcem.blenamebadge.device
 
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
@@ -7,6 +9,7 @@ import com.nilhcem.blenamebadge.device.model.Speed
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should throw`
 import org.junit.Test
+import java.util.*
 
 class DataToByteArrayConverterTest {
 
@@ -105,6 +108,26 @@ class DataToByteArrayConverterTest {
         // Then
         val expected = listOf(0x00, 0x01, 0x00, 0x03, 0x00, 0x1A, 0x01, 0xF4.toByte(), 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00)
         result.slice(16..31) `should equal` expected
+    }
+
+    @Test
+    fun `timestamp should contain 6 bytes, 1 for the last 2 digits of the year, 1 for the month, the day, the hour, the minute and the second`() {
+        // Given
+        val calendar = mock<Calendar> {
+            on { get(Calendar.YEAR) } doReturn 2017
+            on { get(Calendar.MONTH) } doReturn 10
+            on { get(Calendar.DAY_OF_MONTH) } doReturn 3
+            on { get(Calendar.HOUR_OF_DAY) } doReturn 23
+            on { get(Calendar.MINUTE) } doReturn 50
+            on { get(Calendar.SECOND) } doReturn 2
+        }
+        val data = DataToSend(listOf(Message("A")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data, calendar).join()
+
+        // Then
+        result.slice(31..36) `should equal` listOf(0xE1.toByte(), 0x0B, 0x03, 0x17, 0x32, 0x02)
     }
 
     private fun List<ByteArray>.join(): ByteArray {
