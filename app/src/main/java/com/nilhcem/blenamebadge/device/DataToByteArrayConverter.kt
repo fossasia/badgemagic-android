@@ -10,7 +10,7 @@ object DataToByteArrayConverter {
 
     private const val MAX_MESSAGES = 8
     private const val PACKET_START = "77616E67000000"
-    private const val PACKET_SIZE = 32
+    private const val PACKET_BYTE_SIZE = 16
 
     private val CHAR_CODES = mapOf(
             '0' to "007CC6CEDEF6E6C6C67C00",
@@ -127,7 +127,7 @@ object DataToByteArrayConverter {
                     append(fillWithZeros(length))
                 }
                 .toString()
-                .chunked(PACKET_SIZE)
+                .chunked(PACKET_BYTE_SIZE * 2)
                 .map { hexStringToByteArray(it) }
     }
 
@@ -189,7 +189,7 @@ object DataToByteArrayConverter {
     }
 
     private fun fillWithZeros(length: Int): String {
-        val nbMissingZeros = ((length / PACKET_SIZE) + 1) * PACKET_SIZE - length
+        val nbMissingZeros = ((length / PACKET_BYTE_SIZE * 2) + 1) * PACKET_BYTE_SIZE * 2 - length
         return "0".repeat(nbMissingZeros)
     }
 
