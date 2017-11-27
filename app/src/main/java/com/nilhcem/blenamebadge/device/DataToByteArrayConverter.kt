@@ -162,7 +162,7 @@ object DataToByteArrayConverter {
                     }
                 }
                 .map { byteArrayToHexString(it) }
-                .joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages))
+                .joinToString(separator = "", postfix = "0000".repeat(MAX_MESSAGES - nbMessages))
     }
 
     private fun removeInvalidCharacters(str: String): String = str.toCharArray().filter { CHAR_CODES.containsKey(it) }.joinToString(separator = "")

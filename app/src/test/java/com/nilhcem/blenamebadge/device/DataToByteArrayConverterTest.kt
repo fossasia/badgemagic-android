@@ -113,6 +113,18 @@ class DataToByteArrayConverterTest {
     }
 
     @Test
+    fun `the 6 next bytes after the size should all be equal to 0x00`() {
+        // Given
+        val data = DataToSend(listOf(Message("A")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        result.slice(32..37) `should equal` List(6) { 0x00.toByte() }
+    }
+
+    @Test
     fun `timestamp should contain 6 bytes, 1 for the last 2 digits of the year, 1 for the month, the day, the hour, the minute and the second`() {
         // Given
         val calendar = mock<Calendar> {
@@ -129,7 +141,32 @@ class DataToByteArrayConverterTest {
         val result = DataToByteArrayConverter.convert(data, calendar).join()
 
         // Then
-        result.slice(31..36) `should equal` listOf(0xE1.toByte(), 0x0B, 0x03, 0x17, 0x32, 0x02)
+        result.slice(38..43) `should equal` listOf(0xE1.toByte(), 0x0B, 0x03, 0x17, 0x32, 0x02)
+    }
+
+    @Test
+    fun `the 20 next bytes after the timestamp should all be equal to 0x00`() {
+        // Given
+        val data = DataToSend(listOf(Message("A")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        result.slice(44..63) `should equal` List(20) { 0x00.toByte() }
+    }
+
+    @Test
+    fun `message should be located at the end and containing hex code for each character, skipping invalid characters`() {
+        // Given
+        val data = DataToSend(listOf(Message("AB"), Message("ÈC")))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        val expected = "00386CC6C6FEC6C6C6C600" + "00FC6666667C666666FC00" + "007CC6C6C0C0C0C6C67C00" // A + B + C
+        ByteArrayUtils.byteArrayToHexString(result.slice(64..96).toByteArray()) `should be equal to` expected
     }
 
     @Test
@@ -148,19 +185,6 @@ class DataToByteArrayConverterTest {
         result1.forEach { it.size `should equal` 16 }
         result2.forEach { it.size `should equal` 16 }
         result3.forEach { it.size `should equal` 16 }
-    }
-
-    @Test
-    fun `message should be located at the end and containing hex code for each character, skipping invalid characters`() {
-        // Given
-        val data = DataToSend(listOf(Message("AB"), Message("ÈC")))
-
-        // When
-        val result = DataToByteArrayConverter.convert(data).join()
-
-        // Then
-        val expected = "00386CC6C6FEC6C6C6C600" + "00FC6666667C666666FC00" + "007CC6C6C0C0C0C6C67C00" // A + B + C
-        ByteArrayUtils.byteArrayToHexString(result.slice(58..90).toByteArray()) `should be equal to` expected
     }
 
     private fun List<ByteArray>.join(): ByteArray {
