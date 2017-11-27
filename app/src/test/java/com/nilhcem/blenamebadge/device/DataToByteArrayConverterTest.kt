@@ -2,6 +2,8 @@ package com.nilhcem.blenamebadge.device
 
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
+import com.nilhcem.blenamebadge.device.model.Mode
+import com.nilhcem.blenamebadge.device.model.Speed
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should throw`
 import org.junit.Test
@@ -63,6 +65,26 @@ class DataToByteArrayConverterTest {
         // Then
         val expected = 0xC5.toByte() // Binary: 11000101
         result.slice(7..7) `should equal` listOf(expected)
+    }
+
+    @Test
+    fun `option should be a single byte containing the speed and the mode, repeated for all 8 messages`() {
+        // Given
+        val data = DataToSend(listOf(
+                Message("A", false, Speed.ONE, Mode.RIGHT),
+                Message("A", false, Speed.TWO, Mode.LEFT),
+                Message("A", false, Speed.THREE, Mode.UP),
+                Message("A", false, Speed.FOUR, Mode.FIXED),
+                Message("A", false, Speed.SIX, Mode.LASER),
+                Message("A", false, Speed.SEVEN, Mode.SNOWFLAKE),
+                Message("A", false, Speed.EIGHT, Mode.PICTURE)))
+
+        // When
+        val result = DataToByteArrayConverter.convert(data).join()
+
+        // Then
+        val expected = listOf<Byte>(0x01, 0x10, 0x22, 0x34, 0x58, 0x65, 0x76, 0x00)
+        result.slice(8..15) `should equal` expected
     }
 
     @Test

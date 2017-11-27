@@ -142,12 +142,7 @@ object DataToByteArrayConverter {
     }
 
     private fun getOptions(data: DataToSend): String {
-        val sb = StringBuilder()
-
-        for (i in 0 until 8) {
-            sb.append("00")
-        }
-        return sb.toString()
+        return data.messages.joinToString(separator = "") { "${it.speed.hexValue}${it.mode.hexValue}" }
     }
 
     private fun getSizes(data: DataToSend): String {
