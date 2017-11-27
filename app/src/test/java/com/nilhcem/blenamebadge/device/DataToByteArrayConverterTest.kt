@@ -36,7 +36,7 @@ class DataToByteArrayConverterTest {
         val result = DataToByteArrayConverter.convert(data).join()
 
         // Then
-        result.slice(0..5) `should equal` listOf<Byte>(0x77, 0x61, 0x6E, 0x67, 0x00, 0x00)
+        result.slice(0..6) `should equal` listOf<Byte>(0x77, 0x61, 0x6E, 0x67, 0x00, 0x00, 0x00)
     }
 
     @Test
