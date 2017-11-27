@@ -1,6 +1,6 @@
 package com.nilhcem.blenamebadge.device
 
-import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
+import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.byteArrayToHexString
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import kotlin.experimental.or
@@ -138,11 +138,15 @@ object DataToByteArrayConverter {
             marqueeByte[0] = marqueeByte[0] or (marqueeFlag shl index).toByte()
         }
 
-        return ByteArrayUtils.byteArrayToHexString(marqueeByte)
+        return byteArrayToHexString(marqueeByte)
     }
 
     private fun getOptions(data: DataToSend): String {
-        return data.messages.joinToString(separator = "") { "${it.speed.hexValue}${it.mode.hexValue}" }
+        return data.messages
+                .map { it.speed.hexValue or it.mode.hexValue }
+                .map { ByteArray(1).apply { set(0, it) } }
+                .map { byteArrayToHexString(it) }
+                .joinToString(separator = "")
     }
 
     private fun getSizes(data: DataToSend): String {
@@ -154,7 +158,7 @@ object DataToByteArrayConverter {
                         set(0, (it shr 8 and 0xFF).toByte())
                     }
                 }
-                .map { ByteArrayUtils.byteArrayToHexString(it) }
+                .map { byteArrayToHexString(it) }
                 .joinToString(separator = "")
     }
 

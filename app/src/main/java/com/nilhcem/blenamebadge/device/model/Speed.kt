@@ -1,12 +1,12 @@
 package com.nilhcem.blenamebadge.device.model
 
-enum class Speed(val hexValue: String) {
-    ONE("0"),
-    TWO("1"),
-    THREE("2"),
-    FOUR("3"),
-    FIVE("4"),
-    SIX("5"),
-    SEVEN("6"),
-    EIGHT("7")
+enum class Speed(val hexValue: Byte) {
+    ONE(0x00),
+    TWO(0x10),
+    THREE(0x20),
+    FOUR(0x30),
+    FIVE(0x40),
+    SIX(0x50),
+    SEVEN(0x60),
+    EIGHT(0x70)
 }

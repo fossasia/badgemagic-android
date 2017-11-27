@@ -1,13 +1,13 @@
 package com.nilhcem.blenamebadge.device.model
 
-enum class Mode(val hexValue: String) {
-    LEFT("0"),
-    RIGHT("1"),
-    UP("2"),
-    DOWN("3"),
-    FIXED("4"),
-    SNOWFLAKE("5"),
-    PICTURE("6"),
-    ANIMATION("7"),
-    LASER("8")
+enum class Mode(val hexValue: Byte) {
+    LEFT(0x00),
+    RIGHT(0x01),
+    UP(0x02),
+    DOWN(0x03),
+    FIXED(0x04),
+    SNOWFLAKE(0x05),
+    PICTURE(0x06),
+    ANIMATION(0x07),
+    LASER(0x08)
 }
