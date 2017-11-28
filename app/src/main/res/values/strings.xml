@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">BLE LED Name Badge</string>
 
+    <string name="enable_bluetooth">You must turn Bluetooth on, to use this app</string>
+    <string name="grant_location_permission">You must grant the location permission</string>
+
     <string name="text_to_send">Text to send:</string>
     <string name="send_button">SEND</string>
 </resources>
