@@ -203,10 +203,4 @@ object DataToByteArrayConverter {
     private fun fillWithZeros(length: Int): String {
         return "0".repeat((length / (PACKET_BYTE_SIZE * 2) + 1) * PACKET_BYTE_SIZE * 2 - length)
     }
-
-    // TODO: Remove once kotlin 1.2 is released
-    private fun String.chunked(size: Int): List<String> {
-        val nChunks = length / size
-        return (0 until nChunks).map { substring(it * size, (it + 1) * size) }
-    }
 }
