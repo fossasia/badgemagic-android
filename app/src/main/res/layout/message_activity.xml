@@ -28,15 +28,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_to_send_label" />
 
+    <CheckBox
+        android:id="@+id/flash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/flash"
+        app:layout_constraintEnd_toStartOf="@+id/marquee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_to_send" />
+
+    <CheckBox
+        android:id="@+id/marquee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/marquee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/flash"
+        app:layout_constraintTop_toBottomOf="@+id/text_to_send" />
+
     <Button
         android:id="@+id/send_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:paddingLeft="42dp"
         android:paddingRight="42dp"
         android:text="@string/send_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_to_send" />
+        app:layout_constraintTop_toBottomOf="@+id/flash" />
 </android.support.constraint.ConstraintLayout>

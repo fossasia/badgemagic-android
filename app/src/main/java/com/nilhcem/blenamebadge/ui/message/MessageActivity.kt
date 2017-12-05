@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import com.nilhcem.blenamebadge.R
@@ -29,6 +30,8 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private val content: EditText by bindView(R.id.text_to_send)
+    private val flash: CheckBox by bindView(R.id.flash)
+    private val marquee: CheckBox by bindView(R.id.marquee)
     private val send: Button by bindView(R.id.send_button)
 
     private val presenter by lazy { MessagePresenter() }
@@ -77,7 +80,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun convertToDeviceDataModel(): DataToSend {
-        return DataToSend(listOf(Message(content.text.trim().toString())))
+        return DataToSend(listOf(Message(content.text.trim().toString(), flash.isChecked, marquee.isChecked)))
     }
 
     private fun prepareForScan() {
