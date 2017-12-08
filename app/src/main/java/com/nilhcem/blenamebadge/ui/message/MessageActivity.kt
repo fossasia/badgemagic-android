@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -26,6 +27,8 @@ class MessageActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_ENABLE_BT = 1
         private const val REQUEST_PERMISSION_LOCATION = 1
+
+        private const val TEST_SEND_BITMAP_INSTEAD = false
     }
 
     private val content: EditText by bindView(R.id.text_to_send)
@@ -46,7 +49,11 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            presenter.sendMessage(this, convertToDeviceDataModel())
+            if (TEST_SEND_BITMAP_INSTEAD) {
+                presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.spider))
+            } else {
+                presenter.sendMessage(this, convertToDeviceDataModel())
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.nilhcem.blenamebadge.ui.message
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
@@ -16,6 +17,20 @@ class MessagePresenter {
     fun sendMessage(context: Context, dataToSend: DataToSend) {
         Timber.i { "About to send data: $dataToSend" }
         val byteData = DataToByteArrayConverter.convert(dataToSend)
+        sendBytes(context, byteData)
+    }
+
+    fun sendBitmap(context: Context, bmp: Bitmap) {
+        val byteData = DataToByteArrayConverter.convertBitmap(bmp)
+        sendBytes(context, byteData)
+    }
+
+    fun onPause() {
+        scanHelper.stopLeScan()
+        gattClient.stopClient()
+    }
+
+    private fun sendBytes(context: Context, byteData: List<ByteArray>) {
         Timber.i { "ByteData: ${byteData.map { ByteArrayUtils.byteArrayToHexString(it) }}" }
 
         scanHelper.startLeScan { device ->
@@ -34,10 +49,5 @@ class MessagePresenter {
                 }
             }
         }
-    }
-
-    fun onPause() {
-        scanHelper.stopLeScan()
-        gattClient.stopClient()
     }
 }

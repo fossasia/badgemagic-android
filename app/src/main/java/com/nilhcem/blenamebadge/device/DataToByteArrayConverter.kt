@@ -1,5 +1,7 @@
 package com.nilhcem.blenamebadge.device
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.byteArrayToHexString
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
 import com.nilhcem.blenamebadge.device.model.DataToSend
@@ -125,6 +127,32 @@ object DataToByteArrayConverter {
                     append("00000000")
                     append("00000000000000000000000000000000")
                     append(getMessages(data))
+                    append(fillWithZeros(length))
+                }
+                .toString()
+                .chunked(PACKET_BYTE_SIZE * 2)
+                .map { hexStringToByteArray(it) }
+    }
+
+    fun convertBitmap(bitmap: Bitmap, calendar: Calendar = Calendar.getInstance()): List<ByteArray> {
+        return StringBuilder()
+                .apply {
+                    append(PACKET_START)
+                    append("0000040000000000000000050000000000000000000000000000000000000000")
+                    append(getTimestamp(calendar))
+                    append("0000000000000000000000000000000000000000")
+
+                    for (i in 0 until 5) {
+                        for (row in 0 until 11) {
+                            var byte = 0
+                            for (col in 0 until 8) {
+                                val on = if (bitmap.getPixel((i * 8) + col, row) == Color.TRANSPARENT) 0 else 1
+                                byte = byte or (on shl (7 - col))
+                            }
+                            append(String.format("%02X", byte))
+                        }
+                    }
+
                     append(fillWithZeros(length))
                 }
                 .toString()
