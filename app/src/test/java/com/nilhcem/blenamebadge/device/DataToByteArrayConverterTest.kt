@@ -203,7 +203,7 @@ class DataToByteArrayConverterTest {
     }
 
     @Test
-    fun `each packets should contain 16 bytes`() {
+    fun `each packet should contain 16 bytes`() {
         // Given
         val data1 = DataToSend(listOf(Message("A")))
         val data2 = DataToSend(listOf(Message("B"), Message("BBB")))
