@@ -1,9 +1,8 @@
-# BLE LED Name Badge (Android)
+# Badge Magic
+[![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android)
 
-An Android app to control an LED Name Badge
+Badge Magic is an Android app to control LED name badge based the work of [Gautier MECHLING](https://github.com/Nilhcem).
 
-![Screenshot](https://raw.githubusercontent.com/Nilhcem/ble-led-name-badge-android/master/preview.jpg)
+An introductory blog post of the project [is here](http://nilhcem.com/iot/reverse-engineering-bluetooth-led-name-badge)
 
-
-Blog post:  
-[http://nilhcem.com/iot/reverse-engineering-bluetooth-led-name-badge](http://nilhcem.com/iot/reverse-engineering-bluetooth-led-name-badge)
+![Screenshot](./docs/images/preview.jpg)
