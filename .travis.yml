@@ -20,5 +20,8 @@ install:
   - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-27"
 script:
   - ./gradlew build
+after_success:
+    - bash scripts/prep-key.sh
+    - bash scripts/update-apk.sh
 before_install:
 - yes | sdkmanager "platforms;android-28"
