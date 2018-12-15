@@ -13,6 +13,8 @@ git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/
 
 cd apk
 
+rm -rf app gradle build.gradle gradlew gradlew.bat settings.gradle
+
 \cp -r ../app/build/outputs/apk/*/**.apk .
 \cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
 \cp -r ../app/build/outputs/apk/release/output.json release-output.json
@@ -23,7 +25,7 @@ cd apk
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     echo "Push to master branch detected, signing the app..."
     # Retain apk files for testing
-    mv app-debug.apk BadgeMagic-master-debug.apk
+    mv app-debug.apk badge-magic-master-debug.apk
     # Generate temporary apk for signing
     cp app-release-unsigned.apk app-release-unaligned.apk
     # TODO: Sign APK
@@ -34,7 +36,7 @@ if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     ${ANDROID_HOME}/build-tools/27.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
     # Rename unsigned release apk to master
     rm -f app-release-unaligned.apk
-    mv app-release-unsigned.apk BadgeMagic-master-release.apk
+    mv app-release-unsigned.apk badge-magic-master-release.apk
     # Push generated apk files to apk branch
     git checkout apk
     git add -A
@@ -45,17 +47,11 @@ fi
 if [ "$TRAVIS_BRANCH" == "$DEVELOPMENT_BRANCH" ]; then
     echo "Push to development branch detected, generating apk..."
     # Rename apks with dev prefixes
-    mv app-debug.apk BadgeMagic-dev-debug.apk
-    mv app-release-unsigned.apk BadgeMagic-dev-release.apk
+    mv app-debug.apk badge-magic-dev-debug.apk
+    mv app-release-unsigned.apk badge-magic-dev-release.apk
     # Push generated apk files to apk branch
     git checkout apk
     git add -A
     git commit -am "Travis build pushed [development]"
     git push origin apk --force --quiet> /dev/null
-fi
-
-# TODO: Publish App to Play Store
-if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-    # gem install fastlane
-    # fastlane supply --apk app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
 fi
