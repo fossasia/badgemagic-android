@@ -8,6 +8,6 @@ An introductory blog post of the project [is here](http://nilhcem.com/iot/revers
 
 ## Communication
 
-Please talk to us on the FOSSASIA Gitter channel here: https://gitter.im/fossasia/fossasia
+Please talk to us on the FOSSASIA Gitter channel [here](https://gitter.im/fossasia/fossasia)
 
 ![Screenshot](./docs/images/badge-magic-screenshot.jpg)
