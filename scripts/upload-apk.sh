@@ -13,8 +13,6 @@ git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/
 
 cd apk
 
-rm -rf app gradle build.gradle gradlew gradlew.bat settings.gradle
-
 \cp -r ../app/build/outputs/apk/*/**.apk .
 \cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
 \cp -r ../app/build/outputs/apk/release/output.json release-output.json
