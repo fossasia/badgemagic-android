@@ -22,6 +22,6 @@ script:
   - ./gradlew build
 after_success:
     - bash scripts/prep-key.sh
-    - bash scripts/upload-apk.sh
+    - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash scripts/upload-apk.sh; fi'
 before_install:
 - yes | sdkmanager "platforms;android-28"
