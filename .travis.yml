@@ -22,6 +22,6 @@ script:
   - ./gradlew build
 after_success:
     - bash scripts/prep-key.sh
-    - bash scripts/update-apk.sh
+    - bash scripts/upload-apk.sh
 before_install:
 - yes | sdkmanager "platforms;android-28"
