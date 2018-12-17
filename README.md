@@ -10,4 +10,12 @@ An introductory blog post of the project [is here](http://nilhcem.com/iot/revers
 
 Please talk to us on the FOSSASIA Gitter channel [here](https://gitter.im/fossasia/fossasia)
 
+## Devices
+
+There are a number of devices with Bluetooth on the market. As far as we can tell they are all from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported currently.
+* Taobao (Chinese): https://item.taobao.com/item.htm?_u=f2gko2536366&id=528404821437
+
+## User Interface
+
+Here is a screenshot of the current image.
 ![Screenshot](./docs/images/badge-magic-screenshot.jpg)
