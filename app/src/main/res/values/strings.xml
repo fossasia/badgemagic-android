@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BLE LED Name Badge</string>
+    <string name="app_name">Badge Magic</string>
 
     <string name="enable_bluetooth">You must turn Bluetooth on, to use this app</string>
     <string name="grant_location_permission">You must grant the location permission</string>
