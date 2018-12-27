@@ -20,6 +20,7 @@ There are a number of devices with Bluetooth on the market. As far as we can tel
 Here is a screenshot of the current image.
 ![Screenshot](./docs/images/badge-magic-screenshot.jpg)
 
-##Download Link
+## Download Link
 [Click here](https://github.com/fossasia/badge-magic-android/blob/apk/badge-magic-dev-release.apk)
+
 [Alternative](https://github.com/fossasia/badge-magic-android/blob/apk/LED-badge-dev.apk)
