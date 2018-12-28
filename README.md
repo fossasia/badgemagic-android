@@ -12,7 +12,7 @@ Badge Magic is an Android app to control LED name badges. The goal is to provide
 
 ## Communication
 
-Please talk to us on the FOSSASIA Gitter channel [here](https://gitter.im/fossasia/fossasia)
+Please talk to us on the FOSSASIA [Gitter channel here](https://gitter.im/fossasia/fossasia).
 
 ## Reverse-Engeneering Bluetooth LE Devices
 
