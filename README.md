@@ -13,11 +13,11 @@ Badge Magic is an Android app to control LED name badges. The goal is to provide
 ## Permission
 * Bluetooth 
 
-For sending data to the badge.
+  For sending data to the badge.
 
 * Location
 
-This has been the standard set by Android for use with Bluetooth Low Energy(BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble)
+  This has been the standard set by Android for use with Bluetooth Low Energy (BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble)
 
 ## Communication
 
