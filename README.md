@@ -10,6 +10,15 @@ Badge Magic is an Android app to control LED name badges. The goal is to provide
 * Download **[Badge Magic Dev Release here](https://github.com/fossasia/badge-magic-android/blob/apk/badge-magic-dev-release.apk)**
 * Download Tested [LED Badge Version here](https://github.com/fossasia/badge-magic-android/blob/apk/LED-badge-dev.apk)
 
+## Permission
+* Bluetooth 
+
+  For sending data to the badge.
+
+* Location
+
+  This has been the standard set by Android for use with Bluetooth Low Energy (BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble)
+
 ## Communication
 
 Please talk to us on the FOSSASIA [Gitter channel here](https://gitter.im/fossasia/fossasia).
