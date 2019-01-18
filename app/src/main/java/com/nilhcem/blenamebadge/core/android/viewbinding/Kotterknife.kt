@@ -13,8 +13,8 @@ private val Activity.viewFinder: Activity.(Int) -> View?
 private fun viewNotFound(id: Int, desc: KProperty<*>): Nothing = throw IllegalStateException("View ID $id for '${desc.name}' not found.")
 
 @Suppress("UNCHECKED_CAST")
-private fun <T, V : View> required(id: Int, finder: T.(Int) -> View?)
-        = Lazy { t: T, desc -> t.finder(id) as V? ?: viewNotFound(id, desc) }
+private fun <T, V : View> required(id: Int, finder: T.(Int) -> View?) =
+        Lazy { t: T, desc -> t.finder(id) as V? ?: viewNotFound(id, desc) }
 
 // Like Kotlin's lazy delegate but the initializer gets the target and metadata passed to it
 private class Lazy<T, V>(private val initializer: (T, KProperty<*>) -> V) : ReadOnlyProperty<T, V> {

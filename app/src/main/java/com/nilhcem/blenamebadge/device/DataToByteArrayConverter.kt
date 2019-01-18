@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.byteArrayToHexString
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
 import com.nilhcem.blenamebadge.device.model.DataToSend
-import java.util.*
+import java.util.Calendar
 import kotlin.experimental.or
 
 object DataToByteArrayConverter {
