@@ -2,6 +2,7 @@ package com.nilhcem.blenamebadge.ui.message
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -54,11 +55,11 @@ class MessageActivity : AppCompatActivity() {
                 presenter.sendMessage(this, convertToDeviceDataModel())
             }
         }
+        prepareForScan()
     }
 
     override fun onResume() {
         super.onResume()
-        prepareForScan()
         content.requestFocus()
         content.showKeyboard()
     }
@@ -69,10 +70,14 @@ class MessageActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(this, R.string.enable_bluetooth, Toast.LENGTH_LONG).show()
-            finish()
-            return
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showAlertDialog(true)
+                return
+            } else if (resultCode == Activity.RESULT_OK) {
+                prepareForScan()
+                return
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -82,12 +87,23 @@ class MessageActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Timber.d { "Location permission accepted" }
             } else {
-                Toast.makeText(this, R.string.grant_location_permission, Toast.LENGTH_SHORT).show()
-                finish()
+                showAlertDialog(false)
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
+    }
+
+    private fun showAlertDialog(bluetoothDialog: Boolean) {
+        val dialogMessage = if (bluetoothDialog) getString(R.string.enable_bluetooth) else getString(R.string.grant_location_permission)
+        val builder = AlertDialog.Builder(this)
+        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
+        builder.setTitle(getString(R.string.permission_required))
+        builder.setMessage(dialogMessage)
+        builder.setPositiveButton("OK") { _, _ ->
+            prepareForScan()
+        }
+        builder.create().show()
     }
 
     private fun convertToDeviceDataModel(): DataToSend {
