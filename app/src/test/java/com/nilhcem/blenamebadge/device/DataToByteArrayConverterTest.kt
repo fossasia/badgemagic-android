@@ -11,7 +11,7 @@ import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should throw`
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class DataToByteArrayConverterTest {
 

@@ -13,7 +13,12 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
@@ -79,7 +84,7 @@ class MessageActivity : AppCompatActivity() {
                 return
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

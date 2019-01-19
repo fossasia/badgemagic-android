@@ -19,6 +19,7 @@ cache:
 install:
   - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-27"
 script:
+  - ./gradlew spotlessCheck
   - ./gradlew build
 after_success:
     - bash scripts/prep-key.sh
