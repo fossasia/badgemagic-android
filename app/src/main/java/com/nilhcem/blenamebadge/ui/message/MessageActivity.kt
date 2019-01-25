@@ -54,11 +54,14 @@ class MessageActivity : AppCompatActivity() {
 
         send.setOnClickListener {
             // Easter egg
+           try{
             if (content.text.isEmpty()) {
                 presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
             } else {
                 presenter.sendMessage(this, convertToDeviceDataModel())
-            }
+            }}catch (e: Exception){
+               Toast.makeText(this,"Scan could not find any device",Toast.LENGTH_LONG).show()
+           }
         }
         prepareForScan()
     }
