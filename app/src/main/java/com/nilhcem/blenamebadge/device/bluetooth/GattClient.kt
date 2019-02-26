@@ -3,9 +3,9 @@ package com.nilhcem.blenamebadge.device.bluetooth
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
-import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
+import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
 import com.nilhcem.blenamebadge.core.android.log.Timber
@@ -13,7 +13,6 @@ import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.bluetooth.Constants.CHARACTERISTIC_UUID
 import com.nilhcem.blenamebadge.device.bluetooth.Constants.SERVICE_UUID
 import java.util.LinkedList
-
 class GattClient {
 
     private var bluetoothManager: BluetoothManager? = null
