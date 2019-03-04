@@ -27,10 +27,13 @@ import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
+import java.util.Timer
+import java.util.TimerTask
 
 class MessageActivity : AppCompatActivity() {
 
     companion object {
+        private const val SCAN_TIMEOUT_MS = 10_000L
         private const val REQUEST_ENABLE_BT = 1
         private const val REQUEST_PERMISSION_LOCATION = 1
     }
@@ -54,6 +57,13 @@ class MessageActivity : AppCompatActivity() {
 
         send.setOnClickListener {
             // Easter egg
+            send.isClickable = false
+            val buttonTimer = Timer()
+            buttonTimer.schedule(object : TimerTask() {
+                override fun run() {
+                    runOnUiThread { send.isClickable = true }
+                }
+            }, SCAN_TIMEOUT_MS)
             if (content.text.isEmpty()) {
                 presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
             } else {
