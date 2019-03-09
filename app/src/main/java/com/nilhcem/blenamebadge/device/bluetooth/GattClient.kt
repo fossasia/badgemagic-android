@@ -67,8 +67,10 @@ class GattClient {
             Timber.e { "Writing: ${ByteArrayUtils.byteArrayToHexString(data)}" }
 
             val characteristic = bluetoothGatt?.getService(SERVICE_UUID)?.getCharacteristic(CHARACTERISTIC_UUID)
-            characteristic?.value = data
-            bluetoothGatt?.writeCharacteristic(characteristic)
+            characteristic?.let {
+                it.value = data
+                bluetoothGatt?.writeCharacteristic(it)
+            }
         }
     }
 

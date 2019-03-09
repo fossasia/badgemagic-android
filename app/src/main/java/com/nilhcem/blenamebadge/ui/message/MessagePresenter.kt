@@ -14,15 +14,15 @@ class MessagePresenter {
     private val scanHelper = ScanHelper()
     private val gattClient = GattClient()
 
-    fun sendMessage(context: Context, dataToSend: DataToSend) {
+    fun sendMessage(context: Context, dataToSend: DataToSend, sendStatusCallback: (Boolean, String) -> Unit) {
         Timber.i { "About to send data: $dataToSend" }
         val byteData = DataToByteArrayConverter.convert(dataToSend)
-        sendBytes(context, byteData)
+        sendBytes(context, byteData, sendStatusCallback)
     }
 
-    fun sendBitmap(context: Context, bmp: Bitmap) {
+    fun sendBitmap(context: Context, bmp: Bitmap, sendStatusCallback: (Boolean, String) -> Unit) {
         val byteData = DataToByteArrayConverter.convertBitmap(bmp)
-        sendBytes(context, byteData)
+        sendBytes(context, byteData, sendStatusCallback)
     }
 
     fun onPause() {
@@ -30,22 +30,26 @@ class MessagePresenter {
         gattClient.stopClient()
     }
 
-    private fun sendBytes(context: Context, byteData: List<ByteArray>) {
+    private fun sendBytes(context: Context, byteData: List<ByteArray>, sendStatusCallback: (Boolean, String) -> Unit) {
         Timber.i { "ByteData: ${byteData.map { ByteArrayUtils.byteArrayToHexString(it) }}" }
 
         scanHelper.startLeScan { device ->
             if (device == null) {
-                Timber.e { "Scan could not find any device" }
+                val failMessage = "Scan could not find any device"
+                Timber.e { failMessage }
+                sendStatusCallback(false, failMessage)
             } else {
                 Timber.e { "Device found: $device" }
-
+                sendStatusCallback(true, "Device $device")
                 gattClient.startClient(context, device.address) { onConnected ->
                     if (onConnected) {
                         gattClient.writeDataStart(byteData) {
                             Timber.i { "Data sent" }
                             gattClient.stopClient()
+                            sendStatusCallback(true, "Data Sent")
                         }
                     }
+                    sendStatusCallback(false, "Unable to send")
                 }
             }
         }
