@@ -28,7 +28,7 @@ The implementation in the Android app consists of manipulating bits. That may be
 ## Available Devices
 
 There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
-* Seller on [Aliexpress](https://www.aliexpress.com/item/led-badge-name-tagName-Tag-MECO-LED-Name-Badge-reuseable-Price-Tag-rechargeable-name-Tape/32705418517.html?spm=2114.search0104.3.18.5bb35004DxLzCU&ws_ab_test=searchweb0_0,searchweb201602_2_10320_10065_10068_10547_319_317_10696_10084_453_454_10083_10618_10304_10307_10820_537_536_10843_10059_10884_10887_100031_321_322_10103,searchweb201603_51,ppcSwitch_0&algo_expid=d5985b4e-b90f-4049-8643-a1d9e2c1a6c7-2&algo_pvid=d5985b4e-b90f-4049-8643-a1d9e2c1a6c7)
+* Get one from [here](https://sg.pslab.io/product/led-badge/)
 
 ## User Interface
 
