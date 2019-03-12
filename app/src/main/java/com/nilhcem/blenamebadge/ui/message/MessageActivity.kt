@@ -9,17 +9,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextPaint
+import android.text.TextWatcher
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
@@ -28,8 +27,11 @@ import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
+import java.lang.Float.max
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.math.floor
+import kotlin.math.max
 
 class MessageActivity : AppCompatActivity() {
 
@@ -40,6 +42,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private val content: EditText by bindView(R.id.text_to_send)
+    private val previewtext: TextView by bindView(R.id.badge_preview_text)
     private val flash: CheckBox by bindView(R.id.flash)
     private val marquee: CheckBox by bindView(R.id.marquee)
     private val speed: Spinner by bindView(R.id.speed)
@@ -51,6 +54,24 @@ class MessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.message_activity)
+
+        content.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                previewtext.text = content.text
+
+                var textSize = 75
+                val maxHeight = 150
+                while(getHeightOfMultiLineText(previewtext.text.toString(),textSize,100) > maxHeight)
+                    textSize--
+                previewtext.textSize = textSize.toFloat()
+            }
+        })
 
         val spinnerItem = android.R.layout.simple_spinner_dropdown_item
         speed.adapter = ArrayAdapter<String>(this, spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
@@ -75,6 +96,23 @@ class MessageActivity : AppCompatActivity() {
             }
         }
         prepareForScan()
+    }
+
+    private fun getHeightOfMultiLineText(text : String,textSize : Int,maxWidth : Int) : Int {
+        val paint = TextPaint()
+        paint.textSize = textSize.toFloat()
+        var index = 0
+        var linecount = 0
+        while (index < text.length) {
+            index += paint.breakText(text, index, text.length, true, maxWidth.toFloat(), null)
+            linecount++
+        }
+        val bounds = Rect()
+        paint.getTextBounds("Yy", 0, 2, bounds)
+
+        val lineSpacing = max(0.0,((linecount - 1) * bounds.height()*0.25))
+
+        return floor(lineSpacing + linecount * bounds.height()).toInt()
     }
 
     override fun onResume() {
