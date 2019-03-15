@@ -1,5 +1,4 @@
 package com.nilhcem.blenamebadge.ui.message
-
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
@@ -13,13 +12,11 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
@@ -40,17 +37,42 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private val content: EditText by bindView(R.id.text_to_send)
-    private val flash: CheckBox by bindView(R.id.flash)
-    private val marquee: CheckBox by bindView(R.id.marquee)
+   // private val flash: CheckBox by bindView(R.id.flash)
+   // private val marquee: CheckBox by bindView(R.id.marquee)
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
 
     private val presenter by lazy { MessagePresenter() }
 
+    private var animation: Animation? = null
+    private var PreviewButton: Button? = null
+    private var editText: EditText? = null
+    internal var i = 0
+    private var flashButton: RadioButton? = null
+    private var marqueeButton: RadioButton? = null
+    private var previewText: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.message_activity)
+
+        PreviewButton = findViewById(R.id.preview_button)
+        editText = findViewById(R.id.text_to_send)
+        flashButton = findViewById(R.id.flashRadioButton)
+        marqueeButton = findViewById(R.id.flashRadioButton)
+
+        PreviewButton!!.setOnClickListener {
+            if (i == 0) {
+                PreviewButton!!.setText(R.string.stopAnimation)
+                startAnimation()
+                i = 1
+            } else {
+                PreviewButton!!.setText(R.string.startAnimation)
+                stopAnimation()
+                i = 0
+            }
+        }
 
         val spinnerItem = android.R.layout.simple_spinner_dropdown_item
         speed.adapter = ArrayAdapter<String>(this, spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
@@ -59,7 +81,7 @@ class MessageActivity : AppCompatActivity() {
         send.setOnClickListener {
             val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
                     as InputMethodManager
-            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+            val hideSoftInputFromWindow = inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
             // Easter egg
             send.isClickable = false
             val buttonTimer = Timer()
@@ -126,7 +148,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun convertToDeviceDataModel(): DataToSend {
-        return DataToSend(listOf(Message(content.text.trim().toString(), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
+        return DataToSend(listOf(Message(content.text.trim().toString(), false, true, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
     }
 
     private fun prepareForScan() {
@@ -136,9 +158,12 @@ class MessageActivity : AppCompatActivity() {
             val btAdapter = btManager.adapter
             if (btAdapter.isEnabled) {
                 // Prompt for runtime permission
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                {
                     Timber.i { "Coarse permission granted" }
-                } else {
+                }
+                else
+                {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_PERMISSION_LOCATION)
                 }
             } else {
@@ -153,5 +178,25 @@ class MessageActivity : AppCompatActivity() {
 
     private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
+    }
+
+    private fun stopAnimation() {
+        previewText!!.clearAnimation()
+    }
+
+    private fun startAnimation() {
+
+        if (flashButton!!.isChecked) {
+            animation = AnimationUtils.loadAnimation(this, R.anim.flash) as Animation
+        } else {
+            animation = AnimationUtils.loadAnimation(this, R.anim.marquee) as Animation
+        }
+        previewText = findViewById(R.id.previewTextView)
+        if (!TextUtils.isEmpty(editText!!.text)) {
+            previewText!!.text = editText!!.text.toString()
+        } else {
+            previewText!!.setText(R.string.previewText)
+        }
+        previewText!!.startAnimation(animation)
     }
 }
