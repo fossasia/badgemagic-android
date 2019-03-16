@@ -57,21 +57,25 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
-                    as InputMethodManager
-            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
-            // Easter egg
-            send.isClickable = false
-            val buttonTimer = Timer()
-            buttonTimer.schedule(object : TimerTask() {
-                override fun run() {
-                    runOnUiThread { send.isClickable = true }
+            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
+                inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+                // Easter egg
+                send.isClickable = false
+                val buttonTimer = Timer()
+                buttonTimer.schedule(object : TimerTask() {
+                    override fun run() {
+                        runOnUiThread { send.isClickable = true }
+                    }
+                }, SCAN_TIMEOUT_MS)
+                if (content.text.isEmpty()) {
+                    presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
+                } else {
+                    presenter.sendMessage(this, convertToDeviceDataModel())
                 }
-            }, SCAN_TIMEOUT_MS)
-            if (content.text.isEmpty()) {
-                presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
             } else {
-                presenter.sendMessage(this, convertToDeviceDataModel())
+                Toast.makeText(this, getString(R.string.txt_turn_on_bluetooth), Toast.LENGTH_LONG).show()
             }
         }
         prepareForScan()
