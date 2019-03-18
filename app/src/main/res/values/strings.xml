@@ -21,11 +21,4 @@
     <string name="mode_laser">Laser</string>
     <string name="send_button">SEND</string>
     <string name="permission_required">Permission required</string>
-
-
-
-    <string name="preview_button">PREVIEW</string>
-    <string name="previewText">Hello World :)</string>
-    <string name="stopAnimation">STOP PREVIEW</string>
-    <string name="startAnimation">START PREVIEW</string>
 </resources>
