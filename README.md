@@ -17,7 +17,7 @@ Badge Magic is an Android app to control LED name badges. The goal is to provide
 
 Please talk to us on the FOSSASIA [Gitter channel here](https://gitter.im/fossasia/fossasia).
 
-## Reverse-Engeneering Bluetooth LE Devices
+## Reverse-Engineering Bluetooth LE Devices
 
 Security in Bluetooth LE devices is optional, and many cheap products you can find on the market are not secured at all. This applies to our Bluetooth LED Badge. While this could lead to some privacy issues, this can also be a source of fun, especially when you want to use an LED Badge in a different way. It also makes it easy for us to get started with the development of a Free and Open Source Android app. 
 
