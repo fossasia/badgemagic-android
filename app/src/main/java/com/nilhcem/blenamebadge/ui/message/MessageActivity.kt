@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
@@ -79,6 +80,7 @@ class MessageActivity : AppCompatActivity() {
             }
         }
         prepareForScan()
+        isDeviceConnected()
     }
 
     override fun onResume() {
@@ -151,8 +153,20 @@ class MessageActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "BLE is not supported", Toast.LENGTH_LONG).show()
+            send.isClickable = false
             finish()
         }
+    }
+
+    private fun isDeviceConnected() {
+
+        if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.action)){
+            send.isClickable = true
+        }
+        else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.action)){
+            send.isClickable = false
+        }
+
     }
 
     private fun isBleSupported(): Boolean {
