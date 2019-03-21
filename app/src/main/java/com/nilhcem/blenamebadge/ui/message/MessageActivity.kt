@@ -57,10 +57,11 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
+            val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
+                    as InputMethodManager
+            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+
             if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
-                        as InputMethodManager
-                inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
                 // Easter egg
                 send.isClickable = false
                 val buttonTimer = Timer()
