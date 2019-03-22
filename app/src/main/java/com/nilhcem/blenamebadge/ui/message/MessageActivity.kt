@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
@@ -24,6 +23,7 @@ import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
+import com.nilhcem.blenamebadge.core.utils.Utils
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
@@ -45,7 +45,6 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
-
     private val presenter by lazy { MessagePresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,29 +56,32 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
-                    as InputMethodManager
-            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
-
-            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                // Easter egg
-                send.isClickable = false
-                val buttonTimer = Timer()
-                buttonTimer.schedule(object : TimerTask() {
-                    override fun run() {
-                        runOnUiThread { send.isClickable = true }
-                    }
-                }, SCAN_TIMEOUT_MS)
-                if (content.text.isEmpty()) {
-                    presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
-                } else {
-                    presenter.sendMessage(this, convertToDeviceDataModel())
-                }
+            if (content.text.isEmpty()) {
+                content.isFocusable = true
+                content.error = getString(R.string.empty_message)
             } else {
-                Toast.makeText(this, getString(R.string.txt_turn_on_bluetooth), Toast.LENGTH_LONG).show()
+                Utils.hideSoftKeyboard(baseContext, window.decorView)
+
+                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    // Easter egg
+                    send.isClickable = false
+                    val buttonTimer = Timer()
+                    buttonTimer.schedule(object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread { send.isClickable = true }
+                        }
+                    }, SCAN_TIMEOUT_MS)
+                    if (content.text.isEmpty()) {
+                        presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
+                    } else {
+                        presenter.sendMessage(this, convertToDeviceDataModel())
+                    }
+                } else {
+                    Toast.makeText(this, getString(R.string.txt_turn_on_bluetooth), Toast.LENGTH_LONG).show()
+                }
             }
+            prepareForScan()
         }
-        prepareForScan()
     }
 
     override fun onResume() {
