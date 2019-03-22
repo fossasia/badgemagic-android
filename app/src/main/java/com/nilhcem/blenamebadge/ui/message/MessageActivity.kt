@@ -63,11 +63,11 @@ class MessageActivity : AppCompatActivity() {
 
             if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
                 // Easter egg
-                send.isClickable = false
+                send.isEnabled = false
                 val buttonTimer = Timer()
                 buttonTimer.schedule(object : TimerTask() {
                     override fun run() {
-                        runOnUiThread { send.isClickable = true }
+                        runOnUiThread { send.isEnabled = true }
                     }
                 }, SCAN_TIMEOUT_MS)
                 if (content.text.isEmpty()) {
