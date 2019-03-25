@@ -46,7 +46,6 @@ class PreviewBadge : View {
 
         if (checkList == null)
             resetCheckList()
-
     }
 
     constructor(context: Context, @Nullable attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -55,7 +54,6 @@ class PreviewBadge : View {
 
         if (checkList == null)
             resetCheckList()
-
     }
 
     @SuppressLint("DrawAllocation")

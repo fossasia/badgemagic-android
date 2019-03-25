@@ -6,7 +6,6 @@
     <string name="grant_location_permission">You must grant the location permission</string>
 
     <string name="text_to_send">Text to send:</string>
-    <string name="text_preview">Preview:</string>
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
     <string name="speed">Speed:</string>
