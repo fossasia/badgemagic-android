@@ -2,11 +2,14 @@ package com.nilhcem.blenamebadge.ui.badge_preview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
+import android.graphics.RectF
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.support.annotation.Nullable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.nilhcem.blenamebadge.R
 
@@ -30,16 +33,16 @@ class PreviewBadge : View {
     }
 
     constructor(context: Context) : super(context) {
-        mLed = context.getDrawable(R.drawable.ic_led)
-        mLedLit = context.getDrawable(R.drawable.ic_led_lit)
+        mLed = context.resources.getDrawable(R.drawable.ic_led)
+        mLedLit = context.resources.getDrawable(R.drawable.ic_led_lit)
 
         if (checkList == null)
             resetCheckList()
     }
 
     constructor(context: Context, @Nullable attrs: AttributeSet) : super(context, attrs) {
-        mLed = context.getDrawable(R.drawable.ic_led)
-        mLedLit = context.getDrawable(R.drawable.ic_led_lit)
+        mLed = context.resources.getDrawable(R.drawable.ic_led)
+        mLedLit = context.resources.getDrawable(R.drawable.ic_led_lit)
 
         if (checkList == null)
             resetCheckList()
@@ -47,8 +50,8 @@ class PreviewBadge : View {
     }
 
     constructor(context: Context, @Nullable attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        mLed = context.getDrawable(R.drawable.ic_led)
-        mLedLit = context.getDrawable(R.drawable.ic_led_lit)
+        mLed = context.resources.getDrawable(R.drawable.ic_led)
+        mLedLit = context.resources.getDrawable(R.drawable.ic_led_lit)
 
         if (checkList == null)
             resetCheckList()
