@@ -30,6 +30,14 @@ class MessagePresenter {
         gattClient.stopClient()
     }
 
+    fun convertToPreview(data :String): ArrayList<String>{
+        val list: ArrayList<String>  = ArrayList()
+        for (letter in data){
+            list.add(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+        }
+        return list
+    }
+
     private fun sendBytes(context: Context, byteData: List<ByteArray>) {
         Timber.i { "ByteData: ${byteData.map { ByteArrayUtils.byteArrayToHexString(it) }}" }
 

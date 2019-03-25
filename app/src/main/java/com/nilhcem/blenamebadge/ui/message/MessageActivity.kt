@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -28,6 +29,7 @@ import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
+import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import java.util.Timer
 import java.util.TimerTask
 
@@ -45,6 +47,9 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
+    private val preview_button: Button by bindView(R.id.preview_button)
+
+    private val preview_badge: PreviewBadge by bindView(R.id.preview_badge)
 
     private val presenter by lazy { MessagePresenter() }
 
@@ -79,6 +84,13 @@ class MessageActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.txt_turn_on_bluetooth), Toast.LENGTH_LONG).show()
             }
         }
+
+        preview_button.setOnClickListener {
+            if (!content.text.isEmpty()){
+                preview_badge.setValue(presenter.convertToPreview(content.text.toString()))
+            }
+        }
+
         prepareForScan()
     }
 
