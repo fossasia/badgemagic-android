@@ -86,7 +86,7 @@ class MessageActivity : AppCompatActivity() {
         }
 
         preview_button.setOnClickListener {
-            if (!content.text.isEmpty()){
+            if (!content.text.isEmpty()) {
                 preview_badge.setValue(presenter.convertToPreview(content.text.toString()))
             }
         }
