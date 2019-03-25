@@ -10,10 +10,11 @@ android {
 
     defaultConfig {
         applicationId 'com.nilhcem.blenamebadge'
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 27
         versionCode 1
         versionName '1.0'
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
