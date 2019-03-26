@@ -64,22 +64,22 @@ class PreviewBadge : View {
         super.onLayout(changed, left, top, right, bottom)
 
         val offset = 30
-        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), (bottom - offset).toFloat())
 
-        val singleCell = (right - left - offset * 2 - 10) / badgeWidth
+        val singleCell = (right - left - (offset * 3)) / badgeWidth
 
         cells = ArrayList()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                        left + offset + 25 + j * singleCell,
-                        top + offset + 25 + i * singleCell,
-                        left + offset + 25 + j * singleCell + singleCell,
-                        top + offset + 25 + i * singleCell + singleCell
+                        left + (offset * 2) + j * singleCell,
+                        top + (offset * 2) + i * singleCell,
+                        left + (offset * 2) + j * singleCell + singleCell,
+                        top + (offset * 2) + i * singleCell + singleCell
                 ))
             }
         }
+        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offset * 3)).toFloat())
     }
 
     @SuppressLint("DrawAllocation")
