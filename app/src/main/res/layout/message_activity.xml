@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:inputType="text"
+                android:hint="@string/edittext_hint"
                 app:layout_constraintEnd_toStartOf="@id/preview_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

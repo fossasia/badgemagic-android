@@ -23,4 +23,6 @@
     <string name="preview_button">PREVIEW</string>
     <string name="permission_required">Permission required</string>
     <string name="txt_turn_on_bluetooth">Turn on Bluetooth and try again</string>
+    <string name="empty_message">Enter a message</string>
+    <string name="edittext_hint">Enter message</string>
 </resources>
