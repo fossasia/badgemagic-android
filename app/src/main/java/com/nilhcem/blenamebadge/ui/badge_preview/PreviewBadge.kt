@@ -15,6 +15,8 @@ import com.nilhcem.blenamebadge.R
 
 import java.math.BigInteger
 import java.util.ArrayList
+import android.animation.ValueAnimator
+import android.view.animation.LinearInterpolator
 
 class PreviewBadge : View {
     private var ledDisabled: Drawable? = null
@@ -26,7 +28,13 @@ class PreviewBadge : View {
     private var badgeHeight = 11
     private var badgeWidth = 44
 
+    private var ifFlash: Boolean? = false
+    private var ifMarquee: Boolean? = false
+
+    private var animationIndex: Int = 0
+
     private var checkList: ArrayList<CheckList>? = null
+    private var valueAnimator: ValueAnimator? = null
 
     private fun resetCheckList() {
         checkList = ArrayList()
@@ -84,6 +92,7 @@ class PreviewBadge : View {
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
         // Paint Configuration
         val bgPaint = Paint()
         bgPaint.isAntiAlias = true
@@ -95,36 +104,131 @@ class PreviewBadge : View {
         // Draw Cells
         for (i in 0 until badgeHeight) {
             for (j in 0 until badgeWidth) {
-                if (i < checkList?.size ?: -1 && j < checkList?.get(i)?.list?.size ?: -1 && checkList?.get(i)?.list?.get(j) == true) {
-                    ledEnabled?.bounds = cells[i].list[j]
-                    ledEnabled?.draw(canvas)
+                if (ifFlash == true) {
+                    if (animationIndex > 100 && i < checkList?.size ?: -1 && j < checkList?.get(i)?.list?.size ?: -1 && checkList?.get(i)?.list?.get(j) == true) {
+                        ledEnabled?.bounds = cells[i].list[j]
+                        ledEnabled?.draw(canvas)
+                    } else {
+                        ledDisabled?.bounds = cells[i].list[j]
+                        ledDisabled?.draw(canvas)
+                    }
+                } else if (ifMarquee == true) {
+                    if (animationIndex < 0)
+                        animationIndex = 0
+                    if (i < checkList?.size ?: -1 && j < checkList?.get(i)?.list?.size ?: -1 && j >= animationIndex.div(200) && checkList?.get(i)?.list?.get(j - animationIndex.div(200)) == true) {
+                        ledEnabled?.bounds = cells[i].list[j]
+                        ledEnabled?.draw(canvas)
+                    } else {
+                        ledDisabled?.bounds = cells[i].list[j]
+                        ledDisabled?.draw(canvas)
+                    }
                 } else {
-                    ledDisabled?.bounds = cells[i].list[j]
-                    ledDisabled?.draw(canvas)
+                    if (i < checkList?.size ?: -1 && j < checkList?.get(i)?.list?.size ?: -1 && checkList?.get(i)?.list?.get(j) == true) {
+                        ledEnabled?.bounds = cells[i].list[j]
+                        ledEnabled?.draw(canvas)
+                    } else {
+                        ledDisabled?.bounds = cells[i].list[j]
+                        ledDisabled?.draw(canvas)
+                    }
                 }
             }
         }
-        super.onDraw(canvas)
+
+        if (ifFlash == true || ifMarquee == true) {
+            postInvalidateOnAnimation()
+        }
     }
 
-    fun setValue(allHex: ArrayList<String>) {
-        resetCheckList()
+    override fun onDetachedFromWindow() {
+        valueAnimator?.cancel()
+        super.onDetachedFromWindow()
+    }
 
-        if (allHex.size > 0 && 8 * allHex.size < badgeWidth) {
-            val diff = ((badgeWidth - (8 * allHex.size)) / 2)
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (ifFlash == true) {
+            valueAnimator = ValueAnimator.ofInt(0, 200).apply {
+                addUpdateListener {
+                    animationIndex = it.animatedValue as Int
+                }
+                duration = 1500L
+                repeatMode = ValueAnimator.RESTART
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                start()
+            }
+        } else if (ifMarquee == true) {
+            valueAnimator = ValueAnimator.ofInt(8799, -1000).apply {
+                addUpdateListener {
+                    animationIndex = it.animatedValue as Int
+                }
+                duration = 4400L
+                repeatMode = ValueAnimator.RESTART
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                start()
+            }
+        }
+    }
+
+    fun setValue(allHex: ArrayList<String>, ifMar: Boolean, ifFla: Boolean) {
+        resetCheckList()
+        ifMarquee = ifMar
+        ifFlash = ifFla
+        valueAnimator?.cancel()
+        if (ifFlash == true) {
+            valueAnimator = ValueAnimator.ofInt(0, 200).apply {
+                addUpdateListener {
+                    animationIndex = it.animatedValue as Int
+                }
+                duration = 1500L
+                repeatMode = ValueAnimator.RESTART
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                start()
+            }
+        } else if (ifMarquee == true) {
+            valueAnimator = ValueAnimator.ofInt(8799, -1000).apply {
+                addUpdateListener {
+                    animationIndex = it.animatedValue as Int
+                }
+                duration = 4400L
+                repeatMode = ValueAnimator.RESTART
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                start()
+            }
+        }
+
+        val diff: Int
+        if (allHex.size > 0) {
+            diff = ((badgeWidth - (8 * allHex.size)) / 2)
+            if (8 * allHex.size < badgeWidth) {
+                for (i in 0 until badgeHeight) {
+                    for (j in 0 until diff) {
+                        checkList?.get(i)?.list?.add(false)
+                    }
+                }
+            }
+        } else {
+            diff = 22
             for (i in 0 until badgeHeight) {
-                for (j in 0..diff) {
+                for (j in 0 until diff) {
                     checkList?.get(i)?.list?.add(false)
                 }
             }
         }
-
         for (hex in allHex) {
             for (i in 0 until badgeHeight) {
                 val bin = hexToBin(hex.substring(i * 2, i * 2 + 2))
                 for (j in 0..7) {
                     checkList?.get(i)?.list?.add(Character.getNumericValue(bin[j]) == 1)
                 }
+            }
+        }
+        for (i in 0 until badgeHeight) {
+            for (j in 0 until diff) {
+                checkList?.get(i)?.list?.add(false)
             }
         }
         invalidate()
