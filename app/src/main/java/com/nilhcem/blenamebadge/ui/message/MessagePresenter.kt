@@ -2,6 +2,8 @@ package com.nilhcem.blenamebadge.ui.message
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.Toast
+import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
@@ -44,6 +46,7 @@ class MessagePresenter {
         scanHelper.startLeScan { device ->
             if (device == null) {
                 Timber.e { "Scan could not find any device" }
+                Toast.makeText(context, R.string.no_device_found, Toast.LENGTH_SHORT).show()
             } else {
                 Timber.e { "Device found: $device" }
 
@@ -53,6 +56,8 @@ class MessagePresenter {
                             Timber.i { "Data sent" }
                             gattClient.stopClient()
                         }
+                    } else {
+                        Toast.makeText(context, R.string.no_device_found, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
