@@ -13,22 +13,27 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import android.widget.ArrayAdapter
 import com.nilhcem.blenamebadge.R
+import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
+import com.nilhcem.blenamebadge.data.DrawableInfo
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
+import com.nilhcem.blenamebadge.util.Converters
 import java.util.Timer
 import java.util.TimerTask
 
@@ -47,6 +52,10 @@ class MessageActivity : AppCompatActivity() {
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
     private val previewButton: Button by bindView(R.id.preview_button)
+    private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
+    private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
+
+    private lateinit var drawableRecyclerAdapter: DrawableAdapter
 
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
@@ -61,7 +70,7 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            val inputManager: InputMethodManager = this?.getSystemService(Context.INPUT_METHOD_SERVICE)
+            val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
                     as InputMethodManager
             inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
 
@@ -90,7 +99,32 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
+        previewButtonDrawable.setOnClickListener {
+            if (drawableRecyclerAdapter.getSelectedItem() != -1)
+                previewBadge.setValue(Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>)
+            else
+                Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
+        }
+
+        setupRecycler()
+
         prepareForScan()
+    }
+
+    private fun setupRecycler() {
+        drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        val listOfDrawables = ArrayList<DrawableInfo>()
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mushroom)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mustache)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.oneup)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.spider)))
+
+        drawableRecyclerAdapter = DrawableAdapter(this, listOfDrawables)
+        drawableRecyclerView.adapter = drawableRecyclerAdapter
     }
 
     override fun onResume() {

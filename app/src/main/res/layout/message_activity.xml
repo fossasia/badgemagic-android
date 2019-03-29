@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version = "1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,8 +10,8 @@
         android:orientation="vertical">
 
         <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
-            android:layout_width="match_parent"
             android:id="@+id/preview_badge"
+            android:layout_width="match_parent"
             android:layout_height="135dp" />
 
         <android.support.constraint.ConstraintLayout
@@ -48,13 +48,62 @@
                 android:id="@+id/preview_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:paddingLeft="42dp"
                 android:paddingRight="42dp"
                 android:text="@string/preview_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/text_to_send_label" />
+
+            <LinearLayout
+                android:id="@+id/section_drawables"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/text_to_send">
+
+                <TextView
+                    android:id="@+id/select_drawable_to_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/select_drawable_text"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/section_drawables" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_toStartOf="@id/preview_button_drawable">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <Button
+                        android:id="@+id/preview_button_drawable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="4dp"
+                        android:paddingLeft="42dp"
+                        android:paddingRight="42dp"
+                        android:text="@string/preview_button" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/speed_label"
@@ -68,7 +117,7 @@
                 android:typeface="normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_to_send" />
+                app:layout_constraintTop_toBottomOf="@+id/section_drawables" />
 
             <Spinner
                 android:id="@+id/speed"

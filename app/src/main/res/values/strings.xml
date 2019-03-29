@@ -24,4 +24,6 @@
     <string name="permission_required">Permission required</string>
     <string name="txt_turn_on_bluetooth">Turn on Bluetooth and try again</string>
     <string name="no_device_found">No device found. Please try again.</string>
+    <string name="select_drawable_text">Select Drawable:</string>
+    <string name="select_drawable">Please select Drawable to be previewed</string>
 </resources>
