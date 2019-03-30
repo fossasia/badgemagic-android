@@ -3,13 +3,18 @@ package com.nilhcem.blenamebadge.util
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.support.annotation.DrawableRes
+import android.graphics.drawable.Drawable
 import java.math.BigInteger
 import java.util.ArrayList
 
 object Converters {
     fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int): List<String> {
         val myIcon = context.resources.getDrawable(dId)
-        val bm = (myIcon as BitmapDrawable).bitmap
+        return convertDrawableToLEDHex(myIcon)
+    }
+
+    fun convertDrawableToLEDHex(drawableIcon: Drawable): List<String> {
+        val bm = (drawableIcon as BitmapDrawable).bitmap
 
         val height = bm.height
         val width = bm.width

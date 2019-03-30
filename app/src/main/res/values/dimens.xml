@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="square_image_dimension">64dp</dimen>
+    <dimen name="card_radius">10dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+</resources>
