@@ -115,7 +115,13 @@ class MessageActivity : AppCompatActivity() {
 
         previewButtonDrawable.setOnClickListener {
             if (drawableRecyclerAdapter.getSelectedItem() != -1)
-                previewBadge.setValue(Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>)
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>,
+                        marquee.isChecked,
+                        flash.isChecked,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.values()[mode.selectedItemPosition]
+                )
             else
                 Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
         }
