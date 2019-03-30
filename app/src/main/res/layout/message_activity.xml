@@ -12,7 +12,7 @@
         <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
             android:id="@+id/preview_badge"
             android:layout_width="match_parent"
-            android:layout_height="135dp" />
+            android:layout_height="@dimen/preview_height" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

@@ -3,5 +3,5 @@
     <dimen name="square_image_dimension">64dp</dimen>
     <dimen name="card_radius">10dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
-    <dimen name="preview_height">135dp</dimen>
+    <dimen name="preview_height">230dp</dimen>
 </resources>
