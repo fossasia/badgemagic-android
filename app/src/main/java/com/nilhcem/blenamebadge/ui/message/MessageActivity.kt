@@ -89,7 +89,7 @@ class MessageActivity : AppCompatActivity() {
                     presenter.sendMessage(this, convertToDeviceDataModel())
                 }
             } else {
-                Toast.makeText(this, getString(R.string.txt_turn_on_bluetooth), Toast.LENGTH_LONG).show()
+                prepareForScan()
             }
         }
 
