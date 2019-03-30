@@ -192,6 +192,9 @@ class MessageActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { _, _ ->
             prepareForScan()
         }
+        builder.setNegativeButton("EXIT") { _, _ ->
+            finish()
+        }
         builder.create().show()
     }
 
