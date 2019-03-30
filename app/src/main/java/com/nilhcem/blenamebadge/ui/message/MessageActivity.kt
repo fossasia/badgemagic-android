@@ -93,10 +93,24 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
+        flash.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && marquee.isChecked)
+                marquee.toggle()
+        }
+
+        marquee.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && flash.isChecked)
+                flash.toggle()
+        }
+
         previewButton.setOnClickListener {
-            if (!content.text.isEmpty()) {
-                previewBadge.setValue(presenter.convertToPreview(content.text.toString()))
-            }
+            previewBadge.setValue(
+                    presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " "),
+                    marquee.isChecked,
+                    flash.isChecked,
+                    Speed.values()[speed.selectedItemPosition],
+                    Mode.values()[mode.selectedItemPosition]
+            )
         }
 
         previewButtonDrawable.setOnClickListener {
