@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.CheckBox
@@ -22,6 +23,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
@@ -54,6 +56,7 @@ class MessageActivity : AppCompatActivity() {
     private val previewButton: Button by bindView(R.id.preview_button)
     private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
     private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
+    private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
 
@@ -80,13 +83,18 @@ class MessageActivity : AppCompatActivity() {
                 val buttonTimer = Timer()
                 buttonTimer.schedule(object : TimerTask() {
                     override fun run() {
-                        runOnUiThread { send.isEnabled = true }
+                        runOnUiThread {
+                            send.isEnabled = true
+                            showLoaderView(false)
+                        }
                     }
                 }, SCAN_TIMEOUT_MS)
                 if (content.text.isEmpty()) {
                     presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
+                    showLoaderView(false)
                 } else {
                     presenter.sendMessage(this, convertToDeviceDataModel())
+                    showLoaderView(true)
                 }
             } else {
                 prepareForScan()
@@ -180,6 +188,20 @@ class MessageActivity : AppCompatActivity() {
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun showLoaderView(status: Boolean) {
+        runOnUiThread {
+            if (status) {
+                sendByteLoader.visibility = View.VISIBLE
+                send.isEnabled = false
+                send.visibility = View.GONE
+            } else {
+                sendByteLoader.visibility = View.GONE
+                send.isEnabled = true
+                send.visibility = View.VISIBLE
+            }
         }
     }
 
