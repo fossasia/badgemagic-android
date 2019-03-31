@@ -11,12 +11,12 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.Nullable
 import android.util.AttributeSet
 import android.view.View
-import com.nilhcem.blenamebadge.R
 
 import java.math.BigInteger
 import java.util.ArrayList
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
+import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 
@@ -68,6 +68,30 @@ class PreviewBadge : View {
         ledEnabled = context.resources.getDrawable(R.drawable.ic_led_lit)
 
         resetCheckList()
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val ratioHeight = 1
+        val ratioWidth = 3
+
+        val originalWidth = View.MeasureSpec.getSize(widthMeasureSpec)
+        val originalHeight = View.MeasureSpec.getSize(heightMeasureSpec)
+        val calculatedHeight = originalWidth * ratioHeight / ratioWidth
+
+        val finalWidth: Int
+        val finalHeight: Int
+
+        if (calculatedHeight > originalHeight) {
+            finalWidth = originalHeight * ratioHeight / ratioWidth
+            finalHeight = originalHeight
+        } else {
+            finalWidth = originalWidth
+            finalHeight = calculatedHeight
+        }
+
+        super.onMeasure(
+                View.MeasureSpec.makeMeasureSpec(finalWidth, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(finalHeight, View.MeasureSpec.EXACTLY))
     }
 
     @SuppressLint("DrawAllocation")
