@@ -36,11 +36,13 @@ import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import com.nilhcem.blenamebadge.util.Converters
+import java.util.Timer
+import java.util.TimerTask
 import com.squareup.tape2.QueueFile
 import java.io.File
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 class MessageActivity : AppCompatActivity() {
 
