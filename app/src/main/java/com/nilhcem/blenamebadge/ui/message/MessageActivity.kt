@@ -36,8 +36,11 @@ import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import com.nilhcem.blenamebadge.util.Converters
-import java.util.Timer
-import java.util.TimerTask
+import com.squareup.tape2.QueueFile
+import java.io.File
+import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MessageActivity : AppCompatActivity() {
 
@@ -53,6 +56,7 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
+    private val save: Button by bindView(R.id.save_button)
     private val previewButton: Button by bindView(R.id.preview_button)
     private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
     private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
@@ -98,6 +102,43 @@ class MessageActivity : AppCompatActivity() {
                 }
             } else {
                 prepareForScan()
+            }
+        }
+
+        save.setOnClickListener{
+            try {
+                val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
+                inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+
+                val sdf = SimpleDateFormat("dd-MMM-yyyy-hh_mm_aaa")
+                val fileName = "badge-magic-" + sdf.format(Calendar.getInstance().time).toString()
+                val file = File(applicationContext.filesDir, fileName)
+                val qFile = QueueFile.Builder(file).build()
+
+                if(content.text.isNotBlank())
+                    qFile.add(("Content-Text - "+content.text.toString()).toByteArray())
+                else if(drawableRecyclerAdapter.selectedPosition >= 0)
+                    qFile.add(("Content-Drawable - "+drawableRecyclerAdapter.selectedPosition).toByteArray())
+
+                qFile.add(("Speed - "+speed.selectedItem.toString()).toByteArray())
+                qFile.add(("Mode - "+mode.selectedItem.toString()).toByteArray())
+
+                if(flash.isChecked)
+                    qFile.add("Type - Flash".toByteArray())
+                else if(marquee.isChecked)
+                    qFile.add("Type - Marquee".toByteArray())
+                else
+                    qFile.add("Type - None".toByteArray())
+
+                val sb = StringBuilder()
+                sb.append("Records saved successfully with file name ")
+                sb.append(fileName)
+
+                Toast.makeText(this,sb.toString(),Toast.LENGTH_SHORT).show()
+            } catch (e: Exception)
+            {
+                Toast.makeText(this,e.message.toString(),Toast.LENGTH_SHORT).show()
             }
         }
 
