@@ -3,4 +3,10 @@
     <dimen name="square_image_dimension">64dp</dimen>
     <dimen name="card_radius">10dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
+    <dimen name="preview_badge_padding">135dp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="button_padding_left_right">42dp</dimen>
 </resources>
