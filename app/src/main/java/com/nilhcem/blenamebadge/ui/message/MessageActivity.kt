@@ -17,7 +17,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.ProgressBar
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
