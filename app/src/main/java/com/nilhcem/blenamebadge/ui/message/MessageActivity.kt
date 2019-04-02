@@ -267,7 +267,7 @@ class MessageActivity : AppCompatActivity() {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
     private fun updatePreview() {
-        var ledData: ArrayList<String>
+        val ledData: ArrayList<String>
         if (isTextPreview) {
             ledData = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
         } else {
