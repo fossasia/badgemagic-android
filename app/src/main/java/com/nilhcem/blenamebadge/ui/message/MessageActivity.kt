@@ -17,13 +17,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
-import android.widget.ArrayAdapter
-import android.widget.ProgressBar
+import android.widget.*
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
@@ -64,6 +58,7 @@ class MessageActivity : AppCompatActivity() {
 
     private val presenter by lazy { MessagePresenter() }
 
+    private var isTextPreview:Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.message_activity)
@@ -132,6 +127,26 @@ class MessageActivity : AppCompatActivity() {
                 )
             else
                 Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
+        }
+        speed.onItemSelectedListener =object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                updatePreview()
+            }
+
+        }
+        mode.onItemSelectedListener =object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                updatePreview()
+            }
+
         }
 
         setupRecycler()
@@ -248,5 +263,21 @@ class MessageActivity : AppCompatActivity() {
 
     private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
+    }
+
+    private fun updatePreview() {
+        var ledData: ArrayList<String>
+        if (isTextPreview) {
+            ledData = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
+        } else {
+            ledData = Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>
+        }
+        previewBadge.setValue(
+                ledData,
+                marquee.isChecked,
+                flash.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
+        )
     }
 }
