@@ -107,6 +107,7 @@ class MessageActivity : AppCompatActivity() {
         }
 
         previewButton.setOnClickListener {
+            isTextPreview = true
             previewBadge.setValue(
                     presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " "),
                     marquee.isChecked,
@@ -117,6 +118,7 @@ class MessageActivity : AppCompatActivity() {
         }
 
         previewButtonDrawable.setOnClickListener {
+            isTextPreview = false
             if (drawableRecyclerAdapter.getSelectedItem() != -1)
                 previewBadge.setValue(
                         Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>,
