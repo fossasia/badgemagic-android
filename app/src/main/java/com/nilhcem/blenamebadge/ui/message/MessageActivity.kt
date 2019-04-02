@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -44,6 +45,7 @@ class MessageActivity : AppCompatActivity() {
     companion object {
         private const val SCAN_TIMEOUT_MS = 10_000L
         private const val REQUEST_ENABLE_BT = 1
+        private const val DRAWABLE_BROWSE = 111
         private const val REQUEST_PERMISSION_LOCATION = 1
     }
 
@@ -53,12 +55,14 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
+    private val browse: Button by bindView(R.id.browse_button)
     private val previewButton: Button by bindView(R.id.preview_button)
     private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
     private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
+    private lateinit var listOfDrawables: ArrayList<DrawableInfo>
 
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
@@ -99,6 +103,14 @@ class MessageActivity : AppCompatActivity() {
             } else {
                 prepareForScan()
             }
+        }
+
+        browse.setOnClickListener {
+            val intent = Intent()
+                    .setType("image/png")
+                    .setAction(Intent.ACTION_GET_CONTENT)
+
+            startActivityForResult(Intent.createChooser(intent, "Select a file"), DRAWABLE_BROWSE)
         }
 
         flash.setOnCheckedChangeListener { _, isChecked ->
@@ -142,7 +154,7 @@ class MessageActivity : AppCompatActivity() {
     private fun setupRecycler() {
         drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val listOfDrawables = ArrayList<DrawableInfo>()
+        listOfDrawables = ArrayList<DrawableInfo>()
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
@@ -174,6 +186,13 @@ class MessageActivity : AppCompatActivity() {
             } else if (resultCode == Activity.RESULT_OK) {
                 prepareForScan()
                 return
+            }
+        } else if (requestCode == DRAWABLE_BROWSE && resultCode == Activity.RESULT_OK) {
+            val selectedFile = data?.data
+            if (selectedFile != null) {
+                listOfDrawables.add(DrawableInfo(Drawable.createFromStream(contentResolver.openInputStream(data.data), selectedFile.lastPathSegment.toString())))
+                drawableRecyclerAdapter.notifyItemChanged(listOfDrawables.size)
+                Toast.makeText(this, "Added to list", Toast.LENGTH_SHORT).show()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

@@ -83,23 +83,40 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:layout_toStartOf="@id/preview_button_drawable">
+                        android:layout_marginEnd="1dp"
+                        android:layout_toStartOf="@+id/ll1" />
 
-                    </android.support.v7.widget.RecyclerView>
-
-                    <Button
-                        android:id="@+id/preview_button_drawable"
+                    <LinearLayout
+                        android:id="@+id/ll1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:paddingLeft="@dimen/button_padding_left_right"
-                        android:paddingRight="@dimen/button_padding_left_right"
-                        android:text="@string/preview_button" />
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/preview_button_drawable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/button_padding_left_right"
+                            android:paddingRight="@dimen/button_padding_left_right"
+                            android:text="@string/preview_button" />
+
+
+                        <Button
+                            android:id="@+id/browse_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@id/recycler_view"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:paddingLeft="@dimen/button_padding_left_right"
+                            android:paddingRight="@dimen/button_padding_left_right"
+                            android:text="@string/browse_button" />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -178,11 +195,11 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:visibility="gone"
-                app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/send_button"/>
+                app:layout_constraintTop_toBottomOf="@id/send_button"
+                app:layout_constraintVertical_bias="0.4" />
 
             <Button
                 android:id="@+id/send_button"
@@ -195,6 +212,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flash" />
+
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
