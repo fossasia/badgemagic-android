@@ -264,7 +264,6 @@ class MessageActivity : AppCompatActivity() {
     private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
-
     private fun updatePreview() {
         var ledData: ArrayList<String>
         if (isTextPreview) {
