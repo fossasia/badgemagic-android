@@ -153,11 +153,11 @@ class PreviewBadge : View {
                 when (badgeMode) {
                     Mode.LEFT -> {
                         val animationValue = animationIndex.div(200)
-                        if (validMarquee || flashLEDOn
-                                && i < checkList.size
-                                && j < checkList[i].list.size
-                                && j >= animationValue
-                                && checkList[i].list[j - animationValue]) {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                j >= animationValue &&
+                                checkList[i].list[j - animationValue]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -167,11 +167,11 @@ class PreviewBadge : View {
                     }
                     Mode.RIGHT -> {
                         val animationValue = animationIndex.div(200)
-                        if (validMarquee || flashLEDOn
-                                && i < checkList.size
-                                && j < checkList[i].list.size
-                                && j <= (43 - animationValue)
-                                && checkList[i].list[(animationValue.plus(j))]) {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                j <= (43 - animationValue) &&
+                                checkList[i].list[(animationValue.plus(j))]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -181,11 +181,11 @@ class PreviewBadge : View {
                     }
                     Mode.UP -> {
                         val animationValue = animationIndex.div(800)
-                        if (validMarquee || flashLEDOn
-                                && i < checkList.size
-                                && j < checkList[i].list.size
-                                && i >= animationValue
-                                && checkList[i - animationValue].list[j]) {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                i >= animationValue &&
+                                checkList[i - animationValue].list[j]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -195,11 +195,11 @@ class PreviewBadge : View {
                     }
                     Mode.DOWN -> {
                         val animationValue = animationIndex.div(800)
-                        if (validMarquee || flashLEDOn
-                                && i < checkList.size
-                                && j < checkList[i].list.size
-                                && i <= (10 - animationValue)
-                                && checkList[animationValue.plus(i)].list[j]) {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                i <= (10 - animationValue) &&
+                                checkList[animationValue.plus(i)].list[j]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -208,10 +208,10 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.FIXED -> {
-                        if (validMarquee || flashLEDOn
-                                && i < checkList.size
-                                && j < checkList[i].list.size
-                                && checkList[i].list[j]) {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[i].list[j]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
