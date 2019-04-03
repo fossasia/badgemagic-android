@@ -17,11 +17,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.ProgressBar
+import android.widget.*
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
@@ -62,7 +58,7 @@ class MessageActivity : AppCompatActivity() {
 
     private val presenter by lazy { MessagePresenter() }
 
-    private var isTextPreview:Boolean = true
+    private var isTextPreview: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.message_activity)
@@ -134,7 +130,7 @@ class MessageActivity : AppCompatActivity() {
             else
                 Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
         }
-        speed.onItemSelectedListener =object : AdapterView.OnItemSelectedListener {
+        speed.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -144,7 +140,7 @@ class MessageActivity : AppCompatActivity() {
             }
 
         }
-        mode.onItemSelectedListener =object : AdapterView.OnItemSelectedListener {
+        mode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -270,6 +266,7 @@ class MessageActivity : AppCompatActivity() {
     private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
+
     private fun updatePreview() {
         val ledData: ArrayList<String>
         if (isTextPreview) {
