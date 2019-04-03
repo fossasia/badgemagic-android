@@ -43,23 +43,22 @@ class ScanHelper {
     }
 
     fun startLeScan(onDeviceFoundCallback: ((BluetoothDevice?) -> Unit)) {
-        if (!isScanning) {
-            this.onDeviceFoundCallback = onDeviceFoundCallback
-            isScanning = true
+        if (!isScanning) return
+        this.onDeviceFoundCallback = onDeviceFoundCallback
+        isScanning = true
 
-            val filters = listOf(ScanFilter.Builder()
-                    .setServiceUuid(ParcelUuid(SERVICE_UUID))
-                    .build())
+        val filters = listOf(ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid(SERVICE_UUID))
+                .build())
 
-            val settings = ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .build()
+        val settings = ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                .build()
 
-            scanner.startScan(filters, settings, scanCallback)
+        scanner.startScan(filters, settings, scanCallback)
 
-            // Stops scanning after a pre-defined scan period.
-            stopScanHandler.postDelayed(stopScanRunnable, SCAN_TIMEOUT_MS)
-        }
+        // Stops scanning after a pre-defined scan period.
+        stopScanHandler.postDelayed(stopScanRunnable, SCAN_TIMEOUT_MS)
     }
 
     fun stopLeScan() {
