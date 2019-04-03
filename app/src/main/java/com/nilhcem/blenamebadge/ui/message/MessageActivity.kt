@@ -91,7 +91,7 @@ class MessageActivity : AppCompatActivity() {
                 }, SCAN_TIMEOUT_MS)
                 if (content.text.isEmpty()) {
                     presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
-                    showLoaderView(false)
+                    showLoaderView(true)
                 } else {
                     presenter.sendMessage(this, convertToDeviceDataModel())
                     showLoaderView(true)
