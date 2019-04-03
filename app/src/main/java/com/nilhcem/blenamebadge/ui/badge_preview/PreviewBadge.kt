@@ -131,147 +131,101 @@ class PreviewBadge : View {
         // Draw Cells
         for (i in 0 until badgeHeight) {
             for (j in 0 until badgeWidth) {
+                var flashLEDOn = true
                 if (ifFlash) {
-                    val aI: Int = animationIndex % 800
-                    val valid: Boolean = aI > 400
-
-                    if (valid && i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                        ledEnabled.bounds = cells[i].list[j]
-                        ledEnabled.draw(canvas)
-                    } else {
-                        ledDisabled.bounds = cells[i].list[j]
-                        ledDisabled.draw(canvas)
-                    }
-                } else if (ifMarquee) {
-                    val aI: Int = animationIndex.div(200)
-                    val valid: Boolean = if (i == 0 || j == 0 || i == badgeHeight - 1 || j == badgeWidth - 1) {
+                    val aIFlash = animationIndex % 800
+                    flashLEDOn = aIFlash > 400
+                }
+                var validMarquee = false
+                if (ifMarquee) {
+                    val aIMarquee = animationIndex.div(200)
+                    validMarquee = if (i == 0 || j == 0 || i == badgeHeight - 1 || j == badgeWidth - 1) {
                         if ((i == 0 || j == badgeWidth - 1) && !(i == badgeHeight - 1 && j == badgeWidth - 1)) {
-                            (i + j) % 4 == (aI % 4)
+                            (i + j) % 4 == (aIMarquee % 4)
                         } else {
-                            (i + j - 1) % 4 == (3 - (aI % 4))
+                            (i + j - 1) % 4 == (3 - (aIMarquee % 4))
                         }
                     } else {
                         false
                     }
+                }
 
-                    when (badgeMode) {
-                        Mode.LEFT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && j >= animationValue && checkList[i].list[j - animationValue]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.RIGHT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && j <= (43 - animationValue) && checkList[i].list[(animationValue.plus(j))]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.UP -> {
-                            val animationValue = animationIndex.div(800)
-                            if (!(!valid && !(i < checkList.size && j < checkList[i].list.size && i >= animationValue && checkList[i - animationValue].list[j]))) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.DOWN -> {
-                            val animationValue = animationIndex.div(800)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && i <= (10 - animationValue) && checkList[animationValue.plus(i)].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.FIXED -> {
-                            if (valid || i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.SNOWFLAKE -> {
-                        }
-                        Mode.PICTURE -> {
-                        }
-                        Mode.ANIMATION -> {
-                        }
-                        Mode.LASER -> {
+                when (badgeMode) {
+                    Mode.LEFT -> {
+                        val animationValue = animationIndex.div(200)
+                        if (validMarquee || flashLEDOn
+                                && i < checkList.size
+                                && j < checkList[i].list.size
+                                && j >= animationValue
+                                && checkList[i].list[j - animationValue]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
                     }
-                } else {
-                    when (badgeMode) {
-                        Mode.LEFT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (i < checkList.size && j < checkList[i].list.size && j >= animationValue && checkList[i].list[j - animationValue]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    Mode.RIGHT -> {
+                        val animationValue = animationIndex.div(200)
+                        if (validMarquee || flashLEDOn
+                                && i < checkList.size
+                                && j < checkList[i].list.size
+                                && j <= (43 - animationValue)
+                                && checkList[i].list[(animationValue.plus(j))]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.RIGHT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (i < checkList.size && j < checkList[i].list.size && j <= (43 - animationValue) && checkList[i].list[(animationValue.plus(j))]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.UP -> {
+                        val animationValue = animationIndex.div(800)
+                        if (validMarquee || flashLEDOn
+                                && i < checkList.size
+                                && j < checkList[i].list.size
+                                && i >= animationValue
+                                && checkList[i - animationValue].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.UP -> {
-                            val animationValue = animationIndex.div(800)
-                            if (i < checkList.size && j < checkList[i].list.size && i >= animationValue && checkList[i - animationValue].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.DOWN -> {
+                        val animationValue = animationIndex.div(800)
+                        if (validMarquee || flashLEDOn
+                                && i < checkList.size
+                                && j < checkList[i].list.size
+                                && i <= (10 - animationValue)
+                                && checkList[animationValue.plus(i)].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.DOWN -> {
-                            val animationValue = animationIndex.div(800)
-                            if (i < checkList.size && j < checkList[i].list.size && i <= (10 - animationValue) && checkList[animationValue.plus(i)].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.FIXED -> {
+                        if (validMarquee || flashLEDOn
+                                && i < checkList.size
+                                && j < checkList[i].list.size
+                                && checkList[i].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.FIXED -> {
-                            if (i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.SNOWFLAKE -> {
-                        }
-                        Mode.PICTURE -> {
-                        }
-                        Mode.ANIMATION -> {
-                        }
-                        Mode.LASER -> {
-                        }
+                    }
+                    Mode.SNOWFLAKE -> {
+                    }
+                    Mode.PICTURE -> {
+                    }
+                    Mode.ANIMATION -> {
+                    }
+                    Mode.LASER -> {
                     }
                 }
             }
