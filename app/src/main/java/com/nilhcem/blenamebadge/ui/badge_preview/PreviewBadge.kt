@@ -303,7 +303,7 @@ class PreviewBadge : View {
         }
     }
 
-    fun setValue(allHex: ArrayList<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
+    fun setValue(allHex: List<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
         resetCheckList()
         ifMarquee = ifMar
         ifFlash = ifFla

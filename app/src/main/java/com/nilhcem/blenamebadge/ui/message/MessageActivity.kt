@@ -112,26 +112,43 @@ class MessageActivity : AppCompatActivity() {
         }
 
         previewButton.setOnClickListener {
-            previewBadge.setValue(
-                    presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " "),
-                    marquee.isChecked,
-                    flash.isChecked,
-                    Speed.values()[speed.selectedItemPosition],
-                    Mode.values()[mode.selectedItemPosition]
-            )
+            if (!content.text.isEmpty()) {
+                previewBadge.setValue(
+                        presenter.convertToPreview(content.text.toString()),
+                        marquee.isChecked,
+                        flash.isChecked,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.values()[mode.selectedItemPosition]
+                )
+            } else {
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
+                        false,
+                        false,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.FIXED
+                )
+            }
         }
 
         previewButtonDrawable.setOnClickListener {
-            if (drawableRecyclerAdapter.getSelectedItem() != -1)
+            val selectedItem = drawableRecyclerAdapter.getSelectedItem()
+            if (selectedItem != null)
                 previewBadge.setValue(
-                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>,
+                        Converters.convertDrawableToLEDHex(selectedItem.image),
                         marquee.isChecked,
                         flash.isChecked,
                         Speed.values()[speed.selectedItemPosition],
                         Mode.values()[mode.selectedItemPosition]
                 )
             else
-                Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
+                        false,
+                        false,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.FIXED
+                )
         }
 
         setupRecycler()
