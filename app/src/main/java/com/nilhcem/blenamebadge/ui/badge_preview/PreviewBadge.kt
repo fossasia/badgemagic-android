@@ -71,27 +71,16 @@ class PreviewBadge : View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val ratioHeight = 1
         val ratioWidth = 3
 
         val originalWidth = View.MeasureSpec.getSize(widthMeasureSpec)
-        val originalHeight = View.MeasureSpec.getSize(heightMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
-        val finalWidth: Int
-        val finalHeight: Int
-
-        if (calculatedHeight > originalHeight) {
-            finalWidth = originalHeight * ratioHeight / ratioWidth
-            finalHeight = originalHeight
-        } else {
-            finalWidth = originalWidth
-            finalHeight = calculatedHeight
-        }
-
-        super.onMeasure(
-                View.MeasureSpec.makeMeasureSpec(finalWidth, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(finalHeight, View.MeasureSpec.EXACTLY))
+        setMeasuredDimension(
+                View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
     }
 
     @SuppressLint("DrawAllocation")
@@ -102,19 +91,21 @@ class PreviewBadge : View {
 
         val singleCell = (right - left - (offset * 3)) / badgeWidth
 
+        val offsetXToAdd: Int = ((((right - offset).toFloat() - (left + offset).toFloat()) - (singleCell * badgeWidth)) / 2).toInt() + 1
+
         cells = ArrayList()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                        left + (offset * 2) + j * singleCell,
-                        top + (offset * 2) + i * singleCell,
-                        left + (offset * 2) + j * singleCell + singleCell,
-                        top + (offset * 2) + i * singleCell + singleCell
+                        left + (offsetXToAdd * 2) + j * singleCell,
+                        top + (offsetXToAdd * 2) + i * singleCell,
+                        left + (offsetXToAdd * 2) + j * singleCell + singleCell,
+                        top + (offsetXToAdd * 2) + i * singleCell + singleCell
                 ))
             }
         }
-        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offset * 3)).toFloat())
+        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
     }
 
     @SuppressLint("DrawAllocation")
