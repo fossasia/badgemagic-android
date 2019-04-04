@@ -95,7 +95,7 @@ class MessageActivity : AppCompatActivity() {
                 }, SCAN_TIMEOUT_MS)
                 if (content.text.isEmpty()) {
                     presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
-                    showLoaderView(false)
+                    showLoaderView(true)
                 } else {
                     presenter.sendMessage(this, convertToDeviceDataModel())
                     showLoaderView(true)
@@ -154,13 +154,23 @@ class MessageActivity : AppCompatActivity() {
     private fun setupRecycler() {
         drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.apple)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.clock)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.dustbin)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.face)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.heart)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.home)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mail)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mushroom)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mustache)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.oneup)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.pause)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.spider)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.sun)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.thumbs_up)))
 
         drawableRecyclerAdapter = DrawableAdapter(this, listOfDrawables)
         drawableRecyclerView.adapter = drawableRecyclerAdapter
