@@ -141,14 +141,15 @@ class PreviewBadge : View {
                     }
                 }
 
+                val checkListLength = checkList[i].list.size
+                val checkListHeight = checkList.size
                 when (badgeMode) {
                     Mode.LEFT -> {
                         val animationValue = animationIndex.div(200)
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                j >= animationValue &&
-                                checkList[i].list[j - animationValue]) {
+                                checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -161,8 +162,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                j <= (43 - animationValue) &&
-                                checkList[i].list[(animationValue.plus(j))]) {
+                                checkList[i].list[(animationValue + j + checkListLength).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -171,12 +171,11 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.UP -> {
-                        val animationValue = animationIndex.div(800)
+                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                i >= animationValue &&
-                                checkList[i - animationValue].list[j]) {
+                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -185,12 +184,11 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.DOWN -> {
-                        val animationValue = animationIndex.div(800)
+                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                i <= (10 - animationValue) &&
-                                checkList[animationValue.plus(i)].list[j]) {
+                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -235,12 +233,12 @@ class PreviewBadge : View {
         configValueAnimation()
     }
 
-    private fun configValueAnimation() {
-        valueAnimator = ValueAnimator.ofInt(8799, 0).apply {
+    private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
+        valueAnimator = ValueAnimator.ofInt(valueAnimatorNumber - 1, 0).apply {
             addUpdateListener {
                 animationIndex = it.animatedValue as Int
             }
-            duration = 8800L.div(badgeSpeed)
+            duration = valueAnimatorNumber.toLong().div(badgeSpeed)
             repeatMode = ValueAnimator.RESTART
             repeatCount = ValueAnimator.INFINITE
             interpolator = LinearInterpolator()
@@ -266,20 +264,15 @@ class PreviewBadge : View {
             Speed.EIGHT -> 8
         }
 
-        configValueAnimation()
-
-        val diff: Int
-        if (allHex.size > 0) {
-            diff = ((badgeWidth - (oneByte * allHex.size)) / 2)
-            if (oneByte * allHex.size < badgeWidth) {
-                for (i in 0 until badgeHeight) {
-                    for (j in 0 until diff) {
-                        checkList[i].list.add(false)
-                    }
+        val diff = (badgeWidth - (oneByte * allHex.size)) / 2
+        if (diff < 0) {
+            for (i in 0 until badgeHeight) {
+                for (j in (0 until badgeWidth / 2)) {
+                    checkList[i].list.add(false)
                 }
             }
-        } else {
-            diff = 22
+        }
+        if (oneByte * allHex.size < badgeWidth) {
             for (i in 0 until badgeHeight) {
                 for (j in 0 until diff) {
                     checkList[i].list.add(false)
@@ -299,7 +292,15 @@ class PreviewBadge : View {
                 checkList[i].list.add(false)
             }
         }
+        if (diff < 0) {
+            for (i in 0 until badgeHeight) {
+                for (j in 0 until badgeWidth / 2) {
+                    checkList[i].list.add(false)
+                }
+            }
+        }
         invalidate()
+        configValueAnimation(checkList[0].list.size*200)
     }
 
     companion object {
