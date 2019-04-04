@@ -62,7 +62,7 @@ class MessageActivity : AppCompatActivity() {
     private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
-    private lateinit var listOfDrawables: ArrayList<DrawableInfo>
+    private val listOfDrawables: ArrayList<DrawableInfo> = ArrayList<DrawableInfo>()
 
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
@@ -154,7 +154,6 @@ class MessageActivity : AppCompatActivity() {
     private fun setupRecycler() {
         drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        listOfDrawables = ArrayList<DrawableInfo>()
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
         listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
