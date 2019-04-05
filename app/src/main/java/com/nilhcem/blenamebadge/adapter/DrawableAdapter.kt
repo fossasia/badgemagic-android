@@ -43,7 +43,11 @@ class DrawableAdapter(private val context: Context, private val list: List<Drawa
 
     fun getSelectedItem(): DrawableInfo? {
         return if (selectedPosition == -1) null else list[selectedPosition]
-    }    
+    }
+
+    fun getDefaultItem(): DrawableInfo {
+        return DrawableInfo(context.resources.getDrawable(R.drawable.mix2))
+    }
 
     override fun getItemCount(): Int {
         return list.size
