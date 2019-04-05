@@ -161,7 +161,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[i].list[(animationValue + j + checkListLength).rem(checkListLength)]) {
+                                checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -174,7 +174,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j]) {
+                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -187,7 +187,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j]) {
+                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -199,7 +199,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[i].list[j]) {
+                                checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -264,11 +264,9 @@ class PreviewBadge : View {
         }
 
         val diff = (badgeWidth - (oneByte * allHex.size)) / 2
-        if (diff < 0) {
-            for (i in 0 until badgeHeight) {
-                for (j in (0 until badgeWidth / 2)) {
-                    checkList[i].list.add(false)
-                }
+        for (i in 0 until badgeHeight) {
+            for (j in (0 until badgeWidth / 2)) {
+                checkList[i].list.add(false)
             }
         }
         if (oneByte * allHex.size < badgeWidth) {
@@ -291,11 +289,9 @@ class PreviewBadge : View {
                 checkList[i].list.add(false)
             }
         }
-        if (diff < 0) {
-            for (i in 0 until badgeHeight) {
-                for (j in 0 until badgeWidth / 2) {
-                    checkList[i].list.add(false)
-                }
+        for (i in 0 until badgeHeight) {
+            for (j in 0 until badgeWidth / 2) {
+                checkList[i].list.add(false)
             }
         }
         invalidate()
