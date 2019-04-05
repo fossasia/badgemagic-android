@@ -112,9 +112,13 @@ class MessageActivity : AppCompatActivity() {
         }
 
         previewButton.setOnClickListener {
+            val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
+            if (!valid) {
+                Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
+            }
             if (!content.text.isEmpty()) {
                 previewBadge.setValue(
-                        presenter.convertToPreview(content.text.toString()),
+                        textToSend,
                         marquee.isChecked,
                         flash.isChecked,
                         Speed.values()[speed.selectedItemPosition],
