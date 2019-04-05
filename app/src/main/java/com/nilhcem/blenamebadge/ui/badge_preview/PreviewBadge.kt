@@ -13,7 +13,6 @@ import android.util.AttributeSet
 import android.view.View
 
 import java.math.BigInteger
-import java.util.ArrayList
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
 import com.nilhcem.blenamebadge.R
@@ -25,7 +24,7 @@ class PreviewBadge : View {
     private var ledEnabled: Drawable
 
     private lateinit var bgBounds: RectF
-    private var cells = ArrayList<Cell>()
+    private var cells = mutableListOf<Cell>()
 
     private var badgeHeight = 11
     private var badgeWidth = 44
@@ -39,11 +38,11 @@ class PreviewBadge : View {
 
     private var animationIndex: Int = 0
 
-    private var checkList: ArrayList<CheckList> = ArrayList()
+    private var checkList = mutableListOf<CheckList>()
     private var valueAnimator: ValueAnimator? = null
 
     private fun resetCheckList() {
-        checkList = ArrayList()
+        checkList = mutableListOf()
         for (i in 0 until badgeHeight) {
             checkList.add(CheckList())
         }
@@ -93,7 +92,7 @@ class PreviewBadge : View {
 
         val offsetXToAdd: Int = ((((right - offset).toFloat() - (left + offset).toFloat()) - (singleCell * badgeWidth)) / 2).toInt() + 1
 
-        cells = ArrayList()
+        cells = mutableListOf()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
@@ -171,7 +170,7 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.UP -> {
-                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
@@ -184,7 +183,7 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.DOWN -> {
-                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
@@ -246,7 +245,7 @@ class PreviewBadge : View {
         }
     }
 
-    fun setValue(allHex: ArrayList<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
+    fun setValue(allHex: List<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
         resetCheckList()
         ifMarquee = ifMar
         ifFlash = ifFla
@@ -300,7 +299,7 @@ class PreviewBadge : View {
             }
         }
         invalidate()
-        configValueAnimation(checkList[0].list.size*200)
+        configValueAnimation(checkList[0].list.size * 200)
     }
 
     companion object {
