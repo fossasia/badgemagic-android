@@ -10,23 +10,34 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
+import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import com.nilhcem.blenamebadge.R
+import com.nilhcem.blenamebadge.adapter.DrawableAdapter
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
+import com.nilhcem.blenamebadge.data.DrawableInfo
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
-import java.util.*
+import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
+import com.nilhcem.blenamebadge.util.Converters
+import java.util.Timer
+import java.util.TimerTask
 
 class MessageActivity : AppCompatActivity() {
 
@@ -42,86 +53,116 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
+    private val previewButton: Button by bindView(R.id.preview_button)
+    private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
+    private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
-    private val tvDeviceName: TextView by bindView(R.id.tvDeviceName)
+
+    private lateinit var drawableRecyclerAdapter: DrawableAdapter
+
+    private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
     private val presenter by lazy { MessagePresenter() }
-
-    private var requestBleSendFlag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.message_activity)
 
-        val spinnerItem = android.R.layout.simple_spinner_dropdown_item
+        val spinnerItem = R.layout.spinner_item
         speed.adapter = ArrayAdapter<String>(this, spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            if (checkBTStatus()) {
-                sendMessage()
+            val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
+                    as InputMethodManager
+            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+
+            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                // Easter egg
+                send.isEnabled = false
+                val buttonTimer = Timer()
+                buttonTimer.schedule(object : TimerTask() {
+                    override fun run() {
+                        runOnUiThread {
+                            send.isEnabled = true
+                            showLoaderView(false)
+                        }
+                    }
+                }, SCAN_TIMEOUT_MS)
+                if (content.text.isEmpty()) {
+                    presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
+                    showLoaderView(true)
+                } else {
+                    presenter.sendMessage(this, convertToDeviceDataModel())
+                    showLoaderView(true)
+                }
             } else {
-                requestBleSend()
+                prepareForScan()
             }
         }
+
+        flash.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && marquee.isChecked)
+                marquee.toggle()
+        }
+
+        marquee.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && flash.isChecked)
+                flash.toggle()
+        }
+
+        previewButton.setOnClickListener {
+            previewBadge.setValue(
+                    presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " "),
+                    marquee.isChecked,
+                    flash.isChecked,
+                    Speed.values()[speed.selectedItemPosition],
+                    Mode.values()[mode.selectedItemPosition]
+            )
+        }
+
+        previewButtonDrawable.setOnClickListener {
+            if (drawableRecyclerAdapter.getSelectedItem() != -1)
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>,
+                        marquee.isChecked,
+                        flash.isChecked,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.values()[mode.selectedItemPosition]
+                )
+            else
+                Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
+        }
+
+        setupRecycler()
+
         prepareForScan()
     }
 
+    private fun setupRecycler() {
+        drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-    private fun requestBleSend() {
-        requestBleSendFlag = true
-        val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-    }
+        val listOfDrawables = ArrayList<DrawableInfo>()
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.apple)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.clock)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.dustbin)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.face)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.heart)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.home)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mail)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mushroom)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mustache)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.oneup)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.pause)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.spider)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.sun)))
+        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.thumbs_up)))
 
-    private fun sendMessage() {
-        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
-        inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
-        // Easter egg
-        send.isClickable = false
-        val buttonTimer = Timer()
-        buttonTimer.schedule(object : TimerTask() {
-            override fun run() {
-                runOnUiThread { send.isClickable = true }
-            }
-        }, SCAN_TIMEOUT_MS)
-        showLoaderView(true)
-        if (content.text.isEmpty()) {
-            presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2), sendStatusCallback)
-        } else {
-            presenter.sendMessage(this, convertToDeviceDataModel(), sendStatusCallback)
-        }
-    }
-
-    private val sendStatusCallback: (Boolean, String) -> Unit = { status, message ->
-        when {
-            status && message.contains("Device") -> {
-                tvDeviceName.visibility = View.VISIBLE
-                tvDeviceName.text = message
-            }
-            status -> {
-                showSnackMessage(send, message)
-                Handler().postDelayed({ tvDeviceName.visibility = View.GONE }, 500)
-            }
-            else -> showSnackMessage(send, message)
-        }
-    }
-
-    private fun showSnackMessage(view: View, message: String) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showLoaderView(status: Boolean) {
-        if (status) {
-            sendByteLoader.visibility = View.VISIBLE
-            send.isEnabled = false
-            send.visibility = View.GONE
-        } else {
-            sendByteLoader.visibility = View.GONE
-            send.isEnabled = true
-            send.visibility = View.VISIBLE
-        }
+        drawableRecyclerAdapter = DrawableAdapter(this, listOfDrawables)
+        drawableRecyclerView.adapter = drawableRecyclerAdapter
     }
 
     override fun onResume() {
@@ -142,10 +183,6 @@ class MessageActivity : AppCompatActivity() {
                 return
             } else if (resultCode == Activity.RESULT_OK) {
                 prepareForScan()
-                if (requestBleSendFlag) {
-                    requestBleSendFlag = false
-                    sendMessage()
-                }
                 return
             }
         }
@@ -164,6 +201,20 @@ class MessageActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoaderView(status: Boolean) {
+        runOnUiThread {
+            if (status) {
+                sendByteLoader.visibility = View.VISIBLE
+                send.isEnabled = false
+                send.visibility = View.GONE
+            } else {
+                sendByteLoader.visibility = View.GONE
+                send.isEnabled = true
+                send.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun showAlertDialog(bluetoothDialog: Boolean) {
         val dialogMessage = if (bluetoothDialog) getString(R.string.enable_bluetooth) else getString(R.string.grant_location_permission)
         val builder = AlertDialog.Builder(this)
@@ -172,6 +223,9 @@ class MessageActivity : AppCompatActivity() {
         builder.setMessage(dialogMessage)
         builder.setPositiveButton("OK") { _, _ ->
             prepareForScan()
+        }
+        builder.setNegativeButton("EXIT") { _, _ ->
+            finish()
         }
         builder.create().show()
     }
@@ -183,7 +237,9 @@ class MessageActivity : AppCompatActivity() {
     private fun prepareForScan() {
         if (isBleSupported()) {
             // Ensures Bluetooth is enabled on the device
-            if (checkBTStatus()) {
+            val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+            val btAdapter = btManager.adapter
+            if (btAdapter.isEnabled) {
                 // Prompt for runtime permission
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     Timber.i { "Coarse permission granted" }
@@ -198,12 +254,6 @@ class MessageActivity : AppCompatActivity() {
             Toast.makeText(this, "BLE is not supported", Toast.LENGTH_LONG).show()
             finish()
         }
-    }
-
-    private fun checkBTStatus(): Boolean {
-        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        return btAdapter.isEnabled
     }
 
     private fun isBleSupported(): Boolean {
