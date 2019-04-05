@@ -14,12 +14,22 @@ import android.view.View
 
 import java.math.BigInteger
 import android.animation.ValueAnimator
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.animation.LinearInterpolator
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 
+private const val BUNDLE_STATE = "superState"
+private const val BUNDLE_FLASH = "ifFlash"
+private const val BUNDLE_MARQUEE = "ifMarquee"
+private const val BUNDLE_SPEED = "badgeSpeed"
+private const val BUNDLE_MODE = "badgeMode"
+private const val BUNDLE_CHECKLIST = "checkList"
+
 class PreviewBadge : View {
+
     private var ledDisabled: Drawable
     private var ledEnabled: Drawable
 
@@ -38,11 +48,11 @@ class PreviewBadge : View {
 
     private var animationIndex: Int = 0
 
-    private var checkList = mutableListOf<CheckList>()
+    private var checkList = ArrayList<CheckList>()
     private var valueAnimator: ValueAnimator? = null
 
     private fun resetCheckList() {
-        checkList = mutableListOf()
+        checkList = ArrayList()
         for (i in 0 until badgeHeight) {
             checkList.add(CheckList())
         }
@@ -80,6 +90,30 @@ class PreviewBadge : View {
         setMeasuredDimension(
                 View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
+    }
+
+    public override fun onSaveInstanceState(): Parcelable? {
+        val bundle = Bundle()
+        bundle.putParcelable(BUNDLE_STATE, super.onSaveInstanceState())
+        bundle.putBoolean(BUNDLE_FLASH, this.ifFlash)
+        bundle.putBoolean(BUNDLE_MARQUEE, this.ifMarquee)
+        bundle.putInt(BUNDLE_SPEED, this.badgeSpeed)
+        bundle.putInt(BUNDLE_MODE, this.badgeMode.ordinal)
+        bundle.putParcelableArrayList(BUNDLE_CHECKLIST, this.checkList)
+        return bundle
+    }
+
+    public override fun onRestoreInstanceState(state: Parcelable) {
+        var currentState = state
+        if (currentState is Bundle) {
+            this.ifFlash = currentState.getBoolean(BUNDLE_FLASH)
+            this.ifMarquee = currentState.getBoolean(BUNDLE_FLASH)
+            this.badgeSpeed = currentState.getInt(BUNDLE_SPEED)
+            this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
+            this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
+            currentState = currentState.getParcelable(BUNDLE_STATE) as Parcelable
+        }
+        super.onRestoreInstanceState(currentState)
     }
 
     @SuppressLint("DrawAllocation")
