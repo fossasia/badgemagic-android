@@ -13,7 +13,6 @@ import android.util.AttributeSet
 import android.view.View
 
 import java.math.BigInteger
-import java.util.ArrayList
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
 import com.nilhcem.blenamebadge.R
@@ -25,7 +24,7 @@ class PreviewBadge : View {
     private var ledEnabled: Drawable
 
     private lateinit var bgBounds: RectF
-    private var cells = ArrayList<Cell>()
+    private var cells = mutableListOf<Cell>()
 
     private var badgeHeight = 11
     private var badgeWidth = 44
@@ -39,11 +38,11 @@ class PreviewBadge : View {
 
     private var animationIndex: Int = 0
 
-    private var checkList: ArrayList<CheckList> = ArrayList()
+    private var checkList = mutableListOf<CheckList>()
     private var valueAnimator: ValueAnimator? = null
 
     private fun resetCheckList() {
-        checkList = ArrayList()
+        checkList = mutableListOf()
         for (i in 0 until badgeHeight) {
             checkList.add(CheckList())
         }
@@ -71,27 +70,16 @@ class PreviewBadge : View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val ratioHeight = 1
         val ratioWidth = 3
 
         val originalWidth = View.MeasureSpec.getSize(widthMeasureSpec)
-        val originalHeight = View.MeasureSpec.getSize(heightMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
-        val finalWidth: Int
-        val finalHeight: Int
-
-        if (calculatedHeight > originalHeight) {
-            finalWidth = originalHeight * ratioHeight / ratioWidth
-            finalHeight = originalHeight
-        } else {
-            finalWidth = originalWidth
-            finalHeight = calculatedHeight
-        }
-
-        super.onMeasure(
-                View.MeasureSpec.makeMeasureSpec(finalWidth, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(finalHeight, View.MeasureSpec.EXACTLY))
+        setMeasuredDimension(
+                View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
     }
 
     @SuppressLint("DrawAllocation")
@@ -102,19 +90,21 @@ class PreviewBadge : View {
 
         val singleCell = (right - left - (offset * 3)) / badgeWidth
 
-        cells = ArrayList()
+        val offsetXToAdd: Int = ((((right - offset).toFloat() - (left + offset).toFloat()) - (singleCell * badgeWidth)) / 2).toInt() + 1
+
+        cells = mutableListOf()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                        left + (offset * 2) + j * singleCell,
-                        top + (offset * 2) + i * singleCell,
-                        left + (offset * 2) + j * singleCell + singleCell,
-                        top + (offset * 2) + i * singleCell + singleCell
+                        left + (offsetXToAdd * 2) + j * singleCell,
+                        top + (offsetXToAdd * 2) + i * singleCell,
+                        left + (offsetXToAdd * 2) + j * singleCell + singleCell,
+                        top + (offsetXToAdd * 2) + i * singleCell + singleCell
                 ))
             }
         }
-        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offset * 3)).toFloat())
+        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
     }
 
     @SuppressLint("DrawAllocation")
@@ -131,147 +121,99 @@ class PreviewBadge : View {
         // Draw Cells
         for (i in 0 until badgeHeight) {
             for (j in 0 until badgeWidth) {
+                var flashLEDOn = true
                 if (ifFlash) {
-                    val aI: Int = animationIndex % 800
-                    val valid: Boolean = aI > 400
-
-                    if (valid && i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                        ledEnabled.bounds = cells[i].list[j]
-                        ledEnabled.draw(canvas)
-                    } else {
-                        ledDisabled.bounds = cells[i].list[j]
-                        ledDisabled.draw(canvas)
-                    }
-                } else if (ifMarquee) {
-                    val aI: Int = animationIndex.div(200)
-                    val valid: Boolean = if (i == 0 || j == 0 || i == badgeHeight - 1 || j == badgeWidth - 1) {
+                    val aIFlash = animationIndex % 800
+                    flashLEDOn = aIFlash > 400
+                }
+                var validMarquee = false
+                if (ifMarquee) {
+                    val aIMarquee = animationIndex.div(200)
+                    validMarquee = if (i == 0 || j == 0 || i == badgeHeight - 1 || j == badgeWidth - 1) {
                         if ((i == 0 || j == badgeWidth - 1) && !(i == badgeHeight - 1 && j == badgeWidth - 1)) {
-                            (i + j) % 4 == (aI % 4)
+                            (i + j) % 4 == (aIMarquee % 4)
                         } else {
-                            (i + j - 1) % 4 == (3 - (aI % 4))
+                            (i + j - 1) % 4 == (3 - (aIMarquee % 4))
                         }
                     } else {
                         false
                     }
+                }
 
-                    when (badgeMode) {
-                        Mode.LEFT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && j >= animationValue && checkList[i].list[j - animationValue]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.RIGHT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && j <= (43 - animationValue) && checkList[i].list[(animationValue.plus(j))]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.UP -> {
-                            val animationValue = animationIndex.div(800)
-                            if (!(!valid && !(i < checkList.size && j < checkList[i].list.size && i >= animationValue && checkList[i - animationValue].list[j]))) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.DOWN -> {
-                            val animationValue = animationIndex.div(800)
-                            if (valid || i < checkList.size && j < checkList[i].list.size && i <= (10 - animationValue) && checkList[animationValue.plus(i)].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.FIXED -> {
-                            if (valid || i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.SNOWFLAKE -> {
-                        }
-                        Mode.PICTURE -> {
-                        }
-                        Mode.ANIMATION -> {
-                        }
-                        Mode.LASER -> {
+                val checkListLength = checkList[i].list.size
+                val checkListHeight = checkList.size
+                when (badgeMode) {
+                    Mode.LEFT -> {
+                        val animationValue = animationIndex.div(200)
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
                     }
-                } else {
-                    when (badgeMode) {
-                        Mode.LEFT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (i < checkList.size && j < checkList[i].list.size && j >= animationValue && checkList[i].list[j - animationValue]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    Mode.RIGHT -> {
+                        val animationValue = animationIndex.div(200)
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[i].list[(animationValue + j + checkListLength).rem(checkListLength)]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.RIGHT -> {
-                            val animationValue = animationIndex.div(200)
-                            if (i < checkList.size && j < checkList[i].list.size && j <= (43 - animationValue) && checkList[i].list[(animationValue.plus(j))]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.UP -> {
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.UP -> {
-                            val animationValue = animationIndex.div(800)
-                            if (i < checkList.size && j < checkList[i].list.size && i >= animationValue && checkList[i - animationValue].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.DOWN -> {
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.DOWN -> {
-                            val animationValue = animationIndex.div(800)
-                            if (i < checkList.size && j < checkList[i].list.size && i <= (10 - animationValue) && checkList[animationValue.plus(i)].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
+                    }
+                    Mode.FIXED -> {
+                        if (validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkList[i].list[j]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
                         }
-                        Mode.FIXED -> {
-                            if (i < checkList.size && j < checkList[i].list.size && checkList[i].list[j]) {
-                                ledEnabled.bounds = cells[i].list[j]
-                                ledEnabled.draw(canvas)
-                            } else {
-                                ledDisabled.bounds = cells[i].list[j]
-                                ledDisabled.draw(canvas)
-                            }
-                        }
-                        Mode.SNOWFLAKE -> {
-                        }
-                        Mode.PICTURE -> {
-                        }
-                        Mode.ANIMATION -> {
-                        }
-                        Mode.LASER -> {
-                        }
+                    }
+                    Mode.SNOWFLAKE -> {
+                    }
+                    Mode.PICTURE -> {
+                    }
+                    Mode.ANIMATION -> {
+                    }
+                    Mode.LASER -> {
                     }
                 }
             }
@@ -290,12 +232,12 @@ class PreviewBadge : View {
         configValueAnimation()
     }
 
-    private fun configValueAnimation() {
-        valueAnimator = ValueAnimator.ofInt(8799, 0).apply {
+    private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
+        valueAnimator = ValueAnimator.ofInt(valueAnimatorNumber - 1, 0).apply {
             addUpdateListener {
                 animationIndex = it.animatedValue as Int
             }
-            duration = 8800L.div(badgeSpeed)
+            duration = valueAnimatorNumber.toLong().div(badgeSpeed)
             repeatMode = ValueAnimator.RESTART
             repeatCount = ValueAnimator.INFINITE
             interpolator = LinearInterpolator()
@@ -321,20 +263,15 @@ class PreviewBadge : View {
             Speed.EIGHT -> 8
         }
 
-        configValueAnimation()
-
-        val diff: Int
-        if (allHex.size > 0) {
-            diff = ((badgeWidth - (oneByte * allHex.size)) / 2)
-            if (oneByte * allHex.size < badgeWidth) {
-                for (i in 0 until badgeHeight) {
-                    for (j in 0 until diff) {
-                        checkList[i].list.add(false)
-                    }
+        val diff = (badgeWidth - (oneByte * allHex.size)) / 2
+        if (diff < 0) {
+            for (i in 0 until badgeHeight) {
+                for (j in (0 until badgeWidth / 2)) {
+                    checkList[i].list.add(false)
                 }
             }
-        } else {
-            diff = 22
+        }
+        if (oneByte * allHex.size < badgeWidth) {
             for (i in 0 until badgeHeight) {
                 for (j in 0 until diff) {
                     checkList[i].list.add(false)
@@ -354,7 +291,15 @@ class PreviewBadge : View {
                 checkList[i].list.add(false)
             }
         }
+        if (diff < 0) {
+            for (i in 0 until badgeHeight) {
+                for (j in 0 until badgeWidth / 2) {
+                    checkList[i].list.add(false)
+                }
+            }
+        }
         invalidate()
+        configValueAnimation(checkList[0].list.size * 200)
     }
 
     companion object {

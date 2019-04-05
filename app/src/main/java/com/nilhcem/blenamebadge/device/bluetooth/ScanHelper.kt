@@ -43,6 +43,7 @@ class ScanHelper {
     }
 
     fun startLeScan(onDeviceFoundCallback: ((BluetoothDevice?) -> Unit)) {
+        if (!isScanning) return
         this.onDeviceFoundCallback = onDeviceFoundCallback
         isScanning = true
 

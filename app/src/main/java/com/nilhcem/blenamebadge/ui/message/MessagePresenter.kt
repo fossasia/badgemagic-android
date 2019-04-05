@@ -32,8 +32,8 @@ class MessagePresenter {
         gattClient.stopClient()
     }
 
-    fun convertToPreview(data: String): ArrayList<String> {
-        val list: ArrayList<String> = ArrayList()
+    fun convertToPreview(data: String): List<String> {
+        val list = mutableListOf<String>()
         for (letter in data) {
             list.add(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
         }
