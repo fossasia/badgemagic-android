@@ -1,4 +1,4 @@
-## Commit Style Guidelines for Susi Android
+## Commit Style Guidelines for Badge Magic Android
 
 ### Message Structure
 Commit messages consist of three distinct parts, separated by a blank line: the title, an optional body/content, and an optional footer/metadata. The layout looks like this:
