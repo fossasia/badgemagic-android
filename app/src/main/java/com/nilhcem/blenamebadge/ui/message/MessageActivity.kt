@@ -101,16 +101,6 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
-        flash.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked && marquee.isChecked)
-                marquee.toggle()
-        }
-
-        marquee.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked && flash.isChecked)
-                flash.toggle()
-        }
-
         previewButton.setOnClickListener {
             val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
             if (!valid) {
