@@ -1,7 +1,7 @@
 package com.nilhcem.blenamebadge.ui.badge_preview
 
-import java.util.ArrayList
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-internal class CheckList {
-    var list: ArrayList<Boolean> = ArrayList()
-}
+@Parcelize
+data class CheckList(var list: MutableList<Boolean> = mutableListOf()) : Parcelable

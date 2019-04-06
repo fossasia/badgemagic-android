@@ -26,4 +26,5 @@
     <string name="no_device_found">No device found. Please try again.</string>
     <string name="select_drawable_text">Select Drawable:</string>
     <string name="select_drawable">Please select Drawable to be previewed</string>
+    <string name="character_not_found">Some of the character(s) entered cannot be displayed.</string>
 </resources>

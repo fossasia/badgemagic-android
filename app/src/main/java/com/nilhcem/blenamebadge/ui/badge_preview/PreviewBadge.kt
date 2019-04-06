@@ -13,19 +13,28 @@ import android.util.AttributeSet
 import android.view.View
 
 import java.math.BigInteger
-import java.util.ArrayList
 import android.animation.ValueAnimator
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.animation.LinearInterpolator
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 
+private const val BUNDLE_STATE = "superState"
+private const val BUNDLE_FLASH = "ifFlash"
+private const val BUNDLE_MARQUEE = "ifMarquee"
+private const val BUNDLE_SPEED = "badgeSpeed"
+private const val BUNDLE_MODE = "badgeMode"
+private const val BUNDLE_CHECKLIST = "checkList"
+
 class PreviewBadge : View {
+
     private var ledDisabled: Drawable
     private var ledEnabled: Drawable
 
     private lateinit var bgBounds: RectF
-    private var cells = ArrayList<Cell>()
+    private var cells = mutableListOf<Cell>()
 
     private var badgeHeight = 11
     private var badgeWidth = 44
@@ -39,7 +48,7 @@ class PreviewBadge : View {
 
     private var animationIndex: Int = 0
 
-    private var checkList: ArrayList<CheckList> = ArrayList()
+    private var checkList = ArrayList<CheckList>()
     private var valueAnimator: ValueAnimator? = null
 
     private fun resetCheckList() {
@@ -83,6 +92,30 @@ class PreviewBadge : View {
                 View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
     }
 
+    public override fun onSaveInstanceState(): Parcelable? {
+        val bundle = Bundle()
+        bundle.putParcelable(BUNDLE_STATE, super.onSaveInstanceState())
+        bundle.putBoolean(BUNDLE_FLASH, this.ifFlash)
+        bundle.putBoolean(BUNDLE_MARQUEE, this.ifMarquee)
+        bundle.putInt(BUNDLE_SPEED, this.badgeSpeed)
+        bundle.putInt(BUNDLE_MODE, this.badgeMode.ordinal)
+        bundle.putParcelableArrayList(BUNDLE_CHECKLIST, this.checkList)
+        return bundle
+    }
+
+    public override fun onRestoreInstanceState(state: Parcelable) {
+        var currentState = state
+        if (currentState is Bundle) {
+            this.ifFlash = currentState.getBoolean(BUNDLE_FLASH)
+            this.ifMarquee = currentState.getBoolean(BUNDLE_MARQUEE)
+            this.badgeSpeed = currentState.getInt(BUNDLE_SPEED)
+            this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
+            this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
+            currentState = currentState.getParcelable(BUNDLE_STATE) as Parcelable
+        }
+        super.onRestoreInstanceState(currentState)
+    }
+
     @SuppressLint("DrawAllocation")
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
@@ -93,7 +126,7 @@ class PreviewBadge : View {
 
         val offsetXToAdd: Int = ((((right - offset).toFloat() - (left + offset).toFloat()) - (singleCell * badgeWidth)) / 2).toInt() + 1
 
-        cells = ArrayList()
+        cells = mutableListOf()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
@@ -162,7 +195,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[i].list[(animationValue + j + checkListLength).rem(checkListLength)]) {
+                                checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -171,11 +204,11 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.UP -> {
-                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j]) {
+                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -184,11 +217,11 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.DOWN -> {
-                        val animationValue = animationIndex.div(((checkList[0].list.size*200).toDouble() / badgeHeight).toInt())
+                        val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j]) {
+                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -200,7 +233,7 @@ class PreviewBadge : View {
                         if (validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                checkList[i].list[j]) {
+                                checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -246,7 +279,7 @@ class PreviewBadge : View {
         }
     }
 
-    fun setValue(allHex: ArrayList<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
+    fun setValue(allHex: List<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
         resetCheckList()
         ifMarquee = ifMar
         ifFlash = ifFla
@@ -265,11 +298,9 @@ class PreviewBadge : View {
         }
 
         val diff = (badgeWidth - (oneByte * allHex.size)) / 2
-        if (diff < 0) {
-            for (i in 0 until badgeHeight) {
-                for (j in (0 until badgeWidth / 2)) {
-                    checkList[i].list.add(false)
-                }
+        for (i in 0 until badgeHeight) {
+            for (j in (0 until badgeWidth / 2)) {
+                checkList[i].list.add(false)
             }
         }
         if (oneByte * allHex.size < badgeWidth) {
@@ -292,15 +323,13 @@ class PreviewBadge : View {
                 checkList[i].list.add(false)
             }
         }
-        if (diff < 0) {
-            for (i in 0 until badgeHeight) {
-                for (j in 0 until badgeWidth / 2) {
-                    checkList[i].list.add(false)
-                }
+        for (i in 0 until badgeHeight) {
+            for (j in 0 until badgeWidth / 2) {
+                checkList[i].list.add(false)
             }
         }
         invalidate()
-        configValueAnimation(checkList[0].list.size*200)
+        configValueAnimation(checkList[0].list.size * 200)
     }
 
     companion object {

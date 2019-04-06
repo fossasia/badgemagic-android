@@ -112,26 +112,47 @@ class MessageActivity : AppCompatActivity() {
         }
 
         previewButton.setOnClickListener {
-            previewBadge.setValue(
-                    presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " "),
-                    marquee.isChecked,
-                    flash.isChecked,
-                    Speed.values()[speed.selectedItemPosition],
-                    Mode.values()[mode.selectedItemPosition]
-            )
+            val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
+            if (!valid) {
+                Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
+            }
+            if (!content.text.isEmpty()) {
+                previewBadge.setValue(
+                        textToSend,
+                        marquee.isChecked,
+                        flash.isChecked,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.values()[mode.selectedItemPosition]
+                )
+            } else {
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
+                        false,
+                        false,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.FIXED
+                )
+            }
         }
 
         previewButtonDrawable.setOnClickListener {
-            if (drawableRecyclerAdapter.getSelectedItem() != -1)
+            val selectedItem = drawableRecyclerAdapter.getSelectedItem()
+            if (selectedItem != null)
                 previewBadge.setValue(
-                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getSelectedItem() as DrawableInfo).image) as java.util.ArrayList<String>,
+                        Converters.convertDrawableToLEDHex(selectedItem.image),
                         marquee.isChecked,
                         flash.isChecked,
                         Speed.values()[speed.selectedItemPosition],
                         Mode.values()[mode.selectedItemPosition]
                 )
             else
-                Toast.makeText(this, getString(R.string.select_drawable), Toast.LENGTH_LONG).show()
+                previewBadge.setValue(
+                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
+                        false,
+                        false,
+                        Speed.values()[speed.selectedItemPosition],
+                        Mode.FIXED
+                )
         }
 
         setupRecycler()
@@ -142,24 +163,25 @@ class MessageActivity : AppCompatActivity() {
     private fun setupRecycler() {
         drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val listOfDrawables = ArrayList<DrawableInfo>()
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.apple)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.clock)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.dustbin)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.face)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.heart)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.home)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.invader)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mail)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix1)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mix2)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mushroom)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.mustache)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.oneup)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.pause)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.spider)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.sun)))
-        listOfDrawables.add(DrawableInfo(resources.getDrawable(R.drawable.thumbs_up)))
+        val listOfDrawables = listOf(
+                DrawableInfo(resources.getDrawable(R.drawable.apple)),
+                DrawableInfo(resources.getDrawable(R.drawable.clock)),
+                DrawableInfo(resources.getDrawable(R.drawable.dustbin)),
+                DrawableInfo(resources.getDrawable(R.drawable.face)),
+                DrawableInfo(resources.getDrawable(R.drawable.heart)),
+                DrawableInfo(resources.getDrawable(R.drawable.home)),
+                DrawableInfo(resources.getDrawable(R.drawable.invader)),
+                DrawableInfo(resources.getDrawable(R.drawable.mail)),
+                DrawableInfo(resources.getDrawable(R.drawable.mix1)),
+                DrawableInfo(resources.getDrawable(R.drawable.mix2)),
+                DrawableInfo(resources.getDrawable(R.drawable.mushroom)),
+                DrawableInfo(resources.getDrawable(R.drawable.mustache)),
+                DrawableInfo(resources.getDrawable(R.drawable.oneup)),
+                DrawableInfo(resources.getDrawable(R.drawable.pause)),
+                DrawableInfo(resources.getDrawable(R.drawable.spider)),
+                DrawableInfo(resources.getDrawable(R.drawable.sun)),
+                DrawableInfo(resources.getDrawable(R.drawable.thumbs_up))
+        )
 
         drawableRecyclerAdapter = DrawableAdapter(this, listOfDrawables)
         drawableRecyclerView.adapter = drawableRecyclerAdapter

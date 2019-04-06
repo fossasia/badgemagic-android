@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.support.annotation.DrawableRes
 import android.graphics.drawable.Drawable
 import java.math.BigInteger
-import java.util.ArrayList
 
 object Converters {
     fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int): List<String> {
@@ -18,12 +17,11 @@ object Converters {
 
         val height = bm.height
         val width = bm.width
-        val blackValue = -16777216
 
         val image = Array(height) { IntArray(width) }
         for (i in 0 until height) {
             for (j in 0 until width) {
-                image[i][j] = if (bm.getPixel(j, i) == blackValue) 1 else 0
+                image[i][j] = if (bm.getPixel(j, i) != 0) 1 else 0
             }
         }
         var finalSum = 0
@@ -64,9 +62,9 @@ object Converters {
         val rOff = Math.floor((diff.toFloat() / 2).toDouble()).toInt()
         val lOff = Math.ceil((diff.toFloat() / 2).toDouble()).toInt()
 
-        val list = ArrayList<ArrayList<Int>>()
+        val list: MutableList<MutableList<Int>> = mutableListOf()
         for (i in 0 until height) {
-            val row = ArrayList<Int>()
+            val row = mutableListOf<Int>()
             for (j in 0 until rOff) {
                 row.add(0)
             }
@@ -83,7 +81,7 @@ object Converters {
                 list[i].add(0)
             }
         }
-        val allHexs = ArrayList<String>()
+        val allHexs = mutableListOf<String>()
         for (i in 0 until list[0].size / 8) {
             val lineHex = StringBuilder()
             for (k in 0 until height) {

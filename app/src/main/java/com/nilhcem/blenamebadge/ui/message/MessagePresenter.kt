@@ -32,12 +32,17 @@ class MessagePresenter {
         gattClient.stopClient()
     }
 
-    fun convertToPreview(data: String): ArrayList<String> {
-        val list: ArrayList<String> = ArrayList()
+    fun convertToPreview(data: String): Pair<Boolean, List<String>> {
+        var valid = true
+        val list = mutableListOf<String>()
         for (letter in data) {
-            list.add(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+            if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
+                list.add(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+            } else {
+                valid = false
+            }
         }
-        return list
+        return Pair(valid, list)
     }
 
     private fun sendBytes(context: Context, byteData: List<ByteArray>) {
