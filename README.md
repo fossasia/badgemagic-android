@@ -39,7 +39,7 @@ Here is a screenshot of the current image.
 
 ### For first time Contributor
 
-First time contributors can read [ContributionHelp.md](docs/ContributionHelp.md) file for help regarding creating issues and sending pull requests.
+First time contributors can read [CONTRIBUTING.md](CONTRIBUTING.md) file for help regarding creating issues and sending pull requests.
 
 ### Branch Policy
 
