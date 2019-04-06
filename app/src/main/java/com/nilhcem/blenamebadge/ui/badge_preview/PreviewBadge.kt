@@ -107,7 +107,7 @@ class PreviewBadge : View {
         var currentState = state
         if (currentState is Bundle) {
             this.ifFlash = currentState.getBoolean(BUNDLE_FLASH)
-            this.ifMarquee = currentState.getBoolean(BUNDLE_FLASH)
+            this.ifMarquee = currentState.getBoolean(BUNDLE_MARQUEE)
             this.badgeSpeed = currentState.getInt(BUNDLE_SPEED)
             this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
             this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
