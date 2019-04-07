@@ -236,8 +236,8 @@ class MessageActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { _, _ ->
             prepareForScan()
         }
-        builder.setNegativeButton("EXIT") { _, _ ->
-            finish()
+        builder.setNegativeButton("CANCEL") { _, _ ->
+            Toast.makeText(this, "Enable bluetooth to use send feature", Toast.LENGTH_SHORT).show()
         }
         builder.create().show()
     }
