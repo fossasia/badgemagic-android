@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/textFragment"
+        android:icon="@drawable/ic_bottom_bar_text"
+        android:title="@string/text_fragment" />
+
+    <item
+        android:id="@+id/bitmapFragment"
+        android:icon="@drawable/ic_bottom_bar_bitmap"
+        android:title="@string/bitmap_fragment" />
+
+</menu>

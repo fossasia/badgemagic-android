@@ -2,7 +2,7 @@ package com.nilhcem.blenamebadge.util
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.graphics.drawable.Drawable
 import java.math.BigInteger
 
