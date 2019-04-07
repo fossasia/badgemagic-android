@@ -2,6 +2,8 @@ package com.nilhcem.blenamebadge.ui.message
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.Toast
+import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
@@ -30,12 +32,26 @@ class MessagePresenter {
         gattClient.stopClient()
     }
 
+    fun convertToPreview(data: String): Pair<Boolean, List<String>> {
+        var valid = true
+        val list = mutableListOf<String>()
+        for (letter in data) {
+            if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
+                list.add(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+            } else {
+                valid = false
+            }
+        }
+        return Pair(valid, list)
+    }
+
     private fun sendBytes(context: Context, byteData: List<ByteArray>) {
         Timber.i { "ByteData: ${byteData.map { ByteArrayUtils.byteArrayToHexString(it) }}" }
 
         scanHelper.startLeScan { device ->
             if (device == null) {
                 Timber.e { "Scan could not find any device" }
+                Toast.makeText(context, R.string.no_device_found, Toast.LENGTH_SHORT).show()
             } else {
                 Timber.e { "Device found: $device" }
 
@@ -45,6 +61,8 @@ class MessagePresenter {
                             Timber.i { "Data sent" }
                             gattClient.stopClient()
                         }
+                    } else {
+                        Toast.makeText(context, R.string.no_device_found, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

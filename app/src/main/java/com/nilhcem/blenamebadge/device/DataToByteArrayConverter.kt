@@ -14,7 +14,7 @@ object DataToByteArrayConverter {
     private const val PACKET_START = "77616E670000"
     private const val PACKET_BYTE_SIZE = 16
 
-    private val CHAR_CODES = mapOf(
+    public val CHAR_CODES = mapOf(
             '0' to "007CC6CEDEF6E6C6C67C00",
             '1' to "0018387818181818187E00",
             '2' to "007CC6060C183060C6FE00",
