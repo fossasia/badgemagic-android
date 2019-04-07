@@ -11,51 +11,56 @@ import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.data.DrawableInfo
 
 class DrawableAdapter(private val context: Context, private val list: List<DrawableInfo>) : RecyclerView.Adapter<DrawableAdapter.DrawableItemHolder>() {
-    var selectedPosition: Int = -1
+    private var selectedPosition: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawableItemHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.recycler_item, parent, false)
         return DrawableItemHolder(v)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
+    override fun getItemViewType(position: Int) = position
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
     override fun onBindViewHolder(holder: DrawableItemHolder, position: Int) {
-        val current = list[position]
-        holder.image.setImageDrawable(current.image)
-        holder.card.setOnClickListener {
-            selectedPosition = if (selectedPosition == -1) position else if (selectedPosition != position) position else -1
-            notifyDataSetChanged()
-        }
-
-        if (selectedPosition != -1 && selectedPosition == position) {
-            holder.card.background = context.resources.getDrawable(R.color.colorAccent)
-        } else {
-            holder.card.background = context.resources.getDrawable(android.R.color.transparent)
-        }
+        holder.bind(list[position])
     }
 
     fun getSelectedItem(): DrawableInfo? {
         return if (selectedPosition == -1) null else list[selectedPosition]
     }
 
-    fun getDefaultItem(): DrawableInfo {
-        return DrawableInfo(context.resources.getDrawable(R.drawable.mix2))
-    }
+    fun getDefaultItem(): DrawableInfo = DrawableInfo(context.resources.getDrawable(R.drawable.mix2))
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount() = list.size
 
     inner class DrawableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var card: LinearLayout = itemView.findViewById(R.id.card)
-        var image: ImageView = itemView.findViewById(R.id.image)
+        private val card: LinearLayout = itemView.findViewById(R.id.card)
+        private val image: ImageView = itemView.findViewById(R.id.image)
+
+        init { card.setOnClickListener { changeCardBackgrounds() } }
+
+        fun bind(drawableInfo: DrawableInfo) {
+            image.setImageDrawable(drawableInfo.image)
+
+            card.background = when {
+                selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getDrawable(R.color.colorAccent)
+                else -> context.resources.getDrawable(android.R.color.transparent)
+            }
+        }
+
+        private fun changeCardBackgrounds() {
+            val lastSelected = selectedPosition
+
+            selectedPosition = when {
+                selectedPosition == -1 -> adapterPosition
+                selectedPosition != adapterPosition -> adapterPosition
+                else -> -1
+            }
+
+            notifyItemChanged(adapterPosition)
+            if (lastSelected != -1) notifyItemChanged(lastSelected)
+        }
     }
 }
