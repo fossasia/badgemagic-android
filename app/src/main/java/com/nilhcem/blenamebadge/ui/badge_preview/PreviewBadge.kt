@@ -51,6 +51,9 @@ class PreviewBadge : View {
     private var checkList = ArrayList<CheckList>()
     private var valueAnimator: ValueAnimator? = null
 
+    private var countFrame = 0
+    private var lastFrame = 0
+
     private fun resetCheckList() {
         checkList = ArrayList()
         for (i in 0 until badgeHeight) {
@@ -111,6 +114,14 @@ class PreviewBadge : View {
             this.badgeSpeed = currentState.getInt(BUNDLE_SPEED)
             this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
             this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
+
+            valueAnimator?.cancel()
+
+            countFrame = 0
+            lastFrame = 0
+
+            configValueAnimation(checkList[0].list.size * 200)
+
             currentState = currentState.getParcelable(BUNDLE_STATE) as Parcelable
         }
         super.onRestoreInstanceState(currentState)
@@ -246,6 +257,38 @@ class PreviewBadge : View {
                     Mode.PICTURE -> {
                     }
                     Mode.ANIMATION -> {
+                        val firstLine = animationIndex.div(200).rem(badgeWidth / 2)
+                        val secondLine = badgeWidth - firstLine
+
+                        if (lastFrame != firstLine)
+                            countFrame += 1
+                        lastFrame = firstLine
+
+                        val checkLineOnRow = when {
+                            countFrame < (badgeWidth / 2) || countFrame > (3 * (badgeWidth / 2)) -> j == firstLine || j == secondLine
+                            else -> false
+                        }
+
+                        if (checkLineOnRow || validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                when {
+                                    countFrame < (badgeWidth / 2) -> j in (firstLine + 1)..(secondLine - 1)
+                                    countFrame > (3 * (badgeWidth / 2)) -> j < firstLine || j > secondLine
+                                    else -> true
+                                } &&
+                                checkList[i].list[j + badgeWidth / 2]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
+                        }
+
+                        if (countFrame > (4 * (badgeWidth / 2))) {
+                            countFrame = 0
+                            lastFrame = 0
+                        }
                     }
                     Mode.LASER -> {
                     }
@@ -328,6 +371,10 @@ class PreviewBadge : View {
                 checkList[i].list.add(false)
             }
         }
+
+        countFrame = 0
+        lastFrame = 0
+
         invalidate()
         configValueAnimation(checkList[0].list.size * 200)
     }
