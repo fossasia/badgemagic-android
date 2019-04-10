@@ -115,8 +115,6 @@ class PreviewBadge : View {
             this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
             this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
 
-            valueAnimator?.cancel()
-
             countFrame = 0
             lastFrame = 0
 
@@ -345,10 +343,11 @@ class PreviewBadge : View {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        configValueAnimation()
+        configValueAnimation(checkList[0].list.size * 200)
     }
 
     private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
+        valueAnimator?.cancel()
         valueAnimator = ValueAnimator.ofInt(valueAnimatorNumber - 1, 0).apply {
             addUpdateListener {
                 animationIndex = it.animatedValue as Int
@@ -365,7 +364,6 @@ class PreviewBadge : View {
         resetCheckList()
         ifMarquee = ifMar
         ifFlash = ifFla
-        valueAnimator?.cancel()
 
         badgeMode = mode
         badgeSpeed = when (speed) {
