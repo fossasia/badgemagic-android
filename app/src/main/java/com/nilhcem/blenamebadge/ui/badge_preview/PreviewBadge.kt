@@ -165,6 +165,7 @@ class PreviewBadge : View {
 
         // Draw Cells
         for (i in 0 until badgeHeight) {
+            var matchFrame = false
             for (j in 0 until badgeWidth) {
                 var flashLEDOn = true
                 if (ifFlash) {
@@ -268,15 +269,16 @@ class PreviewBadge : View {
                             countFrame < (badgeWidth / 2) || countFrame > (3 * (badgeWidth / 2)) -> j == firstLine || j == secondLine
                             else -> false
                         }
+                        val checkBitmapOnRow = when {
+                            countFrame < (badgeWidth / 2) -> j in (firstLine + 1)..(secondLine - 1)
+                            countFrame > (3 * (badgeWidth / 2)) -> j < firstLine || j > secondLine
+                            else -> true
+                        }
 
                         if (checkLineOnRow || validMarquee || flashLEDOn &&
                                 i < checkList.size &&
                                 j < checkList[i].list.size &&
-                                when {
-                                    countFrame < (badgeWidth / 2) -> j in (firstLine + 1)..(secondLine - 1)
-                                    countFrame > (3 * (badgeWidth / 2)) -> j < firstLine || j > secondLine
-                                    else -> true
-                                } &&
+                                checkBitmapOnRow &&
                                 checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
@@ -291,6 +293,43 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.LASER -> {
+                        val line = badgeWidth - animationIndex.div(400).rem(badgeWidth)
+
+                        if (lastFrame != line)
+                            countFrame += 1
+                        lastFrame = line
+
+                        if (!matchFrame)
+                            matchFrame = checkList[i].list[lastFrame + badgeWidth / 2]
+
+                        val checkLineOnRow = when {
+                            countFrame < (badgeWidth + 1) -> matchFrame && j >= lastFrame
+                            countFrame > (2 * badgeWidth) -> matchFrame && j <= lastFrame
+                            else -> false
+                        }
+
+                        val checkBitmapOnRow = when {
+                            countFrame < (badgeWidth + 1) -> j < lastFrame
+                            countFrame > (2 * badgeWidth) -> j > lastFrame
+                            else -> true
+                        }
+
+                        if (checkLineOnRow || validMarquee || flashLEDOn &&
+                                i < checkList.size &&
+                                j < checkList[i].list.size &&
+                                checkBitmapOnRow &&
+                                checkList[i].list[j + badgeWidth / 2]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
+                        }
+
+                        if (countFrame > (3 * (badgeWidth))) {
+                            countFrame = 0
+                            lastFrame = 0
+                        }
                     }
                 }
             }
