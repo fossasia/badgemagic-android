@@ -12,6 +12,7 @@ import com.nilhcem.blenamebadge.data.DrawableInfo
 
 class DrawableAdapter(private val context: Context, private val list: List<DrawableInfo>) : RecyclerView.Adapter<DrawableAdapter.DrawableItemHolder>() {
     private var selectedPosition: Int = -1
+    private var listener: OnDrawableSelected? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawableItemHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.recycler_item, parent, false)
@@ -30,7 +31,9 @@ class DrawableAdapter(private val context: Context, private val list: List<Drawa
         return if (selectedPosition == -1) null else list[selectedPosition]
     }
 
-    fun getDefaultItem(): DrawableInfo = DrawableInfo(context.resources.getDrawable(R.drawable.mix2))
+    fun setListener(listener: OnDrawableSelected) {
+        this.listener = listener
+    }
 
     override fun getItemCount() = list.size
 
@@ -39,7 +42,12 @@ class DrawableAdapter(private val context: Context, private val list: List<Drawa
         private val card: LinearLayout = itemView.findViewById(R.id.card)
         private val image: ImageView = itemView.findViewById(R.id.image)
 
-        init { card.setOnClickListener { changeCardBackgrounds() } }
+        init {
+            card.setOnClickListener {
+                changeCardBackgrounds()
+                listener?.onSelected(getSelectedItem())
+            }
+        }
 
         fun bind(drawableInfo: DrawableInfo) {
             image.setImageDrawable(drawableInfo.image)
@@ -63,4 +71,8 @@ class DrawableAdapter(private val context: Context, private val list: List<Drawa
             if (lastSelected != -1) notifyItemChanged(lastSelected)
         }
     }
+}
+
+interface OnDrawableSelected {
+    fun onSelected(selectedItem: DrawableInfo?)
 }

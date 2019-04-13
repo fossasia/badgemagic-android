@@ -16,17 +16,22 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
+import android.widget.Toast
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.LinearLayout
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
+import android.widget.RadioButton
+import android.widget.Spinner
+import android.widget.Button
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
+import com.nilhcem.blenamebadge.adapter.OnDrawableSelected
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
@@ -37,6 +42,7 @@ import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import com.nilhcem.blenamebadge.util.Converters
+import kotlinx.android.synthetic.main.message_activity.*
 import java.util.Timer
 import java.util.TimerTask
 
@@ -54,15 +60,28 @@ class MessageActivity : AppCompatActivity() {
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
-    private val previewButton: Button by bindView(R.id.preview_button)
-    private val previewButtonDrawable: Button by bindView(R.id.preview_button_drawable)
     private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
+    private val radioText: RadioButton by bindView(R.id.textRadio)
+    private val textSection: LinearLayout by bindView(R.id.section_text)
+    private val drawablesSection: LinearLayout by bindView(R.id.section_drawables)
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
 
     private val presenter by lazy { MessagePresenter() }
+
+    private val textWatcherText: TextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            selectText()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +108,9 @@ class MessageActivity : AppCompatActivity() {
                         }
                     }
                 }, SCAN_TIMEOUT_MS)
+
                 if (content.text.isEmpty()) {
+                    Toast.makeText(this, "No input given. Sending default bitmap.", Toast.LENGTH_SHORT).show()
                     presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
                     showLoaderView(true)
                 } else {
@@ -101,53 +122,77 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
-        previewButton.setOnClickListener {
-            val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
-            if (!valid) {
-                Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
-            }
-            if (!content.text.isEmpty()) {
-                previewBadge.setValue(
-                        textToSend,
-                        marquee.isChecked,
-                        flash.isChecked,
-                        Speed.values()[speed.selectedItemPosition],
-                        Mode.values()[mode.selectedItemPosition]
-                )
-            } else {
-                previewBadge.setValue(
-                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
-                        false,
-                        false,
-                        Speed.values()[speed.selectedItemPosition],
-                        Mode.FIXED
-                )
+        radioGroup.setOnCheckedChangeListener { _, optionId ->
+            when (optionId) {
+                R.id.drawableRadio -> {
+                    val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
+                            as InputMethodManager
+                    inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+
+                    drawablesSection.setVisibility(View.VISIBLE)
+                    textSection.setVisibility(View.GONE)
+                    selectDrawable(drawableRecyclerAdapter.getSelectedItem())
+
+                    removeListeners()
+                    drawableRecyclerAdapter.setListener(object : OnDrawableSelected {
+                        override fun onSelected(selectedItem: DrawableInfo?) {
+                            selectDrawable(selectedItem)
+                        }
+                    })
+                }
+
+                R.id.textRadio -> {
+                    textSection.setVisibility(View.VISIBLE)
+                    drawablesSection.setVisibility(View.GONE)
+                    selectText()
+                    removeListeners()
+                    content.addTextChangedListener(textWatcherText)
+                }
             }
         }
 
-        previewButtonDrawable.setOnClickListener {
-            val selectedItem = drawableRecyclerAdapter.getSelectedItem()
-            if (selectedItem != null)
-                previewBadge.setValue(
-                        Converters.convertDrawableToLEDHex(selectedItem.image),
-                        marquee.isChecked,
-                        flash.isChecked,
-                        Speed.values()[speed.selectedItemPosition],
-                        Mode.values()[mode.selectedItemPosition]
-                )
-            else
-                previewBadge.setValue(
-                        Converters.convertDrawableToLEDHex((drawableRecyclerAdapter.getDefaultItem()).image),
-                        false,
-                        false,
-                        Speed.values()[speed.selectedItemPosition],
-                        Mode.FIXED
-                )
-        }
+        radioText.isChecked = true
 
         setupRecycler()
 
         prepareForScan()
+    }
+
+    private fun removeListeners() {
+        content.removeTextChangedListener(textWatcherText)
+    }
+
+    fun selectText() {
+        val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
+        if (!valid) {
+            Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
+        }
+        previewBadge.setValue(
+                textToSend,
+                marquee.isChecked,
+                flash.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
+        )
+    }
+
+    fun selectDrawable(selectedItem: DrawableInfo?) {
+        if (selectedItem != null)
+            previewBadge.setValue(
+                    Converters.convertDrawableToLEDHex(selectedItem.image),
+                    marquee.isChecked,
+                    flash.isChecked,
+                    Speed.values()[speed.selectedItemPosition],
+                    Mode.values()[mode.selectedItemPosition]
+            )
+        else
+            previewBadge.setValue(
+                    presenter.convertToPreview(" ").second,
+                    marquee.isChecked,
+                    flash.isChecked,
+                    Speed.values()[speed.selectedItemPosition],
+                    Mode.values()[mode.selectedItemPosition]
+            )
     }
 
     private fun setupRecycler() {

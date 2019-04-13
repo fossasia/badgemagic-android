@@ -1,201 +1,198 @@
-<?xml version = "1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
+        android:id="@+id/preview_badge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" />
 
-        <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
-            android:id="@+id/preview_badge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/text_to_send_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/text_to_send"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <EditText
-                android:id="@+id/text_to_send"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:inputType="text"
-                app:layout_constraintEnd_toStartOf="@id/preview_button"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_to_send_label" />
-
-            <Button
-                android:id="@+id/preview_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:paddingLeft="@dimen/button_padding_left_right"
-                android:paddingRight="@dimen/button_padding_left_right"
-                android:text="@string/preview_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintTop_toBottomOf="@+id/text_to_send_label" />
-
-            <LinearLayout
-                android:id="@+id/section_drawables"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/text_to_send">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/select_drawable_to_label"
+                <RadioButton
+                    android:id="@+id/drawableRadio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/select_drawable_text"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"
-                    android:typeface="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/section_drawables" />
+                    android:paddingRight="50dp"
+                    android:text="@string/send_drawables" />
 
-                <RelativeLayout
+                <RadioButton
+                    android:id="@+id/textRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/send_text" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
+                    <LinearLayout
+                        android:id="@+id/section_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:layout_toStartOf="@id/preview_button_drawable">
+                        android:orientation="vertical">
 
-                    </android.support.v7.widget.RecyclerView>
+                        <TextView
+                            android:id="@+id/text_to_send_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="@string/text_to_send"
+                            android:textSize="@dimen/text_size_normal"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
 
-                    <Button
-                        android:id="@+id/preview_button_drawable"
-                        android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/text_to_send"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:hint="Enter Text"
+                            android:inputType="text" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/section_drawables"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:paddingLeft="@dimen/button_padding_left_right"
-                        android:paddingRight="@dimen/button_padding_left_right"
-                        android:text="@string/preview_button" />
+                        android:orientation="vertical">
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/select_drawable_to_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="@string/select_drawable_text"
+                            android:textSize="@dimen/text_size_normal"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_small">
+
+                            </android.support.v7.widget.RecyclerView>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/speed_label"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/speed"
                 android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/section_drawables" />
+                android:typeface="normal" />
 
             <Spinner
                 android:id="@+id/speed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speed_label" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/mode_label"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/mode"
                 android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"
-                android:typeface="normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/speed" />
+                android:typeface="normal" />
 
             <Spinner
                 android:id="@+id/mode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mode_label" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <CheckBox
-                android:id="@+id/flash"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:text="@string/flash"
-                app:layout_constraintEnd_toStartOf="@+id/marquee"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mode" />
-
-            <CheckBox
-                android:id="@+id/marquee"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:text="@string/marquee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/flash"
-                app:layout_constraintTop_toBottomOf="@+id/mode" />
-
-            <ProgressBar
-                android:id="@+id/sendBytesLoader"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:visibility="gone"
-                app:layout_constraintVertical_bias="0.4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/send_button"/>
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/send_button"
-                android:layout_width="wrap_content"
+                <CheckBox
+                    android:id="@+id/flash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_weight="1"
+                    android:text="@string/flash" />
+
+                <CheckBox
+                    android:id="@+id/marquee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_weight="1"
+                    android:text="@string/marquee" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:paddingLeft="@dimen/button_padding_left_right"
-                android:paddingRight="@dimen/button_padding_left_right"
-                android:text="@string/send_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/flash" />
+                android:gravity="center">
 
-        </android.support.constraint.ConstraintLayout>
-    </LinearLayout>
-</ScrollView>
+                <ProgressBar
+                    android:id="@+id/sendBytesLoader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/send_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:paddingLeft="@dimen/button_padding_left_right"
+                    android:paddingRight="@dimen/button_padding_left_right"
+                    android:text="@string/send_button" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
