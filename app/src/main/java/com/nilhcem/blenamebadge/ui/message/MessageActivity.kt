@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -64,10 +65,9 @@ class MessageActivity : AppCompatActivity() {
     private val radioText: RadioButton by bindView(R.id.textRadio)
     private val textSection: LinearLayout by bindView(R.id.section_text)
     private val drawablesSection: LinearLayout by bindView(R.id.section_drawables)
+    private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
-
-    private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
 
     private val presenter by lazy { MessagePresenter() }
 
@@ -235,6 +235,7 @@ class MessageActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_ENABLE_BT) {
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             if (resultCode == Activity.RESULT_CANCELED) {
                 showAlertDialog(true)
                 return
@@ -305,6 +306,7 @@ class MessageActivity : AppCompatActivity() {
                 }
             } else {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
             }
         } else {
