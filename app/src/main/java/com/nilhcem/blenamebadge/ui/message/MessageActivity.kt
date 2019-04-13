@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.Spinner
+import android.widget.AdapterView
 import android.widget.Button
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
@@ -63,6 +64,7 @@ class MessageActivity : AppCompatActivity() {
     private val drawableRecyclerView: RecyclerView by bindView(R.id.recycler_view)
     private val sendByteLoader: ProgressBar by bindView(R.id.sendBytesLoader)
     private val radioText: RadioButton by bindView(R.id.textRadio)
+    private val radioDrawable: RadioButton by bindView(R.id.drawableRadio)
     private val textSection: LinearLayout by bindView(R.id.section_text)
     private val drawablesSection: LinearLayout by bindView(R.id.section_drawables)
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
@@ -151,11 +153,43 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
+        flash.setOnCheckedChangeListener { _, _ ->
+            setPreview()
+        }
+
+        marquee.setOnCheckedChangeListener { _, _ ->
+            setPreview()
+        }
+
+        speed.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                setPreview()
+            }
+        }
+        mode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                setPreview()
+            }
+        }
+
         radioText.isChecked = true
 
         setupRecycler()
 
         prepareForScan()
+    }
+
+    fun setPreview() {
+        if (radioText.isChecked)
+            selectText()
+        if (radioDrawable.isChecked)
+            selectDrawable(drawableRecyclerAdapter.getSelectedItem())
     }
 
     private fun removeListeners() {
