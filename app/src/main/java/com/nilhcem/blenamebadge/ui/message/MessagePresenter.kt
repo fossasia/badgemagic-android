@@ -1,7 +1,6 @@
 package com.nilhcem.blenamebadge.ui.message
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.widget.Toast
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.log.Timber
@@ -9,6 +8,7 @@ import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
 import com.nilhcem.blenamebadge.device.bluetooth.GattClient
 import com.nilhcem.blenamebadge.device.bluetooth.ScanHelper
+import com.nilhcem.blenamebadge.device.model.BitmapDataToSend
 import com.nilhcem.blenamebadge.device.model.DataToSend
 
 class MessagePresenter {
@@ -22,8 +22,8 @@ class MessagePresenter {
         sendBytes(context, byteData)
     }
 
-    fun sendBitmap(context: Context, bmp: Bitmap) {
-        val byteData = DataToByteArrayConverter.convertBitmap(bmp)
+    fun sendBitmap(context: Context, convertBitmapToDeviceDataModel: BitmapDataToSend) {
+        val byteData = DataToByteArrayConverter.convertBitmap(convertBitmapToDeviceDataModel)
         sendBytes(context, byteData)
     }
 

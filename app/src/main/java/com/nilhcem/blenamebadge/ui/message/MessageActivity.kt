@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -37,7 +36,9 @@ import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.core.android.viewbinding.bindView
 import com.nilhcem.blenamebadge.data.DrawableInfo
 import com.nilhcem.blenamebadge.device.model.DataToSend
+import com.nilhcem.blenamebadge.device.model.BitmapDataToSend
 import com.nilhcem.blenamebadge.device.model.Message
+import com.nilhcem.blenamebadge.device.model.BitmapMessage
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
@@ -111,7 +112,7 @@ class MessageActivity : AppCompatActivity() {
 
                 if (content.text.isEmpty()) {
                     Toast.makeText(this, "No input given. Sending default bitmap.", Toast.LENGTH_SHORT).show()
-                    presenter.sendBitmap(this, BitmapFactory.decodeResource(resources, R.drawable.mix2))
+                    presenter.sendBitmap(this, convertBitmapToDeviceDataModel())
                     showLoaderView(true)
                 } else {
                     presenter.sendMessage(this, convertToDeviceDataModel())
@@ -129,8 +130,8 @@ class MessageActivity : AppCompatActivity() {
                             as InputMethodManager
                     inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
 
-                    drawablesSection.setVisibility(View.VISIBLE)
-                    textSection.setVisibility(View.GONE)
+                    drawablesSection.visibility = View.VISIBLE
+                    textSection.visibility = View.GONE
                     selectDrawable(drawableRecyclerAdapter.getSelectedItem())
 
                     removeListeners()
@@ -142,8 +143,8 @@ class MessageActivity : AppCompatActivity() {
                 }
 
                 R.id.textRadio -> {
-                    textSection.setVisibility(View.VISIBLE)
-                    drawablesSection.setVisibility(View.GONE)
+                    textSection.visibility = View.VISIBLE
+                    drawablesSection.visibility = View.GONE
                     selectText()
                     removeListeners()
                     content.addTextChangedListener(textWatcherText)
@@ -163,7 +164,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     fun selectText() {
-        val (valid, textToSend) = presenter.convertToPreview(if (!content.text.isEmpty()) content.text.toString() else " ")
+        val (valid, textToSend) = presenter.convertToPreview(if (content.text.isNotEmpty()) content.text.toString() else " ")
         if (!valid) {
             Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
         }
@@ -290,6 +291,11 @@ class MessageActivity : AppCompatActivity() {
 
     private fun convertToDeviceDataModel(): DataToSend {
         return DataToSend(listOf(Message(content.text.trim().toString(), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
+    }
+
+    private fun convertBitmapToDeviceDataModel(): BitmapDataToSend {
+        return BitmapDataToSend(listOf(BitmapMessage(Converters.convertDrawableToLEDHex(drawableRecyclerAdapter.getSelectedItem()?.image
+                ?: resources.getDrawable(R.drawable.apple)), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
     }
 
     private fun prepareForScan() {
