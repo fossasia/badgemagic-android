@@ -1,9 +1,8 @@
 package com.nilhcem.blenamebadge.device
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.byteArrayToHexString
 import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils.hexStringToByteArray
+import com.nilhcem.blenamebadge.device.model.BitmapDataToSend
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import java.util.Calendar
 import kotlin.experimental.or
@@ -14,7 +13,7 @@ object DataToByteArrayConverter {
     private const val PACKET_START = "77616E670000"
     private const val PACKET_BYTE_SIZE = 16
 
-    public val CHAR_CODES = mapOf(
+    val CHAR_CODES = mapOf(
             '0' to "007CC6CEDEF6E6C6C67C00",
             '1' to "0018387818181818187E00",
             '2' to "007CC6060C183060C6FE00",
@@ -134,25 +133,21 @@ object DataToByteArrayConverter {
                 .map { hexStringToByteArray(it) }
     }
 
-    fun convertBitmap(bitmap: Bitmap, calendar: Calendar = Calendar.getInstance()): List<ByteArray> {
+    fun convertBitmap(data: BitmapDataToSend, calendar: Calendar = Calendar.getInstance()): List<ByteArray> {
+        check(data.messages.size <= MAX_MESSAGES) { "Max messages=$MAX_MESSAGES" }
+
         return StringBuilder()
                 .apply {
                     append(PACKET_START)
-                    append("0000040000000000000000050000000000000000000000000000000000000000")
+                    append(getFlash(data))
+                    append(getMarquee(data))
+                    append(getOptions(data))
+                    append(getSizes(data))
+                    append("000000000000")
                     append(getTimestamp(calendar))
-                    append("0000000000000000000000000000000000000000")
-
-                    for (i in 0 until 5) {
-                        for (row in 0 until 11) {
-                            var byte = 0
-                            for (col in 0 until 8) {
-                                val on = if (bitmap.getPixel((i * 8) + col, row) == Color.TRANSPARENT) 0 else 1
-                                byte = byte or (on shl (7 - col))
-                            }
-                            append(String.format("%02X", byte))
-                        }
-                    }
-
+                    append("00000000")
+                    append("00000000000000000000000000000000")
+                    append(getMessages(data))
                     append(fillWithZeros(length))
                 }
                 .toString()
@@ -161,6 +156,17 @@ object DataToByteArrayConverter {
     }
 
     private fun getFlash(data: DataToSend): String {
+        val flashByte = ByteArray(1)
+
+        data.messages.forEachIndexed { index, message ->
+            val flashFlag = if (message.flash) 1 else 0
+            flashByte[0] = flashByte[0] or (flashFlag shl index).toByte()
+        }
+
+        return byteArrayToHexString(flashByte)
+    }
+
+    private fun getFlash(data: BitmapDataToSend): String {
         val flashByte = ByteArray(1)
 
         data.messages.forEachIndexed { index, message ->
@@ -182,17 +188,34 @@ object DataToByteArrayConverter {
         return byteArrayToHexString(marqueeByte)
     }
 
+    private fun getMarquee(data: BitmapDataToSend): String {
+        val marqueeByte = ByteArray(1)
+
+        data.messages.forEachIndexed { index, message ->
+            val marqueeFlag = if (message.marquee) 1 else 0
+            marqueeByte[0] = marqueeByte[0] or (marqueeFlag shl index).toByte()
+        }
+
+        return byteArrayToHexString(marqueeByte)
+    }
+
     private fun getOptions(data: DataToSend): String {
         val nbMessages = data.messages.size
         return data.messages
                 .map { it.speed.hexValue or it.mode.hexValue }
-                .map { ByteArray(1).apply { set(0, it) } }
-                .map { byteArrayToHexString(it) }
-                .joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages))
+                .map { ByteArray(1).apply { set(0, it) } }.joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages)) { byteArrayToHexString(it) }
+    }
+
+    private fun getOptions(data: BitmapDataToSend): String {
+        val nbMessages = data.messages.size
+        return data.messages
+                .map { it.speed.hexValue or it.mode.hexValue }
+                .map { ByteArray(1).apply { set(0, it) } }.joinToString(separator = "", postfix = "00".repeat(MAX_MESSAGES - nbMessages)) { byteArrayToHexString(it) }
     }
 
     private fun getSizes(data: DataToSend): String {
         val nbMessages = data.messages.size
+
         return data.messages
                 .map { removeInvalidCharacters(it.text).length }
                 .map {
@@ -200,9 +223,20 @@ object DataToByteArrayConverter {
                         set(1, (it and 0xFF).toByte())
                         set(0, (it shr 8 and 0xFF).toByte())
                     }
-                }
-                .map { byteArrayToHexString(it) }
-                .joinToString(separator = "", postfix = "0000".repeat(MAX_MESSAGES - nbMessages))
+                }.joinToString(separator = "", postfix = "0000".repeat(MAX_MESSAGES - nbMessages)) { byteArrayToHexString(it) }
+    }
+
+    private fun getSizes(data: BitmapDataToSend): String {
+        val nbMessages = data.messages.size
+
+        return data.messages
+                .map { it.hexStrings.size }
+                .map {
+                    ByteArray(2).apply {
+                        set(1, (it and 0xFF).toByte())
+                        set(0, (it shr 8 and 0xFF).toByte())
+                    }
+                }.joinToString(separator = "", postfix = "0000".repeat(MAX_MESSAGES - nbMessages)) { byteArrayToHexString(it) }
     }
 
     private fun removeInvalidCharacters(str: String): String = str.toCharArray().filter { CHAR_CODES.containsKey(it) }.joinToString(separator = "")
@@ -219,13 +253,18 @@ object DataToByteArrayConverter {
     }
 
     private fun getMessages(data: DataToSend): String {
-        return data.messages
-                .map { it.text }
-                .joinToString(separator = "")
+        return data.messages.joinToString(separator = "") { it.text }
                 .toCharArray()
                 .filter { CHAR_CODES.containsKey(it) }
                 .map { CHAR_CODES[it] }
                 .joinToString(separator = "")
+    }
+
+    private fun getMessages(data: BitmapDataToSend): String {
+        return data.messages
+                .joinToString(separator = "") {
+                    it.hexStrings.joinToString(separator = "")
+                }
     }
 
     private fun fillWithZeros(length: Int): String {
