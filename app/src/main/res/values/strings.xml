@@ -29,4 +29,5 @@
     <string name="character_not_found">Some of the character(s) entered cannot be displayed.</string>
     <string name="send_text">Send Text</string>
     <string name="send_drawables">Send Drawables</string>
+    <string name="invertLED">Invert LED</string>
 </resources>

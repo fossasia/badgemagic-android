@@ -12,7 +12,6 @@ import android.support.annotation.Nullable
 import android.util.AttributeSet
 import android.view.View
 
-import java.math.BigInteger
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.Parcelable
@@ -20,6 +19,7 @@ import android.view.animation.LinearInterpolator
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
+import com.nilhcem.blenamebadge.util.Converters.hexToBin
 
 private const val BUNDLE_STATE = "superState"
 private const val BUNDLE_FLASH = "ifFlash"
@@ -268,7 +268,7 @@ class PreviewBadge : View {
                             else -> false
                         }
                         val checkBitmapOnRow = when {
-                            countFrame < (badgeWidth / 2) -> j in (firstLine + 1)..(secondLine - 1)
+                            countFrame < (badgeWidth / 2) -> j in (firstLine + 1) until secondLine
                             countFrame > (3 * (badgeWidth / 2)) -> j < firstLine || j > secondLine
                             else -> true
                         }
@@ -414,17 +414,5 @@ class PreviewBadge : View {
 
         invalidate()
         configValueAnimation(checkList[0].list.size * 200)
-    }
-
-    companion object {
-
-        internal fun hexToBin(s: String): String {
-            val number = BigInteger(s, 16).toString(2)
-            val sb = StringBuilder(number)
-            for (i in 0 until 8 - number.length) {
-                sb.insert(0, "0")
-            }
-            return sb.toString()
-        }
     }
 }

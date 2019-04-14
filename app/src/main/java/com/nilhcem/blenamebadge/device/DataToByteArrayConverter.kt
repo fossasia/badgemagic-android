@@ -6,6 +6,7 @@ import com.nilhcem.blenamebadge.device.model.BitmapDataToSend
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import java.util.Calendar
 import kotlin.experimental.or
+import com.nilhcem.blenamebadge.util.Converters.invertHex
 
 object DataToByteArrayConverter {
 
@@ -125,7 +126,7 @@ object DataToByteArrayConverter {
                     append(getTimestamp(calendar))
                     append("00000000")
                     append("00000000000000000000000000000000")
-                    append(getMessages(data))
+                    append(if (data.inverted) invertHex(getMessages(data)) else getMessages(data))
                     append(fillWithZeros(length))
                 }
                 .toString()

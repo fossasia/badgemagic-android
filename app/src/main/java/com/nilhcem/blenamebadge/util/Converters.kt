@@ -7,12 +7,12 @@ import android.graphics.drawable.Drawable
 import java.math.BigInteger
 
 object Converters {
-    fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int): List<String> {
+    fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int, invertLED: Boolean): List<String> {
         val myIcon = context.resources.getDrawable(dId)
-        return convertDrawableToLEDHex(myIcon)
+        return convertDrawableToLEDHex(myIcon, invertLED)
     }
 
-    fun convertDrawableToLEDHex(drawableIcon: Drawable): List<String> {
+    fun convertDrawableToLEDHex(drawableIcon: Drawable, invertLED: Boolean): List<String> {
         val bm = (drawableIcon as BitmapDrawable).bitmap
 
         val height = bm.height
@@ -73,7 +73,8 @@ object Converters {
         for (i in 0 until height) {
             for (j in 0 until width) {
                 if (image[i][j] != -1)
-                    list[i].add(image[i][j])
+                    list[i].add(image[i][j]
+                    )
             }
         }
         for (i in 0 until height) {
@@ -81,6 +82,18 @@ object Converters {
                 list[i].add(0)
             }
         }
+
+        //Reformatting Against invertLED
+        for (i in 0 until list.size) {
+            for (j in 0 until list[0].size) {
+                list[i][j] = if (list[i][j] == 1) {
+                    if (!invertLED) 1 else 0
+                } else {
+                    if (!invertLED) 0 else 1
+                }
+            }
+        }
+
         val allHexs = mutableListOf<String>()
         for (i in 0 until list[0].size / 8) {
             val lineHex = StringBuilder()
@@ -98,5 +111,30 @@ object Converters {
             allHexs.add(lineHex.toString())
         }
         return allHexs
+    }
+
+    fun hexToBin(s: String): String {
+        val number = BigInteger(s, 16).toString(2)
+        val sb = StringBuilder(number)
+        for (i in 0 until 8 - number.length) {
+            sb.insert(0, "0")
+        }
+        return sb.toString()
+    }
+
+    fun invertHex(hex: String): String {
+        val stBuilder = StringBuilder()
+        for (i in 0 until hex.length / 2) {
+            val tempstBuilder = StringBuilder()
+            val bin = hexToBin(hex.substring(i * 2, i * 2 + 2))
+            for (char in bin)
+                tempstBuilder.append(if (char == '0') '1' else '0')
+            var newHex = BigInteger(tempstBuilder.toString(), 2).toString(16)
+            for (j in 0 until 2 - newHex.length) {
+                newHex = "0$newHex"
+            }
+            stBuilder.append(newHex)
+        }
+        return stBuilder.toString()
     }
 }
