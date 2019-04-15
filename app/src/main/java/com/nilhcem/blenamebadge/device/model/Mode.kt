@@ -1,6 +1,6 @@
 package com.nilhcem.blenamebadge.device.model
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.nilhcem.blenamebadge.R
 
 enum class Mode(val hexValue: Byte, @StringRes val stringResId: Int) {
