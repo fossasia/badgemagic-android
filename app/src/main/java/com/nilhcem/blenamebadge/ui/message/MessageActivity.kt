@@ -59,6 +59,7 @@ class MessageActivity : AppCompatActivity() {
     private val content: EditText by bindView(R.id.text_to_send)
     private val flash: CheckBox by bindView(R.id.flash)
     private val marquee: CheckBox by bindView(R.id.marquee)
+    private val invertLED: CheckBox by bindView(R.id.invertLED)
     private val speed: Spinner by bindView(R.id.speed)
     private val mode: Spinner by bindView(R.id.mode)
     private val send: Button by bindView(R.id.send_button)
@@ -162,6 +163,10 @@ class MessageActivity : AppCompatActivity() {
             setPreview()
         }
 
+        invertLED.setOnCheckedChangeListener { _, _ ->
+            setPreview()
+        }
+
         speed.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -198,7 +203,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     fun selectText() {
-        val (valid, textToSend) = presenter.convertToPreview(if (content.text.isNotEmpty()) content.text.toString() else " ")
+        val (valid, textToSend) = presenter.convertToPreview(if (content.text.isNotEmpty()) content.text.toString() else if (!invertLED.isChecked) " " else "", invertLED.isChecked)
         if (!valid) {
             Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
         }
@@ -214,7 +219,7 @@ class MessageActivity : AppCompatActivity() {
     fun selectDrawable(selectedItem: DrawableInfo?) {
         if (selectedItem != null)
             previewBadge.setValue(
-                    Converters.convertDrawableToLEDHex(selectedItem.image),
+                    Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked),
                     marquee.isChecked,
                     flash.isChecked,
                     Speed.values()[speed.selectedItemPosition],
@@ -222,7 +227,7 @@ class MessageActivity : AppCompatActivity() {
             )
         else
             previewBadge.setValue(
-                    presenter.convertToPreview(" ").second,
+                    presenter.convertToPreview(if (!invertLED.isChecked) " " else "", invertLED.isChecked).second,
                     marquee.isChecked,
                     flash.isChecked,
                     Speed.values()[speed.selectedItemPosition],
@@ -324,12 +329,12 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun convertToDeviceDataModel(): DataToSend {
-        return DataToSend(listOf(Message(content.text.trim().toString(), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
+        return DataToSend(listOf(Message(content.text.trim().toString(), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])), invertLED.isChecked)
     }
 
     private fun convertBitmapToDeviceDataModel(): BitmapDataToSend {
         return BitmapDataToSend(listOf(BitmapMessage(Converters.convertDrawableToLEDHex(drawableRecyclerAdapter.getSelectedItem()?.image
-                ?: resources.getDrawable(R.drawable.apple)), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
+                ?: resources.getDrawable(R.drawable.apple), invertLED.isChecked), flash.isChecked, marquee.isChecked, Speed.values()[speed.selectedItemPosition], Mode.values()[mode.selectedItemPosition])))
     }
 
     private fun prepareForScan() {
