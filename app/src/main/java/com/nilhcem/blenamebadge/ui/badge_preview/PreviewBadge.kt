@@ -91,8 +91,8 @@ class PreviewBadge : View {
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
         setMeasuredDimension(
-                View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
+            View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
@@ -140,10 +140,10 @@ class PreviewBadge : View {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                        left + (offsetXToAdd * 2) + j * singleCell,
-                        top + (offsetXToAdd * 2) + i * singleCell,
-                        left + (offsetXToAdd * 2) + j * singleCell + singleCell,
-                        top + (offsetXToAdd * 2) + i * singleCell + singleCell
+                    left + (offsetXToAdd * 2) + j * singleCell,
+                    top + (offsetXToAdd * 2) + i * singleCell,
+                    left + (offsetXToAdd * 2) + j * singleCell + singleCell,
+                    top + (offsetXToAdd * 2) + i * singleCell + singleCell
                 ))
             }
         }
@@ -190,9 +190,9 @@ class PreviewBadge : View {
                     Mode.LEFT -> {
                         val animationValue = animationIndex.div(200)
                         if (validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -203,9 +203,9 @@ class PreviewBadge : View {
                     Mode.RIGHT -> {
                         val animationValue = animationIndex.div(200)
                         if (validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -216,9 +216,9 @@ class PreviewBadge : View {
                     Mode.UP -> {
                         val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -229,9 +229,9 @@ class PreviewBadge : View {
                     Mode.DOWN -> {
                         val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
                         if (validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -241,9 +241,9 @@ class PreviewBadge : View {
                     }
                     Mode.FIXED -> {
                         if (validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkList[i].list[j + badgeWidth / 2]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -274,10 +274,10 @@ class PreviewBadge : View {
                         }
 
                         if (checkLineOnRow || validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkBitmapOnRow &&
-                                checkList[i].list[j + badgeWidth / 2]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkBitmapOnRow &&
+                            checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
@@ -313,10 +313,10 @@ class PreviewBadge : View {
                         }
 
                         if (checkLineOnRow || validMarquee || flashLEDOn &&
-                                i < checkList.size &&
-                                j < checkList[i].list.size &&
-                                checkBitmapOnRow &&
-                                checkList[i].list[j + badgeWidth / 2]) {
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            checkBitmapOnRow &&
+                            checkList[i].list[j + badgeWidth / 2]) {
                             ledEnabled.bounds = cells[i].list[j]
                             ledEnabled.draw(canvas)
                         } else {
