@@ -44,6 +44,8 @@ import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import com.nilhcem.blenamebadge.util.Converters
+import com.nilhcem.blenamebadge.util.KeyboardUtils.hideSoftKeyboard
+import com.nilhcem.blenamebadge.util.KeyboardUtils.showSoftKeyboard
 import kotlinx.android.synthetic.main.message_activity.*
 import java.util.Timer
 import java.util.TimerTask
@@ -96,9 +98,7 @@ class MessageActivity : AppCompatActivity() {
         mode.adapter = ArrayAdapter<String>(this, spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         send.setOnClickListener {
-            val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
-                    as InputMethodManager
-            inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+            hideSoftKeyboard(baseContext, content)
 
             if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
                 // Easter egg
@@ -146,6 +146,9 @@ class MessageActivity : AppCompatActivity() {
                 }
 
                 R.id.textRadio -> {
+                    showSoftKeyboard(baseContext, content)
+                    content.requestFocus()
+
                     textSection.visibility = View.VISIBLE
                     drawablesSection.visibility = View.GONE
                     selectText()
