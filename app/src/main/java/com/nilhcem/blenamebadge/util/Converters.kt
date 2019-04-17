@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import androidx.annotation.DrawableRes
 import android.graphics.drawable.Drawable
+import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
 import java.math.BigInteger
 
 object Converters {
@@ -136,5 +137,23 @@ object Converters {
             stBuilder.append(newHex)
         }
         return stBuilder.toString()
+    }
+
+    fun convertTextToLEDHex(data: String, invertLED: Boolean): Pair<Boolean, List<String>> {
+        var valid = true
+        val list = mutableListOf<String>()
+        for (letter in data) {
+            if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
+                list.add(
+                    if (invertLED)
+                        invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+                    else
+                        DataToByteArrayConverter.CHAR_CODES.getValue(letter)
+                )
+            } else {
+                valid = false
+            }
+        }
+        return Pair(valid, list)
     }
 }

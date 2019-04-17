@@ -40,7 +40,7 @@ class GattClient {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 onConnectedListener?.invoke(true)
             } else {
-                Timber.w { "onServicesDiscovered received: " + status }
+                Timber.w { "onServicesDiscovered received: $status" }
                 stopClient()
                 onConnectedListener?.invoke(false)
             }

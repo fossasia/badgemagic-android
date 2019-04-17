@@ -29,13 +29,14 @@
                     android:id="@+id/drawableRadio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="50dp"
+                    android:layout_weight="1"
                     android:text="@string/send_drawables" />
 
                 <RadioButton
                     android:id="@+id/textRadio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/send_text" />
 
             </RadioGroup>
@@ -46,77 +47,62 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/section_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/section_text"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/text_to_send"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold"
+                        android:typeface="normal" />
 
-                        <TextView
-                            android:id="@+id/text_to_send_label"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/text_to_send"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textStyle="bold"
-                            android:typeface="normal" />
+                    <EditText
+                        android:id="@+id/text_to_send"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:hint="@string/enter_text"
+                        android:inputType="text" />
 
-                        <EditText
-                            android:id="@+id/text_to_send"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_small"
-                            android:hint="Enter Text"
-                            android:inputType="text" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/section_drawables"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/section_drawables"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="@string/select_drawable_text"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold"
+                        android:typeface="normal" />
 
-                        <TextView
-                            android:id="@+id/select_drawable_to_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_normal"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/select_drawable_text"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textStyle="bold"
-                            android:typeface="normal" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <RelativeLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small">
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small">
-
-                            </androidx.recyclerview.widget.RecyclerView>
-                        </RelativeLayout>
-                    </LinearLayout>
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/speed_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
@@ -132,7 +118,6 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/mode_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"

@@ -14,7 +14,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanSettings
 class ScanHelper {
 
     companion object {
-        private val SCAN_TIMEOUT_MS = 10_000L
+        private const val SCAN_TIMEOUT_MS = 10_000L
     }
 
     private var isScanning = false
@@ -48,12 +48,12 @@ class ScanHelper {
         isScanning = true
 
         val filters = listOf(ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(SERVICE_UUID))
-                .build())
+            .setServiceUuid(ParcelUuid(SERVICE_UUID))
+            .build())
 
         val settings = ScanSettings.Builder()
-                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                .build()
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .build()
 
         scanner.startScan(filters, settings, scanCallback)
 

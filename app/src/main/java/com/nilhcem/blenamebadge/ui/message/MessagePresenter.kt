@@ -8,9 +8,7 @@ import com.nilhcem.blenamebadge.core.utils.ByteArrayUtils
 import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
 import com.nilhcem.blenamebadge.device.bluetooth.GattClient
 import com.nilhcem.blenamebadge.device.bluetooth.ScanHelper
-import com.nilhcem.blenamebadge.device.model.BitmapDataToSend
 import com.nilhcem.blenamebadge.device.model.DataToSend
-import com.nilhcem.blenamebadge.util.Converters.invertHex
 
 class MessagePresenter {
 
@@ -23,32 +21,9 @@ class MessagePresenter {
         sendBytes(context, byteData)
     }
 
-    fun sendBitmap(context: Context, convertBitmapToDeviceDataModel: BitmapDataToSend) {
-        val byteData = DataToByteArrayConverter.convertBitmap(convertBitmapToDeviceDataModel)
-        sendBytes(context, byteData)
-    }
-
     fun onPause() {
         scanHelper.stopLeScan()
         gattClient.stopClient()
-    }
-
-    fun convertToPreview(data: String, invertLED: Boolean): Pair<Boolean, List<String>> {
-        var valid = true
-        val list = mutableListOf<String>()
-        for (letter in data) {
-            if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
-                list.add(
-                        if (invertLED)
-                            invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
-                        else
-                            DataToByteArrayConverter.CHAR_CODES.getValue(letter)
-                )
-            } else {
-                valid = false
-            }
-        }
-        return Pair(valid, list)
     }
 
     private fun sendBytes(context: Context, byteData: List<ByteArray>) {
