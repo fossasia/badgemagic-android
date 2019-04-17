@@ -32,10 +32,13 @@ The implementation in the Android app consists of manipulating bits. That may be
 There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
 * Get one from [here](https://sg.pslab.io/product/led-badge/)
 
-## User Interface
+## Screenshots
 
-Here is a screenshot of the current image.
-![Screenshot](./docs/images/badge-magic-screenshot.jpg)
+| <!-- -->    | <!-- -->    | <!-- -->    |
+|-------------|-------------|-------------|
+| <img src="https://user-images.githubusercontent.com/41234408/56266647-5c713100-610a-11e9-805b-25fd2ea41229.png" width="288" /><img src="https://user-images.githubusercontent.com/41234408/56267288-0e5d2d00-610c-11e9-9282-e88e78804f99.png" width="288" /> | <img src="https://user-images.githubusercontent.com/41234408/56267047-592a7500-610b-11e9-9947-5ce4edcdb66a.png" width="288" /> <img src="https://user-images.githubusercontent.com/41234408/56267345-26cd4780-610c-11e9-944c-dcf345c55256.png" width="288" /> | <img src="https://user-images.githubusercontent.com/41234408/56267095-7a8b6100-610b-11e9-82a0-c7e1854a7474.png" width="288" /> <img src="https://user-images.githubusercontent.com/41234408/56267380-48c6ca00-610c-11e9-885e-a57f98346ecb.png" width="288" /> |
+| <!-- -->    | <!-- -->    | <!-- -->    |
+| <img src="https://user-images.githubusercontent.com/41234408/56267426-6d22a680-610c-11e9-885b-c05ed0e24c6b.png" width="288" /> <img src="https://user-images.githubusercontent.com/41234408/56267536-b672f600-610c-11e9-958b-d84616380491.png" width="288" /> | <img src="https://user-images.githubusercontent.com/41234408/56267429-6f850080-610c-11e9-89c8-3d94895882a7.png" width="288" /> <img src="https://user-images.githubusercontent.com/41234408/56267562-cb4f8980-610c-11e9-8ef7-5d831851b001.png" width="288" /> | <img src="https://user-images.githubusercontent.com/41234408/56267440-71e75a80-610c-11e9-9b5d-540cff0011a3.png" width="288" /> <img src="https://user-images.githubusercontent.com/41234408/56267566-cd194d00-610c-11e9-9e08-f6caed71c318.png" width="288" /> |
 
 ## Contributions Best Practices
 
