@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
@@ -184,7 +186,29 @@
                     android:layout_marginTop="@dimen/spacing_small"
                     android:paddingLeft="@dimen/button_padding_left_right"
                     android:paddingRight="@dimen/button_padding_left_right"
-                    android:text="@string/send_button" />
+                    android:text="@string/send_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flash"
+                    tools:ignore="NotSibling" />
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/send_button"
+                    android:layout_marginStart="152dp"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:paddingLeft="@dimen/button_padding_left_right"
+                    android:paddingRight="@dimen/button_padding_left_right"
+                    android:text="@string/save_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.84"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flash"
+                    tools:ignore="NotSibling" />
+
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

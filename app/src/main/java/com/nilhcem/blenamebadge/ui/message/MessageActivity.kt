@@ -10,14 +10,15 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.CheckBox
 import android.widget.EditText
@@ -44,6 +45,9 @@ import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
 import com.nilhcem.blenamebadge.util.Converters
 import kotlinx.android.synthetic.main.message_activity.*
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Timer
 import java.util.TimerTask
 
@@ -69,8 +73,10 @@ class MessageActivity : AppCompatActivity() {
     private val textSection: LinearLayout by bindView(R.id.section_text)
     private val drawablesSection: LinearLayout by bindView(R.id.section_drawables)
     private val previewBadge: PreviewBadge by bindView(R.id.preview_badge)
+    private val save: Button by bindView(R.id.save_button)
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
+    private lateinit var moshiConverter: MoshiConverter<String>
 
     private var selectedID = -1
 
@@ -113,13 +119,52 @@ class MessageActivity : AppCompatActivity() {
                 }, SCAN_TIMEOUT_MS)
 
                 presenter.sendMessage(this,
-                    when (selectedID) {
-                        R.id.textRadio -> convertTextToDeviceDataModel()
-                        else -> convertBitmapToDeviceDataModel()
-                    }
+                        when (selectedID) {
+                            R.id.textRadio -> convertTextToDeviceDataModel()
+                            else -> convertBitmapToDeviceDataModel()
+                        }
                 )
             } else {
                 prepareForScan()
+            }
+        }
+
+        save.setOnClickListener {
+            try {
+                val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
+                inputManager.hideSoftInputFromWindow(content.windowToken, InputMethodManager.SHOW_FORCED)
+
+                val sdf = SimpleDateFormat("dd-MMM-yyyy-hh_mm_aaa")
+                val fileName = "badge-magic-" + sdf.format(Calendar.getInstance().time).toString()
+                val os = FileOutputStream(fileName, true)
+                var text = "null"
+                var drawableID = "null"
+                var flashSelected = false
+                var marqueeSelected = false
+
+                if (content.text.isNotBlank())
+                    text = content.text.toString()
+                else if (drawableRecyclerAdapter.selectedPosition >= 0)
+                    drawableID = drawableRecyclerAdapter.selectedPosition.toString()
+
+                val selectedSpeed = speed.selectedItem.toString()
+                val selectedMode = mode.selectedItem.toString()
+
+                when {
+                    flash.isChecked -> flashSelected = true
+                    marquee.isChecked -> marqueeSelected = true
+                }
+
+                moshiConverter.toStream((text + drawableID + selectedSpeed + selectedMode + flashSelected.toString() + marqueeSelected.toString()),os)
+
+                val sb = StringBuilder()
+                sb.append("Records saved successfully with file name ")
+                sb.append(fileName)
+
+                Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -155,7 +200,7 @@ class MessageActivity : AppCompatActivity() {
         }
 
         val previewCheckedListener: CompoundButton.OnCheckedChangeListener =
-            CompoundButton.OnCheckedChangeListener { _, _ -> setPreview() }
+                CompoundButton.OnCheckedChangeListener { _, _ -> setPreview() }
         flash.setOnCheckedChangeListener(previewCheckedListener)
         marquee.setOnCheckedChangeListener(previewCheckedListener)
         invertLED.setOnCheckedChangeListener(previewCheckedListener)
@@ -195,24 +240,24 @@ class MessageActivity : AppCompatActivity() {
             Toast.makeText(baseContext, R.string.character_not_found, Toast.LENGTH_SHORT).show()
         }
         previewBadge.setValue(
-            textToSend,
-            marquee.isChecked,
-            flash.isChecked,
-            Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+                textToSend,
+                marquee.isChecked,
+                flash.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
         )
     }
 
     fun selectDrawable(selectedItem: DrawableInfo?) {
         previewBadge.setValue(
-            if (selectedItem != null)
-                Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
-            else
-                Converters.convertTextToLEDHex(if (!invertLED.isChecked) " " else "", invertLED.isChecked).second,
-            marquee.isChecked,
-            flash.isChecked,
-            Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+                if (selectedItem != null)
+                    Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
+                else
+                    Converters.convertTextToLEDHex(if (!invertLED.isChecked) " " else "", invertLED.isChecked).second,
+                marquee.isChecked,
+                flash.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
         )
     }
 
@@ -220,23 +265,23 @@ class MessageActivity : AppCompatActivity() {
         drawableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val listOfDrawables = listOf(
-            DrawableInfo(resources.getDrawable(R.drawable.apple)),
-            DrawableInfo(resources.getDrawable(R.drawable.clock)),
-            DrawableInfo(resources.getDrawable(R.drawable.dustbin)),
-            DrawableInfo(resources.getDrawable(R.drawable.face)),
-            DrawableInfo(resources.getDrawable(R.drawable.heart)),
-            DrawableInfo(resources.getDrawable(R.drawable.home)),
-            DrawableInfo(resources.getDrawable(R.drawable.invader)),
-            DrawableInfo(resources.getDrawable(R.drawable.mail)),
-            DrawableInfo(resources.getDrawable(R.drawable.mix1)),
-            DrawableInfo(resources.getDrawable(R.drawable.mix2)),
-            DrawableInfo(resources.getDrawable(R.drawable.mushroom)),
-            DrawableInfo(resources.getDrawable(R.drawable.mustache)),
-            DrawableInfo(resources.getDrawable(R.drawable.oneup)),
-            DrawableInfo(resources.getDrawable(R.drawable.pause)),
-            DrawableInfo(resources.getDrawable(R.drawable.spider)),
-            DrawableInfo(resources.getDrawable(R.drawable.sun)),
-            DrawableInfo(resources.getDrawable(R.drawable.thumbs_up))
+                DrawableInfo(resources.getDrawable(R.drawable.apple)),
+                DrawableInfo(resources.getDrawable(R.drawable.clock)),
+                DrawableInfo(resources.getDrawable(R.drawable.dustbin)),
+                DrawableInfo(resources.getDrawable(R.drawable.face)),
+                DrawableInfo(resources.getDrawable(R.drawable.heart)),
+                DrawableInfo(resources.getDrawable(R.drawable.home)),
+                DrawableInfo(resources.getDrawable(R.drawable.invader)),
+                DrawableInfo(resources.getDrawable(R.drawable.mail)),
+                DrawableInfo(resources.getDrawable(R.drawable.mix1)),
+                DrawableInfo(resources.getDrawable(R.drawable.mix2)),
+                DrawableInfo(resources.getDrawable(R.drawable.mushroom)),
+                DrawableInfo(resources.getDrawable(R.drawable.mustache)),
+                DrawableInfo(resources.getDrawable(R.drawable.oneup)),
+                DrawableInfo(resources.getDrawable(R.drawable.pause)),
+                DrawableInfo(resources.getDrawable(R.drawable.spider)),
+                DrawableInfo(resources.getDrawable(R.drawable.sun)),
+                DrawableInfo(resources.getDrawable(R.drawable.thumbs_up))
         )
 
         drawableRecyclerAdapter = DrawableAdapter(this, listOfDrawables)
@@ -313,28 +358,28 @@ class MessageActivity : AppCompatActivity() {
 
     private fun convertTextToDeviceDataModel(): DataToSend {
         return DataToSend(listOf(Message(
-            Converters.convertTextToLEDHex(
-                if (content.text.isNotEmpty()) content.text.toString()
-                else if (!invertLED.isChecked) " "
-                else "",
-                invertLED.isChecked
-            ).second,
-            flash.isChecked, marquee.isChecked,
-            Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+                Converters.convertTextToLEDHex(
+                        if (content.text.isNotEmpty()) content.text.toString()
+                        else if (!invertLED.isChecked) " "
+                        else "",
+                        invertLED.isChecked
+                ).second,
+                flash.isChecked, marquee.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
         )))
     }
 
     private fun convertBitmapToDeviceDataModel(): DataToSend {
         return DataToSend(listOf(Message(
-            Converters.convertDrawableToLEDHex(
-                drawableRecyclerAdapter.getSelectedItem()?.image
-                    ?: resources.getDrawable(R.drawable.apple),
-                invertLED.isChecked),
-            flash.isChecked,
-            marquee.isChecked,
-            Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+                Converters.convertDrawableToLEDHex(
+                        drawableRecyclerAdapter.getSelectedItem()?.image
+                                ?: resources.getDrawable(R.drawable.apple),
+                        invertLED.isChecked),
+                flash.isChecked,
+                marquee.isChecked,
+                Speed.values()[speed.selectedItemPosition],
+                Mode.values()[mode.selectedItemPosition]
         )))
     }
 
