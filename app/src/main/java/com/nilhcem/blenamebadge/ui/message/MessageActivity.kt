@@ -101,12 +101,11 @@ class MessageActivity : AppCompatActivity() {
 
             if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
                 // Easter egg
-                send.isEnabled = false
+                showLoaderView(true)
                 val buttonTimer = Timer()
                 buttonTimer.schedule(object : TimerTask() {
                     override fun run() {
                         runOnUiThread {
-                            send.isEnabled = true
                             showLoaderView(false)
                         }
                     }
