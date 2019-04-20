@@ -1,4 +1,4 @@
-package com.nilhcem.blenamebadge.ui.message
+package com.nilhcem.blenamebadge.ui.main
 
 import android.content.Context
 import android.widget.Toast
@@ -10,7 +10,7 @@ import com.nilhcem.blenamebadge.device.bluetooth.GattClient
 import com.nilhcem.blenamebadge.device.bluetooth.ScanHelper
 import com.nilhcem.blenamebadge.device.model.DataToSend
 
-class MessagePresenter {
+class MainPresenter {
 
     private val scanHelper = ScanHelper()
     private val gattClient = GattClient()

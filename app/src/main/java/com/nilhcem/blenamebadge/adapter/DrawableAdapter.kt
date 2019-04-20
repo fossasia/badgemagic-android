@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.data.DrawableInfo
 
-class DrawableAdapter(private val context: Context, private val list: List<DrawableInfo>) : RecyclerView.Adapter<DrawableAdapter.DrawableItemHolder>() {
+class DrawableAdapter(private val context: Context?, private val list: List<DrawableInfo>) : RecyclerView.Adapter<DrawableAdapter.DrawableItemHolder>() {
     private var selectedPosition: Int = -1
     private var listener: OnDrawableSelected? = null
 
@@ -53,8 +53,8 @@ class DrawableAdapter(private val context: Context, private val list: List<Drawa
             image.setImageDrawable(drawableInfo.image)
 
             card.background = when {
-                selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getDrawable(R.color.colorAccent)
-                else -> context.resources.getDrawable(android.R.color.transparent)
+                selectedPosition != -1 && selectedPosition == adapterPosition -> context?.resources?.getDrawable(R.color.colorAccent)
+                else -> context?.resources?.getDrawable(android.R.color.transparent)
             }
         }
 

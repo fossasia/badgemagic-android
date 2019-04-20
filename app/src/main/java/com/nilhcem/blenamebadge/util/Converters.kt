@@ -156,4 +156,15 @@ object Converters {
         }
         return Pair(valid, list)
     }
+
+    fun fixLEDHex(allHex: List<String>, isInverted: Boolean): List<String> {
+        if (!isInverted) {
+            return allHex
+        }
+        val list = mutableListOf<String>()
+        for (str in allHex) {
+            list.add(invertHex(str))
+        }
+        return list
+    }
 }
