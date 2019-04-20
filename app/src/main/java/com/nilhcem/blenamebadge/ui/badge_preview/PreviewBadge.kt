@@ -87,12 +87,12 @@ class PreviewBadge : View {
         val ratioHeight = 1
         val ratioWidth = 3
 
-        val originalWidth = View.MeasureSpec.getSize(widthMeasureSpec)
+        val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
         setMeasuredDimension(
-            View.MeasureSpec.makeMeasureSpec(originalWidth, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(calculatedHeight, View.MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
@@ -252,6 +252,34 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.SNOWFLAKE -> {
+                        val flakeIndex = animationIndex.div(100).rem(badgeWidth / 2)
+
+                        val offsetToAdd = if ((countFrame / (badgeWidth / 2)) > 0)
+                            (countFrame / (badgeWidth / 2)) * badgeWidth + (4 * (countFrame / (badgeWidth / 2)))
+                        else
+                            (countFrame / (badgeWidth / 2)) * badgeWidth
+
+                        if (lastFrame != flakeIndex) {
+                            countFrame += 1
+                        }
+                        lastFrame = flakeIndex
+
+                        if (validMarquee || flashLEDOn &&
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            j + badgeWidth / 2 + offsetToAdd < checkList[i].list.size &&
+                            checkList[i].list[j + badgeWidth / 2 + offsetToAdd]) {
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
+                        }
+
+                        if (countFrame >= ((checkList[0].list.size / badgeWidth) * (badgeWidth / 2))) {
+                            countFrame = 0
+                            lastFrame = 0
+                        }
                     }
                     Mode.PICTURE -> {
                     }
@@ -377,19 +405,21 @@ class PreviewBadge : View {
             Speed.EIGHT -> 8
         }
 
-        val diff = (badgeWidth - (oneByte * allHex.size)) / 2
         for (i in 0 until badgeHeight) {
             for (j in (0 until badgeWidth / 2)) {
                 checkList[i].list.add(false)
             }
         }
-        if (oneByte * allHex.size < badgeWidth) {
+
+        val diff = (badgeWidth - (oneByte * allHex.size)) / 2
+        if (oneByte * allHex.size < badgeWidth && mode != Mode.SNOWFLAKE) {
             for (i in 0 until badgeHeight) {
                 for (j in 0 until diff) {
                     checkList[i].list.add(false)
                 }
             }
         }
+
         for (hex in allHex) {
             for (i in 0 until badgeHeight) {
                 val bin = hexToBin(hex.substring(i * 2, i * 2 + 2))
