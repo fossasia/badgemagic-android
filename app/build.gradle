@@ -4,6 +4,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 androidExtensions {
     experimental = true
@@ -38,7 +39,13 @@ spotless {
 }
 
 dependencies {
+    def moshi_version = '1.8.0'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
@@ -54,6 +61,7 @@ dependencies {
 
     implementation 'no.nordicsemi.android.support.v18:scanner:1.0.0'
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
     testImplementation 'org.amshove.kluent:kluent:1.31'

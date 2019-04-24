@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="square_image_dimension">64dp</dimen>
-    <dimen name="card_radius">10dp</dimen>
-    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="spacing_small">4dp</dimen>

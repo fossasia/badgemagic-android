@@ -3,7 +3,7 @@
     <string name="app_name">Badge Magic</string>
 
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
-    <string name="grant_location_permission">You must grant the location permission</string>
+    <string name="grant_required_permission">You must grant the required permissions</string>
 
     <string name="text_to_send">Text to send:</string>
     <string name="flash">Flash</string>
@@ -19,7 +19,6 @@
     <string name="mode_picture">Picture</string>
     <string name="mode_animation">Animation</string>
     <string name="mode_laser">Laser</string>
-    <string name="send_button">SEND</string>
     <string name="permission_required">Permission required</string>
     <string name="no_device_found">No device found. Please try again.</string>
     <string name="select_drawable_text">Select Drawable:</string>
@@ -29,4 +28,19 @@
     <string name="invertLED">Invert LED</string>
     <string name="enter_text">Enter Text</string>
     <string name="image_bitmap_description">Bitmap Image</string>
+    <string name="save_button">SAVE</string>
+    <string name="save_hint">File Name</string>
+    <string name="validation_save_dialog">Enter file name before continuing</string>
+    <string name="save_dialog_title">Save Configuration</string>
+    <string name="saved_configurations">Saved Configurations:</string>
+    <string name="saveactivity_operation_title">Perform Operation</string>
+    <string name="delete">DELETE</string>
+    <string name="share">SHARE</string>
+    <string name="file_provider_authority" translatable="false">com.nilhcem.blenamebadge.fileprovider</string>
+    <string name="menu_import">Import Badge Configuration</string>
+    <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
+    <string name="save_dialog_already_present">File Already Present</string>
+    <string name="save_dialog_already_present_override">Do you want to override the changes?</string>
+    <string name="import_dialog">Import File</string>
+    <string name="import_dialog_message">Do you want to import</string>
 </resources>
