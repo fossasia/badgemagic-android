@@ -20,8 +20,9 @@ about: Create a bug report to help us improve
 <!-- If applicable, add screenshots to help explain your problem. -->
 
 **Smartphone Info:**
-|               | |
-|---------------|-|
+
+|               |   |
+|---------------|---|
 |Device         |<!-- [e.g. Moto G5 Plus] -->|
 |Android Version|<!-- [e.g. Oreo 8.1] -->    |
 
