@@ -8,4 +8,6 @@
     <dimen name="spacing_small">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="button_padding_left_right">42dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="bottom_bar_margin">64dp</dimen>
 </resources>

@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
 
         viewPager = findViewById(R.id.viewPager)
 
+        setupBottomNavigationMenu()
         prepareForScan()
     }
 
@@ -128,8 +129,20 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
 
             override fun onPageSelected(position: Int) {
                 fragmentList[viewPager.currentItem].initializePreview()
+                navigation.menu.getItem(position).isChecked = true
             }
         })
+    }
+
+    private fun setupBottomNavigationMenu() {
+        navigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.textDrawFragment -> viewPager.currentItem = 0
+                R.id.savedFragment -> viewPager.currentItem = 1
+                else -> viewPager.currentItem = 0
+            }
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 
     private fun prepareForScan() {

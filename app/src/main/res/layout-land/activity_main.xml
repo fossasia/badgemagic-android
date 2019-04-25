@@ -9,6 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_bar_margin"
         android:fillViewport="true">
 
         <LinearLayout
@@ -32,11 +33,27 @@
         </LinearLayout>
     </ScrollView>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:foreground="?attr/selectableItemBackground"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@color/navigation_item"
+        app:itemTextColor="@color/navigation_item"
+        app:labelVisibilityMode="selected"
+        app:menu="@menu/navigation" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/bottom_bar_margin"
         android:tint="@android:color/white"
         app:layout_anchor="@id/mainLayout"
         app:layout_anchorGravity="bottom|right"
