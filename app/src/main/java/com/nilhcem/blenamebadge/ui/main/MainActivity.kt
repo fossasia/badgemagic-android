@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -37,7 +36,7 @@ import java.util.TimerTask
 class MainActivity : AppCompatActivity(), PreviewChangeListener {
 
     companion object {
-        private const val SCAN_TIMEOUT_MS = 10_000L
+        private const val SCAN_TIMEOUT_MS = 9500L
         private const val PICK_FILE_RESULT_CODE = 2
         private const val REQUEST_PERMISSION_CODE = 10
         private const val REQUEST_ENABLE_BT = 1
@@ -66,12 +65,14 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         fab_main.setOnClickListener {
             if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
                 // Easter egg
-                fab_main.visibility = View.GONE
+                Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                startFabAnimation()
+
                 val buttonTimer = Timer()
                 buttonTimer.schedule(object : TimerTask() {
                     override fun run() {
                         runOnUiThread {
-                            fab_main.visibility = View.VISIBLE
+                            endFabAnimation()
                         }
                     }
                 }, SCAN_TIMEOUT_MS)
@@ -80,6 +81,18 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
             } else {
                 prepareForScan()
             }
+        }
+    }
+
+    private fun startFabAnimation() {
+        fab_main.animate().translationXBy(-200f).withEndAction {
+            fab_main.animate().translationXBy(500f).duration = 150
+        }
+    }
+
+    private fun endFabAnimation() {
+        fab_main.animate().translationXBy(-500f).setDuration(150).withEndAction {
+            fab_main.animate().translationXBy(200f).duration = 300
         }
     }
 

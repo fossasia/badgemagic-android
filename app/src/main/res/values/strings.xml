@@ -43,4 +43,5 @@
     <string name="save_dialog_already_present_override">Do you want to override the changes?</string>
     <string name="import_dialog">Import File</string>
     <string name="import_dialog_message">Do you want to import</string>
+    <string name="sending_data">Sending Data.</string>
 </resources>
