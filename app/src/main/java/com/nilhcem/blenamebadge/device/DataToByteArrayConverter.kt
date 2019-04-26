@@ -107,7 +107,15 @@ object DataToByteArrayConverter {
         'W' to "00C6C6C6C6D6FEEEC68200",
         'X' to "00C6C66C7C387C6CC6C600",
         'Y' to "00666666663C1818183C00",
-        'Z' to "00FEC6860C183062C6FE00"
+        'Z' to "00FEC6860C183062C6FE00",
+        '¶' to "003e7a7a7a3a1a0a0a0a00",
+        '£' to "001c222220782020207e00",
+        '∆' to "001010282844444482fe00",
+        '°' to "0038283800000000000000",
+        '€' to "000e10207e207e20100e00",
+        '¢' to "00081c20404040201c0800",
+        '¥' to "0082444428103810381000",
+        '$' to "00287ea8a87c2a2afc2800"
     )
 
     fun convert(data: DataToSend, calendar: Calendar = Calendar.getInstance()): List<ByteArray> {
