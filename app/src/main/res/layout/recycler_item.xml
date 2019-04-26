@@ -19,7 +19,7 @@
             android:layout_height="@dimen/square_image_dimension"
             android:layout_gravity="center"
             android:contentDescription="@string/image_bitmap_description"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/drawable_image_margin"
             android:scaleType="fitCenter"
             android:src="@drawable/mix1" />
     </LinearLayout>

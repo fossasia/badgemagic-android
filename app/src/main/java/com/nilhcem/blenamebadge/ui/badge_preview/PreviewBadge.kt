@@ -85,14 +85,14 @@ class PreviewBadge : View {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val ratioHeight = 1
-        val ratioWidth = 3
+        val ratioWidth = 3.42
 
         val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY))
     }
 
     public override fun onSaveInstanceState(): Parcelable? {

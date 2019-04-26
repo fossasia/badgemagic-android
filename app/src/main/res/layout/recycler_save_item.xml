@@ -16,7 +16,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="@dimen/spacing_normal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text"
@@ -24,10 +24,10 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/options_layout"
                 android:gravity="center"
-                android:minHeight="40dp"
+                android:minHeight="@dimen/title_min_height_large"
                 android:text="AKD"
                 android:textAppearance="@style/TextAppearanceList"
-                android:textSize="20sp" />
+                android:textSize="@dimen/text_size_large_extended" />
 
             <RelativeLayout
                 android:id="@+id/options_layout"
@@ -40,7 +40,9 @@
                     android:id="@+id/options"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="@dimen/title_min_height_large"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     app:srcCompat="@drawable/ic_settings" />
             </RelativeLayout>
         </RelativeLayout>
@@ -48,7 +50,7 @@
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="@dimen/spacing_normal">
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
@@ -58,7 +60,7 @@
                 app:chipIcon="@drawable/ic_chip_flash"
                 app:chipIconTint="@android:color/white"
                 android:id="@+id/chip_flash"
-                app:iconStartPadding="15dp" />
+                app:iconStartPadding="@dimen/spacing_large" />
 
 
             <com.google.android.material.chip.Chip
@@ -69,7 +71,7 @@
                 app:chipIcon="@drawable/ic_chip_marquee"
                 app:chipIconTint="@android:color/white"
                 android:id="@+id/chip_marquee"
-                app:iconStartPadding="15dp" />
+                app:iconStartPadding="@dimen/spacing_large" />
 
 
             <com.google.android.material.chip.Chip
@@ -80,7 +82,7 @@
                 app:chipIcon="@drawable/ic_chip_inverted"
                 app:chipIconTint="@android:color/white"
                 android:id="@+id/chip_inverted"
-                app:iconStartPadding="15dp" />
+                app:iconStartPadding="@dimen/spacing_large" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
@@ -91,7 +93,7 @@
                 app:chipBackgroundColor="@color/colorAccent"
                 app:chipIcon="@drawable/ic_chip_speed"
                 android:id="@+id/chip_speed"
-                app:iconStartPadding="10dp"
+                app:iconStartPadding="@dimen/spacing_large"
                 app:chipIconTint="@android:color/white" />
 
             <com.google.android.material.chip.Chip

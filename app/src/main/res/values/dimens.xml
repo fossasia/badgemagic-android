@@ -3,11 +3,19 @@
     <dimen name="square_image_dimension">64dp</dimen>
     <dimen name="card_radius">8dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
+
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_large_extended">20sp</dimen>
+
     <dimen name="spacing_small">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
     <dimen name="button_padding_left_right">42dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="bottom_bar_margin">64dp</dimen>
+    <dimen name="drawable_image_margin">5dp</dimen>
+    <dimen name="title_min_height_medium">20dp</dimen>
+    <dimen name="title_min_height_large">40dp</dimen>
 </resources>
