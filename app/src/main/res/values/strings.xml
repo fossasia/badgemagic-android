@@ -36,6 +36,7 @@
     <string name="saveactivity_operation_title">Perform Operation</string>
     <string name="delete">DELETE</string>
     <string name="share">SHARE</string>
+    <string name="deleted_saved">Configuration Deleted.</string>
     <string name="file_provider_authority" translatable="false">com.nilhcem.blenamebadge.fileprovider</string>
     <string name="menu_import">Import Badge Configuration</string>
     <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
