@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view"
+                            android:id="@+id/drawablesRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_small">

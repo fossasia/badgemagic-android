@@ -33,7 +33,6 @@ import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.MoshiUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
 import kotlinx.android.synthetic.main.fragment_main_text.*
-import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
@@ -73,7 +72,7 @@ class MainTextDrawableFragment : BaseFragment() {
         setPreview()
     }
 
-    fun selectText() {
+    private fun selectText() {
         val (valid, textToSend) = Converters.convertTextToLEDHex(if (text_to_send.text.isNotEmpty()) text_to_send.text.toString() else if (!invertLED.isChecked) " " else "", invertLED.isChecked)
         if (!valid) {
             Toast.makeText(context, R.string.character_not_found, Toast.LENGTH_SHORT).show()
@@ -87,7 +86,7 @@ class MainTextDrawableFragment : BaseFragment() {
         )
     }
 
-    fun selectDrawable(selectedItem: DrawableInfo?) {
+    private fun selectDrawable(selectedItem: DrawableInfo?) {
         listener?.onPreviewChange(
             if (selectedItem != null)
                 Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
@@ -193,8 +192,8 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private fun setupRecycler() {
-        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recycler_view.adapter = null
+        drawablesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        drawablesRecyclerView.adapter = null
 
         val listOfDrawables = listOf(
             DrawableInfo(resources.getDrawable(R.drawable.apple)),
@@ -217,7 +216,7 @@ class MainTextDrawableFragment : BaseFragment() {
         )
 
         drawableRecyclerAdapter = DrawableAdapter(context, listOfDrawables)
-        recycler_view.adapter = drawableRecyclerAdapter
+        drawablesRecyclerView.adapter = drawableRecyclerAdapter
     }
 
     override fun onResume() {
@@ -269,15 +268,16 @@ class MainTextDrawableFragment : BaseFragment() {
 
         alertDialog.setOnShowListener {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val currentText = saveFileEditText.text
-                var isValid = true
-                if (currentText.isEmpty()) {
+                val fileTitle = saveFileEditText.text
+                if (fileTitle.isEmpty()) {
                     saveFileEditText.error = getString(R.string.validation_save_dialog)
-                    isValid = false
-                }
-                if (isValid) {
+                } else {
                     alertDialog.dismiss()
-                    StoreAsync(currentText.toString(), configToJSON(), WeakReference<Context>(context), listener as PreviewChangeListener).execute()
+                    if (StorageUtils.checkIfFilePresent(fileTitle.toString())) {
+                        showFileOverrideDialog(fileTitle.toString(), configToJSON(), listener as PreviewChangeListener)
+                    } else {
+                        saveFile(fileTitle.toString(), configToJSON(), listener as PreviewChangeListener)
+                    }
                 }
             }
         }
@@ -310,26 +310,12 @@ class MainTextDrawableFragment : BaseFragment() {
         return MoshiUtils.getAdapter().toJson(bConfig)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main_text, container, false)
-    }
-
-    class StoreAsync(private val filename: String, private val json: String, private val context: WeakReference<Context>, private val listener: PreviewChangeListener) : AsyncTask<Void, Void, Boolean>() {
-        override fun doInBackground(vararg params: Void?): Boolean? {
-            return (!StorageUtils.checkIfFilePresent(filename))
-        }
-
-        private fun saveFile() {
-            StorageUtils.saveFile(filename, json)
-            listener.updateSavedList()
-        }
-
-        private fun showFileOverrideDialog() {
-            AlertDialog.Builder(context.get())
-                .setTitle(context.get()?.getString(R.string.save_dialog_already_present))
-                .setMessage(context.get()?.getString(R.string.save_dialog_already_present_override))
+    private fun showFileOverrideDialog(fileName: String, jsonString: String, listener: PreviewChangeListener) {
+        AlertDialog.Builder(context)
+                .setTitle(context?.getString(R.string.save_dialog_already_present))
+                .setMessage(context?.getString(R.string.save_dialog_already_present_override))
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                    saveFile()
+                    saveFile(fileName, jsonString, listener)
                 }
                 .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                     dialog.cancel()
@@ -337,12 +323,23 @@ class MainTextDrawableFragment : BaseFragment() {
                 .show()
         }
 
-        override fun onPostExecute(result: Boolean?) {
-            if (result != null) {
-                if (result) saveFile()
-                else showFileOverrideDialog()
-            }
+    private fun saveFile(fileName: String, jsonString: String, listener: PreviewChangeListener) {
+        StoreAsync(fileName, jsonString, listener).execute()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_main_text, container, false)
+    }
+
+    inner class StoreAsync(private val filename: String, private val json: String, private val listener: PreviewChangeListener) : AsyncTask<Void, Void, Void>() {
+        override fun doInBackground(vararg params: Void?): Void? {
+            StorageUtils.saveFile(filename, json)
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
+            listener.updateSavedList()
         }
     }
 }

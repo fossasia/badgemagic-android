@@ -21,7 +21,7 @@ import com.nilhcem.blenamebadge.device.model.Speed
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.MoshiUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
-import kotlinx.android.synthetic.main.fragment_main_save.recycler_view
+import kotlinx.android.synthetic.main.fragment_main_save.savedConfigRecyclerView
 import java.io.File
 
 class MainSavedFragment : BaseFragment() {
@@ -81,8 +81,9 @@ class MainSavedFragment : BaseFragment() {
     }
 
     private fun setupRecycler() {
-        recycler_view.adapter = null
-        recycler_view.layoutManager = LinearLayoutManager(context)
+        if (savedConfigRecyclerView == null) return
+        savedConfigRecyclerView.adapter = null
+        savedConfigRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val listOfDrawables = StorageUtils.getAllFiles()
 
@@ -98,7 +99,7 @@ class MainSavedFragment : BaseFragment() {
                     setPreviewNull()
             }
         })
-        recycler_view.adapter = recyclerAdapter
+        savedConfigRecyclerView.adapter = recyclerAdapter
     }
 
     private fun showLoadAlert(item: ConfigInfo) {
