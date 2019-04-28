@@ -62,27 +62,32 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         prepareForScan()
     }
 
-    private fun setupFabListener() {
-        fab_main.setOnClickListener {
-            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                // Easter egg
-                Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                startFabAnimation()
+    private fun setupFabListener(bluetoothPresent: Boolean) {
+        if (bluetoothPresent)
+            fab_main.setOnClickListener {
+                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    // Easter egg
+                    Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                    startFabAnimation()
 
-                val buttonTimer = Timer()
-                buttonTimer.schedule(object : TimerTask() {
-                    override fun run() {
-                        runOnUiThread {
-                            endFabAnimation()
+                    val buttonTimer = Timer()
+                    buttonTimer.schedule(object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread {
+                                endFabAnimation()
+                            }
                         }
-                    }
-                }, SCAN_TIMEOUT_MS)
+                    }, SCAN_TIMEOUT_MS)
 
-                presenter.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
-            } else {
-                prepareForScan()
+                    presenter.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
+                } else {
+                    prepareForScan()
+                }
             }
-        }
+        else
+            fab_main.setOnClickListener {
+                Toast.makeText(this, getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun startFabAnimation() {
@@ -147,19 +152,23 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
 
     private fun prepareForScan() {
         if (isBleSupported()) {
-            // Ensures Bluetooth is enabled on the device
-            val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            val btAdapter = btManager.adapter
-            if (btAdapter.isEnabled) {
-                checkManifestPermission()
-            } else {
-                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-            }
+            checkManifestPermission()
         } else {
             Toast.makeText(this, "BLE is not supported", Toast.LENGTH_LONG).show()
             finish()
+        }
+    }
+
+    private fun ensureBluetoothEnabled() {
+        // Ensures Bluetooth is enabled on the device
+        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val btAdapter = btManager.adapter
+        if (btAdapter.isEnabled) {
+            setupFabListener(true)
+        } else {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
     }
 
@@ -174,9 +183,11 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
                 this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 if (resultCode == Activity.RESULT_CANCELED) {
                     showAlertDialog(true)
+                    setupFabListener(false)
                     return
                 } else if (resultCode == Activity.RESULT_OK) {
                     prepareForScan()
+                    setupFabListener(true)
                     return
                 }
             }
@@ -247,7 +258,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Timber.d { "Required Permission Accepted" }
                     setupViewPager()
-                    setupFabListener()
+                    ensureBluetoothEnabled()
                 } else {
                     showAlertDialog(false)
                 }
@@ -275,7 +286,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             setupViewPager()
-            setupFabListener()
+            ensureBluetoothEnabled()
             Timber.i { "Coarse permission granted" }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
