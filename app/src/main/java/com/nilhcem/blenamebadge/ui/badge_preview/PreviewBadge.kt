@@ -85,14 +85,14 @@ class PreviewBadge : View {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val ratioHeight = 1
-        val ratioWidth = 3.42
+        val ratioWidth = 3
 
         val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
@@ -117,8 +117,6 @@ class PreviewBadge : View {
 
             countFrame = 0
             lastFrame = 0
-
-            configValueAnimation(checkList[0].list.size * 200)
 
             currentState = currentState.getParcelable(BUNDLE_STATE) as Parcelable
         }
@@ -160,6 +158,18 @@ class PreviewBadge : View {
 
         // Draw Background
         canvas.drawRoundRect(bgBounds, 25f, 25f, bgPaint)
+
+        val pictureCheckList = ArrayList<CheckList>()
+        if (badgeMode == Mode.PICTURE)
+            for (k in badgeHeight * 2 - 1 downTo 0)
+                if (k % 2 == 0)
+                    pictureCheckList.add(checkList[k / 2])
+                else {
+                    val newList = CheckList()
+                    for (l in 0 until checkList[0].list.size)
+                        newList.list.add(false)
+                    pictureCheckList.add(newList)
+                }
 
         // Draw Cells
         for (i in 0 until badgeHeight) {
@@ -228,6 +238,7 @@ class PreviewBadge : View {
                     }
                     Mode.DOWN -> {
                         val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
+
                         if (validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
@@ -282,6 +293,54 @@ class PreviewBadge : View {
                         }
                     }
                     Mode.PICTURE -> {
+                        val firstLine = (badgeHeight - 1) - animationIndex.div(800).rem(badgeHeight)
+                        val virtualLine = animationIndex.div(800).rem(badgeHeight)
+
+                        if (lastFrame != firstLine) {
+                            countFrame += 1
+                        }
+                        lastFrame = firstLine
+
+                        val pictureCondition = when {
+                            countFrame < badgeHeight ->
+                                i <= (badgeHeight - 1 - virtualLine) &&
+                                    pictureCheckList[badgeHeight.minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
+                            countFrame < (badgeHeight * 2) ->
+                                if (i < virtualLine - 1)
+                                    i < (2 * badgeHeight - 1 - virtualLine) && virtualLine > 2 &&
+                                        pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).minus(1))].list[j + badgeWidth / 2]
+                                else
+                                    checkList[i].list[j + badgeWidth / 2]
+                            countFrame < (badgeHeight * 3) ->
+                                j < checkList[i].list.size &&
+                                    checkList[i].list[j + badgeWidth / 2]
+                            countFrame < (badgeHeight * 4) ->
+                                if (i > virtualLine)
+                                    virtualLine in 0 until i &&
+                                        pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).plus(1))].list[j + badgeWidth / 2]
+                                else
+                                    checkList[i].list[j + badgeWidth / 2]
+                            else ->
+                                i > firstLine &&
+                                    pictureCheckList[badgeHeight.times(3).minus(1).minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
+                        }
+
+                        if (validMarquee || flashLEDOn &&
+                            i < checkList.size &&
+                            j < checkList[i].list.size &&
+                            pictureCondition) {
+
+                            ledEnabled.bounds = cells[i].list[j]
+                            ledEnabled.draw(canvas)
+                        } else {
+                            ledDisabled.bounds = cells[i].list[j]
+                            ledDisabled.draw(canvas)
+                        }
+
+                        if (countFrame > (5 * (badgeHeight) - 1)) {
+                            countFrame = 0
+                            lastFrame = 0
+                        }
                     }
                     Mode.ANIMATION -> {
                         val firstLine = animationIndex.div(200).rem(badgeWidth / 2)
@@ -371,7 +430,10 @@ class PreviewBadge : View {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        configValueAnimation(checkList[0].list.size * 200)
+        if (badgeMode != Mode.PICTURE)
+            configValueAnimation(checkList[0].list.size * 200)
+        else
+            configValueAnimation()
     }
 
     private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
@@ -443,6 +505,10 @@ class PreviewBadge : View {
         lastFrame = 0
 
         invalidate()
-        configValueAnimation(checkList[0].list.size * 200)
+
+        if (badgeMode != Mode.PICTURE)
+            configValueAnimation(checkList[0].list.size * 200)
+        else
+            configValueAnimation()
     }
 }
