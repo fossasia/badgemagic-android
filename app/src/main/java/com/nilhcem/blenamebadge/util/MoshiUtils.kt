@@ -1,6 +1,6 @@
 package com.nilhcem.blenamebadge.util
 
-import com.nilhcem.blenamebadge.data.BadgeConfig
+import com.nilhcem.blenamebadge.data.fragments.BadgeConfig
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
