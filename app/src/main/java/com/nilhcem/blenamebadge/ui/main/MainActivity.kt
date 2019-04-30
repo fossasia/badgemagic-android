@@ -30,6 +30,7 @@ import com.nilhcem.blenamebadge.ui.fragments.MainTextDrawableFragment
 import com.nilhcem.blenamebadge.ui.interfaces.PreviewChangeListener
 import com.nilhcem.blenamebadge.util.StorageUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main_text.*
 import java.util.Timer
 import java.util.TimerTask
 
@@ -66,20 +67,24 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         if (bluetoothPresent)
             fab_main.setOnClickListener {
                 if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                    // Easter egg
-                    Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                    startFabAnimation()
+                    if (viewPager.currentItem == 0 && textRadio.isChecked && text_to_send.text.isEmpty()) {
+                        Toast.makeText(this, getString(R.string.empty_edittext), Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Easter egg
+                        Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                        startFabAnimation()
 
-                    val buttonTimer = Timer()
-                    buttonTimer.schedule(object : TimerTask() {
-                        override fun run() {
-                            runOnUiThread {
-                                endFabAnimation()
+                        val buttonTimer = Timer()
+                        buttonTimer.schedule(object : TimerTask() {
+                            override fun run() {
+                                runOnUiThread {
+                                    endFabAnimation()
+                                }
                             }
-                        }
-                    }, SCAN_TIMEOUT_MS)
+                        }, SCAN_TIMEOUT_MS)
 
-                    presenter.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
+                        presenter.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
+                    }
                 } else {
                     prepareForScan()
                 }

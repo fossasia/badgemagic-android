@@ -114,10 +114,13 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private fun convertBitmapToDeviceDataModel(): DataToSend {
+        if (drawableRecyclerAdapter.getSelectedItem() == null) {
+            Toast.makeText(context, R.string.no_drawable, Toast.LENGTH_SHORT).show()
+        }
         return DataToSend(listOf(Message(
             Converters.convertDrawableToLEDHex(
                 drawableRecyclerAdapter.getSelectedItem()?.image
-                    ?: resources.getDrawable(R.drawable.apple),
+                    ?: resources.getDrawable(R.drawable.mix2),
                 invertLED.isChecked),
             flash.isChecked,
             marquee.isChecked,

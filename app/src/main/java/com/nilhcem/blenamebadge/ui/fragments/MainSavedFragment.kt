@@ -15,6 +15,7 @@ import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.OnSavedItemSelected
 import com.nilhcem.blenamebadge.adapter.SaveAdapter
 import com.nilhcem.blenamebadge.data.ConfigInfo
+import com.nilhcem.blenamebadge.data.DrawableInfo
 import com.nilhcem.blenamebadge.device.model.DataToSend
 import com.nilhcem.blenamebadge.device.model.Message
 import com.nilhcem.blenamebadge.device.model.Mode
@@ -68,15 +69,16 @@ class MainSavedFragment : BaseFragment() {
                 badgeConfig.mode
             )))
         } else {
+            Toast.makeText(context, R.string.no_configuration, Toast.LENGTH_SHORT).show()
             return DataToSend(listOf(Message(
-                Converters.convertTextToLEDHex(
-                    " ",
+                Converters.convertDrawableToLEDHex(
+                    DrawableInfo(resources.getDrawable(R.drawable.mix2)).image,
                     false
-                ).second,
+                ),
                 false,
                 false,
                 Speed.ONE,
-                Mode.LEFT
+                Mode.FIXED
             )))
         }
     }

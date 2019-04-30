@@ -45,6 +45,9 @@
     <string name="import_dialog">Import File</string>
     <string name="import_dialog_message">Do you want to import</string>
     <string name="sending_data">Sending Data.</string>
+    <string name="empty_edittext">Please enter some text to be displayed.</string>
+    <string name="no_drawable">No bitmap selected. Sending default bitmap.</string>
+    <string name="no_configuration">No saved configuration selected. Sending default bitmap.</string>
     <string name="text_draw_fragment">Text/Drawable</string>
     <string name="saved_fragment">Saved List</string>
 </resources>
