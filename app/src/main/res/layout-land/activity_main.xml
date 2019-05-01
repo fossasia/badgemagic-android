@@ -18,18 +18,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
+            <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
                 android:id="@+id/preview_badge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.nilhcem.blenamebadge.ui.view.CustomViewPager
+            <com.nilhcem.blenamebadge.ui.custom.CustomViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-            </com.nilhcem.blenamebadge.ui.view.CustomViewPager>
+            </com.nilhcem.blenamebadge.ui.custom.CustomViewPager>
         </LinearLayout>
     </ScrollView>
 
