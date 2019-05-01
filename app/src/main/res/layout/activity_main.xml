@@ -13,7 +13,7 @@
         android:layout_marginBottom="@dimen/bottom_bar_margin"
         android:orientation="vertical">
 
-        <com.nilhcem.blenamebadge.ui.badge_preview.PreviewBadge
+        <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
             android:id="@+id/preview_badge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

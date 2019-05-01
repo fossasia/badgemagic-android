@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.chip.Chip
 import com.nilhcem.blenamebadge.R
-import com.nilhcem.blenamebadge.data.BadgeConfig
-import com.nilhcem.blenamebadge.data.ConfigInfo
+import com.nilhcem.blenamebadge.data.fragments.BadgeConfig
+import com.nilhcem.blenamebadge.data.fragments.ConfigInfo
 import com.nilhcem.blenamebadge.util.MoshiUtils
 
 class SaveAdapter(private val context: Context?, private val list: List<ConfigInfo>, private val listener: OnSavedItemSelected) : RecyclerView.Adapter<SaveAdapter.SaveItemHolder>() {

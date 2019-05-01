@@ -18,25 +18,26 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.MainPagerAdapter
 import com.nilhcem.blenamebadge.core.android.ext.hideKeyboard
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
-import com.nilhcem.blenamebadge.device.model.Mode
-import com.nilhcem.blenamebadge.device.model.Speed
-import com.nilhcem.blenamebadge.ui.fragments.BaseFragment
-import com.nilhcem.blenamebadge.ui.fragments.MainSavedFragment
-import com.nilhcem.blenamebadge.ui.fragments.MainTextDrawableFragment
-import com.nilhcem.blenamebadge.ui.interfaces.PreviewChangeListener
+import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
+import com.nilhcem.blenamebadge.ui.fragments.main_saved.MainSavedFragment
+import com.nilhcem.blenamebadge.ui.fragments.main_text.MainTextDrawableFragment
+import com.nilhcem.blenamebadge.util.InjectorUtils
+import com.nilhcem.blenamebadge.util.SendingUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_text.*
 import java.util.Timer
 import java.util.TimerTask
 
-class MainActivity : AppCompatActivity(), PreviewChangeListener {
+class MainActivity : AppCompatActivity(), MainNavigator {
 
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
@@ -50,10 +51,13 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
 
     private var fragmentList = listOf<BaseFragment>()
 
-    private val presenter by lazy { MainPresenter() }
+    private var viewModel: MainActivityViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        inject()
+
         setContentView(R.layout.activity_main)
 
         if (intent.action == Intent.ACTION_VIEW)
@@ -62,10 +66,31 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         viewPager = findViewById(R.id.viewPager)
 
         setupBottomNavigationMenu()
+
+        setupPreviewObserver()
+
         prepareForScan()
     }
 
-    private fun setupFabListener(bluetoothPresent: Boolean) {
+    override fun setupPreviewObserver() {
+        viewModel?.getPreviewDetails()?.observe(this, Observer { message ->
+            preview_badge.setValue(
+                message.hexStrings,
+                message.marquee,
+                message.flash,
+                message.speed,
+                message.mode
+            )
+        })
+    }
+
+    override fun inject() {
+        val savedConfigFactory = InjectorUtils.provideDataViewModelFactory()
+        viewModel = ViewModelProviders.of(this, savedConfigFactory)
+            .get(MainActivityViewModel::class.java)
+    }
+
+    override fun setupFabListener(bluetoothPresent: Boolean) {
         if (bluetoothPresent)
             fab_main.setOnClickListener {
                 if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
@@ -82,7 +107,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
                         }
                     }, SCAN_TIMEOUT_MS)
 
-                    presenter.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
+                    SendingUtils.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
                 } else {
                     prepareForScan()
                 }
@@ -93,35 +118,19 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
             }
     }
 
-    private fun startFabAnimation() {
+    override fun startFabAnimation() {
         fab_main.animate().translationXBy(-200f).withEndAction {
             fab_main.animate().translationXBy(500f).duration = 150
         }
     }
 
-    private fun endFabAnimation() {
+    override fun endFabAnimation() {
         fab_main.animate().translationXBy(-500f).setDuration(150).withEndAction {
             fab_main.animate().translationXBy(200f).duration = 300
         }
     }
 
-    override fun onPreviewChange(hexStrings: List<String>, marquee: Boolean, flash: Boolean, speed: Speed, mode: Mode) {
-        preview_badge.setValue(
-            hexStrings,
-            marquee,
-            flash,
-            speed,
-            mode
-        )
-    }
-
-    override fun updateSavedList() {
-        for (fragment in fragmentList) {
-            fragment.updateSavedList()
-        }
-    }
-
-    private fun setupViewPager() {
+    override fun setupViewPager() {
         fragmentList = listOf(
             MainTextDrawableFragment.newInstance(),
             MainSavedFragment.newInstance()
@@ -146,7 +155,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         })
     }
 
-    private fun setupBottomNavigationMenu() {
+    override fun setupBottomNavigationMenu() {
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.textDrawFragment -> viewPager.currentItem = 0
@@ -157,7 +166,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         }
     }
 
-    private fun prepareForScan() {
+    override fun prepareForScan() {
         if (isBleSupported()) {
             checkManifestPermission()
         } else {
@@ -166,7 +175,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         }
     }
 
-    private fun ensureBluetoothEnabled() {
+    override fun ensureBluetoothEnabled() {
         // Ensures Bluetooth is enabled on the device
         val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val btAdapter = btManager.adapter
@@ -202,11 +211,11 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun importFile(data: Intent?) {
+    override fun importFile(data: Intent?) {
         showImportDialog(data?.data)
     }
 
-    private fun showImportDialog(uri: Uri?) {
+    override fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.import_dialog))
             .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
@@ -223,12 +232,12 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
             .show()
     }
 
-    private fun saveImportFile(uri: Uri?) {
-        if (StorageUtils.copyFileToDirectory(this, uri)) updateSavedList()
+    override fun saveImportFile(uri: Uri?) {
+        if (StorageUtils.copyFileToDirectory(this, uri)) viewModel?.updateList()
         else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showOverrideDialog(uri: Uri?) {
+    override fun showOverrideDialog(uri: Uri?) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.save_dialog_already_present))
             .setMessage(getString(R.string.save_dialog_already_present_override))
@@ -274,7 +283,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         }
     }
 
-    private fun showAlertDialog(bluetoothDialog: Boolean) {
+    override fun showAlertDialog(bluetoothDialog: Boolean) {
         val dialogMessage = if (bluetoothDialog) getString(R.string.enable_bluetooth) else getString(R.string.grant_required_permission)
         val builder = AlertDialog.Builder(this)
         builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
@@ -289,7 +298,7 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         builder.create().show()
     }
 
-    private fun checkManifestPermission() {
+    override fun checkManifestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             setupViewPager()
@@ -300,12 +309,12 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
         }
     }
 
-    private fun isBleSupported(): Boolean {
+    override fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.onPause()
+        SendingUtils.onPause()
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import androidx.annotation.DrawableRes
 import android.graphics.drawable.Drawable
-import com.nilhcem.blenamebadge.device.DataToByteArrayConverter
+import com.nilhcem.blenamebadge.data.device.DataToByteArrayConverter
 import java.math.BigInteger
 
 object Converters {
@@ -123,7 +123,7 @@ object Converters {
         return sb.toString()
     }
 
-    fun invertHex(hex: String): String {
+    private fun invertHex(hex: String): String {
         val stBuilder = StringBuilder()
         for (i in 0 until hex.length / 2) {
             val tempstBuilder = StringBuilder()
