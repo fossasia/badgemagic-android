@@ -21,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.MainPagerAdapter
+import com.nilhcem.blenamebadge.core.android.ext.hideKeyboard
+import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.device.model.Mode
 import com.nilhcem.blenamebadge.device.model.Speed
@@ -30,6 +32,7 @@ import com.nilhcem.blenamebadge.ui.fragments.MainTextDrawableFragment
 import com.nilhcem.blenamebadge.ui.interfaces.PreviewChangeListener
 import com.nilhcem.blenamebadge.util.StorageUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main_text.*
 import java.util.Timer
 import java.util.TimerTask
 
@@ -133,6 +136,10 @@ class MainActivity : AppCompatActivity(), PreviewChangeListener {
             }
 
             override fun onPageSelected(position: Int) {
+                if (viewPager.currentItem == 1)
+                    text_to_send.hideKeyboard()
+                else if (textRadio.isChecked)
+                    text_to_send.showKeyboard()
                 fragmentList[viewPager.currentItem].initializePreview()
                 navigation.menu.getItem(position).isChecked = true
             }
