@@ -10,11 +10,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.ArrayAdapter
 import android.widget.AdapterView
-import android.widget.EditText
+import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.Toast
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.nilhcem.blenamebadge.R
@@ -81,7 +81,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             textToSend,
             flash.isChecked,
             marquee.isChecked,
-            Speed.values()[speed.selectedItemPosition],
+            Speed.values()[speed.value.minus(1)],
             Mode.values()[mode.selectedItemPosition]
         )
     }
@@ -95,7 +95,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                     ?: listOf(),
             marquee.isChecked,
             flash.isChecked,
-            Speed.values()[speed.selectedItemPosition],
+            Speed.values()[speed.value.minus(1)],
             Mode.values()[mode.selectedItemPosition]
         )
     }
@@ -108,7 +108,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 flash.isChecked,
                 marquee.isChecked,
                 Mode.values()[mode.selectedItemPosition],
-                Speed.values()[speed.selectedItemPosition]
+                Speed.values()[speed.value.minus(1)]
             )
         )
     }
@@ -122,7 +122,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                     flash.isChecked,
                     marquee.isChecked,
                     Mode.values()[mode.selectedItemPosition],
-                    Speed.values()[speed.selectedItemPosition]
+                    Speed.values()[speed.value.minus(1)]
                 )
             )
         } ?: DataToSend(listOf())
@@ -132,7 +132,6 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         super.onViewCreated(view, savedInstanceState)
 
         val spinnerItem = R.layout.spinner_item
-        speed.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
         mode.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Mode.values().map { getString(it.stringResId) })
 
         save_button.setOnClickListener {
@@ -177,7 +176,8 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         marquee.setOnCheckedChangeListener(previewCheckedListener)
         invertLED.setOnCheckedChangeListener(previewCheckedListener)
 
-        val previewItemListener: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        speed.setOnValueChangedListener { _, _, _ -> setPreview() }
+        mode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
@@ -185,8 +185,6 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 setPreview()
             }
         }
-        speed.onItemSelectedListener = previewItemListener
-        mode.onItemSelectedListener = previewItemListener
 
         textRadio.isChecked = true
 
@@ -300,7 +298,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 flash.isChecked,
                 marquee.isChecked,
                 Mode.values()[mode.selectedItemPosition],
-                Speed.values()[speed.selectedItemPosition]
+                Speed.values()[speed.value.minus(1)]
             )
         )
     }

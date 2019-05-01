@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -96,20 +97,42 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/speed"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"
-                android:typeface="normal" />
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/speed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@id/speed"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/speed"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"
+                    android:typeface="normal" />
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:np_dividerColor="@android:color/transparent"
+                    app:np_fadingEdgeEnabled="true"
+                    app:np_height="64dp"
+                    app:np_max="8"
+                    app:np_min="1"
+                    app:np_orientation="horizontal"
+                    app:np_selectedTextColor="@color/colorPrimary"
+                    app:np_textColor="@color/lighter_grey"
+                    app:np_value="1"
+                    app:np_width="180dp"
+                    app:np_wrapSelectorWheel="true"
+                    app:np_scrollerEnabled="true"/>
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"

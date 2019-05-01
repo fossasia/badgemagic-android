@@ -56,6 +56,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
     kapt "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha04"
 
+    //Spinner Wheel
+    implementation 'com.shawnlin:number-picker:2.4.8'
+
     //Material Design
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 

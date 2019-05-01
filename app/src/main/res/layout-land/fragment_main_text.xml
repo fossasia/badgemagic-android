@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,10 +8,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -19,11 +22,12 @@
                 android:paddingRight="@dimen/spacing_large">
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingRight="@dimen/spacing_normal">
+
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
@@ -78,54 +82,72 @@
                                 android:id="@+id/drawablesRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small"/>
+                                android:layout_marginTop="@dimen/spacing_small" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/spacing_small"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/spacing_small">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/spacing_small">
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="sans-serif-condensed"
                             android:text="@string/speed"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:typeface="normal" />
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="sans-serif-condensed"
                             android:text="@string/mode"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:typeface="normal" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <Spinner
+
+                        <com.shawnlin.numberpicker.NumberPicker
                             android:id="@+id/speed"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_height="wrap_content" />
+                            app:np_dividerColor="@android:color/transparent"
+                            app:np_fadingEdgeEnabled="true"
+                            app:np_height="180dp"
+                            app:np_max="8"
+                            app:np_min="1"
+                            app:np_scrollerEnabled="true"
+                            app:np_selectedTextColor="@color/colorPrimary"
+                            app:np_textColor="@color/lighter_grey"
+                            app:np_value="1"
+                            app:np_width="64dp"
+                            app:np_wrapSelectorWheel="true" />
+
                         <Spinner
                             android:id="@+id/mode"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
                     </LinearLayout>
 
 
@@ -160,12 +182,13 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:paddingLeft="@dimen/button_padding_left_right"
                 android:paddingRight="@dimen/button_padding_left_right"
                 android:text="@string/save_button" />
