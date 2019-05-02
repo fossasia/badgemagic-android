@@ -163,14 +163,44 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/save_button"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:paddingLeft="@dimen/button_padding_left_right"
-                    android:paddingRight="@dimen/button_padding_left_right"
-                    android:text="@string/save_button" />
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/save_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:paddingLeft="@dimen/button_padding_left_right"
+                        android:paddingRight="@dimen/button_padding_left_right"
+                        android:text="@string/save_button" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ProgressBar
+                        android:id="@+id/send_progress"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/transfer_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:paddingLeft="@dimen/button_padding_left_right"
+                        android:paddingRight="@dimen/button_padding_left_right"
+                        android:text="@string/transfer_button" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

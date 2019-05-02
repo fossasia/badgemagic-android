@@ -7,10 +7,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -19,11 +21,12 @@
                 android:paddingRight="@dimen/spacing_large">
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingRight="@dimen/spacing_normal">
+
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
@@ -78,54 +81,61 @@
                                 android:id="@+id/drawablesRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small"/>
+                                android:layout_marginTop="@dimen/spacing_small" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/spacing_small"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/spacing_small">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/spacing_small">
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="sans-serif-condensed"
                             android:text="@string/speed"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:typeface="normal" />
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="sans-serif-condensed"
                             android:text="@string/mode"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold"
                             android:typeface="normal" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <Spinner
                             android:id="@+id/speed"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
                         <Spinner
                             android:id="@+id/mode"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
                     </LinearLayout>
 
 
@@ -160,15 +170,53 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <Button
-                android:id="@+id/save_button"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/button_padding_left_right"
-                android:paddingRight="@dimen/button_padding_left_right"
-                android:text="@string/save_button" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/save_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:paddingLeft="@dimen/button_padding_left_right"
+                        android:paddingRight="@dimen/button_padding_left_right"
+                        android:text="@string/save_button" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ProgressBar
+                        android:id="@+id/send_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/transfer_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:paddingLeft="@dimen/button_padding_left_right"
+                        android:paddingRight="@dimen/button_padding_left_right"
+                        android:text="@string/transfer_button" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
