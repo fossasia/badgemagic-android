@@ -138,36 +138,7 @@
                             android:layout_weight="1" />
                     </LinearLayout>
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/flash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_normal"
-                            android:layout_weight="1"
-                            android:text="@string/flash" />
-
-                        <CheckBox
-                            android:id="@+id/marquee"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_normal"
-                            android:layout_weight="1"
-                            android:text="@string/marquee" />
-
-                        <CheckBox
-                            android:id="@+id/invertLED"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_normal"
-                            android:layout_weight="1"
-                            android:text="@string/invertLED" />
-                    </LinearLayout>
+                    <include layout="@layout/effects_layout" />
                 </LinearLayout>
             </LinearLayout>
 

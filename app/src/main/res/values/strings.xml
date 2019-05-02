@@ -8,8 +8,8 @@
     <string name="text_to_send">Text to send:</string>
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
-    <string name="speed">Speed:</string>
-    <string name="mode">Animation:</string>
+    <string name="speed">Speed</string>
+    <string name="mode">Animation</string>
     <string name="mode_left">Left</string>
     <string name="mode_right">Right</string>
     <string name="mode_up">Up</string>
@@ -23,8 +23,8 @@
     <string name="no_device_found">No device found. Please try again.</string>
     <string name="select_drawable_text">Select Drawable:</string>
     <string name="character_not_found">Some of the character(s) entered cannot be displayed.</string>
-    <string name="send_text">Send Text</string>
-    <string name="send_drawables">Send Drawables</string>
+    <string name="send_text">Editor</string>
+    <string name="send_drawables">Clipart</string>
     <string name="invertLED">Invert LED</string>
     <string name="enter_text">Enter Text</string>
     <string name="image_bitmap_description">Bitmap Image</string>
@@ -48,4 +48,5 @@
     <string name="text_draw_fragment">Text/Drawable</string>
     <string name="saved_fragment">Saved List</string>
     <string name="transfer_button">Transfer</string>
+    <string name="effects">Effects</string>
 </resources>
