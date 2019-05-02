@@ -12,7 +12,7 @@ interface MainTextDrawableNavigator {
 
     fun convertBitmapToDeviceDataModel(): DataToSend
 
-    fun setupRecycler()
+    fun setupRecyclerViews()
 
     fun removeListeners()
 
