@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -16,14 +17,18 @@ import android.widget.ArrayAdapter
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.CompoundButton
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
+import com.nilhcem.blenamebadge.adapter.ModeAdapter
 import com.nilhcem.blenamebadge.adapter.OnDrawableSelected
+import com.nilhcem.blenamebadge.adapter.OnModeSelected
 import com.nilhcem.blenamebadge.core.android.ext.hideKeyboard
 import com.nilhcem.blenamebadge.core.android.ext.showKeyboard
 import com.nilhcem.blenamebadge.data.DrawableInfo
+import com.nilhcem.blenamebadge.data.ModeInfo
 import com.nilhcem.blenamebadge.data.device.model.DataToSend
 import com.nilhcem.blenamebadge.data.device.model.Mode
 import com.nilhcem.blenamebadge.data.device.model.Speed
@@ -41,7 +46,6 @@ import java.util.TimerTask
 
 class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     companion object {
-
         private const val SCAN_TIMEOUT_MS = 9500L
         @JvmStatic
         fun newInstance() =
@@ -49,6 +53,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     }
 
     private lateinit var drawableRecyclerAdapter: DrawableAdapter
+    private lateinit var modeAdapter: ModeAdapter
 
     private var selectedID = -1
 
@@ -87,7 +92,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             flash.isChecked,
             marquee.isChecked,
             Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+            Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
 
@@ -101,7 +106,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             marquee.isChecked,
             flash.isChecked,
             Speed.values()[speed.selectedItemPosition],
-            Mode.values()[mode.selectedItemPosition]
+            Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
 
@@ -112,7 +117,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 invertLED.isChecked,
                 flash.isChecked,
                 marquee.isChecked,
-                Mode.values()[mode.selectedItemPosition],
+                Mode.values()[modeAdapter.getSelectedItemPosition()],
                 Speed.values()[speed.selectedItemPosition]
             )
         )
@@ -126,7 +131,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                     invertLED.isChecked,
                     flash.isChecked,
                     marquee.isChecked,
-                    Mode.values()[mode.selectedItemPosition],
+                    Mode.values()[modeAdapter.getSelectedItemPosition()],
                     Speed.values()[speed.selectedItemPosition]
                 )
             )
@@ -138,7 +143,8 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
 
         val spinnerItem = R.layout.spinner_item
         speed.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
-        mode.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Mode.values().map { getString(it.stringResId) })
+
+        setupRecyclerViews()
 
         save_button.setOnClickListener {
             text_to_send.hideKeyboard()
@@ -215,14 +221,11 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             }
         }
         speed.onItemSelectedListener = previewItemListener
-        mode.onItemSelectedListener = previewItemListener
 
         textRadio.isChecked = true
-
-        setupRecycler()
     }
 
-    override fun setupRecycler() {
+    override fun setupRecyclerViews() {
         drawablesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         drawablesRecyclerView.adapter = null
 
@@ -248,6 +251,40 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
 
         drawableRecyclerAdapter = DrawableAdapter(context, listOfDrawables)
         drawablesRecyclerView.adapter = drawableRecyclerAdapter
+
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val gridManager = GridLayoutManager(context, 20)
+            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if ((position + 1) > 5) 5 else 4
+                }
+            }
+            modeRecyclerView.layoutManager = gridManager
+        } else {
+            modeRecyclerView.layoutManager = GridLayoutManager(context, 3)
+        }
+
+        modeRecyclerView.adapter = null
+
+        val listOfAnimations = listOf(
+            ModeInfo(R.drawable.ic_anim_left, Mode.LEFT),
+            ModeInfo(R.drawable.ic_anim_right, Mode.RIGHT),
+            ModeInfo(R.drawable.ic_anim_up, Mode.UP),
+            ModeInfo(R.drawable.ic_anim_down, Mode.DOWN),
+            ModeInfo(R.drawable.ic_anim_fixed, Mode.FIXED),
+            ModeInfo(R.drawable.ic_anim_fixed, Mode.SNOWFLAKE),
+            ModeInfo(R.drawable.ic_anim_picture, Mode.PICTURE),
+            ModeInfo(R.drawable.ic_anim_animation, Mode.ANIMATION),
+            ModeInfo(R.drawable.ic_anim_laser, Mode.LASER)
+        )
+
+        modeAdapter = ModeAdapter(context, listOfAnimations)
+        modeAdapter.setListener(object : OnModeSelected {
+            override fun onSelected() {
+                setPreview()
+            }
+        })
+        modeRecyclerView.adapter = modeAdapter
     }
 
     override fun onResume() {
@@ -328,7 +365,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 invertLED.isChecked,
                 flash.isChecked,
                 marquee.isChecked,
-                Mode.values()[mode.selectedItemPosition],
+                Mode.values()[modeAdapter.getSelectedItemPosition()],
                 Speed.values()[speed.selectedItemPosition]
             )
         )

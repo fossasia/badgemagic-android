@@ -47,6 +47,9 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    //Gif Library
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'

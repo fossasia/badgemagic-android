@@ -9,7 +9,7 @@
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
     <string name="speed">Speed:</string>
-    <string name="mode">Mode:</string>
+    <string name="mode">Animation:</string>
     <string name="mode_left">Left</string>
     <string name="mode_right">Right</string>
     <string name="mode_up">Up</string>

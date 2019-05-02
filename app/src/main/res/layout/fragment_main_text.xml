@@ -121,10 +121,12 @@
                 android:textStyle="bold"
                 android:typeface="normal" />
 
-            <Spinner
-                android:id="@+id/mode"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/modeRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -186,10 +188,10 @@
 
                     <ProgressBar
                         android:id="@+id/send_progress"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_height="wrap_content" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/transfer_button"
