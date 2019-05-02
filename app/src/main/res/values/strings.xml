@@ -47,4 +47,5 @@
     <string name="sending_data">Sending Data.</string>
     <string name="text_draw_fragment">Text/Drawable</string>
     <string name="saved_fragment">Saved List</string>
+    <string name="transfer_button">Transfer</string>
 </resources>

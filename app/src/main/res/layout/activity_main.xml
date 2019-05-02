@@ -10,7 +10,6 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/bottom_bar_margin"
         android:orientation="vertical">
 
         <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
@@ -31,6 +30,7 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         android:foreground="?attr/selectableItemBackground"
@@ -40,16 +40,4 @@
         app:labelVisibilityMode="selected"
         app:menu="@menu/navigation" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/bottom_bar_margin"
-        android:tint="@android:color/white"
-        app:layout_anchor="@id/mainLayout"
-        app:layout_anchorGravity="bottom|right"
-        app:srcCompat="@drawable/ic_send" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

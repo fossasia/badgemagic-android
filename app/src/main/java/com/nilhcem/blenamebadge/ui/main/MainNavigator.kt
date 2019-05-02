@@ -4,17 +4,12 @@ import android.content.Intent
 import android.net.Uri
 
 interface MainNavigator {
-    fun setupFabListener(bluetoothPresent: Boolean)
 
     fun setupPreviewObserver()
 
     fun inject()
 
     fun ensureBluetoothEnabled()
-
-    fun startFabAnimation()
-
-    fun endFabAnimation()
 
     fun setupViewPager()
 

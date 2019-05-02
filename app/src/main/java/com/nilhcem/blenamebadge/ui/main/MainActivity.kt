@@ -34,13 +34,10 @@ import com.nilhcem.blenamebadge.util.SendingUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main_text.*
-import java.util.Timer
-import java.util.TimerTask
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 
     companion object {
-        private const val SCAN_TIMEOUT_MS = 9500L
         private const val PICK_FILE_RESULT_CODE = 2
         private const val REQUEST_PERMISSION_CODE = 10
         private const val REQUEST_ENABLE_BT = 1
@@ -88,46 +85,6 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         val savedConfigFactory = InjectorUtils.provideDataViewModelFactory()
         viewModel = ViewModelProviders.of(this, savedConfigFactory)
             .get(MainActivityViewModel::class.java)
-    }
-
-    override fun setupFabListener(bluetoothPresent: Boolean) {
-        if (bluetoothPresent)
-            fab_main.setOnClickListener {
-                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                    // Easter egg
-                    Toast.makeText(this, getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                    startFabAnimation()
-
-                    val buttonTimer = Timer()
-                    buttonTimer.schedule(object : TimerTask() {
-                        override fun run() {
-                            runOnUiThread {
-                                endFabAnimation()
-                            }
-                        }
-                    }, SCAN_TIMEOUT_MS)
-
-                    SendingUtils.sendMessage(this, fragmentList[viewPager.currentItem].getSendData())
-                } else {
-                    prepareForScan()
-                }
-            }
-        else
-            fab_main.setOnClickListener {
-                Toast.makeText(this, getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
-            }
-    }
-
-    override fun startFabAnimation() {
-        fab_main.animate().translationXBy(-200f).withEndAction {
-            fab_main.animate().translationXBy(500f).duration = 150
-        }
-    }
-
-    override fun endFabAnimation() {
-        fab_main.animate().translationXBy(-500f).setDuration(150).withEndAction {
-            fab_main.animate().translationXBy(200f).duration = 300
-        }
     }
 
     override fun setupViewPager() {
@@ -179,9 +136,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         // Ensures Bluetooth is enabled on the device
         val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val btAdapter = btManager.adapter
-        if (btAdapter.isEnabled) {
-            setupFabListener(true)
-        } else {
+        if (!btAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
@@ -199,11 +154,9 @@ class MainActivity : AppCompatActivity(), MainNavigator {
                 this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 if (resultCode == Activity.RESULT_CANCELED) {
                     showAlertDialog(true)
-                    setupFabListener(false)
                     return
                 } else if (resultCode == Activity.RESULT_OK) {
                     prepareForScan()
-                    setupFabListener(true)
                     return
                 }
             }

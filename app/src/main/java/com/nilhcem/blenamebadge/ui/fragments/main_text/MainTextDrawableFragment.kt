@@ -2,6 +2,7 @@ package com.nilhcem.blenamebadge.ui.fragments.main_text
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
@@ -35,9 +36,13 @@ import kotlinx.android.synthetic.main.fragment_main_text.*
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
+import java.util.Timer
+import java.util.TimerTask
 
 class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     companion object {
+
+        private const val SCAN_TIMEOUT_MS = 9500L
         @JvmStatic
         fun newInstance() =
             MainTextDrawableFragment()
@@ -138,6 +143,30 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         save_button.setOnClickListener {
             text_to_send.hideKeyboard()
             showSaveFileDialog()
+        }
+
+        transfer_button.setOnClickListener {
+            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                // Easter egg
+                Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+
+                transfer_button.visibility = View.GONE
+                send_progress.visibility = View.VISIBLE
+
+                val buttonTimer = Timer()
+                buttonTimer.schedule(object : TimerTask() {
+                    override fun run() {
+                        activity?.runOnUiThread {
+                            transfer_button.visibility = View.VISIBLE
+                            send_progress.visibility = View.GONE
+                        }
+                    }
+                }, SCAN_TIMEOUT_MS)
+
+                SendingUtils.sendMessage(requireContext(), getSendData())
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+            }
         }
 
         radioGroup.setOnCheckedChangeListener { _, optionId ->
