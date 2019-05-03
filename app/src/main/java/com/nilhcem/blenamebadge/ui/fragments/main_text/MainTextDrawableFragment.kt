@@ -36,7 +36,7 @@ import com.nilhcem.blenamebadge.data.device.model.Speed
 import com.nilhcem.blenamebadge.data.util.SendingData
 import com.nilhcem.blenamebadge.ui.custom.knob.Croller
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
-import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragmentViewModel
+import com.nilhcem.blenamebadge.ui.AppViewModel
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
 import kotlinx.android.synthetic.main.effects_layout.*
@@ -455,7 +455,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         return inflater.inflate(R.layout.fragment_main_text, container, false)
     }
 
-    class StoreAsync(private val filename: String, private val json: String, private val viewModel: BaseFragmentViewModel) : AsyncTask<Void, Void, Void>() {
+    class StoreAsync(private val filename: String, private val json: String, private val viewModel: AppViewModel) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             viewModel.saveFile(filename, json)
             return null
