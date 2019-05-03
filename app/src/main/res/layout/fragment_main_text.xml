@@ -1,225 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/bottom_bar_margin"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large">
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/drawableRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/send_drawables" />
+
+                <RadioButton
+                    android:id="@+id/textRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/send_text" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/section_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/text_to_send"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:hint="@string/enter_text"
+                        android:inputType="text" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/section_drawables"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawablesRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <include layout="@layout/sections_tab" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_large">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/bottom_bar_margin"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-            <RadioButton
-                android:id="@+id/drawableRadio"
+            <Button
+                android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/send_drawables" />
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:paddingLeft="@dimen/button_padding_left_right"
+                android:paddingRight="@dimen/button_padding_left_right"
+                android:text="@string/save_button" />
+        </RelativeLayout>
 
-            <RadioButton
-                android:id="@+id/textRadio"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ProgressBar
+                android:id="@+id/send_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/send_text" />
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
 
-        </RadioGroup>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/section_text"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/transfer_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/text_to_send"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"
-                    android:typeface="normal" />
-
-                <EditText
-                    android:id="@+id/text_to_send"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:hint="@string/enter_text"
-                    android:inputType="text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/section_drawables"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/select_drawable_text"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"
-                    android:typeface="normal" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/drawablesRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/speed"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"
-                    android:typeface="normal" />
-
-                <TextView
-                    android:id="@+id/textSpeed"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center"
-                    android:textSize="64sp"
-                    android:textStyle="bold"
-                    android:typeface="normal" />
-            </LinearLayout>
-
-            <com.nilhcem.blenamebadge.ui.custom.knob.Croller
-                android:id="@+id/speedKnob"
-                android:layout_width="@dimen/knob_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/knob_margin"
-                android:layout_marginEnd="@dimen/knob_margin"
-                app:back_circle_color="@color/back_circle_color"
-                app:indicator_color="@color/indicator_color"
-                app:indicator_width="@integer/knob_indicator_width"
-                app:is_continuous="true"
-                app:main_circle_color="@android:color/white"
-                app:max="8"
-                app:progress_primary_color="@color/indicator_color"
-                app:progress_secondary_color="@color/progress_secondary_color"
-                app:start_offset="45" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:fontFamily="sans-serif-condensed"
-            android:text="@string/mode"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            android:typeface="normal" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/modeRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:fontFamily="sans-serif-condensed"
-            android:text="@string/effects"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            android:typeface="normal" />
-
-        <include layout="@layout/effects_layout" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:baselineAligned="false"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Button
-                    android:id="@+id/save_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:paddingLeft="@dimen/button_padding_left_right"
-                    android:paddingRight="@dimen/button_padding_left_right"
-                    android:text="@string/save_button" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ProgressBar
-                    android:id="@+id/send_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/transfer_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:paddingLeft="@dimen/button_padding_left_right"
-                    android:paddingRight="@dimen/button_padding_left_right"
-                    android:text="@string/transfer_button" />
-            </RelativeLayout>
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:paddingLeft="@dimen/button_padding_left_right"
+                android:paddingRight="@dimen/button_padding_left_right"
+                android:text="@string/transfer_button" />
+        </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>
+
