@@ -18,4 +18,6 @@
     <dimen name="drawable_image_margin">5dp</dimen>
     <dimen name="title_min_height_medium">20dp</dimen>
     <dimen name="title_min_height_large">40dp</dimen>
+    <dimen name="knob_margin">20dp</dimen>
+    <dimen name="knob_width">150dp</dimen>
 </resources>

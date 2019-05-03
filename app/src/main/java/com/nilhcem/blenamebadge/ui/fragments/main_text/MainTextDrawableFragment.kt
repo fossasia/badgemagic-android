@@ -13,8 +13,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.widget.TextView
 import android.widget.LinearLayout
@@ -35,6 +33,7 @@ import com.nilhcem.blenamebadge.data.device.model.DataToSend
 import com.nilhcem.blenamebadge.data.device.model.Mode
 import com.nilhcem.blenamebadge.data.device.model.Speed
 import com.nilhcem.blenamebadge.data.util.SendingData
+import com.nilhcem.blenamebadge.ui.custom.knob.Croller
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragmentViewModel
 import com.nilhcem.blenamebadge.util.Converters
@@ -95,7 +94,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             textToSend,
             flash.isChecked,
             marquee.isChecked,
-            Speed.values()[speed.selectedItemPosition],
+            Speed.values()[speedKnob.progress.minus(1)],
             Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
@@ -109,7 +108,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                     ?: listOf(),
             marquee.isChecked,
             flash.isChecked,
-            Speed.values()[speed.selectedItemPosition],
+            Speed.values()[speedKnob.progress.minus(1)],
             Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
@@ -122,7 +121,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 flash.isChecked,
                 marquee.isChecked,
                 Mode.values()[modeAdapter.getSelectedItemPosition()],
-                Speed.values()[speed.selectedItemPosition]
+                Speed.values()[speedKnob.progress.minus(1)]
             )
         )
     }
@@ -136,7 +135,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                     flash.isChecked,
                     marquee.isChecked,
                     Mode.values()[modeAdapter.getSelectedItemPosition()],
-                    Speed.values()[speed.selectedItemPosition]
+                    Speed.values()[speedKnob.progress.minus(1)]
                 )
             )
         } ?: DataToSend(listOf())
@@ -146,9 +145,13 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         super.onViewCreated(view, savedInstanceState)
 
         val spinnerItem = R.layout.spinner_item
-        speed.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
+        //speed.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
 
         setupRecyclerViews()
+
+        configureEffects()
+
+        setupSpeedKnob()
 
         save_button.setOnClickListener {
             text_to_send.hideKeyboard()
@@ -210,19 +213,16 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             selectedID = optionId
         }
 
-        configureEffects()
+        textRadio.isChecked = true
+    }
 
-        val previewItemListener: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    private fun setupSpeedKnob() {
+        speedKnob.setOnProgressChangedListener(object : Croller.OnProgressChangedListener {
+            override fun onProgressChanged(progress: Int) {
+                textSpeed.text = progress.toString()
                 setPreview()
             }
-        }
-        speed.onItemSelectedListener = previewItemListener
-
-        textRadio.isChecked = true
+        })
     }
 
     private fun configureEffects() {
@@ -392,7 +392,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
                 flash.isChecked,
                 marquee.isChecked,
                 Mode.values()[modeAdapter.getSelectedItemPosition()],
-                Speed.values()[speed.selectedItemPosition]
+                Speed.values()[speedKnob.progress.minus(1)]
             )
         )
     }
