@@ -5,6 +5,7 @@
         <item
             android:id="@+id/menu_import"
             android:title="@string/menu_import"
+            app:theme="@style/AppTheme.Widget.ActionButton"
             app:showAsAction="always" />
     </group>
 </menu>

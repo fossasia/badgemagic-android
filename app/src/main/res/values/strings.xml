@@ -32,11 +32,11 @@
     <string name="save_dialog_title">Save Badge</string>
     <string name="saved_configurations">Saved Badges</string>
     <string name="saveactivity_operation_title">Perform Operation</string>
-    <string name="delete">DELETE</string>
-    <string name="share">SHARE</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
     <string name="deleted_saved">Configuration Deleted.</string>
     <string name="file_provider_authority" translatable="false">com.nilhcem.blenamebadge.fileprovider</string>
-    <string name="menu_import">IMPORT</string>
+    <string name="menu_import">Import</string>
     <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
     <string name="save_dialog_already_present">File Already Present</string>
     <string name="save_dialog_already_present_override">Do you want to override the changes?</string>
