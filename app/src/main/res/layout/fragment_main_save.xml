@@ -2,23 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/spacing_large">
+    android:orientation="vertical">
 
-    <TextView
+    <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
+        android:id="@+id/preview_badge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="@string/saved_configurations"
-        android:textSize="@dimen/text_size_normal"
-        android:textStyle="bold"
-        android:typeface="normal" />
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/savedConfigRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/saved_configurations"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            android:typeface="normal" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedConfigRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 </LinearLayout>

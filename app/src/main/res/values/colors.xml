@@ -3,7 +3,6 @@
     <color name="colorPrimary">#D32F2F</color>
     <color name="colorPrimaryDark">#C72C2C</color>
     <color name="colorAccent">#D32F2F</color>
-    <color name="lighter_grey">#757575</color>
 
     <!-- knob Colors -->
     <color name="back_circle_color">#EDEDED</color>
