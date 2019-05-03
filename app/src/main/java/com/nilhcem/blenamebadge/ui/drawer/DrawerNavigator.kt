@@ -1,19 +1,14 @@
-package com.nilhcem.blenamebadge.ui.main
+package com.nilhcem.blenamebadge.ui.drawer
 
 import android.content.Intent
 import android.net.Uri
+import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 
-interface MainNavigator {
+interface DrawerNavigator {
 
-    fun setupPreviewObserver()
-
-    fun inject()
+    fun switchFragment(fragment: BaseFragment)
 
     fun ensureBluetoothEnabled()
-
-    fun setupViewPager()
-
-    fun setupBottomNavigationMenu()
 
     fun prepareForScan()
 
@@ -30,4 +25,6 @@ interface MainNavigator {
     fun checkManifestPermission()
 
     fun isBleSupported(): Boolean
+
+    fun setupDrawerAndToolbar()
 }

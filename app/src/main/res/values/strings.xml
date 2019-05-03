@@ -5,7 +5,6 @@
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
     <string name="grant_required_permission">You must grant the required permissions</string>
 
-    <string name="text_to_send">Text to send:</string>
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
     <string name="speed">Speed</string>
@@ -21,7 +20,6 @@
     <string name="mode_laser">Laser</string>
     <string name="permission_required">Permission required</string>
     <string name="no_device_found">No device found. Please try again.</string>
-    <string name="select_drawable_text">Select Drawable:</string>
     <string name="character_not_found">Some of the character(s) entered cannot be displayed.</string>
     <string name="send_text">Editor</string>
     <string name="send_drawables">Clipart</string>
@@ -31,22 +29,32 @@
     <string name="save_button">Save</string>
     <string name="save_hint">File Name</string>
     <string name="validation_save_dialog">Enter file name before continuing</string>
-    <string name="save_dialog_title">Save Configuration</string>
-    <string name="saved_configurations">Saved Configurations:</string>
+    <string name="save_dialog_title">Save Badge</string>
+    <string name="saved_configurations">Saved Badges</string>
     <string name="saveactivity_operation_title">Perform Operation</string>
     <string name="delete">DELETE</string>
     <string name="share">SHARE</string>
     <string name="deleted_saved">Configuration Deleted.</string>
     <string name="file_provider_authority" translatable="false">com.nilhcem.blenamebadge.fileprovider</string>
-    <string name="menu_import">Import Badge Configuration</string>
+    <string name="menu_import">IMPORT</string>
     <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
     <string name="save_dialog_already_present">File Already Present</string>
     <string name="save_dialog_already_present_override">Do you want to override the changes?</string>
     <string name="import_dialog">Import File</string>
     <string name="import_dialog_message">Do you want to import</string>
     <string name="sending_data">Sending Data.</string>
-    <string name="text_draw_fragment">Text/Drawable</string>
-    <string name="saved_fragment">Saved List</string>
     <string name="transfer_button">Transfer</string>
     <string name="effects">Effects</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="drawer_other">Other</string>
+    <string name="drawer_feedback">Feedback/Bug Reports</string>
+    <string name="drawer_buy_badge">Buy Badge</string>
+    <string name="drawer_about_us">About Us</string>
+    <string name="drawer_saved_badge">Saved Badges</string>
+    <string name="drawer_create_badges">Create Badges</string>
+    <string name="success_import_json">Import Successful</string>
 </resources>

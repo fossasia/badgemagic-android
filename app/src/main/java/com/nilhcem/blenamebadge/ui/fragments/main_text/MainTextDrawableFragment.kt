@@ -49,6 +49,7 @@ import java.util.Calendar
 import java.util.Timer
 import java.util.TimerTask
 
+@Suppress("DEPRECATION")
 class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
@@ -87,27 +88,24 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     }
 
     override fun selectText() {
-        val (valid, textToSend) = viewModel?.textToLEDHex(if (text_to_send.text.isNotEmpty()) text_to_send.text.toString() else if (!invertLED.isChecked) " " else "", invertLED.isChecked)
-            ?: Pair(false, listOf())
+        val (valid, textToSend) = Converters.convertTextToLEDHex(if (text_to_send.text.isNotEmpty()) text_to_send.text.toString() else if (!invertLED.isChecked) " " else "", invertLED.isChecked)
         if (!valid) {
             Toast.makeText(context, R.string.character_not_found, Toast.LENGTH_SHORT).show()
         }
-        viewModel?.updatePreview(
+        preview_badge.setValue(
             textToSend,
-            flash.isChecked,
             marquee.isChecked,
+            flash.isChecked,
             Speed.values()[speedKnob.progress.minus(1)],
             Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
 
     override fun selectDrawable(selectedItem: DrawableInfo?) {
-        viewModel?.updatePreview(
-            if (selectedItem != null)
-                Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
-            else
-                viewModel?.textToLEDHex(if (!invertLED.isChecked) " " else "", invertLED.isChecked)?.second
-                    ?: listOf(),
+        preview_badge.setValue(if (selectedItem != null)
+            Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
+        else
+            Converters.convertTextToLEDHex(if (!invertLED.isChecked) " " else "", invertLED.isChecked).second,
             marquee.isChecked,
             flash.isChecked,
             Speed.values()[speedKnob.progress.minus(1)],
@@ -217,7 +215,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         textRadio.isChecked = true
     }
 
-    private fun setupTabLayout() {
+    override fun setupTabLayout() {
         val speedTab = tabLayout.newTab().setText(requireContext().getString(R.string.speed))
         val modeTab = tabLayout.newTab().setText(requireContext().getString(R.string.mode))
         val effectsTab = tabLayout.newTab().setText(requireContext().getString(R.string.effects))
@@ -255,7 +253,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         tabLayout.selectTab(speedTab, true)
     }
 
-    private fun setupSpeedKnob() {
+    override fun setupSpeedKnob() {
         speedKnob.setOnProgressChangedListener(object : Croller.OnProgressChangedListener {
             override fun onProgressChanged(progress: Int) {
                 textSpeed.text = progress.toString()
@@ -264,7 +262,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         })
     }
 
-    private fun configureEffects() {
+    override fun configureEffects() {
         card_effect_flash.setOnClickListener {
             flash.isChecked = !flash.isChecked
             setBackgroundOf(card_effect_flash, effect_flash, flash_title, flash.isChecked)
@@ -282,7 +280,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         }
     }
 
-    private fun setBackgroundOf(card: LinearLayout?, image: GifImageView?, title: TextView?, checked: Boolean) {
+    override fun setBackgroundOf(card: LinearLayout?, image: GifImageView?, title: TextView?, checked: Boolean) {
         card?.background = if (checked) context?.resources?.getDrawable(R.color.colorAccent) else context?.resources?.getDrawable(android.R.color.transparent)
         image?.setColorFilter((if (checked) context?.resources?.getColor(android.R.color.white)
         else context?.resources?.getColor(android.R.color.black)) ?: Color.parseColor("#000000"))

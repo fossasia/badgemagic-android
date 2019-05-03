@@ -19,8 +19,9 @@ import com.nilhcem.blenamebadge.data.device.model.DataToSend
 import com.nilhcem.blenamebadge.data.device.model.Mode
 import com.nilhcem.blenamebadge.data.device.model.Speed
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
+import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
-import kotlinx.android.synthetic.main.fragment_main_save.savedConfigRecyclerView
+import kotlinx.android.synthetic.main.fragment_main_save.*
 import java.io.File
 
 class MainSavedFragment : BaseFragment(), MainSavedNavigator {
@@ -119,11 +120,11 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
     }
 
     override fun setPreviewNull() {
-        viewModel?.updatePreview(
-            viewModel?.textToLEDHex(
+        preview_badge.setValue(
+            Converters.convertTextToLEDHex(
                 " ",
                 false
-            )?.second ?: listOf(),
+            ).second,
             false,
             false,
             Speed.ONE,
@@ -133,11 +134,12 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
 
     override fun setPreview(badgeJSON: String) {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
-        viewModel?.updatePreview(
-            viewModel?.fixLEDHex(badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted
-                ?: false) ?: listOf(),
-            badgeConfig?.isFlash ?: false,
+
+        preview_badge.setValue(
+            Converters.fixLEDHex(
+                badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
             badgeConfig?.isMarquee ?: false,
+            badgeConfig?.isFlash ?: false,
             badgeConfig?.speed ?: Speed.ONE,
             badgeConfig?.mode ?: Mode.LEFT
         )

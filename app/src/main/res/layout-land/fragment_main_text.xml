@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
+            android:id="@+id/preview_badge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,9 +103,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="64dp"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginTop="64dp">
+                android:orientation="horizontal">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -109,14 +114,14 @@
 
                     <Button
                         android:id="@+id/save_button"
-                        android:textAllCaps="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:paddingLeft="@dimen/button_padding_left_right"
                         android:paddingRight="@dimen/button_padding_left_right"
-                        android:text="@string/save_button" />
+                        android:text="@string/save_button"
+                        android:textAllCaps="false" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -133,16 +138,16 @@
 
                     <Button
                         android:id="@+id/transfer_button"
-                        android:textAllCaps="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:paddingLeft="@dimen/button_padding_left_right"
                         android:paddingRight="@dimen/button_padding_left_right"
-                        android:text="@string/transfer_button" />
+                        android:text="@string/transfer_button"
+                        android:textAllCaps="false" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
