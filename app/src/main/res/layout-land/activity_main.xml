@@ -40,6 +40,7 @@
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         android:foreground="?attr/selectableItemBackground"
+        android:visibility="invisible"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@color/navigation_item"
         app:itemTextColor="@color/navigation_item"
