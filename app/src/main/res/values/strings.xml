@@ -28,7 +28,7 @@
     <string name="invertLED">Invert LED</string>
     <string name="enter_text">Enter Text</string>
     <string name="image_bitmap_description">Bitmap Image</string>
-    <string name="save_button">SAVE</string>
+    <string name="save_button">Save</string>
     <string name="save_hint">File Name</string>
     <string name="validation_save_dialog">Enter file name before continuing</string>
     <string name="save_dialog_title">Save Configuration</string>
