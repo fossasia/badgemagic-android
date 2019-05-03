@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -12,11 +13,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.ArrayAdapter
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.EditText
-import android.widget.CompoundButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -37,7 +39,9 @@ import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragmentViewModel
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
+import kotlinx.android.synthetic.main.effects_layout.*
 import kotlinx.android.synthetic.main.fragment_main_text.*
+import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Calendar
@@ -206,11 +210,7 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
             selectedID = optionId
         }
 
-        val previewCheckedListener: CompoundButton.OnCheckedChangeListener =
-            CompoundButton.OnCheckedChangeListener { _, _ -> setPreview() }
-        flash.setOnCheckedChangeListener(previewCheckedListener)
-        marquee.setOnCheckedChangeListener(previewCheckedListener)
-        invertLED.setOnCheckedChangeListener(previewCheckedListener)
+        configureEffects()
 
         val previewItemListener: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -223,6 +223,32 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         speed.onItemSelectedListener = previewItemListener
 
         textRadio.isChecked = true
+    }
+
+    private fun configureEffects() {
+        card_effect_flash.setOnClickListener {
+            flash.isChecked = !flash.isChecked
+            setBackgroundOf(card_effect_flash, effect_flash, flash_title, flash.isChecked)
+            setPreview()
+        }
+        card_effect_marquee.setOnClickListener {
+            marquee.isChecked = !marquee.isChecked
+            setBackgroundOf(card_effect_marquee, effect_marquee, marquee_title, marquee.isChecked)
+            setPreview()
+        }
+        card_effect_invertLED.setOnClickListener {
+            invertLED.isChecked = !invertLED.isChecked
+            setBackgroundOf(card_effect_invertLED, effect_invertLED, invertLED_title, invertLED.isChecked)
+            setPreview()
+        }
+    }
+
+    private fun setBackgroundOf(card: LinearLayout?, image: GifImageView?, title: TextView?, checked: Boolean) {
+        card?.background = if (checked) context?.resources?.getDrawable(R.color.colorAccent) else context?.resources?.getDrawable(android.R.color.transparent)
+        image?.setColorFilter((if (checked) context?.resources?.getColor(android.R.color.white)
+        else context?.resources?.getColor(android.R.color.black)) ?: Color.parseColor("#000000"))
+        title?.setTextColor((if (checked) context?.resources?.getColor(android.R.color.white)
+        else context?.resources?.getColor(android.R.color.black)) ?: Color.parseColor("#000000"))
     }
 
     override fun setupRecyclerViews() {
