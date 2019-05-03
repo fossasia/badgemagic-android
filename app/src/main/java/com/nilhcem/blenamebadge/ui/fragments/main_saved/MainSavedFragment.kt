@@ -1,5 +1,6 @@
 package com.nilhcem.blenamebadge.ui.fragments.main_saved
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -22,6 +23,7 @@ import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
 import kotlinx.android.synthetic.main.fragment_main_save.*
+import kotlinx.android.synthetic.main.fragment_main_save.preview_badge
 import java.io.File
 
 class MainSavedFragment : BaseFragment(), MainSavedNavigator {
@@ -89,6 +91,7 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
             .setTitle(getString(R.string.saveactivity_operation_title))
             .setPositiveButton(R.string.delete, null)
             .setNegativeButton(R.string.share, null)
+            .setNeutralButton(R.string.transfer_button, null)
             .create()
 
         alertDialog.setOnShowListener {
@@ -114,6 +117,15 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
 
                 this.startActivity(Intent.createChooser(intentShareFile, item.fileName))
                 alertDialog.dismiss()
+            }
+            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    // Easter egg
+                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                    SendingUtils.sendMessage(requireContext(), getSendData())
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+                }
             }
         }
         alertDialog.show()

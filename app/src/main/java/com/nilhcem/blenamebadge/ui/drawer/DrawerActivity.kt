@@ -24,11 +24,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
+import com.nilhcem.blenamebadge.ui.AppViewModel
 import com.nilhcem.blenamebadge.ui.fragments.main_saved.MainSavedFragment
 import com.nilhcem.blenamebadge.ui.fragments.main_text.MainTextDrawableFragment
+import com.nilhcem.blenamebadge.util.InjectorUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
 
 @Suppress("DEPRECATION")
@@ -43,8 +46,19 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
 
+    var viewModel: AppViewModel? = null
+
+    override fun inject() {
+        val savedConfigFactory = InjectorUtils.provideFilesViewModelFactory()
+        viewModel = ViewModelProviders.of(this, savedConfigFactory)
+            .get(AppViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        inject()
+
         setContentView(R.layout.activity_drawer)
 
         if (intent.action == Intent.ACTION_VIEW)
@@ -217,8 +231,10 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
     }
 
     override fun saveImportFile(uri: Uri?) {
-        if (StorageUtils.copyFileToDirectory(this, uri)) Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
-        else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
+        if (StorageUtils.copyFileToDirectory(this, uri)) {
+            Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
+            viewModel?.updateList()
+        } else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
     }
 
     override fun showOverrideDialog(uri: Uri?) {

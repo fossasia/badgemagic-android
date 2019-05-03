@@ -41,6 +41,7 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
         private val card: LinearLayout = itemView.findViewById(R.id.card)
         private val text: TextView = itemView.findViewById(R.id.text)
         private val options: AppCompatImageView = itemView.findViewById(R.id.options)
+        private val playPause: AppCompatImageView = itemView.findViewById(R.id.play_pause)
         private val chipFlash: Chip = itemView.findViewById(R.id.chip_flash)
         private val chipMarquee: Chip = itemView.findViewById(R.id.chip_marquee)
         private val chipInverted: Chip = itemView.findViewById(R.id.chip_inverted)
@@ -48,7 +49,7 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
         private val chipMode: Chip = itemView.findViewById(R.id.chip_mode)
 
         init {
-            card.setOnClickListener {
+            playPause.setOnClickListener {
                 changeCardBackgrounds()
                 listener.onSelected(if (selectedPosition == -1) null else list[selectedPosition])
             }
@@ -68,6 +69,12 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                 when {
                     selectedPosition != -1 && selectedPosition == adapterPosition -> context?.resources?.getColor(android.R.color.white) as Int
                     else -> context?.resources?.getColor(android.R.color.black) as Int
+                }
+            )
+            playPause.setColorFilter(
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
+                    else -> context.resources.getColor(android.R.color.black)
                 }
             )
             options.setColorFilter(

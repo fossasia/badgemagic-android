@@ -27,4 +27,6 @@ interface DrawerNavigator {
     fun isBleSupported(): Boolean
 
     fun setupDrawerAndToolbar()
+
+    fun inject()
 }
