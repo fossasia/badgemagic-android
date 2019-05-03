@@ -87,88 +87,11 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <include
+                    layout="@layout/sections_tab"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/spacing_small">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/spacing_small">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/speed"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textStyle="bold"
-                            android:typeface="normal" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/mode"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textStyle="bold"
-                            android:typeface="normal" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <com.nilhcem.blenamebadge.ui.custom.knob.Croller
-                                android:id="@+id/speedKnob"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerInParent="true"
-                                app:back_circle_color="@color/back_circle_color"
-                                app:indicator_color="@color/indicator_color"
-                                app:indicator_width="@integer/knob_indicator_width"
-                                app:is_continuous="true"
-                                app:main_circle_color="@android:color/white"
-                                app:max="8"
-                                app:progress_primary_color="@color/indicator_color"
-                                app:progress_secondary_color="@color/progress_secondary_color"
-                                app:start_offset="45" />
-
-                            <TextView
-                                android:id="@+id/textSpeed"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/speedKnob"
-                                android:fontFamily="sans-serif-condensed"
-                                android:gravity="center"
-                                android:textSize="32sp"
-                                android:textStyle="bold"
-                                android:typeface="normal" />
-
-                        </RelativeLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/modeRecyclerView"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <include layout="@layout/effects_layout" />
-                </LinearLayout>
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout

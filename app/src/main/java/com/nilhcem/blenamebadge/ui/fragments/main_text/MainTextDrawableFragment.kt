@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 
 import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.adapter.DrawableAdapter
@@ -40,6 +41,7 @@ import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
 import kotlinx.android.synthetic.main.effects_layout.*
 import kotlinx.android.synthetic.main.fragment_main_text.*
+import kotlinx.android.synthetic.main.sections_tab.*
 import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -144,14 +146,13 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val spinnerItem = R.layout.spinner_item
-        //speed.adapter = ArrayAdapter<String>(requireContext(), spinnerItem, Speed.values().mapIndexed { index, _ -> (index + 1).toString() })
-
         setupRecyclerViews()
 
         configureEffects()
 
         setupSpeedKnob()
+
+        setupTabLayout()
 
         save_button.setOnClickListener {
             text_to_send.hideKeyboard()
@@ -214,6 +215,44 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
         }
 
         textRadio.isChecked = true
+    }
+
+    private fun setupTabLayout() {
+        val speedTab = tabLayout.newTab().setText(requireContext().getString(R.string.speed))
+        val modeTab = tabLayout.newTab().setText(requireContext().getString(R.string.mode))
+        val effectsTab = tabLayout.newTab().setText(requireContext().getString(R.string.effects))
+
+        tabLayout.addTab(speedTab)
+        tabLayout.addTab(modeTab)
+        tabLayout.addTab(effectsTab)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.text) {
+                    requireContext().getString(R.string.speed) -> {
+                        speedLayout.visibility = View.VISIBLE
+                        modeRecyclerView.visibility = View.GONE
+                        effectsLayout.visibility = View.GONE
+                    }
+                    requireContext().getString(R.string.mode) -> {
+                        speedLayout.visibility = View.GONE
+                        modeRecyclerView.visibility = View.VISIBLE
+                        effectsLayout.visibility = View.GONE
+                    }
+                    requireContext().getString(R.string.effects) -> {
+                        speedLayout.visibility = View.GONE
+                        modeRecyclerView.visibility = View.GONE
+                        effectsLayout.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+        tabLayout.selectTab(speedTab, true)
     }
 
     private fun setupSpeedKnob() {
