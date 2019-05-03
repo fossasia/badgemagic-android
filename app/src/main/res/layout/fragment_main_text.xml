@@ -5,7 +5,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/bottom_bar_margin"
+        android:layout_marginBottom="@dimen/scroll_bar_bottom_margin"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -98,6 +98,7 @@
 
             <Button
                 android:id="@+id/save_button"
+                android:textAllCaps="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -121,6 +122,7 @@
 
             <Button
                 android:id="@+id/transfer_button"
+                android:textAllCaps="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

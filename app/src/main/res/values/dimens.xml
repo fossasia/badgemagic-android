@@ -14,7 +14,8 @@
 
     <dimen name="button_padding_left_right">42dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="bottom_bar_margin">64dp</dimen>
+    <dimen name="bottom_bar_margin">32dp</dimen>
+    <dimen name="scroll_bar_bottom_margin">64dp</dimen>
     <dimen name="drawable_image_margin">5dp</dimen>
     <dimen name="title_min_height_medium">20dp</dimen>
     <dimen name="title_min_height_large">40dp</dimen>

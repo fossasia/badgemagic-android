@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/bottom_bar_margin"
+        android:layout_marginBottom="@dimen/scroll_bar_bottom_margin"
         android:fillViewport="true">
 
         <LinearLayout
