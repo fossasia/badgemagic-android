@@ -55,7 +55,7 @@ class ModeAdapter(private val context: Context?, private val list: List<ModeInfo
             if (context != null)
                 image.setImageDrawable(GifDrawable(context.resources, ModeInfo.drawableID))
 
-            title.text = ModeInfo.mode.toString()
+            title.text = ModeInfo.mode.toString().toLowerCase().capitalize()
 
             card.background = when (selectedPosition) {
                 adapterPosition -> context?.resources?.getDrawable(R.color.colorAccent)
