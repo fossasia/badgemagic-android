@@ -29,6 +29,7 @@ import com.nilhcem.blenamebadge.R
 import com.nilhcem.blenamebadge.core.android.log.Timber
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.ui.AppViewModel
+import com.nilhcem.blenamebadge.ui.fragments.AboutFragment
 import com.nilhcem.blenamebadge.ui.fragments.main_saved.MainSavedFragment
 import com.nilhcem.blenamebadge.ui.fragments.main_text.MainTextDrawableFragment
 import com.nilhcem.blenamebadge.util.InjectorUtils
@@ -104,6 +105,8 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
                     }
                     R.id.about -> {
+                        switchFragment(AboutFragment.newInstance())
+                        showMenu?.setGroupVisible(R.id.saved_group, false)
                     }
                 }
             }

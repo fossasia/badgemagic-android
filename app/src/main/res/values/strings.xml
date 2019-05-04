@@ -57,4 +57,32 @@
     <string name="drawer_saved_badge">Saved Badges</string>
     <string name="drawer_create_badges">Create Badges</string>
     <string name="success_import_json">Import Successful</string>
+    <string name="about_fossasia">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
+        <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.
+    </string>
+    <string name="about_us_description">Badge Magic is an Android app to control LED name badges. The goal is to provide options to portray names, graphics and simple animations on LED badges. For the data transfer from the smartphone to the LED badge we use Bluetooth. The project is based on the work of Nilhcem.</string>
+    <string name="about_us_connect">Connect With Us</string>
+    <string name="about_support_github">GitHub</string>
+    <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
+    <string name="about_us_website">Visit our website</string>
+    <string name="about_license">License</string>
+    <string name="about_license_sub">Check Apache License 2.0 terms used on Badge Magic</string>
+    <string name="about_library_license">Library Licenses</string>
+    <string name="about_library_license_sub">Check third-party libs used on Badge Magic.</string>
+    <string name="moshi">Moshi</string>
+    <string name="moshi_github">https://github.com/square/moshi</string>
+    <string name="moshi_copy">Copyright 2015 Square, Inc.</string>
+    <string name="gif">android-gif-drawable</string>
+    <string name="gif_github">https://github.com/koral&#8211;&#8211;/android&#8211;gif&#8211;drawable</string>
+    <string name="gif_copy">Copyright 2013 - present Karol Wrótniak, Droids on Roids LLC</string>
+    <string name="timber">Timber</string>
+    <string name="timber_github">https://github.com/JakeWharton/timber</string>
+    <string name="timber_copy">Copyright 2013 Jake Wharton</string>
+    <string name="scanner">Android BLE Scanner Compat library</string>
+    <string name="scanner_github">https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library</string>
+    <string name="scanner_copy">Copyright 2015, Nordic Semiconductor</string>
+    <string name="licences">Licences Dialog</string>
+    <string name="licences_github">https://github.com/PSDev/LicensesDialog</string>
+    <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
+
 </resources>
