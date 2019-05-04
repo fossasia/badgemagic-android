@@ -42,7 +42,8 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@string/flash"
-                    android:textAllCaps="true" />
+                    android:textColor="@android:color/black"
+                    android:textAllCaps="false" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -92,7 +93,8 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@string/marquee"
-                    android:textAllCaps="true" />
+                    android:textColor="@android:color/black"
+                    android:textAllCaps="false" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -142,7 +144,8 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@string/invertLED"
-                    android:textAllCaps="true" />
+                    android:textColor="@android:color/black"
+                    android:textAllCaps="false" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

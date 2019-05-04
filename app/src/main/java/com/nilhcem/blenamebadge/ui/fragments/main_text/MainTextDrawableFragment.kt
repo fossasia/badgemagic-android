@@ -152,6 +152,10 @@ class MainTextDrawableFragment : BaseFragment(), MainTextDrawableNavigator {
 
         setupTabLayout()
 
+        flash_title.isAllCaps = false
+        marquee_title.isAllCaps = false
+        invertLED_title.isAllCaps = false
+
         save_button.setOnClickListener {
             text_to_send.hideKeyboard()
             showSaveFileDialog()
