@@ -38,7 +38,7 @@ object StorageUtils {
         checkDirectory()
         val list = mutableListOf<ConfigInfo>()
 
-        val files = File(EXTERNAL_STORAGE_DIRECTORY).listFiles()
+        val files = File(EXTERNAL_STORAGE_DIRECTORY).listFiles() ?: return list
         for (i in files.indices) {
             if (getFileExtension(files[i].name) == BADGE_EXTENSION) {
                 val json = files[i].readText()

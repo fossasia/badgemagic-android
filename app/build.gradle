@@ -23,6 +23,11 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -60,7 +65,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha04"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -71,4 +76,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
     testImplementation 'org.amshove.kluent:kluent:1.31'
+
+    //Display third party licenses
+    implementation 'de.psdev.licensesdialog:licensesdialog:2.0.0'
 }
