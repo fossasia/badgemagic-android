@@ -76,6 +76,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawablesRecyclerView"
                             android:layout_width="match_parent"
+                            android:background="@drawable/round_corner_bg"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_small">
 

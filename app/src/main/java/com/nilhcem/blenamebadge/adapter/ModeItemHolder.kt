@@ -30,16 +30,16 @@ class ModeItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             true -> {
                 card.background = resourceHelper.getDrawable(R.color.colorAccent)
                 title.setTextColor(resourceHelper.getColor(android.R.color.white)
-                        ?: Color.parseColor("#000000"))
+                    ?: Color.parseColor("#000000"))
                 image.setColorFilter(resourceHelper.getColor(android.R.color.white)
-                        ?: Color.parseColor("#000000"))
+                    ?: Color.parseColor("#000000"))
             }
             false -> {
                 card.background = resourceHelper.getDrawable(android.R.color.transparent)
                 title.setTextColor(resourceHelper.getColor(android.R.color.black)
-                        ?: Color.parseColor("#00000000"))
+                    ?: Color.parseColor("#00000000"))
                 image.setColorFilter(resourceHelper.getColor(android.R.color.black)
-                        ?: Color.parseColor("#00000000"))
+                    ?: Color.parseColor("#00000000"))
             }
         }
 
