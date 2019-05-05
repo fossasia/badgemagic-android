@@ -10,13 +10,13 @@
     <LinearLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="@dimen/square_image_dimension"
-            android:layout_height="@dimen/square_image_dimension"
+            android:layout_width="@dimen/square_image_dimension_half"
+            android:layout_height="@dimen/square_image_dimension_half"
             android:layout_gravity="center"
             android:contentDescription="@string/image_bitmap_description"
             android:layout_margin="@dimen/drawable_image_margin"

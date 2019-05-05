@@ -19,7 +19,6 @@ import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 
 import com.nilhcem.blenamebadge.R
@@ -99,8 +98,8 @@ class MainTextDrawableFragment : BaseFragment() {
 
     private fun selectText() {
         val (valid, textToSend) = Converters.convertTextToLEDHex(
-                if (rootView.text_to_send.text.isNotEmpty()) rootView.text_to_send.text.toString()
-                else if (!rootView.invertLED.isChecked) " " else "", rootView.invertLED.isChecked)
+            if (rootView.text_to_send.text.isNotEmpty()) rootView.text_to_send.text.toString()
+            else if (!rootView.invertLED.isChecked) " " else "", rootView.invertLED.isChecked)
         if (!valid) {
             Toast.makeText(context, R.string.character_not_found, Toast.LENGTH_SHORT).show()
         }
@@ -313,7 +312,7 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private fun setupRecyclerViews() {
-        rootView.drawablesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rootView.drawablesRecyclerView.layoutManager = GridLayoutManager(context, 6)
         rootView.drawablesRecyclerView.adapter = null
 
         val listOfDrawables = listOf(
@@ -349,7 +348,7 @@ class MainTextDrawableFragment : BaseFragment() {
         }
         drawableRecyclerAdapter.addAll(listOfDrawables)
         drawableRecyclerAdapter
-                .setSelectedDrawablePosition(mainViewModel.drawablePosition)
+            .setSelectedDrawablePosition(mainViewModel.drawablePosition)
         rootView.drawablesRecyclerView.adapter = drawableRecyclerAdapter
 
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {

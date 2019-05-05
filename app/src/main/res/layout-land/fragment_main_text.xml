@@ -81,13 +81,15 @@
                             android:id="@+id/section_drawables"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/drawablesRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small" />
+                                android:layout_marginTop="@dimen/spacing_small"
+                                android:background="@drawable/round_corner_bg" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
