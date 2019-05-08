@@ -12,9 +12,5 @@ class AppViewModel(private val configRepo: FilesRepository)
 
     fun updateList() = configRepo.update()
 
-    fun saveFile(filename: String, json: String) = configRepo.saveFile(filename, json)
-
-    fun checkIfFilePresent(fileName: String): Boolean = configRepo.checkIfFilePresent(fileName)
-
     fun getAbsPath(fileName: String): String? = configRepo.getAbsPath(fileName)
 }

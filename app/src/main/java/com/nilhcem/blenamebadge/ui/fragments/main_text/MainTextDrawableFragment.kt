@@ -36,7 +36,6 @@ import com.nilhcem.blenamebadge.data.device.model.Speed
 import com.nilhcem.blenamebadge.data.util.SendingData
 import com.nilhcem.blenamebadge.ui.custom.knob.Croller
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
-import com.nilhcem.blenamebadge.ui.AppViewModel
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.SendingUtils
 import kotlinx.android.synthetic.main.effects_layout.view.*
@@ -60,15 +59,16 @@ class MainTextDrawableFragment : BaseFragment() {
 
     private val drawableRecyclerAdapter = DrawableAdapter()
     private val modeAdapter = ModeAdapter()
-    private lateinit var mainViewModel: MainTextDrawableViewModel
+    private lateinit var viewModel: MainTextDrawableViewModel
     private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val myActivity = activity
-        if (myActivity != null) {
-            mainViewModel = ViewModelProviders.of(myActivity).get(MainTextDrawableViewModel::class.java)
-        }
+        inject()
+    }
+
+    override fun inject() {
+        viewModel = ViewModelProviders.of(this).get(MainTextDrawableViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -86,7 +86,7 @@ class MainTextDrawableFragment : BaseFragment() {
 
     override fun getSendData(): DataToSend {
         rootView.text_to_send.hideKeyboard()
-        return when (mainViewModel.radioSelectedId) {
+        return when (viewModel.radioSelectedId) {
             R.id.textRadio -> convertTextToDeviceDataModel()
             else -> convertBitmapToDeviceDataModel()
         }
@@ -203,20 +203,20 @@ class MainTextDrawableFragment : BaseFragment() {
                     selectText()
                 }
             }
-            mainViewModel.radioSelectedId = optionId
+            viewModel.radioSelectedId = optionId
         }
 
-        rootView.text_to_send.setText(mainViewModel.text)
+        rootView.text_to_send.setText(viewModel.text)
         rootView.text_to_send.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                mainViewModel.text = s.toString()
+                viewModel.text = s.toString()
                 selectText()
             }
         })
 
-        if (mainViewModel.radioSelectedId == R.id.drawableRadio) rootView.radioGroup.check(R.id.drawableRadio)
+        if (viewModel.radioSelectedId == R.id.drawableRadio) rootView.radioGroup.check(R.id.drawableRadio)
         else rootView.radioGroup.check(R.id.textRadio)
     }
 
@@ -241,24 +241,24 @@ class MainTextDrawableFragment : BaseFragment() {
                         rootView.speedLayout.visibility = View.VISIBLE
                         rootView.modeRecyclerView.visibility = View.GONE
                         rootView.effectsLayout.visibility = View.GONE
-                        mainViewModel.currentTab = 1
+                        viewModel.currentTab = 1
                     }
                     getString(R.string.mode) -> {
                         rootView.speedLayout.visibility = View.GONE
                         rootView.modeRecyclerView.visibility = View.VISIBLE
                         rootView.effectsLayout.visibility = View.GONE
-                        mainViewModel.currentTab = 2
+                        viewModel.currentTab = 2
                     }
                     getString(R.string.effects) -> {
                         rootView.speedLayout.visibility = View.GONE
                         rootView.modeRecyclerView.visibility = View.GONE
                         rootView.effectsLayout.visibility = View.VISIBLE
-                        mainViewModel.currentTab = 3
+                        viewModel.currentTab = 3
                     }
                 }
             }
         })
-        rootView.tabLayout.selectTab(when (mainViewModel.currentTab) {
+        rootView.tabLayout.selectTab(when (viewModel.currentTab) {
             1 -> speedTab
             2 -> modeTab
             else -> effectsTab
@@ -266,11 +266,11 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private fun setupSpeedKnob() {
-        rootView.speedKnob.progress = mainViewModel.speed
+        rootView.speedKnob.progress = viewModel.speed
         rootView.speedKnob.setOnProgressChangedListener(object : Croller.OnProgressChangedListener {
             override fun onProgressChanged(progress: Int) {
                 rootView.textSpeed.text = progress.toString()
-                mainViewModel.speed = progress
+                viewModel.speed = progress
                 setPreview()
             }
         })
@@ -279,28 +279,28 @@ class MainTextDrawableFragment : BaseFragment() {
     private fun configureEffects() {
         rootView.card_effect_flash.setOnClickListener {
             rootView.flash.isChecked = !rootView.flash.isChecked
-            mainViewModel.isFlash = rootView.flash.isChecked
+            viewModel.isFlash = rootView.flash.isChecked
             setBackgroundOf(rootView.card_effect_flash, rootView.effect_flash, rootView.flash_title, rootView.flash.isChecked)
             setPreview()
         }
         rootView.card_effect_marquee.setOnClickListener {
             rootView.marquee.isChecked = !rootView.marquee.isChecked
-            mainViewModel.isMarquee = rootView.marquee.isChecked
+            viewModel.isMarquee = rootView.marquee.isChecked
             setBackgroundOf(rootView.card_effect_marquee, rootView.effect_marquee, rootView.marquee_title, rootView.marquee.isChecked)
             setPreview()
         }
         rootView.card_effect_invertLED.setOnClickListener {
             rootView.invertLED.isChecked = !rootView.invertLED.isChecked
-            mainViewModel.isInverted = rootView.invertLED.isChecked
+            viewModel.isInverted = rootView.invertLED.isChecked
             setBackgroundOf(rootView.card_effect_invertLED, rootView.effect_invertLED, rootView.invertLED_title, rootView.invertLED.isChecked)
             setPreview()
         }
-        setBackgroundOf(rootView.card_effect_flash, rootView.effect_flash, rootView.flash_title, mainViewModel.isFlash)
-        setBackgroundOf(rootView.card_effect_marquee, rootView.effect_marquee, rootView.marquee_title, mainViewModel.isMarquee)
-        setBackgroundOf(rootView.card_effect_invertLED, rootView.effect_invertLED, rootView.invertLED_title, mainViewModel.isInverted)
-        rootView.marquee.isChecked = mainViewModel.isMarquee
-        rootView.flash.isChecked = mainViewModel.isFlash
-        rootView.invertLED.isChecked = mainViewModel.isInverted
+        setBackgroundOf(rootView.card_effect_flash, rootView.effect_flash, rootView.flash_title, viewModel.isFlash)
+        setBackgroundOf(rootView.card_effect_marquee, rootView.effect_marquee, rootView.marquee_title, viewModel.isMarquee)
+        setBackgroundOf(rootView.card_effect_invertLED, rootView.effect_invertLED, rootView.invertLED_title, viewModel.isInverted)
+        rootView.marquee.isChecked = viewModel.isMarquee
+        rootView.flash.isChecked = viewModel.isFlash
+        rootView.invertLED.isChecked = viewModel.isInverted
     }
 
     private fun setBackgroundOf(card: LinearLayout?, image: GifImageView?, title: TextView?, checked: Boolean) {
@@ -337,7 +337,7 @@ class MainTextDrawableFragment : BaseFragment() {
 
         val drawableListener = object : OnDrawableSelected {
             override fun onSelected(selectedItemPosition: Int) {
-                mainViewModel.drawablePosition = selectedItemPosition
+                viewModel.drawablePosition = selectedItemPosition
                 drawableRecyclerAdapter.setSelectedDrawablePosition(selectedItemPosition)
                 drawableRecyclerAdapter.notifyDataSetChanged()
                 selectDrawable(drawableRecyclerAdapter.getSelectedItem())
@@ -348,7 +348,7 @@ class MainTextDrawableFragment : BaseFragment() {
         }
         drawableRecyclerAdapter.addAll(listOfDrawables)
         drawableRecyclerAdapter
-            .setSelectedDrawablePosition(mainViewModel.drawablePosition)
+            .setSelectedDrawablePosition(viewModel.drawablePosition)
         rootView.drawablesRecyclerView.adapter = drawableRecyclerAdapter
 
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -377,10 +377,10 @@ class MainTextDrawableFragment : BaseFragment() {
             ModeInfo(R.drawable.ic_anim_laser, Mode.LASER)
         )
         modeAdapter.addAll(listOfAnimations)
-        modeAdapter.setSelectedAnimationPosition(mainViewModel.animationPosition)
+        modeAdapter.setSelectedAnimationPosition(viewModel.animationPosition)
         val modeListener = object : OnModeSelected {
             override fun onSelected(position: Int) {
-                mainViewModel.animationPosition = position
+                viewModel.animationPosition = position
                 modeAdapter.setSelectedAnimationPosition(position)
                 modeAdapter.notifyDataSetChanged()
                 setPreview()
@@ -394,7 +394,7 @@ class MainTextDrawableFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (mainViewModel.radioSelectedId == R.id.textRadio) {
+        if (viewModel.radioSelectedId == R.id.textRadio) {
             rootView.text_to_send.requestFocus()
             rootView.text_to_send.showKeyboard()
         }
@@ -403,7 +403,7 @@ class MainTextDrawableFragment : BaseFragment() {
     override fun onPause() {
         super.onPause()
 
-        if (mainViewModel.radioSelectedId == R.id.textRadio) {
+        if (viewModel.radioSelectedId == R.id.textRadio) {
             rootView.text_to_send.hideKeyboard()
         }
     }
@@ -441,7 +441,7 @@ class MainTextDrawableFragment : BaseFragment() {
                     saveFileEditText.error = getString(R.string.validation_save_dialog)
                 } else {
                     alertDialog.dismiss()
-                    if (viewModel?.checkIfFilePresent(fileTitle.toString()) == true) {
+                    if (viewModel.checkIfFilePresent(fileTitle.toString())) {
                         showFileOverrideDialog(fileTitle.toString(), configToJSON())
                     } else {
                         saveFile(fileTitle.toString(), configToJSON())
@@ -457,7 +457,7 @@ class MainTextDrawableFragment : BaseFragment() {
 
     private fun configToJSON(): String {
         return SendingUtils.configToJSON(
-            mainViewModel.radioSelectedId,
+            viewModel.radioSelectedId,
             rootView.text_to_send.text.toString(),
             drawableRecyclerAdapter.getSelectedItem(),
             SendingData(
@@ -484,10 +484,10 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private fun saveFile(fileName: String, jsonString: String) {
-        viewModel?.let { StoreAsync(fileName, jsonString, it).execute() }
+        viewModel.let { StoreAsync(fileName, jsonString, it).execute() }
     }
 
-    class StoreAsync(private val filename: String, private val json: String, private val viewModel: AppViewModel) : AsyncTask<Void, Void, Void>() {
+    class StoreAsync(private val filename: String, private val json: String, private val viewModel: MainTextDrawableViewModel) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             viewModel.saveFile(filename, json)
             return null
