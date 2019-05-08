@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.nilhcem.blenamebadge.R
@@ -19,14 +20,15 @@ import com.nilhcem.blenamebadge.data.fragments.ConfigInfo
 import com.nilhcem.blenamebadge.data.device.model.DataToSend
 import com.nilhcem.blenamebadge.data.device.model.Mode
 import com.nilhcem.blenamebadge.data.device.model.Speed
+import com.nilhcem.blenamebadge.ui.AppViewModel
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.util.Converters
+import com.nilhcem.blenamebadge.util.InjectorUtils
 import com.nilhcem.blenamebadge.util.SendingUtils
-import kotlinx.android.synthetic.main.fragment_main_save.*
-import kotlinx.android.synthetic.main.fragment_main_save.preview_badge
+import kotlinx.android.synthetic.main.fragment_main_save.view.*
 import java.io.File
 
-class MainSavedFragment : BaseFragment(), MainSavedNavigator {
+class MainSavedFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
@@ -35,11 +37,26 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
     }
 
     private var recyclerAdapter: SaveAdapter? = null
+    private lateinit var viewModel: AppViewModel
+    private lateinit var rootView: View
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        inject()
+    }
+
+    override fun inject() {
+        val savedConfigFactory = InjectorUtils.provideFilesViewModelFactory()
+        viewModel = ViewModelProviders.of(this, savedConfigFactory)
+            .get(AppViewModel::class.java)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.fragment_main_save, container, false)
 
         setupRecycler()
+
+        return rootView
     }
 
     override fun initializePreview() {
@@ -62,13 +79,13 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
         }
     }
 
-    override fun setupRecycler() {
-        if (savedConfigRecyclerView == null) return
-        savedConfigRecyclerView.layoutManager = LinearLayoutManager(context)
+    private fun setupRecycler() {
+        if (rootView.savedConfigRecyclerView == null) return
+        rootView.savedConfigRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        viewModel?.getFiles()?.observe(this, Observer { files ->
+        viewModel.getFiles().observe(this, Observer { files ->
             recyclerAdapter = null
-            savedConfigRecyclerView.adapter = null
+            rootView.savedConfigRecyclerView.adapter = null
 
             recyclerAdapter = SaveAdapter(context, files, object : OnSavedItemSelected {
                 override fun onOptionsSelected(item: ConfigInfo) {
@@ -82,11 +99,11 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
                         setPreviewNull()
                 }
             })
-            savedConfigRecyclerView.adapter = recyclerAdapter
+            rootView.savedConfigRecyclerView.adapter = recyclerAdapter
         })
     }
 
-    override fun showLoadAlert(item: ConfigInfo) {
+    private fun showLoadAlert(item: ConfigInfo) {
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.saveactivity_operation_title))
             .setPositiveButton(R.string.delete, null)
@@ -96,7 +113,7 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
 
         alertDialog.setOnShowListener {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                viewModel?.deleteFile(item.fileName)
+                viewModel.deleteFile(item.fileName)
 
                 alertDialog.dismiss()
                 setPreviewNull()
@@ -110,7 +127,7 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
                     requireContext(),
                     getString(R.string.file_provider_authority),
                     File(
-                        viewModel?.getAbsPath(item.fileName)
+                        viewModel.getAbsPath(item.fileName)
                     )))
                 intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
                 intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
@@ -131,8 +148,8 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
         alertDialog.show()
     }
 
-    override fun setPreviewNull() {
-        preview_badge.setValue(
+    private fun setPreviewNull() {
+        rootView.preview_badge.setValue(
             Converters.convertTextToLEDHex(
                 " ",
                 false
@@ -144,10 +161,10 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
         )
     }
 
-    override fun setPreview(badgeJSON: String) {
+    private fun setPreview(badgeJSON: String) {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
 
-        preview_badge.setValue(
+        rootView.preview_badge.setValue(
             Converters.fixLEDHex(
                 badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
             badgeConfig?.isMarquee ?: false,
@@ -155,9 +172,5 @@ class MainSavedFragment : BaseFragment(), MainSavedNavigator {
             badgeConfig?.speed ?: Speed.ONE,
             badgeConfig?.mode ?: Mode.LEFT
         )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main_save, container, false)
     }
 }

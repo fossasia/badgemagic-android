@@ -36,7 +36,7 @@ import com.nilhcem.blenamebadge.util.InjectorUtils
 import com.nilhcem.blenamebadge.util.StorageUtils
 
 @Suppress("DEPRECATION")
-class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNavigationItemSelectedListener {
+class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         private const val PICK_FILE_RESULT_CODE = 2
@@ -47,9 +47,9 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
 
-    var viewModel: AppViewModel? = null
+    private var viewModel: AppViewModel? = null
 
-    override fun inject() {
+    private fun inject() {
         val savedConfigFactory = InjectorUtils.provideFilesViewModelFactory()
         viewModel = ViewModelProviders.of(this, savedConfigFactory)
             .get(AppViewModel::class.java)
@@ -70,7 +70,7 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         prepareForScan()
     }
 
-    override fun setupDrawerAndToolbar() {
+    private fun setupDrawerAndToolbar() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -121,7 +121,7 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         showMenu?.setGroupVisible(R.id.saved_group, false)
     }
 
-    override fun prepareForScan() {
+    private fun prepareForScan() {
         if (isBleSupported()) {
             checkManifestPermission()
         } else {
@@ -130,11 +130,11 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         }
     }
 
-    override fun importFile(data: Intent?) {
+    private fun importFile(data: Intent?) {
         showImportDialog(data?.data)
     }
 
-    override fun showImportDialog(uri: Uri?) {
+    private fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.import_dialog))
             .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
@@ -172,7 +172,7 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun showAlertDialog(bluetoothDialog: Boolean) {
+    private fun showAlertDialog(bluetoothDialog: Boolean) {
         val dialogMessage = if (bluetoothDialog) getString(R.string.enable_bluetooth) else getString(R.string.grant_required_permission)
         val builder = AlertDialog.Builder(this)
         builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
@@ -187,14 +187,14 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         builder.create().show()
     }
 
-    override fun switchFragment(fragment: BaseFragment) {
+    private fun switchFragment(fragment: BaseFragment) {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             .replace(R.id.frag_container, fragment)
             .commit()
     }
 
-    override fun checkManifestPermission() {
+    private fun checkManifestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             ensureBluetoothEnabled()
@@ -218,11 +218,11 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         }
     }
 
-    override fun isBleSupported(): Boolean {
+    private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
 
-    override fun ensureBluetoothEnabled() {
+    private fun ensureBluetoothEnabled() {
         // Ensures Bluetooth is enabled on the device
         val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val btAdapter = btManager.adapter
@@ -233,14 +233,14 @@ class DrawerActivity : AppCompatActivity(), DrawerNavigator, NavigationView.OnNa
         }
     }
 
-    override fun saveImportFile(uri: Uri?) {
+    private fun saveImportFile(uri: Uri?) {
         if (StorageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
             viewModel?.updateList()
         } else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showOverrideDialog(uri: Uri?) {
+    private fun showOverrideDialog(uri: Uri?) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.save_dialog_already_present))
             .setMessage(getString(R.string.save_dialog_already_present_override))
