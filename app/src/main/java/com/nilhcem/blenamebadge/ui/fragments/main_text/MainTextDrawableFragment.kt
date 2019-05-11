@@ -37,6 +37,7 @@ import com.nilhcem.blenamebadge.data.util.SendingData
 import com.nilhcem.blenamebadge.ui.custom.knob.Croller
 import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.util.Converters
+import com.nilhcem.blenamebadge.util.InjectorUtils
 import com.nilhcem.blenamebadge.util.SendingUtils
 import kotlinx.android.synthetic.main.effects_layout.view.*
 import kotlinx.android.synthetic.main.fragment_main_text.view.*
@@ -68,7 +69,9 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     override fun inject() {
-        viewModel = ViewModelProviders.of(this).get(MainTextDrawableViewModel::class.java)
+        viewModel = ViewModelProviders
+                .of(this, InjectorUtils.provideMainTextDrawableViewModelFactory())
+                .get(MainTextDrawableViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

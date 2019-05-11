@@ -3,6 +3,7 @@ package com.nilhcem.blenamebadge.util
 import com.nilhcem.blenamebadge.data.fragments.FilesContainer
 import com.nilhcem.blenamebadge.data.fragments.FilesRepository
 import com.nilhcem.blenamebadge.ui.AppViewModelProviderFactory
+import com.nilhcem.blenamebadge.ui.fragments.main_text.MainTextDrawableViewModelProviderFactory
 
 object InjectorUtils {
 
@@ -10,5 +11,9 @@ object InjectorUtils {
 
     fun provideFilesViewModelFactory(): AppViewModelProviderFactory {
         return AppViewModelProviderFactory(filesRepo)
+    }
+
+    fun provideMainTextDrawableViewModelFactory(): MainTextDrawableViewModelProviderFactory {
+        return MainTextDrawableViewModelProviderFactory(filesRepo)
     }
 }
