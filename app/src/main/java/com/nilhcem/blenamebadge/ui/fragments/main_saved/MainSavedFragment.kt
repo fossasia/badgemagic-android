@@ -46,8 +46,7 @@ class MainSavedFragment : BaseFragment() {
     }
 
     override fun inject() {
-        val savedConfigFactory = InjectorUtils.provideFilesViewModelFactory()
-        viewModel = ViewModelProviders.of(this, savedConfigFactory)
+        viewModel = ViewModelProviders.of(this, InjectorUtils.provideFilesViewModelFactory())
             .get(AppViewModel::class.java)
     }
 
