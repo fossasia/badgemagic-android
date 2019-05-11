@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
@@ -16,6 +17,7 @@
         android:padding="@dimen/spacing_large">
 
         <TextView
+            android:id="@+id/saved_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
@@ -23,6 +25,24 @@
             android:textSize="@dimen/text_size_normal"
             android:textStyle="bold"
             android:typeface="normal" />
+
+        <ImageView
+            android:id="@+id/empty_saved_icon"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:contentDescription="@string/empty_saved_section"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_emoji" />
+
+        <TextView
+            android:id="@+id/empty_saved_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:visibility="gone"
+            android:text="@string/empty_saved_section"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedConfigRecyclerView"
