@@ -25,6 +25,7 @@ import com.nilhcem.blenamebadge.ui.fragments.base.BaseFragment
 import com.nilhcem.blenamebadge.util.Converters
 import com.nilhcem.blenamebadge.util.InjectorUtils
 import com.nilhcem.blenamebadge.util.SendingUtils
+import kotlinx.android.synthetic.main.fragment_main_save.*
 import kotlinx.android.synthetic.main.fragment_main_save.view.*
 import java.io.File
 
@@ -56,6 +57,20 @@ class MainSavedFragment : BaseFragment() {
         setupRecycler()
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (viewModel.getFiles().value.isNullOrEmpty()) {
+            saved_text.visibility = View.GONE
+            empty_saved_icon.visibility = View.VISIBLE
+            empty_saved_text.visibility = View.VISIBLE
+        } else {
+            saved_text.visibility = View.VISIBLE
+            empty_saved_icon.visibility = View.GONE
+            empty_saved_text.visibility = View.GONE
+        }
     }
 
     override fun initializePreview() {

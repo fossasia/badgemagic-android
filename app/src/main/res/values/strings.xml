@@ -84,5 +84,6 @@
     <string name="licences">Licences Dialog</string>
     <string name="licences_github">https://github.com/PSDev/LicensesDialog</string>
     <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
+    <string name="empty_saved_section">Looks like there are no saved badges yet</string>
 
 </resources>
