@@ -51,7 +51,16 @@ class PreviewBadge : View {
     private var animationIndex: Int = 0
 
     private var checkList = ArrayList<CheckList>()
-    private var valueAnimator: ValueAnimator? = null
+
+    private var valueAnimatorUpdater = ValueAnimator.AnimatorUpdateListener {
+        animationIndex = it.animatedValue as Int
+    }
+    private var valueAnimator: ValueAnimator? = ValueAnimator().apply {
+        addUpdateListener(valueAnimatorUpdater)
+        repeatMode = ValueAnimator.RESTART
+        repeatCount = ValueAnimator.INFINITE
+        interpolator = LinearInterpolator()
+    }
 
     private var countFrame = 0
     private var lastFrame = 0
@@ -440,16 +449,9 @@ class PreviewBadge : View {
 
     private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
         valueAnimator?.cancel()
-        valueAnimator = ValueAnimator.ofInt(valueAnimatorNumber - 1, 0).apply {
-            addUpdateListener {
-                animationIndex = it.animatedValue as Int
-            }
-            duration = valueAnimatorNumber.toLong().div(badgeSpeed)
-            repeatMode = ValueAnimator.RESTART
-            repeatCount = ValueAnimator.INFINITE
-            interpolator = LinearInterpolator()
-            start()
-        }
+        valueAnimator?.setIntValues(valueAnimatorNumber - 1, 0)
+        valueAnimator?.duration = valueAnimatorNumber.toLong().div(badgeSpeed)
+        valueAnimator?.start()
     }
 
     fun setValue(allHex: List<String>, ifMar: Boolean, ifFla: Boolean, speed: Speed, mode: Mode) {
