@@ -47,8 +47,11 @@ class MainSavedFragment : BaseFragment() {
     }
 
     override fun inject() {
-        viewModel = ViewModelProviders.of(this, InjectorUtils.provideFilesViewModelFactory())
-            .get(AppViewModel::class.java)
+        val currentActivity = activity
+        if (currentActivity != null)
+            viewModel = ViewModelProviders
+                .of(currentActivity, InjectorUtils.provideFilesViewModelFactory())
+                .get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

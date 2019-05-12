@@ -69,8 +69,10 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     override fun inject() {
-        viewModel = ViewModelProviders
-                .of(this, InjectorUtils.provideMainTextDrawableViewModelFactory())
+        val currentActivity = activity
+        if (currentActivity != null)
+            viewModel = ViewModelProviders
+                .of(currentActivity, InjectorUtils.provideMainTextDrawableViewModelFactory())
                 .get(MainTextDrawableViewModel::class.java)
     }
 
