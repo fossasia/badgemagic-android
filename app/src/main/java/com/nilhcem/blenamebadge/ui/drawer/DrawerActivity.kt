@@ -232,6 +232,14 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
     }
 
+    private fun disableBluetooth() {
+        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val btAdapter = btManager.adapter
+        if (btAdapter.isEnabled) {
+            btAdapter.disable()
+        }
+    }
+
     private fun saveImportFile(uri: Uri?) {
         if (StorageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
@@ -270,6 +278,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        disableBluetooth()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
