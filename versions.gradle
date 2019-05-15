@@ -1,0 +1,11 @@
+ext.versions = [:]
+
+versions.compileSdk = 28
+versions.buildTools = '28.0.3'
+versions.minSdk = 18
+versions.targetSdk = 28
+
+versions.kotlin_version = '1.3.30'
+versions.moshi_version = '1.8.0'
+versions.lifecycle = '2.1.0-alpha04'
+versions.leak_canary = '2.0-alpha-1'
