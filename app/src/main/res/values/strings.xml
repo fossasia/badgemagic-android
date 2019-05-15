@@ -64,7 +64,6 @@
     <string name="about_us_connect">Connect With Us</string>
     <string name="about_support_github">GitHub</string>
     <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
-    <string name="about_us_website">Visit our website</string>
     <string name="about_license">License</string>
     <string name="about_license_sub">Check Apache License 2.0 terms used on Badge Magic</string>
     <string name="about_library_license">Library Licenses</string>
