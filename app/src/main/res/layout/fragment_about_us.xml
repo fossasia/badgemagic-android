@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/about_app_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
@@ -37,7 +36,6 @@
                     android:src="@mipmap/ic_launcher_round" />
 
                 <TextView
-                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -57,7 +55,6 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/about_support_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
@@ -66,7 +63,6 @@
             app:cardElevation="@dimen/card_elevation">
 
             <LinearLayout
-                android:id="@+id/about_providers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -103,7 +99,6 @@
                         android:paddingBottom="8dp">
 
                         <TextView
-                            android:id="@+id/about_support_github_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_support_github"
@@ -111,7 +106,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/about_support_github_item_sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_support_github_sub"
@@ -123,7 +117,6 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/about_license_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
@@ -167,7 +160,6 @@
                         android:paddingBottom="8dp">
 
                         <TextView
-                            android:id="@+id/about_license_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_license"
@@ -175,7 +167,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/about_license_item_sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_license_sub"
@@ -207,7 +198,6 @@
                         android:paddingBottom="8dp">
 
                         <TextView
-                            android:id="@+id/about_libs_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_library_license"
@@ -215,7 +205,6 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/about_libs_item_sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/about_library_license_sub"
