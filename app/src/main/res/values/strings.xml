@@ -35,7 +35,7 @@
     <string name="delete">Delete</string>
     <string name="share">Share</string>
     <string name="deleted_saved">Saved Badge Deleted.</string>
-    <string name="file_provider_authority" translatable="false">com.nilhcem.blenamebadge.fileprovider</string>
+    <string name="file_provider_authority" translatable="false">org.fossasia.badgemagic.fileprovider</string>
     <string name="menu_import">Import</string>
     <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
     <string name="save_dialog_already_present">File Already Present</string>
@@ -84,5 +84,6 @@
     <string name="licences_github">https://github.com/PSDev/LicensesDialog</string>
     <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
     <string name="empty_saved_section">Looks like there are no saved badges yet</string>
+    <string name="empty_saved_section_title">No Saved Badges !</string>
 
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
+    <org.fossasia.badgemagic.ui.custom.PreviewBadge
         android:id="@+id/preview_badge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
