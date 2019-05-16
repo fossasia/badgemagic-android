@@ -34,4 +34,7 @@
     <dimen name="about_icon_size">34dp</dimen>
     <dimen name="license_icon_size">28dp</dimen>
     <dimen name="about_icon_padding">8dp</dimen>
+
+    <dimen name="header_text_size">22sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
 </resources>

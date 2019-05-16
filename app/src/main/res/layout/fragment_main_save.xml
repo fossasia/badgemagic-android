@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.nilhcem.blenamebadge.ui.custom.PreviewBadge
+    <org.fossasia.badgemagic.ui.custom.PreviewBadge
         android:id="@+id/preview_badge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -26,23 +26,57 @@
             android:textStyle="bold"
             android:typeface="normal" />
 
-        <ImageView
-            android:id="@+id/empty_saved_icon"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:contentDescription="@string/empty_saved_section"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_emoji" />
-
-        <TextView
-            android:id="@+id/empty_saved_text"
+        <LinearLayout
+            android:id="@+id/empty_saved_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
             android:visibility="gone"
-            android:text="@string/empty_saved_section"/>
+            android:orientation="vertical">
+
+            <org.fossasia.badgemagic.ui.custom.SquareImageView
+                android:id="@+id/noInternetSource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical|clip_horizontal"
+                android:paddingStart="100dp"
+                android:paddingTop="100dp"
+                android:paddingEnd="100dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_emoji" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/noInternetTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/empty_saved_section_title"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/header_text_size" />
+
+                <TextView
+                    android:id="@+id/noInternetSubTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1.1"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/empty_saved_section"
+                    android:textAlignment="center"
+                    android:textColor="#191919"
+                    android:textSize="@dimen/content_text_size" />
+            </LinearLayout>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedConfigRecyclerView"

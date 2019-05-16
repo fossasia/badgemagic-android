@@ -33,7 +33,7 @@
             android:textStyle="bold"
             android:typeface="normal" />
 
-        <com.nilhcem.blenamebadge.ui.custom.knob.Croller
+        <org.fossasia.badgemagic.ui.custom.knob.Croller
             android:id="@+id/speedKnob"
             android:layout_width="@dimen/knob_width"
             android:layout_height="wrap_content"
