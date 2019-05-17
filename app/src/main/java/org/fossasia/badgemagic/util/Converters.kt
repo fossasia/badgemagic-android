@@ -84,7 +84,7 @@ object Converters {
             }
         }
 
-        //Reformatting Against invertLED
+        // Reformatting Against invertLED
         for (i in 0 until list.size) {
             for (j in 0 until list[0].size) {
                 list[i][j] = if (list[i][j] == 1) {
