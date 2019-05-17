@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_main_save.*
 
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
@@ -23,7 +24,6 @@ import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.InjectorUtils
 import org.fossasia.badgemagic.util.SendingUtils
-import kotlinx.android.synthetic.main.fragment_main_save.view.*
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
 import java.io.File
@@ -38,7 +38,6 @@ class MainSavedFragment : BaseFragment() {
 
     private var recyclerAdapter: SaveAdapter? = null
     private lateinit var viewModel: AppViewModel
-    private lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,26 +53,23 @@ class MainSavedFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_main_save, container, false)
-
-        setupRecycler()
-
-        return rootView
+        return inflater.inflate(R.layout.fragment_main_save, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecycler()
         updateEmptyLayout()
     }
 
     private fun updateEmptyLayout() {
         if (viewModel.getFiles().value.isNullOrEmpty()) {
-            rootView.saved_text.visibility = View.GONE
-            rootView.empty_saved_layout.visibility = View.VISIBLE
+            saved_text.visibility = View.GONE
+            empty_saved_layout.visibility = View.VISIBLE
         } else {
-            rootView.saved_text.visibility = View.VISIBLE
-            rootView.empty_saved_layout.visibility = View.GONE
+            saved_text.visibility = View.VISIBLE
+            empty_saved_layout.visibility = View.GONE
         }
     }
 
@@ -98,14 +94,14 @@ class MainSavedFragment : BaseFragment() {
     }
 
     private fun setupRecycler() {
-        if (rootView.savedConfigRecyclerView == null) return
-        rootView.savedConfigRecyclerView.layoutManager = LinearLayoutManager(context)
+        if (savedConfigRecyclerView == null) return
+        savedConfigRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getFiles().observe(this, Observer { files ->
             recyclerAdapter = null
-            rootView.savedConfigRecyclerView.adapter = null
+            savedConfigRecyclerView.adapter = null
 
-            recyclerAdapter = SaveAdapter(context, files, object : OnSavedItemSelected {
+            recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
                 override fun onOptionsSelected(item: ConfigInfo) {
                     showLoadAlert(item)
                 }
@@ -117,7 +113,7 @@ class MainSavedFragment : BaseFragment() {
                         setPreviewNull()
                 }
             })
-            rootView.savedConfigRecyclerView.adapter = recyclerAdapter
+            savedConfigRecyclerView.adapter = recyclerAdapter
             updateEmptyLayout()
         })
     }
@@ -168,7 +164,7 @@ class MainSavedFragment : BaseFragment() {
     }
 
     private fun setPreviewNull() {
-        rootView.preview_badge.setValue(
+        preview_badge.setValue(
             Converters.convertTextToLEDHex(
                 " ",
                 false
@@ -183,7 +179,7 @@ class MainSavedFragment : BaseFragment() {
     private fun setPreview(badgeJSON: String) {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
 
-        rootView.preview_badge.setValue(
+        preview_badge.setValue(
             Converters.fixLEDHex(
                 badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
             badgeConfig?.isMarquee ?: false,
