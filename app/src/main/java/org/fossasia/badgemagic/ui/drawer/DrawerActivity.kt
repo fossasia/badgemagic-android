@@ -68,6 +68,16 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         setupDrawerAndToolbar()
 
         prepareForScan()
+
+        if (intent.action == "org.fossasia.badgemagic.savedBadges.shortcut") {
+            switchFragment(MainSavedFragment.newInstance())
+            showMenu?.setGroupVisible(R.id.saved_group, true)
+        }
+
+        if (intent.action == "org.fossasia.badgemagic.createBadge.shortcut") {
+            switchFragment(MainTextDrawableFragment.newInstance())
+            showMenu?.setGroupVisible(R.id.saved_group, false)
+        }
     }
 
     private fun setupDrawerAndToolbar() {
