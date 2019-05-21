@@ -155,6 +155,16 @@ class PreviewBadge : View {
         bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
     }
 
+    private fun drawLED(condition: Boolean, canvas: Canvas, xValue: Int, yValue: Int) {
+        if (condition) {
+            ledEnabled.bounds = cells[xValue].list[yValue]
+            ledEnabled.draw(canvas)
+        } else {
+            ledDisabled.bounds = cells[xValue].list[yValue]
+            ledDisabled.draw(canvas)
+        }
+    }
+
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -206,93 +216,93 @@ class PreviewBadge : View {
                 when (badgeMode) {
                     Mode.LEFT -> {
                         val animationValue = animationIndex.div(200)
-                        if (validMarquee || flashLEDOn &&
+                        val leftCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[(checkListLength + j - animationValue).rem(checkListLength)]
+
+                        drawLED(
+                            leftCondition,
+                            canvas,
+                            i, j
+                        )
                     }
                     Mode.RIGHT -> {
                         val animationValue = animationIndex.div(200)
-                        if (validMarquee || flashLEDOn &&
+                        val rightCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]
+
+                        drawLED(
+                            rightCondition,
+                            canvas,
+                            i, j
+                        )
                     }
                     Mode.UP -> {
                         val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
-                        if (validMarquee || flashLEDOn &&
+                        val upCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[(i - animationValue + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]
+
+                        drawLED(
+                            upCondition,
+                            canvas,
+                            i, j
+                        )
                     }
                     Mode.DOWN -> {
                         val animationValue = animationIndex.div(((checkList[0].list.size * 200).toDouble() / badgeHeight).toInt())
-
-                        if (validMarquee || flashLEDOn &&
+                        val downCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[(animationValue + i + checkListHeight).rem(checkListHeight)].list[j + badgeWidth / 2]
+
+                        drawLED(
+                            downCondition,
+                            canvas,
+                            i, j
+                        )
                     }
                     Mode.FIXED -> {
-                        if (validMarquee || flashLEDOn &&
+                        val fixedCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[i].list[j + badgeWidth / 2]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[j + badgeWidth / 2]
+
+                        drawLED(
+                            fixedCondition,
+                            canvas,
+                            i, j
+                        )
                     }
                     Mode.SNOWFLAKE -> {
                         val flakeIndex = animationIndex.div(100).rem(badgeWidth / 2)
 
-                        val offsetToAdd = if ((countFrame / (badgeWidth / 2)) > 0)
-                            (countFrame / (badgeWidth / 2)) * badgeWidth + (4 * (countFrame / (badgeWidth / 2)))
-                        else
-                            (countFrame / (badgeWidth / 2)) * badgeWidth
+                        val offsetToAdd = (countFrame / (badgeWidth / 2)) * badgeWidth +
+                            if ((countFrame / (badgeWidth / 2)) > 0)
+                                (4 * (countFrame / (badgeWidth / 2)))
+                            else
+                                0
 
                         if (lastFrame != flakeIndex) {
                             countFrame += 1
                         }
                         lastFrame = flakeIndex
 
-                        if (validMarquee || flashLEDOn &&
+                        val snowflakeCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
                             j + badgeWidth / 2 + offsetToAdd < checkList[i].list.size &&
-                            checkList[i].list[j + badgeWidth / 2 + offsetToAdd]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[j + badgeWidth / 2 + offsetToAdd]
+
+                        drawLED(
+                            snowflakeCondition,
+                            canvas,
+                            i, j
+                        )
 
                         if (countFrame >= ((checkList[0].list.size / badgeWidth) * (badgeWidth / 2))) {
                             countFrame = 0
@@ -308,41 +318,38 @@ class PreviewBadge : View {
                         }
                         lastFrame = firstLine
 
-                        val pictureCondition = when {
-                            countFrame < badgeHeight ->
-                                i <= (badgeHeight - 1 - virtualLine) &&
-                                    pictureCheckList[badgeHeight.minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
-                            countFrame < (badgeHeight * 2) ->
-                                if (i < virtualLine - 1)
-                                    i < (2 * badgeHeight - 1 - virtualLine) && virtualLine > 2 &&
-                                        pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).minus(1))].list[j + badgeWidth / 2]
-                                else
-                                    checkList[i].list[j + badgeWidth / 2]
-                            countFrame < (badgeHeight * 3) ->
-                                j < checkList[i].list.size &&
-                                    checkList[i].list[j + badgeWidth / 2]
-                            countFrame < (badgeHeight * 4) ->
-                                if (i > virtualLine)
-                                    virtualLine in 0 until i &&
-                                        pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).plus(1))].list[j + badgeWidth / 2]
-                                else
-                                    checkList[i].list[j + badgeWidth / 2]
-                            else ->
-                                i > firstLine &&
-                                    pictureCheckList[badgeHeight.times(3).minus(1).minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
-                        }
-
-                        if (validMarquee || flashLEDOn &&
+                        val pictureCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            pictureCondition) {
+                            when {
+                                countFrame < badgeHeight ->
+                                    i <= (badgeHeight - 1 - virtualLine) &&
+                                        pictureCheckList[badgeHeight.minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
+                                countFrame < (badgeHeight * 2) ->
+                                    if (i < virtualLine - 1)
+                                        i < (2 * badgeHeight - 1 - virtualLine) && virtualLine > 2 &&
+                                            pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).minus(1))].list[j + badgeWidth / 2]
+                                    else
+                                        checkList[i].list[j + badgeWidth / 2]
+                                countFrame < (badgeHeight * 3) ->
+                                    j < checkList[i].list.size &&
+                                        checkList[i].list[j + badgeWidth / 2]
+                                countFrame < (badgeHeight * 4) ->
+                                    if (i > virtualLine)
+                                        virtualLine in 0 until i &&
+                                            pictureCheckList[badgeHeight.times(2).minus(virtualLine.plus(i).plus(1))].list[j + badgeWidth / 2]
+                                    else
+                                        checkList[i].list[j + badgeWidth / 2]
+                                else ->
+                                    i > firstLine &&
+                                        pictureCheckList[badgeHeight.times(3).minus(1).minus(virtualLine.plus(i))].list[j + badgeWidth / 2]
+                            }
 
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                        drawLED(
+                            pictureCondition,
+                            canvas,
+                            i, j
+                        )
 
                         if (countFrame > (5 * (badgeHeight) - 1)) {
                             countFrame = 0
@@ -367,17 +374,17 @@ class PreviewBadge : View {
                             else -> true
                         }
 
-                        if (checkLineOnRow || validMarquee || flashLEDOn &&
+                        val animationCondition = checkLineOnRow || validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
                             checkBitmapOnRow &&
-                            checkList[i].list[j + badgeWidth / 2]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[j + badgeWidth / 2]
+
+                        drawLED(
+                            animationCondition,
+                            canvas,
+                            i, j
+                        )
 
                         if (countFrame > (4 * (badgeWidth / 2))) {
                             countFrame = 0
@@ -406,17 +413,17 @@ class PreviewBadge : View {
                             else -> true
                         }
 
-                        if (checkLineOnRow || validMarquee || flashLEDOn &&
+                        val laserCondition = checkLineOnRow || validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
                             checkBitmapOnRow &&
-                            checkList[i].list[j + badgeWidth / 2]) {
-                            ledEnabled.bounds = cells[i].list[j]
-                            ledEnabled.draw(canvas)
-                        } else {
-                            ledDisabled.bounds = cells[i].list[j]
-                            ledDisabled.draw(canvas)
-                        }
+                            checkList[i].list[j + badgeWidth / 2]
+
+                        drawLED(
+                            laserCondition,
+                            canvas,
+                            i, j
+                        )
 
                         if (countFrame > (3 * (badgeWidth))) {
                             countFrame = 0
