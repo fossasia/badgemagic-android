@@ -68,16 +68,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         setupDrawerAndToolbar()
 
         prepareForScan()
-
-        if (intent.action == "org.fossasia.badgemagic.savedBadges.shortcut") {
-            switchFragment(MainSavedFragment.newInstance())
-            showMenu?.setGroupVisible(R.id.saved_group, true)
-        }
-
-        if (intent.action == "org.fossasia.badgemagic.createBadge.shortcut") {
-            switchFragment(MainTextDrawableFragment.newInstance())
-            showMenu?.setGroupVisible(R.id.saved_group, false)
-        }
     }
 
     private fun setupDrawerAndToolbar() {
@@ -126,9 +116,18 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         })
 
         navView.setNavigationItemSelectedListener(this)
-        navView.setCheckedItem(R.id.create)
-        switchFragment(MainTextDrawableFragment.newInstance())
-        showMenu?.setGroupVisible(R.id.saved_group, false)
+        when (intent.action) {
+            Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
+                switchFragment(MainTextDrawableFragment.newInstance())
+                showMenu?.setGroupVisible(R.id.saved_group, false)
+                navView.setCheckedItem(R.id.create)
+            }
+            "org.fossasia.badgemagic.savedBadges.shortcut" -> {
+                switchFragment(MainSavedFragment.newInstance())
+                showMenu?.setGroupVisible(R.id.saved_group, true)
+                navView.setCheckedItem(R.id.saved)
+            }
+        }
     }
 
     private fun prepareForScan() {
