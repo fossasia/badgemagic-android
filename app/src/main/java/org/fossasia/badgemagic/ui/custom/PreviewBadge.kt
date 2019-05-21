@@ -43,20 +43,16 @@ class PreviewBadge : View {
 
     private var oneByte = 8
 
+    private var animationIndex: Int = 0
+
     private var ifFlash: Boolean = false
     private var ifMarquee: Boolean = false
     private var badgeSpeed: Int = 1
     private var badgeMode: Mode = Mode.LEFT
 
-    private var animationIndex: Int = 0
-
     private var checkList = ArrayList<CheckList>()
 
-    private var valueAnimatorUpdater = ValueAnimator.AnimatorUpdateListener {
-        animationIndex = it.animatedValue as Int
-    }
     private var valueAnimator: ValueAnimator? = ValueAnimator().apply {
-        addUpdateListener(valueAnimatorUpdater)
         repeatMode = ValueAnimator.RESTART
         repeatCount = ValueAnimator.INFINITE
         interpolator = LinearInterpolator()
@@ -435,6 +431,7 @@ class PreviewBadge : View {
     }
 
     override fun onDetachedFromWindow() {
+        valueAnimator?.removeAllUpdateListeners()
         valueAnimator?.cancel()
         super.onDetachedFromWindow()
     }
@@ -448,7 +445,11 @@ class PreviewBadge : View {
     }
 
     private fun configValueAnimation(valueAnimatorNumber: Int = 8800) {
+        valueAnimator?.removeAllUpdateListeners()
         valueAnimator?.cancel()
+        valueAnimator?.addUpdateListener {
+            animationIndex = it.animatedValue as Int
+        }
         valueAnimator?.setIntValues(valueAnimatorNumber - 1, 0)
         valueAnimator?.duration = valueAnimatorNumber.toLong().div(badgeSpeed)
         valueAnimator?.start()
