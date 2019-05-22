@@ -53,13 +53,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <EditText
+                    <org.fossasia.badgemagic.ui.custom.NoInputConnEditText
                         android:id="@+id/text_to_send"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:hint="@string/enter_text"
-                        android:inputType="text" />
+                        android:hint="@string/enter_text" />
 
                 </LinearLayout>
 
