@@ -1,16 +1,15 @@
-package org.fossasia.badgemagic.ui.fragments.main_text
+package org.fossasia.badgemagic.ui.fragments.main_textart
 
 import androidx.lifecycle.ViewModel
-import org.fossasia.badgemagic.data.fragments.FilesRepository
+import org.fossasia.badgemagic.data.clipart.ClipArtRepository
+import org.fossasia.badgemagic.data.saved_files.FilesRepository
 
-class MainTextDrawableViewModel(private val configRepo: FilesRepository) : ViewModel() {
+class MainTextArtViewModel(private val configRepo: FilesRepository, private val clipArtRepo: ClipArtRepository) : ViewModel() {
     var speed = 1
     var isFlash = false
     var isMarquee = false
     var isInverted = false
-    var drawablePosition = -1
     var animationPosition = -1
-    var radioSelectedId = -1
     var currentTab = 1
     var text = ""
 
@@ -19,4 +18,6 @@ class MainTextDrawableViewModel(private val configRepo: FilesRepository) : ViewM
     fun updateList() = configRepo.update()
 
     fun saveFile(filename: String, json: String) = configRepo.saveFile(filename, json)
+
+    fun getClipArts() = clipArtRepo.getClipArts()
 }

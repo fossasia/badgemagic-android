@@ -34,7 +34,6 @@
             android:orientation="vertical">
 
             <org.fossasia.badgemagic.ui.custom.SquareImageView
-                android:id="@+id/noInternetSource"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical|clip_horizontal"
@@ -50,7 +49,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/noInternetTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -63,7 +61,6 @@
                     android:textSize="@dimen/header_text_size" />
 
                 <TextView
-                    android:id="@+id/noInternetSubTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"

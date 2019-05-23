@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <org.fossasia.badgemagic.ui.custom.PreviewBadge
@@ -31,66 +31,37 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:paddingRight="@dimen/spacing_normal">
+                    android:paddingEnd="@dimen/spacing_normal">
 
-                    <RadioGroup
-                        android:id="@+id/radioGroup"
+                    <EditText
+                        android:id="@+id/textViewMainText"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/drawableRadio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/send_drawables" />
-
-                        <RadioButton
-                            android:id="@+id/textRadio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/send_text" />
-
-                    </RadioGroup>
+                        android:layout_height="60dp"
+                        android:background="@drawable/round_corner_bg"
+                        android:hint="@string/enter_text"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:padding="10dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/section_text"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-
-                            <EditText
-                                android:id="@+id/text_to_send"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small"
-                                android:hint="@string/enter_text"
-                                android:inputType="text" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/section_drawables"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/drawablesRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_small"
-                                android:background="@drawable/round_corner_bg" />
-                        </LinearLayout>
+                                android:background="@drawable/round_corner_bg">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 

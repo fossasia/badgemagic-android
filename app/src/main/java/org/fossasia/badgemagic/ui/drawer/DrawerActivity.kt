@@ -31,7 +31,7 @@ import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
 import org.fossasia.badgemagic.ui.AppViewModel
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
 import org.fossasia.badgemagic.ui.fragments.main_saved.MainSavedFragment
-import org.fossasia.badgemagic.ui.fragments.main_text.MainTextDrawableFragment
+import org.fossasia.badgemagic.ui.fragments.main_textart.MainTextArtFragment
 import org.fossasia.badgemagic.util.InjectorUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
@@ -91,7 +91,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             override fun onDrawerClosed(drawerView: View) {
                 when (drawerCheckedID) {
                     R.id.create -> {
-                        switchFragment(MainTextDrawableFragment.newInstance())
+                        switchFragment(MainTextArtFragment.newInstance())
                         showMenu?.setGroupVisible(R.id.saved_group, false)
                     }
                     R.id.saved -> {
@@ -118,7 +118,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         navView.setNavigationItemSelectedListener(this)
         when (intent.action) {
             Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
-                switchFragment(MainTextDrawableFragment.newInstance())
+                switchFragment(MainTextArtFragment.newInstance())
                 showMenu?.setGroupVisible(R.id.saved_group, false)
                 navView.setCheckedItem(R.id.create)
             }

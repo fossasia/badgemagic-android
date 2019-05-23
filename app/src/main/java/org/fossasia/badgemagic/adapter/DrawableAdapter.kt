@@ -7,7 +7,6 @@ import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.DrawableInfo
 
 class DrawableAdapter : RecyclerView.Adapter<DrawableItemHolder>() {
-    private var selectedPosition: Int = -1
     var onDrawableSelected: OnDrawableSelected? = null
     private val drawableList = mutableListOf<DrawableInfo>()
 
@@ -22,7 +21,7 @@ class DrawableAdapter : RecyclerView.Adapter<DrawableItemHolder>() {
 
     override fun onBindViewHolder(holder: DrawableItemHolder, position: Int) {
         holder.apply {
-            bind(drawableList[position], selectedPosition, position)
+            bind(drawableList[position])
             listener = onDrawableSelected
         }
     }
@@ -33,17 +32,9 @@ class DrawableAdapter : RecyclerView.Adapter<DrawableItemHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setSelectedDrawablePosition(position: Int) {
-        selectedPosition = if (selectedPosition == position) -1 else position
-    }
-
-    fun getSelectedItem(): DrawableInfo? {
-        return if (selectedPosition == -1) null else drawableList[selectedPosition]
-    }
-
     override fun getItemCount() = drawableList.size
 }
 
 interface OnDrawableSelected {
-    fun onSelected(selectedItemPosition: Int)
+    fun onSelected(selectedItem: DrawableInfo)
 }

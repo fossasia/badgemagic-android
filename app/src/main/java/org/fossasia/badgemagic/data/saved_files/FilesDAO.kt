@@ -1,7 +1,8 @@
-package org.fossasia.badgemagic.data.fragments
+package org.fossasia.badgemagic.data.saved_files
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.fossasia.badgemagic.util.StorageUtils
 
 class FilesDAO {
