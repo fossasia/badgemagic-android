@@ -20,9 +20,6 @@
     <string name="mode_laser">Laser</string>
     <string name="permission_required">Permission required</string>
     <string name="no_device_found">No device found. Please try again.</string>
-    <string name="character_not_found">Some of the character(s) entered cannot be displayed.</string>
-    <string name="send_text">Editor</string>
-    <string name="send_drawables">Clipart</string>
     <string name="invertLED">Invert LED</string>
     <string name="enter_text">Enter Text</string>
     <string name="image_bitmap_description">Bitmap Image</string>

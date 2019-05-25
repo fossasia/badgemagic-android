@@ -4,8 +4,12 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import androidx.annotation.DrawableRes
 import android.graphics.drawable.Drawable
+import android.util.SparseArray
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
 import java.math.BigInteger
+
+const val DRAWABLE_START = '«'
+const val DRAWABLE_END = '»'
 
 object Converters {
     fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int, invertLED: Boolean): List<String> {
@@ -166,5 +170,30 @@ object Converters {
             list.add(invertHex(str))
         }
         return list
+    }
+
+    fun convertEditableToLEDHex(editable: String, invertLED: Boolean, drawableSparse: SparseArray<Drawable>): List<String> {
+        val listOfArt = mutableListOf<String>()
+        var i = 0
+        while (i < editable.length) {
+            val ch = editable[i]
+            if (ch == DRAWABLE_START) {
+                val foundIndex = editable.indexOf(DRAWABLE_END, i)
+                i = if (foundIndex > 0) {
+                    listOfArt.addAll(
+                        convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED)
+                    )
+                    foundIndex + 1
+                } else {
+                    editable.length
+                }
+            } else {
+                listOfArt.addAll(
+                    convertTextToLEDHex(ch.toString(), invertLED).second
+                )
+                i++
+            }
+        }
+        return listOfArt
     }
 }

@@ -5,7 +5,6 @@ import android.widget.Toast
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.core.utils.ByteArrayUtils
-import org.fossasia.badgemagic.data.DrawableInfo
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
 import org.fossasia.badgemagic.data.device.bluetooth.GattClient
 import org.fossasia.badgemagic.data.device.bluetooth.ScanHelper
@@ -14,7 +13,6 @@ import org.fossasia.badgemagic.data.device.model.Message
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.data.fragments.BadgeConfig
-import org.fossasia.badgemagic.data.util.SendingData
 
 object SendingUtils {
 
@@ -56,30 +54,8 @@ object SendingUtils {
         }
     }
 
-    fun convertTextToDeviceDataModel(text_to_send: String, data: SendingData): DataToSend {
-        return DataToSend(listOf(Message(
-            Converters.convertTextToLEDHex(
-                if (text_to_send.isNotEmpty()) text_to_send
-                else if (!data.invertLED) " "
-                else "",
-                data.invertLED
-            ).second,
-            data.flash, data.marquee,
-            data.speed,
-            data.mode
-        )))
-    }
-
-    fun convertDrawableToDeviceDataModel(selectedItem: DrawableInfo, data: SendingData): DataToSend {
-        return DataToSend(listOf(Message(
-            Converters.convertDrawableToLEDHex(
-                selectedItem.image,
-                data.invertLED),
-            data.flash,
-            data.marquee,
-            data.speed,
-            data.mode
-        )))
+    fun convertToDeviceDataModel(message: Message): DataToSend {
+        return DataToSend(listOf(message))
     }
 
     fun returnDefaultMessage(): DataToSend {
@@ -107,22 +83,12 @@ object SendingUtils {
         )))
     }
 
-    fun configToJSON(selectedID: Int, text_to_send: String, selectedDrawable: DrawableInfo?, data: SendingData): String {
+    fun configToJSON(data: Message, invertLED: Boolean): String {
         val bConfig = BadgeConfig()
-        bConfig.hexStrings = when (selectedID) {
-            R.id.textRadio -> {
-                Converters.convertTextToLEDHex(if (text_to_send.isNotEmpty()) text_to_send else " ", false).second
-            }
-            else -> {
-                if (selectedDrawable != null)
-                    Converters.convertDrawableToLEDHex(selectedDrawable.image, data.invertLED)
-                else
-                    Converters.convertTextToLEDHex(" ", false).second
-            }
-        }
+        bConfig.hexStrings = data.hexStrings
         bConfig.isFlash = data.flash
         bConfig.isMarquee = data.marquee
-        bConfig.isInverted = data.invertLED
+        bConfig.isInverted = invertLED
         bConfig.mode = data.mode
         bConfig.speed = data.speed
 

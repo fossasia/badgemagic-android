@@ -2,7 +2,7 @@ package org.fossasia.badgemagic.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.fossasia.badgemagic.data.fragments.FilesRepository
+import org.fossasia.badgemagic.data.saved_files.FilesRepository
 
 class AppViewModelProviderFactory(private val configRepository: FilesRepository) :
     ViewModelProvider.NewInstanceFactory() {

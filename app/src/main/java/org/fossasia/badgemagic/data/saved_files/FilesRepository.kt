@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.data.fragments
+package org.fossasia.badgemagic.data.saved_files
 
 class FilesRepository private constructor(private val filesData: FilesDAO) {
 

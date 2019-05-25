@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.ui.fragments.main_text
+package org.fossasia.badgemagic.ui.fragments.main_textart
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -6,61 +6,68 @@ import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.LinearLayout
-import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.effects_layout.*
 
 import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.core.android.ext.hideKeyboard
-import org.fossasia.badgemagic.core.android.ext.showKeyboard
 import org.fossasia.badgemagic.data.DrawableInfo
 import org.fossasia.badgemagic.data.ModeInfo
-import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
-import org.fossasia.badgemagic.data.util.SendingData
 import org.fossasia.badgemagic.ui.custom.knob.Croller
 import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
-import org.fossasia.badgemagic.util.Converters
-import org.fossasia.badgemagic.util.InjectorUtils
-import org.fossasia.badgemagic.util.SendingUtils
-import kotlinx.android.synthetic.main.fragment_main_text.*
+import kotlinx.android.synthetic.main.fragment_main_textart.*
 import kotlinx.android.synthetic.main.sections_tab.*
 import org.fossasia.badgemagic.adapter.DrawableAdapter
 import org.fossasia.badgemagic.adapter.ModeAdapter
 import org.fossasia.badgemagic.adapter.OnDrawableSelected
 import org.fossasia.badgemagic.adapter.OnModeSelected
+import org.fossasia.badgemagic.core.android.ext.hideKeyboard
+import org.fossasia.badgemagic.core.android.ext.showKeyboard
+import org.fossasia.badgemagic.data.device.model.DataToSend
+import org.fossasia.badgemagic.data.device.model.Message
+import org.fossasia.badgemagic.data.device.model.Speed
+import org.fossasia.badgemagic.text.CenteredImageSpan
+import org.fossasia.badgemagic.util.InjectorUtils
+import org.fossasia.badgemagic.util.SendingUtils
+import org.fossasia.badgemagic.util.Converters
+import org.fossasia.badgemagic.util.ImageUtils
+import org.fossasia.badgemagic.util.DRAWABLE_END
+import org.fossasia.badgemagic.util.DRAWABLE_START
 import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Calendar
 import java.util.Timer
+import java.util.Calendar
+import java.util.Locale
 import java.util.TimerTask
 
-@Suppress("DEPRECATION")
-class MainTextDrawableFragment : BaseFragment() {
+class MainTextArtFragment : BaseFragment() {
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
         @JvmStatic
         fun newInstance() =
-            MainTextDrawableFragment()
+            MainTextArtFragment()
     }
 
     private val drawableRecyclerAdapter = DrawableAdapter()
     private val modeAdapter = ModeAdapter()
-    private lateinit var viewModel: MainTextDrawableViewModel
+    private lateinit var viewModel: MainTextArtViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +79,7 @@ class MainTextDrawableFragment : BaseFragment() {
         if (currentActivity != null)
             viewModel = ViewModelProviders
                 .of(currentActivity, InjectorUtils.provideMainTextDrawableViewModelFactory())
-                .get(MainTextDrawableViewModel::class.java)
+                .get(MainTextArtViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,85 +89,35 @@ class MainTextDrawableFragment : BaseFragment() {
         configureEffects()
         setupSpeedKnob()
         setupTabLayout()
-        setupTextDrawableSection()
+        setupTextArtSection()
         setupButton()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main_text, container, false)
+        return inflater.inflate(R.layout.fragment_main_textart, container, false)
     }
 
     override fun getSendData(): DataToSend {
-        text_to_send.hideKeyboard()
-        return when (viewModel.radioSelectedId) {
-            R.id.textRadio -> convertTextToDeviceDataModel()
-            else -> convertBitmapToDeviceDataModel()
-        }
+        textViewMainText.hideKeyboard()
+        return SendingUtils.convertToDeviceDataModel(
+            Message(
+                Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
+                    ?: SparseArray()),
+                flash.isChecked,
+                marquee.isChecked,
+                Speed.values()[speedKnob.progress.minus(1)],
+                Mode.values()[modeAdapter.getSelectedItemPosition()]
+            )
+        )
     }
 
     override fun initializePreview() {
         setPreview()
     }
 
-    private fun selectText() {
-        val (valid, textToSend) = Converters.convertTextToLEDHex(
-            if (text_to_send.text.isNotEmpty()) text_to_send.text.toString()
-            else if (!invertLED.isChecked) " " else "", invertLED.isChecked)
-        if (!valid) {
-            Toast.makeText(context, R.string.character_not_found, Toast.LENGTH_SHORT).show()
-        }
-        preview_badge.setValue(
-            textToSend,
-            marquee.isChecked,
-            flash.isChecked,
-            Speed.values()[speedKnob.progress.minus(1)],
-            Mode.values()[modeAdapter.getSelectedItemPosition()]
-        )
-    }
-
-    private fun selectDrawable(selectedItem: DrawableInfo?) {
-        preview_badge.setValue(if (selectedItem != null)
-            Converters.convertDrawableToLEDHex(selectedItem.image, invertLED.isChecked)
-        else
-            Converters.convertTextToLEDHex(if (!invertLED.isChecked) " " else "", invertLED.isChecked).second,
-            marquee.isChecked,
-            flash.isChecked,
-            Speed.values()[speedKnob.progress.minus(1)],
-            Mode.values()[modeAdapter.getSelectedItemPosition()]
-        )
-    }
-
-    private fun convertTextToDeviceDataModel(): DataToSend {
-        return SendingUtils.convertTextToDeviceDataModel(
-            text_to_send.text.toString(),
-            SendingData(
-                invertLED.isChecked,
-                flash.isChecked,
-                marquee.isChecked,
-                Mode.values()[modeAdapter.getSelectedItemPosition()],
-                Speed.values()[speedKnob.progress.minus(1)]
-            )
-        )
-    }
-
-    private fun convertBitmapToDeviceDataModel(): DataToSend {
-        return drawableRecyclerAdapter.getSelectedItem()?.let {
-            SendingUtils.convertDrawableToDeviceDataModel(
-                it,
-                SendingData(
-                    invertLED.isChecked,
-                    flash.isChecked,
-                    marquee.isChecked,
-                    Mode.values()[modeAdapter.getSelectedItemPosition()],
-                    Speed.values()[speedKnob.progress.minus(1)]
-                )
-            )
-        } ?: DataToSend(listOf())
-    }
-
     private fun setupButton() {
         save_button.setOnClickListener {
-            text_to_send.hideKeyboard()
+            textViewMainText.hideKeyboard()
             showSaveFileDialog()
         }
 
@@ -190,41 +147,26 @@ class MainTextDrawableFragment : BaseFragment() {
     }
 
     private val textChangedListener = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {}
+        override fun afterTextChanged(s: Editable?) {
+            if (s != null) {
+                val drawableStartIndex = s.lastIndexOf(DRAWABLE_START)
+                if (drawableStartIndex > s.lastIndexOf(DRAWABLE_END))
+                    s.delete(drawableStartIndex, s.length)
+            }
+        }
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             viewModel.text = s.toString()
-            selectText()
+            setPreview()
         }
     }
 
-    private fun setupTextDrawableSection() {
-        radioGroup.setOnCheckedChangeListener { _, optionId ->
-            when (optionId) {
-                R.id.drawableRadio -> {
-                    text_to_send.hideKeyboard()
+    private fun setupTextArtSection() {
+        textViewMainText.requestFocus()
+        textViewMainText.showKeyboard()
 
-                    section_drawables.visibility = View.VISIBLE
-                    section_text.visibility = View.GONE
-                    selectDrawable(drawableRecyclerAdapter.getSelectedItem())
-                }
-
-                R.id.textRadio -> {
-                    text_to_send.requestFocus()
-                    text_to_send.showKeyboard()
-
-                    section_text.visibility = View.VISIBLE
-                    section_drawables.visibility = View.GONE
-                    selectText()
-                }
-            }
-            viewModel.radioSelectedId = optionId
-        }
-
-        text_to_send.setText(viewModel.text)
-
-        if (viewModel.radioSelectedId == R.id.drawableRadio) radioGroup.check(R.id.drawableRadio)
-        else radioGroup.check(R.id.textRadio)
+        textViewMainText.setText(viewModel.text)
     }
 
     private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
@@ -275,13 +217,13 @@ class MainTextDrawableFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        text_to_send.addTextChangedListener(textChangedListener)
+        textViewMainText.addTextChangedListener(textChangedListener)
         tabLayout.addOnTabSelectedListener(tabSelectedListener)
     }
 
     override fun onStop() {
         super.onStop()
-        text_to_send.removeTextChangedListener(textChangedListener)
+        textViewMainText.removeTextChangedListener(textChangedListener)
         tabLayout.removeOnTabSelectedListener(tabSelectedListener)
     }
 
@@ -335,40 +277,26 @@ class MainTextDrawableFragment : BaseFragment() {
         drawablesRecyclerView.layoutManager = GridLayoutManager(context, 6)
         drawablesRecyclerView.adapter = null
 
-        val listOfDrawables = listOf(
-            DrawableInfo(resources.getDrawable(R.drawable.apple)),
-            DrawableInfo(resources.getDrawable(R.drawable.clock)),
-            DrawableInfo(resources.getDrawable(R.drawable.dustbin)),
-            DrawableInfo(resources.getDrawable(R.drawable.face)),
-            DrawableInfo(resources.getDrawable(R.drawable.heart)),
-            DrawableInfo(resources.getDrawable(R.drawable.home)),
-            DrawableInfo(resources.getDrawable(R.drawable.invader)),
-            DrawableInfo(resources.getDrawable(R.drawable.mail)),
-            DrawableInfo(resources.getDrawable(R.drawable.mix1)),
-            DrawableInfo(resources.getDrawable(R.drawable.mix2)),
-            DrawableInfo(resources.getDrawable(R.drawable.mushroom)),
-            DrawableInfo(resources.getDrawable(R.drawable.mustache)),
-            DrawableInfo(resources.getDrawable(R.drawable.oneup)),
-            DrawableInfo(resources.getDrawable(R.drawable.pause)),
-            DrawableInfo(resources.getDrawable(R.drawable.spider)),
-            DrawableInfo(resources.getDrawable(R.drawable.sun)),
-            DrawableInfo(resources.getDrawable(R.drawable.thumbs_up))
-        )
-
         val drawableListener = object : OnDrawableSelected {
-            override fun onSelected(selectedItemPosition: Int) {
-                viewModel.drawablePosition = selectedItemPosition
-                drawableRecyclerAdapter.setSelectedDrawablePosition(selectedItemPosition)
-                drawableRecyclerAdapter.notifyDataSetChanged()
-                selectDrawable(drawableRecyclerAdapter.getSelectedItem())
+            override fun onSelected(selectedItem: DrawableInfo) {
+                putBitmapInEditText(selectedItem)
             }
         }
         drawableRecyclerAdapter.apply {
             onDrawableSelected = drawableListener
         }
-        drawableRecyclerAdapter.addAll(listOfDrawables)
-        drawableRecyclerAdapter
-            .setSelectedDrawablePosition(viewModel.drawablePosition)
+
+        viewModel.getClipArts().observe(this, Observer {
+            val listOfDrawable = mutableListOf<DrawableInfo>()
+            for (i in 0 until it.size()) {
+                val key = it.keyAt(i)
+                val obj = it.get(key)
+                listOfDrawable.add(DrawableInfo(key, obj))
+            }
+
+            drawableRecyclerAdapter.addAll(listOfDrawable)
+        })
+
         drawablesRecyclerView.adapter = drawableRecyclerAdapter
 
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -412,27 +340,39 @@ class MainTextDrawableFragment : BaseFragment() {
         modeRecyclerView.adapter = modeAdapter
     }
 
+    private fun putBitmapInEditText(drawableInfo: DrawableInfo) {
+        val strToAppend = "«${drawableInfo.id}»"
+        val spanStringBuilder = SpannableStringBuilder(strToAppend)
+        spanStringBuilder.setSpan(CenteredImageSpan(requireContext(), ImageUtils.trim((drawableInfo.image as BitmapDrawable).bitmap, 70)), 0, strToAppend.length, 33)
+        val editable = textViewMainText.text
+        val n = textViewMainText.selectionEnd
+        if (n < editable.length) {
+            editable.insert(n, spanStringBuilder)
+            return
+        }
+        editable.append(spanStringBuilder)
+    }
+
     override fun onResume() {
         super.onResume()
-        if (viewModel.radioSelectedId == R.id.textRadio) {
-            text_to_send.requestFocus()
-            text_to_send.showKeyboard()
-        }
+        textViewMainText.requestFocus()
+        textViewMainText.showKeyboard()
     }
 
     override fun onPause() {
         super.onPause()
-
-        if (viewModel.radioSelectedId == R.id.textRadio) {
-            text_to_send.hideKeyboard()
-        }
+        textViewMainText.hideKeyboard()
     }
 
     private fun setPreview() {
-        if (textRadio.isChecked)
-            selectText()
-        else
-            selectDrawable(drawableRecyclerAdapter.getSelectedItem())
+        preview_badge.setValue(
+            Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
+                ?: SparseArray()),
+            marquee.isChecked,
+            flash.isChecked,
+            Speed.values()[speedKnob.progress.minus(1)],
+            Mode.values()[modeAdapter.getSelectedItemPosition()]
+        )
     }
 
     private fun getCurrentDate(): String {
@@ -477,16 +417,15 @@ class MainTextDrawableFragment : BaseFragment() {
 
     private fun configToJSON(): String {
         return SendingUtils.configToJSON(
-            viewModel.radioSelectedId,
-            text_to_send.text.toString(),
-            drawableRecyclerAdapter.getSelectedItem(),
-            SendingData(
-                invertLED.isChecked,
+            Message(
+                Converters.convertEditableToLEDHex(textViewMainText.text.toString(), false, viewModel.getClipArts().value
+                    ?: SparseArray()),
                 flash.isChecked,
                 marquee.isChecked,
-                Mode.values()[modeAdapter.getSelectedItemPosition()],
-                Speed.values()[speedKnob.progress.minus(1)]
-            )
+                Speed.values()[speedKnob.progress.minus(1)],
+                Mode.values()[modeAdapter.getSelectedItemPosition()]
+            ),
+            invertLED.isChecked
         )
     }
 
@@ -507,7 +446,7 @@ class MainTextDrawableFragment : BaseFragment() {
         viewModel.let { StoreAsync(fileName, jsonString, it).execute() }
     }
 
-    class StoreAsync(private val filename: String, private val json: String, private val viewModel: MainTextDrawableViewModel) : AsyncTask<Void, Void, Void>() {
+    class StoreAsync(private val filename: String, private val json: String, private val viewModel: MainTextArtViewModel) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             viewModel.saveFile(filename, json)
             return null

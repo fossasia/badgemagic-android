@@ -20,53 +20,25 @@
             android:orientation="vertical"
             android:padding="@dimen/spacing_large">
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/drawableRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/send_drawables" />
-
-                <RadioButton
-                    android:id="@+id/textRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/send_text" />
-
-            </RadioGroup>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/section_text"
+                <EditText
+                    android:id="@+id/textViewMainText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/text_to_send"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:hint="@string/enter_text"
-                        android:inputType="text" />
-
-                </LinearLayout>
+                    android:layout_height="60dp"
+                    android:background="@drawable/round_corner_bg"
+                    android:hint="@string/enter_text"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="10dp" />
 
                 <LinearLayout
-                    android:id="@+id/section_drawables"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -76,9 +48,9 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawablesRecyclerView"
                             android:layout_width="match_parent"
-                            android:background="@drawable/round_corner_bg"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_small">
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:background="@drawable/round_corner_bg">
 
                         </androidx.recyclerview.widget.RecyclerView>
                     </RelativeLayout>
