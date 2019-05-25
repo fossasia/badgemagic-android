@@ -1,4 +1,4 @@
-# Badge Magic
+# Badge Magic <a href='https://play.google.com/store/apps/details?id=org.fossasia.badgemagic'><img align='right' height='46' src='./docs/images/google_play_badge.png'></a>
 
 Magically Create Symbols and Text on LED Name Badges using Bluetooth
 
