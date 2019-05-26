@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/create"
+            android:icon="@drawable/ic_menu_create"
+            android:title="@string/drawer_create_badges" />
+        <item
+            android:id="@+id/saved"
+            android:icon="@drawable/ic_menu_save"
+            android:title="@string/drawer_saved_badge" />
+    </group>
+
+    <item android:title="@string/drawer_other">
+        <menu>
+            <item
+                android:id="@+id/buy"
+                android:icon="@drawable/ic_menu_buy"
+                android:title="@string/drawer_buy_badge" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_menu_about"
+                android:title="@string/drawer_about_us" />
+            <item
+                android:id="@+id/feedback"
+                android:icon="@drawable/ic_menu_bug"
+                android:title="@string/drawer_feedback" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="square_image_dimension">64dp</dimen>
+    <dimen name="square_image_dimension_half">48dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_large_extended">20sp</dimen>
+
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+
+    <dimen name="button_padding_left_right">42dp</dimen>
+    <dimen name="bottom_bar_margin">32dp</dimen>
+    <dimen name="drawable_image_margin">5dp</dimen>
+    <dimen name="title_min_height_medium">20dp</dimen>
+    <dimen name="title_min_height_large">40dp</dimen>
+    <dimen name="knob_margin">20dp</dimen>
+    <dimen name="knob_width">150dp</dimen>
+    <dimen name="card_spacing">10dp</dimen>
+    <dimen name="card_corner_radius">1dp</dimen>
+    <dimen name="about_card_elevation">5dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+
+    <dimen name="about_group_text_padding">16dp</dimen>
+    <dimen name="about_group_item_text_size">18sp</dimen>
+    <dimen name="about_icon_size">34dp</dimen>
+    <dimen name="license_icon_size">28dp</dimen>
+    <dimen name="about_icon_padding">8dp</dimen>
+
+    <dimen name="header_text_size">22sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
+</resources>

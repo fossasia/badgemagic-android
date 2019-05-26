@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_small">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:gravity="center"
+                android:minHeight="@dimen/title_min_height_medium"
+                android:text="AKD"
+                android:textAppearance="@style/TextAppearanceList"
+                android:textSize="@dimen/text_size_large_extended" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/play_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_large"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:minHeight="@dimen/title_min_height_large"
+                    app:srcCompat="@drawable/ic_play_pause" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:minHeight="@dimen/title_min_height_large"
+                    app:srcCompat="@drawable/ic_settings" />
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text"
+                android:padding="@dimen/spacing_small">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:chipBackgroundColor="@color/colorAccent"
+                    app:chipIcon="@drawable/ic_chip_flash"
+                    app:chipIconTint="@android:color/white"
+                    android:id="@+id/chip_flash"
+                    app:iconStartPadding="@dimen/spacing_large" />
+
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:chipBackgroundColor="@color/colorAccent"
+                    app:chipIcon="@drawable/ic_chip_marquee"
+                    app:chipIconTint="@android:color/white"
+                    android:id="@+id/chip_marquee"
+                    app:iconStartPadding="@dimen/spacing_large" />
+
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:chipBackgroundColor="@color/colorAccent"
+                    app:chipIcon="@drawable/ic_chip_inverted"
+                    app:chipIconTint="@android:color/white"
+                    android:id="@+id/chip_inverted"
+                    app:iconStartPadding="@dimen/spacing_large" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@android:color/white"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:chipBackgroundColor="@color/colorAccent"
+                    app:chipIcon="@drawable/ic_chip_speed"
+                    android:id="@+id/chip_speed"
+                    app:iconStartPadding="@dimen/spacing_large"
+                    app:chipIconTint="@android:color/white" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chip_mode"
+                    android:text="UP"
+                    android:textColor="@android:color/white"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:chipBackgroundColor="@color/colorAccent" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

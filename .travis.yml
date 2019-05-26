@@ -1,0 +1,28 @@
+language: android
+sudo: false
+jdk:
+    - oraclejdk8
+android:
+  components:
+    - tools
+    - android-28
+    - build-tools-28.0.3
+    - platform-tools
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+    directories:
+      - "${TRAVIS_BUILD_DIR}/gradle/caches/"
+      - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
+      - "$HOME/.gradle/caches/"
+      - "$HOME/.gradle/wrapper/"
+install:
+  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28"
+script:
+  - ./gradlew spotlessCheck
+  - ./gradlew build --stacktrace
+after_success:
+    - bash scripts/prep-key.sh
+    - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash scripts/upload-apk.sh; fi'
+before_install:
+- yes | sdkmanager "platforms;android-28"
