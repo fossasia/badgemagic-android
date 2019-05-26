@@ -7,7 +7,7 @@ git config --global user.email "noreply+travis@fossasia.org"
 export DEPLOY_BRANCH=${DEPLOY_BRANCH:-development}
 export PUBLISH_BRANCH=${PUBLISH_BRANCH:-master}
 
-if [[ "$TRAVIS_PULL_REQUEST" != "false" || "$TRAVIS_REPO_SLUG" != "fossasia/badge-magic-android" ]] || ! [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" || "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/badge-magic-android" ] || ! [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" -o "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     echo "We upload apk only for changes in development or master, and not PRs. So, let's skip this shall we ? :)"
     exit 0
 fi
