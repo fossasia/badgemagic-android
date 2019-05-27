@@ -28,6 +28,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'org.jetbrains.kotlin' && requested.name == 'kotlin-reflect') {
+                details.useVersion versions.kotlin_version
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
