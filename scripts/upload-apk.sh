@@ -37,7 +37,7 @@ fi
 
 if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
     for file in app*; do
-          cp ${file} badge-magic-master-${file%%}
+          mv ${file} badge-magic-master-${file%%}
     done
 fi
 
