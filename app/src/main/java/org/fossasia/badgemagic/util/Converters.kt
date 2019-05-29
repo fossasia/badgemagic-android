@@ -1,8 +1,6 @@
 package org.fossasia.badgemagic.util
 
-import android.content.Context
 import android.graphics.drawable.BitmapDrawable
-import androidx.annotation.DrawableRes
 import android.graphics.drawable.Drawable
 import android.util.SparseArray
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
@@ -12,12 +10,7 @@ const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'
 
 object Converters {
-    fun convertImageToLEDHex(context: Context, @DrawableRes dId: Int, invertLED: Boolean): List<String> {
-        val myIcon = context.resources.getDrawable(dId)
-        return convertDrawableToLEDHex(myIcon, invertLED)
-    }
-
-    fun convertDrawableToLEDHex(drawableIcon: Drawable, invertLED: Boolean): List<String> {
+    private fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
         val bm = (drawableIcon as BitmapDrawable).bitmap
 
         val height = bm.height
