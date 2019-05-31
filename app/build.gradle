@@ -64,7 +64,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
