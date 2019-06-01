@@ -4,9 +4,6 @@ import androidx.fragment.app.Fragment
 import org.fossasia.badgemagic.data.device.model.DataToSend
 
 open class BaseFragment : Fragment(), BaseFragmentInterface {
-    override fun inject() {
-    }
-
     override fun initializePreview() {
     }
 
@@ -18,5 +15,4 @@ open class BaseFragment : Fragment(), BaseFragmentInterface {
 interface BaseFragmentInterface {
     fun getSendData(): DataToSend
     fun initializePreview()
-    fun inject()
 }

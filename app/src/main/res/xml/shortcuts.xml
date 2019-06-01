@@ -9,7 +9,7 @@
         <intent
             android:action="org.fossasia.badgemagic.createBadge.shortcut"
             android:targetPackage="org.fossasia.badgemagic"
-            android:targetClass="org.fossasia.badgemagic.ui.drawer.DrawerActivity" />
+            android:targetClass="org.fossasia.badgemagic.ui.DrawerActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -23,7 +23,7 @@
         <intent
             android:action="org.fossasia.badgemagic.savedBadges.shortcut"
             android:targetPackage="org.fossasia.badgemagic"
-            android:targetClass="org.fossasia.badgemagic.ui.drawer.DrawerActivity" />
+            android:targetClass="org.fossasia.badgemagic.ui.DrawerActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.ui.fragments.main_textart
+package org.fossasia.badgemagic.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -21,7 +21,6 @@ import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.effects_layout.*
@@ -44,12 +43,13 @@ import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Message
 import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
-import org.fossasia.badgemagic.util.InjectorUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
+import org.fossasia.badgemagic.viewmodels.TextArtViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
 import java.util.Timer
@@ -57,30 +57,18 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.TimerTask
 
-class MainTextArtFragment : BaseFragment() {
+class TextArtFragment : BaseFragment() {
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
         @JvmStatic
         fun newInstance() =
-            MainTextArtFragment()
+            TextArtFragment()
     }
 
     private val drawableRecyclerAdapter = DrawableAdapter()
     private val modeAdapter = ModeAdapter()
-    private lateinit var viewModel: MainTextArtViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        inject()
-    }
-
-    override fun inject() {
-        val currentActivity = activity
-        if (currentActivity != null)
-            viewModel = ViewModelProviders
-                .of(currentActivity, InjectorUtils.provideMainTextDrawableViewModelFactory())
-                .get(MainTextArtViewModel::class.java)
-    }
+    private val viewModel by viewModel<TextArtViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -286,7 +274,7 @@ class MainTextArtFragment : BaseFragment() {
             onDrawableSelected = drawableListener
         }
 
-        viewModel.getClipArts().observe(this, Observer {
+        viewModel.getClipArts().observe(viewLifecycleOwner, Observer {
             val listOfDrawable = mutableListOf<DrawableInfo>()
             for (i in 0 until it.size()) {
                 val key = it.keyAt(i)
@@ -446,7 +434,7 @@ class MainTextArtFragment : BaseFragment() {
         viewModel.let { StoreAsync(fileName, jsonString, it).execute() }
     }
 
-    class StoreAsync(private val filename: String, private val json: String, private val viewModel: MainTextArtViewModel) : AsyncTask<Void, Void, Void>() {
+    class StoreAsync(private val filename: String, private val json: String, private val viewModel: TextArtViewModel) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             viewModel.saveFile(filename, json)
             return null
