@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.ui.drawer
+package org.fossasia.badgemagic.ui
 
 import android.Manifest
 import android.app.Activity
@@ -18,25 +18,24 @@ import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.activity_drawer.*
+import kotlinx.android.synthetic.main.app_bar_drawer.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
-import org.fossasia.badgemagic.ui.AppViewModel
+import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
-import org.fossasia.badgemagic.ui.fragments.main_saved.MainSavedFragment
-import org.fossasia.badgemagic.ui.fragments.main_textart.MainTextArtFragment
-import org.fossasia.badgemagic.util.InjectorUtils
+import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
+import org.fossasia.badgemagic.ui.fragments.TextArtFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@Suppress("DEPRECATION")
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
@@ -48,17 +47,10 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
 
-    private var viewModel: AppViewModel? = null
-
-    private fun inject() {
-        viewModel = ViewModelProviders.of(this, InjectorUtils.provideFilesViewModelFactory())
-            .get(AppViewModel::class.java)
-    }
+    private val viewModel by viewModel<FilesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        inject()
 
         setContentView(R.layout.activity_drawer)
 
@@ -71,17 +63,14 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     private fun setupDrawerAndToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawerLayout.addDrawerListener(toggle)
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+        drawer_layout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
             }
 
@@ -91,11 +80,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             override fun onDrawerClosed(drawerView: View) {
                 when (drawerCheckedID) {
                     R.id.create -> {
-                        switchFragment(MainTextArtFragment.newInstance())
+                        switchFragment(TextArtFragment.newInstance())
                         showMenu?.setGroupVisible(R.id.saved_group, false)
                     }
                     R.id.saved -> {
-                        switchFragment(MainSavedFragment.newInstance())
+                        switchFragment(SavedBadgesFragment.newInstance())
                         showMenu?.setGroupVisible(R.id.saved_group, true)
                     }
                     R.id.feedback -> {
@@ -115,17 +104,17 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
         })
 
-        navView.setNavigationItemSelectedListener(this)
+        nav_view.setNavigationItemSelectedListener(this)
         when (intent.action) {
             Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
-                switchFragment(MainTextArtFragment.newInstance())
+                switchFragment(TextArtFragment.newInstance())
                 showMenu?.setGroupVisible(R.id.saved_group, false)
-                navView.setCheckedItem(R.id.create)
+                nav_view.setCheckedItem(R.id.create)
             }
             "org.fossasia.badgemagic.savedBadges.shortcut" -> {
-                switchFragment(MainSavedFragment.newInstance())
+                switchFragment(SavedBadgesFragment.newInstance())
                 showMenu?.setGroupVisible(R.id.saved_group, true)
-                navView.setCheckedItem(R.id.saved)
+                nav_view.setCheckedItem(R.id.saved)
             }
         }
     }
@@ -257,7 +246,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private fun saveImportFile(uri: Uri?) {
         if (StorageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
-            viewModel?.updateList()
+            viewModel.updateList()
         } else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
     }
 

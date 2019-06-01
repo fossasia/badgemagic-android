@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.data.clipart
+package org.fossasia.badgemagic.database
 
 import android.graphics.drawable.Drawable
 import android.util.SparseArray
@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.util.Resource
 
-class ClipArtDAO {
+class ClipArtService {
     private val clipArts = MutableLiveData<SparseArray<Drawable>>()
     private val resourceHelper = Resource()
 

@@ -3,11 +3,11 @@ package org.fossasia.badgemagic.util
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import org.fossasia.badgemagic.ui.App
+import org.fossasia.badgemagic.BadgeMagicApp
 
 class Resource {
     private val context by lazy {
-        App.appContext
+        BadgeMagicApp.appContext
     }
 
     fun getResources() = context?.resources

@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.ui.fragments.main_saved
+package org.fossasia.badgemagic.ui.fragments
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_main_save.*
 
@@ -19,38 +18,26 @@ import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
-import org.fossasia.badgemagic.ui.AppViewModel
+import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
-import org.fossasia.badgemagic.util.InjectorUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
-class MainSavedFragment : BaseFragment() {
+class SavedBadgesFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
         fun newInstance() =
-            MainSavedFragment()
+            SavedBadgesFragment()
     }
 
     private var recyclerAdapter: SaveAdapter? = null
-    private lateinit var viewModel: AppViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        inject()
-    }
-
-    override fun inject() {
-        val currentActivity = activity
-        if (currentActivity != null)
-            viewModel = ViewModelProviders
-                .of(currentActivity, InjectorUtils.provideFilesViewModelFactory())
-                .get(AppViewModel::class.java)
-    }
+    private val viewModel by sharedViewModel<FilesViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_save, container, false)

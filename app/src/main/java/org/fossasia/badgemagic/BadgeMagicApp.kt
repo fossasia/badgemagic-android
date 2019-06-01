@@ -1,11 +1,14 @@
-package org.fossasia.badgemagic.ui
+package org.fossasia.badgemagic
 
 import android.app.Application
 import android.content.Context
-import org.fossasia.badgemagic.BuildConfig
+import org.fossasia.badgemagic.di.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App : Application() {
+class BadgeMagicApp : Application() {
 
     companion object {
         @JvmStatic
@@ -16,6 +19,15 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
+
+        startKoin {
+            androidLogger()
+            androidContext(applicationContext)
+            modules(
+                appModules
+            )
+        }
+
         initLogger()
     }
 

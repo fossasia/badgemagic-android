@@ -1,11 +1,11 @@
-package org.fossasia.badgemagic.data.saved_files
+package org.fossasia.badgemagic.database
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.fossasia.badgemagic.util.StorageUtils
 
-class FilesDAO {
+class StorageFilesService {
     private val files = MutableLiveData<List<ConfigInfo>>()
 
     init {
