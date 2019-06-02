@@ -33,17 +33,35 @@
                     android:orientation="vertical"
                     android:paddingEnd="@dimen/spacing_normal">
 
-                    <EditText
-                        android:id="@+id/textViewMainText"
+                    <LinearLayout
+                        android:id="@+id/clipart_handler_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/round_corner_bg"
-                        android:hint="@string/enter_text"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:padding="10dp" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/clipart_handler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/ic_clipart" />
+
+                        <EditText
+                            android:id="@+id/textViewMainText"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:hint="@string/enter_text"
+                            android:background="@null"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="10dp" />
+                    </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/clipart_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"

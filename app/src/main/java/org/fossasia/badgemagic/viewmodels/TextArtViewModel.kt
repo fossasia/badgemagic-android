@@ -15,6 +15,7 @@ class TextArtViewModel(
     var animationPosition = -1
     var currentTab = 1
     var text = ""
+    var showClipart = false
 
     fun checkIfFilePresent(fileName: String): Boolean = storageFilesService.checkIfFilePresent(fileName)
 
