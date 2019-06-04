@@ -155,6 +155,21 @@ class TextArtFragment : BaseFragment() {
         textViewMainText.showKeyboard()
 
         textViewMainText.setText(viewModel.text)
+
+        clipart_handler_layout.setOnClickListener {
+            viewModel.showClipart = !viewModel.showClipart
+            toggleEmojiSection()
+        }
+        toggleEmojiSection()
+    }
+
+    private fun toggleEmojiSection() {
+        viewModel.showClipart.let {
+            clipart_layout.visibility = if (it) View.VISIBLE else View.GONE
+            clipart_handler.setColorFilter((if (it) context?.resources?.getColor(R.color.colorAccent)
+            else context?.resources?.getColor(android.R.color.black))
+                ?: Color.BLACK)
+        }
     }
 
     private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
