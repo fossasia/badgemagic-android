@@ -37,4 +37,5 @@
 
     <dimen name="header_text_size">22sp</dimen>
     <dimen name="content_text_size">16sp</dimen>
+    <dimen name="saved_badges_image">50dp</dimen>
 </resources>
