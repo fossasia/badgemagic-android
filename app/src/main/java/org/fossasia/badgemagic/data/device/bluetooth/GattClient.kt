@@ -68,7 +68,8 @@ class GattClient {
 
             val characteristic = bluetoothGatt?.getService(SERVICE_UUID)?.getCharacteristic(CHARACTERISTIC_UUID)
             characteristic?.value = data
-            bluetoothGatt?.writeCharacteristic(characteristic)
+            if (characteristic != null)
+                bluetoothGatt?.writeCharacteristic(characteristic)
         }
     }
 
