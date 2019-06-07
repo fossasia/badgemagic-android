@@ -18,11 +18,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
@@ -31,5 +26,11 @@
 
     <style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
