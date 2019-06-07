@@ -110,27 +110,29 @@ class TextArtFragment : BaseFragment() {
         }
 
         transfer_button.setOnClickListener {
-            if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                // Easter egg
-                Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+            if (textViewMainText.text.trim().toString() != "") {
+                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                    // Easter egg
+                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
 
-                transfer_button.visibility = View.GONE
-                send_progress.visibility = View.VISIBLE
+                    transfer_button.visibility = View.GONE
+                    send_progress.visibility = View.VISIBLE
 
-                val buttonTimer = Timer()
-                buttonTimer.schedule(object : TimerTask() {
-                    override fun run() {
-                        activity?.runOnUiThread {
-                            transfer_button.visibility = View.VISIBLE
-                            send_progress.visibility = View.GONE
+                    val buttonTimer = Timer()
+                    buttonTimer.schedule(object : TimerTask() {
+                        override fun run() {
+                            activity?.runOnUiThread {
+                                transfer_button.visibility = View.VISIBLE
+                                send_progress.visibility = View.GONE
+                            }
                         }
-                    }
-                }, SCAN_TIMEOUT_MS)
+                    }, SCAN_TIMEOUT_MS)
 
-                SendingUtils.sendMessage(requireContext(), getSendData())
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
-            }
+                    SendingUtils.sendMessage(requireContext(), getSendData())
+                } else
+                    Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+            } else
+                Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
         }
     }
 
