@@ -44,8 +44,8 @@
                             android:id="@+id/clipart_handler"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:layout_gravity="center"
+                            android:layout_margin="5dp"
                             android:layout_marginEnd="5dp"
                             android:src="@drawable/ic_clipart" />
 
@@ -53,10 +53,11 @@
                             android:id="@+id/textViewMainText"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:hint="@string/enter_text"
                             android:background="@null"
+                            android:hint="@string/enter_text"
                             android:lines="1"
                             android:maxLines="1"
+                            android:inputType="text"
                             android:padding="10dp" />
                     </LinearLayout>
 
@@ -67,19 +68,14 @@
                         android:layout_marginTop="5dp"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawablesRecyclerView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:background="@drawable/round_corner_bg">
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/drawablesRecyclerView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_small"
-                                android:background="@drawable/round_corner_bg">
-
-                            </androidx.recyclerview.widget.RecyclerView>
-                        </RelativeLayout>
+                        </androidx.recyclerview.widget.RecyclerView>
                     </LinearLayout>
                 </LinearLayout>
 

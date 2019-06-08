@@ -11,8 +11,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/buttonsLayout">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,6 +45,7 @@
                         android:layout_height="60dp"
                         android:background="@null"
                         android:hint="@string/enter_text"
+                        android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
                         android:padding="10dp" />
@@ -58,19 +58,14 @@
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <RelativeLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/drawablesRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:background="@drawable/round_corner_bg">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/drawablesRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_small"
-                            android:background="@drawable/round_corner_bg">
-
-                        </androidx.recyclerview.widget.RecyclerView>
-                    </RelativeLayout>
+                    </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
             </LinearLayout>
 
@@ -80,8 +75,7 @@
                 android:id="@+id/buttonsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/bottom_bar_margin"
+                android:layout_marginTop="@dimen/spacing_large"
                 android:baselineAligned="false"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -96,7 +90,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="@dimen/spacing_small"
                         android:paddingLeft="@dimen/button_padding_left_right"
                         android:paddingRight="@dimen/button_padding_left_right"
                         android:text="@string/save_button"
@@ -120,7 +113,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="@dimen/spacing_small"
                         android:paddingLeft="@dimen/button_padding_left_right"
                         android:paddingRight="@dimen/button_padding_left_right"
                         android:text="@string/transfer_button"
