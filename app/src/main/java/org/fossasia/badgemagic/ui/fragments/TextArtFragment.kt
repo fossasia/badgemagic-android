@@ -141,7 +141,7 @@ class TextArtFragment : BaseFragment() {
 
     private fun showAlertDialog() {
         val dialogMessage = getString(R.string.enable_bluetooth)
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(requireContext())
         builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
         builder.setTitle(getString(R.string.permission_required))
         builder.setMessage(dialogMessage)
