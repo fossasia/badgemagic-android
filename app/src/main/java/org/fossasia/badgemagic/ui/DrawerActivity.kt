@@ -3,7 +3,6 @@ package org.fossasia.badgemagic.ui
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
@@ -163,31 +162,13 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
             REQUEST_ENABLE_BT -> {
                 this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                if (resultCode == Activity.RESULT_CANCELED) {
-                    showAlertDialog(true)
-                    return
-                } else if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     prepareForScan()
                     return
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun showAlertDialog(bluetoothDialog: Boolean) {
-        val dialogMessage = if (bluetoothDialog) getString(R.string.enable_bluetooth) else getString(R.string.grant_required_permission)
-        val builder = AlertDialog.Builder(this)
-        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
-        builder.setTitle(getString(R.string.permission_required))
-        builder.setMessage(dialogMessage)
-        builder.setPositiveButton("OK") { _, _ ->
-            prepareForScan()
-        }
-        builder.setNegativeButton("CANCEL") { _, _ ->
-            Toast.makeText(this, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
-        }
-        builder.create().show()
     }
 
     private fun switchFragment(fragment: BaseFragment) {
@@ -199,7 +180,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private fun checkManifestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            ensureBluetoothEnabled()
             Timber.i { "Coarse permission granted" }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
@@ -211,9 +191,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             REQUEST_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Timber.d { "Required Permission Accepted" }
-                    ensureBluetoothEnabled()
-                } else {
-                    showAlertDialog(false)
                 }
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -222,17 +199,6 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private fun isBleSupported(): Boolean {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
-    }
-
-    private fun ensureBluetoothEnabled() {
-        // Ensures Bluetooth is enabled on the device
-        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        if (!btAdapter.isEnabled) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-        }
     }
 
     private fun disableBluetooth() {
