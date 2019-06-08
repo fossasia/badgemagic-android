@@ -3,6 +3,8 @@ package org.fossasia.badgemagic.ui.fragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Color
@@ -20,6 +22,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -130,9 +133,33 @@ class TextArtFragment : BaseFragment() {
 
                     SendingUtils.sendMessage(requireContext(), getSendData())
                 } else
-                    Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+                    showAlertDialog()
             } else
                 Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showAlertDialog() {
+        val dialogMessage = getString(R.string.enable_bluetooth)
+        val builder = AlertDialog.Builder(context)
+        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
+        builder.setTitle(getString(R.string.permission_required))
+        builder.setMessage(dialogMessage)
+        builder.setPositiveButton("OK") { _, _ ->
+            turnOnBluetooth()
+            Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("CANCEL") { _, _ ->
+            Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
+        }
+        builder.create().show()
+    }
+
+    private fun turnOnBluetooth() {
+        val btManager = requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val btAdapter = btManager.adapter
+        if (btAdapter.disable()) {
+            btAdapter.enable()
         }
     }
 

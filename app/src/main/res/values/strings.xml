@@ -86,5 +86,6 @@
     <string name="saved">Saved Badges</string>
     <string name="disabled">App shortcuts are not supported on your device.</string>
     <string name="empty_text_to_send">Please Enter Something to Send</string>
+    <string name="bluetooth_enabled">Bluetooth has been turned on.</string>
 
 </resources>
