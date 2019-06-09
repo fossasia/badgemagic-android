@@ -11,7 +11,7 @@ The Badge Magic Android app lets you create scrolling symbols and text on LED na
         <a href='https://play.google.com/store/apps/details?id=org.fossasia.badgemagic'><img align='center' height='55' src='./docs/images/google_play_badge.png'></a>
     </tr>
     <tr>
-        <a href='https://f-droid.org/en/packages/org.fossasia.badgemagic/'><img align='center' alt='Get it on F-Droid' src='https://f-droid.org/badge/get-it-on.png' height="83"/></a>
+        <a href='https://f-droid.org/en/packages/org.fossasia.badgemagic/'><img align='center' alt='Get it on F-Droid' src='./docs/images/fdroid_badge.png' height="55"/></a>
     </tr>
 </table>
 
