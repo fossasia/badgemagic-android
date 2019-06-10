@@ -18,7 +18,7 @@
     <dimen name="title_min_height_medium">20dp</dimen>
     <dimen name="title_min_height_large">40dp</dimen>
     <dimen name="knob_margin">20dp</dimen>
-    <dimen name="knob_width">150dp</dimen>
+    <dimen name="knob_width">180dp</dimen>
     <dimen name="card_spacing">10dp</dimen>
     <dimen name="card_corner_radius">1dp</dimen>
     <dimen name="about_card_elevation">5dp</dimen>
