@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
-                        android:src="@drawable/ic_clipart" />
+                        android:src="@drawable/ic_clipart_switcher" />
 
                     <EditText
                         android:id="@+id/textViewMainText"
