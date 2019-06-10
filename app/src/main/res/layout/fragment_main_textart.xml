@@ -48,6 +48,7 @@
                         android:inputType="text"
                         android:lines="1"
                         android:maxLines="1"
+                        android:imeOptions="actionDone"
                         android:padding="10dp" />
                 </LinearLayout>
 
