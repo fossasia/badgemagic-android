@@ -195,9 +195,13 @@ class TextArtFragment : BaseFragment() {
     private fun toggleEmojiSection() {
         viewModel.showClipart.let {
             clipart_layout.visibility = if (it) View.VISIBLE else View.GONE
-            clipart_handler.setColorFilter((if (it) context?.resources?.getColor(R.color.colorAccent)
-            else context?.resources?.getColor(android.R.color.black))
-                ?: Color.BLACK)
+            clipart_handler.setImageResource(
+                if (it)
+                    R.drawable.ic_clipart_switcher_enabled
+                else
+                    R.drawable.ic_clipart_switcher_disabled
+            )
+            if (it) textViewMainText.hideKeyboard() else textViewMainText.showKeyboard()
         }
     }
 
