@@ -304,9 +304,9 @@ class TextArtFragment : BaseFragment() {
     private fun setBackgroundOf(card: LinearLayout?, image: GifImageView?, title: TextView?, checked: Boolean) {
         card?.background = if (checked) context?.resources?.getDrawable(R.color.colorAccent) else context?.resources?.getDrawable(android.R.color.transparent)
         image?.setColorFilter((if (checked) context?.resources?.getColor(android.R.color.white)
-        else context?.resources?.getColor(android.R.color.black)) ?: Color.parseColor("#000000"))
+        else context?.resources?.getColor(R.color.default_mode_color)) ?: Color.parseColor("#000000"))
         title?.setTextColor((if (checked) context?.resources?.getColor(android.R.color.white)
-        else context?.resources?.getColor(android.R.color.black)) ?: Color.parseColor("#000000"))
+        else context?.resources?.getColor(R.color.default_mode_color)) ?: Color.parseColor("#000000"))
     }
 
     private fun setupRecyclerViews() {

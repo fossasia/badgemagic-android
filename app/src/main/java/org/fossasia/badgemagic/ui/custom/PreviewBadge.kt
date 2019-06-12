@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.RectF
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import androidx.annotation.Nullable
@@ -171,7 +170,7 @@ class PreviewBadge : View {
         // Paint Configuration
         val bgPaint = Paint()
         bgPaint.isAntiAlias = true
-        bgPaint.color = Color.parseColor("#000000")
+        bgPaint.color = context.resources.getColor(R.color.badge_background)
 
         // Draw Background
         canvas.drawRoundRect(bgBounds, 25f, 25f, bgPaint)

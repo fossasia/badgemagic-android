@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/card_bg"
     app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="@dimen/card_elevation"
     app:cardUseCompatPadding="true">
@@ -27,6 +28,7 @@
                 android:minHeight="@dimen/title_min_height_large"
                 android:text="AKD"
                 android:textAppearance="@style/TextAppearanceList"
+                android:textColor="@color/default_mode_color"
                 android:textSize="@dimen/text_size_large_extended" />
 
             <RelativeLayout

@@ -68,19 +68,19 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
             text.setTextColor(
                 when {
                     selectedPosition != -1 && selectedPosition == adapterPosition -> context?.resources?.getColor(android.R.color.white) as Int
-                    else -> context?.resources?.getColor(android.R.color.black) as Int
+                    else -> context?.resources?.getColor(R.color.default_mode_color) as Int
                 }
             )
             playPause.setColorFilter(
                 when {
                     selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
-                    else -> context.resources.getColor(android.R.color.black)
+                    else -> context.resources.getColor(R.color.default_mode_color)
                 }
             )
             options.setColorFilter(
                 when {
                     selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
-                    else -> context.resources.getColor(android.R.color.black)
+                    else -> context.resources.getColor(R.color.default_mode_color)
                 }
             )
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/card_bg"
     app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="@dimen/card_elevation"
     app:cardUseCompatPadding="true">
@@ -63,38 +64,39 @@
                 android:padding="@dimen/spacing_small">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_flash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
                     app:chipBackgroundColor="@color/colorAccent"
                     app:chipIcon="@drawable/ic_chip_flash"
                     app:chipIconTint="@android:color/white"
-                    android:id="@+id/chip_flash"
                     app:iconStartPadding="@dimen/spacing_large" />
 
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_marquee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
                     app:chipBackgroundColor="@color/colorAccent"
                     app:chipIcon="@drawable/ic_chip_marquee"
                     app:chipIconTint="@android:color/white"
-                    android:id="@+id/chip_marquee"
                     app:iconStartPadding="@dimen/spacing_large" />
 
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_inverted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
                     app:chipBackgroundColor="@color/colorAccent"
                     app:chipIcon="@drawable/ic_chip_inverted"
                     app:chipIconTint="@android:color/white"
-                    android:id="@+id/chip_inverted"
                     app:iconStartPadding="@dimen/spacing_large" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
@@ -102,14 +104,13 @@
                     android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
                     app:chipBackgroundColor="@color/colorAccent"
                     app:chipIcon="@drawable/ic_chip_speed"
-                    android:id="@+id/chip_speed"
-                    app:iconStartPadding="@dimen/spacing_large"
-                    app:chipIconTint="@android:color/white" />
+                    app:chipIconTint="@android:color/white"
+                    app:iconStartPadding="@dimen/spacing_large" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/chip_mode"
                     android:text="UP"
                     android:textColor="@android:color/white"
                     android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"

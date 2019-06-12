@@ -58,7 +58,7 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:text="@string/empty_saved_section_title"
-                        android:textColor="#000000"
+                        android:textColor="@color/saved_badge_nb_title"
                         android:textSize="@dimen/header_text_size" />
 
                     <TextView
@@ -71,7 +71,7 @@
                         android:paddingRight="16dp"
                         android:text="@string/empty_saved_section"
                         android:textAlignment="center"
-                        android:textColor="#191919"
+                        android:textColor="@color/saved_badge_nb_subtitle"
                         android:textSize="@dimen/content_text_size" />
                 </LinearLayout>
             </LinearLayout>

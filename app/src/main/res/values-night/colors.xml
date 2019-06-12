@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="saved_badge_nb_subtitle">#e0e0e0</color>
+    <color name="saved_badge_nb_title">#ffffff</color>
+
+    <color name="background_textview">#212121</color>
+    <color name="default_mode_color">#ffffff</color>
+
+    <color name="card_bg">#313131</color>
+</resources>

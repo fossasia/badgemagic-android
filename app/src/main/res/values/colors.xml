@@ -10,5 +10,17 @@
     <color name="progress_secondary_color">#EEEEEE</color>
 
     <color name="md_grey_400">#BDBDBD</color>
+    <color name="saved_badge_nb_subtitle">#191919</color>
+    <color name="saved_badge_nb_title">#000000</color>
 
+    <!-- Badge Colors-->
+    <color name="badge_background">#000000</color>
+    <color name="badge_led_disabled">#d0313131</color>
+
+    <color name="background_textview">#f4f4f4</color>
+
+    <color name="black">#000000</color>
+    <color name="default_mode_color">#000000</color>
+
+    <color name="card_bg">#ffffff</color>
 </resources>
