@@ -48,6 +48,8 @@ spotless {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin_version}"
 
+    kapt "androidx.databinding:compiler:3.2.0-alpha11"
+
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi_version}"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi_version}"

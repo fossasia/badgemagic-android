@@ -22,7 +22,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -33,7 +32,7 @@ import org.fossasia.badgemagic.data.DrawableInfo
 import org.fossasia.badgemagic.data.ModeInfo
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.ui.custom.knob.Croller
-import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
+import org.fossasia.badgemagic.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_main_textart.*
 import kotlinx.android.synthetic.main.sections_tab.*
 import org.fossasia.badgemagic.adapter.DrawableAdapter

@@ -2,7 +2,11 @@ package org.fossasia.badgemagic
 
 import android.app.Application
 import android.content.Context
-import org.fossasia.badgemagic.di.appModules
+import android.content.res.Configuration
+import org.fossasia.badgemagic.di.singletonModules
+import org.fossasia.badgemagic.di.utilModules
+import org.fossasia.badgemagic.di.viewModelModules
+import org.fossasia.badgemagic.util.LocaleManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -23,9 +27,11 @@ class BadgeMagicApp : Application() {
         startKoin {
             androidLogger()
             androidContext(applicationContext)
-            modules(
-                appModules
-            )
+            modules(listOf(
+                singletonModules,
+                utilModules,
+                viewModelModules
+            ))
         }
 
         initLogger()
@@ -35,5 +41,14 @@ class BadgeMagicApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(LocaleManager.setLocale(base))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleManager.setLocale(this)
     }
 }

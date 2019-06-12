@@ -19,7 +19,7 @@ import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
-import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
+import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected

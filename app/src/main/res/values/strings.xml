@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="about_fossasia" translatable="false">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
+        <a href="https://github.com/fossasia/badge-magic-android/graphs/contributors">contributors</a>.
+    </string>
+    <string name="moshi_github" translatable="false">https://github.com/square/moshi</string>
+    <string name="timber_github" translatable="false">https://github.com/JakeWharton/timber</string>
+    <string name="scanner_github" translatable="false">https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library</string>
+    <string name="licences_github" translatable="false">https://github.com/PSDev/LicensesDialog</string>
+    <string name="gif_github" translatable="false">https://github.com/koral&#8211;&#8211;/android&#8211;gif&#8211;drawable</string>
+
     <string name="app_name">Badge Magic</string>
 
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
@@ -54,9 +63,6 @@
     <string name="drawer_saved_badge">Saved Badges</string>
     <string name="drawer_create_badges">Create Badges</string>
     <string name="success_import_json">Import Successful</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
-        <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.
-    </string>
     <string name="about_us_description">Badge Magic is an Android app to control LED name badges. The goal is to provide options to portray names, graphics and simple animations on LED badges. For the data transfer from the smartphone to the LED badge we use Bluetooth. The project is based on the work of Nilhcem.</string>
     <string name="about_us_connect">Connect With Us</string>
     <string name="about_support_github">GitHub</string>
@@ -66,19 +72,14 @@
     <string name="about_library_license">Library Licenses</string>
     <string name="about_library_license_sub">Check third-party libs used on Badge Magic.</string>
     <string name="moshi">Moshi</string>
-    <string name="moshi_github">https://github.com/square/moshi</string>
     <string name="moshi_copy">Copyright 2015 Square, Inc.</string>
     <string name="gif">android-gif-drawable</string>
-    <string name="gif_github">https://github.com/koral&#8211;&#8211;/android&#8211;gif&#8211;drawable</string>
     <string name="gif_copy">Copyright 2013 - present Karol Wrótniak, Droids on Roids LLC</string>
     <string name="timber">Timber</string>
-    <string name="timber_github">https://github.com/JakeWharton/timber</string>
     <string name="timber_copy">Copyright 2013 Jake Wharton</string>
     <string name="scanner">Android BLE Scanner Compat library</string>
-    <string name="scanner_github">https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library</string>
     <string name="scanner_copy">Copyright 2015, Nordic Semiconductor</string>
     <string name="licences">Licences Dialog</string>
-    <string name="licences_github">https://github.com/PSDev/LicensesDialog</string>
     <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
     <string name="empty_saved_section">Looks like there are no saved badges yet</string>
     <string name="empty_saved_section_title">No Saved Badges !</string>
@@ -87,7 +88,12 @@
     <string name="disabled">App shortcuts are not supported on your device.</string>
     <string name="empty_text_to_send">Please Enter Something to Send</string>
     <string name="bluetooth_enabled">Bluetooth has been turned on.</string>
-    <string name="reset">Reset</string>
-    <string name="draw_text">Draw</string>
-    <string name="erase_text">Erase</string>
+
+    <string name="language">Language</string>
+    <string name="drawer_settings">Settings</string>
+    <string name="change_language">In order to change the language we need to restart the app.</string>
+
+    <string name="reset" translatable="false">Reset</string>
+    <string name="draw_text" translatable="false">Draw</string>
+    <string name="erase_text" translatable="false">Erase</string>
 </resources>

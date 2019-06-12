@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.ui.fragments.base
+package org.fossasia.badgemagic.ui.base
 
 import androidx.fragment.app.Fragment
 import org.fossasia.badgemagic.data.device.model.DataToSend

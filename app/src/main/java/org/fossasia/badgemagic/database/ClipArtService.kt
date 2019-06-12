@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.util.Resource
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class ClipArtService {
+class ClipArtService : KoinComponent {
     private val clipArts = MutableLiveData<SparseArray<Drawable>>()
-    private val resourceHelper = Resource()
+    private val resourceHelper: Resource by inject()
 
     init {
         val tempSparseArray = SparseArray<Drawable>()
