@@ -4,7 +4,6 @@ build/
 
 # Local configuration
 local.properties
-gradle.properties
 
 # IntelliJ
 *.iml
