@@ -16,7 +16,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -26,16 +25,18 @@ import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
+import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
 import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
+import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
+import org.fossasia.badgemagic.ui.base.BaseActivity
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         private const val PICK_FILE_RESULT_CODE = 2
@@ -85,6 +86,10 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     R.id.saved -> {
                         switchFragment(SavedBadgesFragment.newInstance())
                         showMenu?.setGroupVisible(R.id.saved_group, true)
+                    }
+                    R.id.settings -> {
+                        switchFragment(SettingsFragment.newInstance())
+                        showMenu?.setGroupVisible(R.id.saved_group, false)
                     }
                     R.id.feedback -> {
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badge-magic-android/issues")))

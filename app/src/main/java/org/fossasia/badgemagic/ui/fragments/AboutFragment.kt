@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.ui.fragments.base.BaseFragment
+import org.fossasia.badgemagic.ui.base.BaseFragment
 import de.psdev.licensesdialog.LicensesDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
