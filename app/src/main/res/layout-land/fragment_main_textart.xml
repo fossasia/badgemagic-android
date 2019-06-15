@@ -55,9 +55,10 @@
                             android:layout_height="60dp"
                             android:background="@null"
                             android:hint="@string/enter_text"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
                             android:lines="1"
                             android:maxLines="1"
-                            android:inputType="text"
                             android:padding="10dp" />
                     </LinearLayout>
 
