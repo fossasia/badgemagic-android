@@ -10,6 +10,7 @@ import org.fossasia.badgemagic.data.fragments.CONF_FLASH
 import org.fossasia.badgemagic.data.fragments.CONF_MODE
 import org.fossasia.badgemagic.data.fragments.CONF_SPEED
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.data.fragments.BadgeConfig
 import org.json.JSONObject
 import java.io.File
 import java.io.BufferedReader
@@ -130,5 +131,11 @@ object StorageUtils {
         if (cut != -1)
             result = result.substring(cut + 1)
         return result
+    }
+
+    fun saveEditedBadge(badgeConfig: BadgeConfig?, fileName: String) {
+        checkDirectory()
+        val saveFile = File(EXTERNAL_STORAGE_DIRECTORY, fileName)
+        saveFile.writeText(MoshiUtils.getAdapter().toJson(badgeConfig))
     }
 }

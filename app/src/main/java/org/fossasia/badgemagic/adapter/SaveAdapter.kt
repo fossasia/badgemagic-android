@@ -32,6 +32,11 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
 
     override fun getItemCount() = list.size
 
+    fun resetSelectedItem() {
+        selectedPosition = -1
+        notifyDataSetChanged()
+    }
+
     fun getSelectedItem(): ConfigInfo? {
         return if (selectedPosition == -1) null else list[selectedPosition]
     }
@@ -42,6 +47,7 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
         private val text: TextView = itemView.findViewById(R.id.text)
         private val options: AppCompatImageView = itemView.findViewById(R.id.options)
         private val playPause: AppCompatImageView = itemView.findViewById(R.id.play_pause)
+        private val editButton: AppCompatImageView = itemView.findViewById(R.id.button_edit)
         private val chipFlash: Chip = itemView.findViewById(R.id.chip_flash)
         private val chipMarquee: Chip = itemView.findViewById(R.id.chip_marquee)
         private val chipInverted: Chip = itemView.findViewById(R.id.chip_inverted)
@@ -55,6 +61,9 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
             }
             options.setOnClickListener {
                 listener.onOptionsSelected(list[adapterPosition])
+            }
+            editButton.setOnClickListener {
+                listener.onEdit(list[adapterPosition])
             }
         }
 
@@ -72,6 +81,12 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                 }
             )
             playPause.setColorFilter(
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
+                    else -> context.resources.getColor(android.R.color.black)
+                }
+            )
+            editButton.setColorFilter(
                 when {
                     selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
                     else -> context.resources.getColor(android.R.color.black)
@@ -110,5 +125,6 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
 
 interface OnSavedItemSelected {
     fun onSelected(item: ConfigInfo?)
+    fun onEdit(item: ConfigInfo?)
     fun onOptionsSelected(item: ConfigInfo)
 }

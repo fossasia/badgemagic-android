@@ -7,15 +7,17 @@ import androidx.databinding.ObservableField
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.draw_layout.DrawMode
 import org.fossasia.badgemagic.ui.custom.DrawBadgeLayout
+import org.fossasia.badgemagic.util.SendingUtils
 
 @BindingAdapter("drawState")
 fun setBadgeDrawState(badge: DrawBadgeLayout, drawModeState: ObservableField<DrawMode>) {
     drawModeState.get()?.let { badge.changeDrawState(it) }
 }
 
-@BindingAdapter("resetState")
-fun resetDrawBadge(badge: DrawBadgeLayout, isEnabled: ObservableBoolean) {
-    badge.resetCheckList()
+@BindingAdapter("drawingJSON")
+fun setBadgeValues(badge: DrawBadgeLayout, drawJSON: ObservableField<String>) {
+    val badgeConfig = SendingUtils.getBadgeFromJSON(drawJSON.get() ?: "{}")
+    badgeConfig?.hexStrings?.let { badge.setValue(it) }
 }
 
 @BindingAdapter("changeColor")

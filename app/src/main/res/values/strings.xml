@@ -96,4 +96,6 @@
     <string name="reset" translatable="false">Reset</string>
     <string name="draw_text" translatable="false">Draw</string>
     <string name="erase_text" translatable="false">Erase</string>
+    <string name="saved_edited_badge">Saved Badge Successfully</string>
+    <string name="save">Save</string>
 </resources>
