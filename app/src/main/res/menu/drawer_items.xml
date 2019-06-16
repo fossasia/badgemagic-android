@@ -12,6 +12,10 @@
             android:id="@+id/saved"
             android:icon="@drawable/ic_menu_save"
             android:title="@string/drawer_saved_badge" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/drawer_settings" />
     </group>
 
     <item android:title="@string/drawer_other">

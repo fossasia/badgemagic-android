@@ -91,15 +91,16 @@ class PreviewBadge : View {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
         val ratioHeight = 1
-        val ratioWidth = 3
+        val ratioWidth = 3.45
 
         val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY))
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
@@ -145,14 +146,14 @@ class PreviewBadge : View {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                    left + (offsetXToAdd * 2) + j * singleCell,
-                    top + (offsetXToAdd * 2) + i * singleCell,
-                    left + (offsetXToAdd * 2) + j * singleCell + singleCell,
-                    top + (offsetXToAdd * 2) + i * singleCell + singleCell
+                    (offsetXToAdd * 2) + j * singleCell,
+                    (offsetXToAdd * 2) + i * singleCell,
+                    (offsetXToAdd * 2) + j * singleCell + singleCell,
+                    (offsetXToAdd * 2) + i * singleCell + singleCell
                 ))
             }
         }
-        bgBounds = RectF((left + offset).toFloat(), (top + offset).toFloat(), (right - offset).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
+        bgBounds = RectF((offsetXToAdd).toFloat(), (offsetXToAdd).toFloat(), ((singleCell * badgeWidth) + (offsetXToAdd * 3)).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
     }
 
     private fun drawLED(condition: Boolean, canvas: Canvas, xValue: Int, yValue: Int) {

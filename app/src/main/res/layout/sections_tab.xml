@@ -9,37 +9,25 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginBottom="@dimen/spacing_normal"
         app:tabTextAppearance="@style/TabTextAppearance">
 
     </com.google.android.material.tabs.TabLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/speedLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textSpeed"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="center"
-            android:textSize="64sp"
-            android:textStyle="bold"
-            android:typeface="normal" />
 
         <org.fossasia.badgemagic.ui.custom.knob.Croller
             android:id="@+id/speedKnob"
             android:layout_width="@dimen/knob_width"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/knob_width"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/knob_margin"
-            android:layout_marginEnd="@dimen/knob_margin"
             app:back_circle_color="@color/back_circle_color"
             app:indicator_color="@color/indicator_color"
             app:indicator_width="@integer/knob_indicator_width"
@@ -49,7 +37,19 @@
             app:progress_primary_color="@color/indicator_color"
             app:progress_secondary_color="@color/progress_secondary_color"
             app:start_offset="45" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/textSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="56sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/modeRecyclerView"

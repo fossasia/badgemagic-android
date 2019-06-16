@@ -30,16 +30,15 @@
             android:id="@+id/empty_saved_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <org.fossasia.badgemagic.ui.custom.SquareImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical|clip_horizontal"
-                android:paddingStart="100dp"
-                android:paddingTop="100dp"
-                android:paddingEnd="100dp"
+                android:layout_marginEnd="@dimen/saved_badges_image"
+                android:layout_marginStart="@dimen/saved_badges_image"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_emoji" />
 

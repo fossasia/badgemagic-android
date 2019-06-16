@@ -1,0 +1,31 @@
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="createBadge"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_create"
+        android:shortcutShortLabel="@string/create"
+        android:shortcutLongLabel="@string/create"
+        android:shortcutDisabledMessage="@string/disabled"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="org.fossasia.badgemagic.createBadge.shortcut"
+            android:targetPackage="org.fossasia.badgemagic"
+            android:targetClass="org.fossasia.badgemagic.ui.DrawerActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="saveBadge"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_save"
+        android:shortcutShortLabel="@string/saved"
+        android:shortcutLongLabel="@string/saved"
+        android:shortcutDisabledMessage="@string/disabled">
+        <intent
+            android:action="org.fossasia.badgemagic.savedBadges.shortcut"
+            android:targetPackage="org.fossasia.badgemagic"
+            android:targetClass="org.fossasia.badgemagic.ui.DrawerActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
