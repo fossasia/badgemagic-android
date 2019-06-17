@@ -16,23 +16,23 @@ class ClipArtService : KoinComponent {
     init {
         val tempSparseArray = SparseArray<Drawable>()
         val listOfDrawables = listOf(
-            resourceHelper.getDrawable(R.drawable.apple),
-            resourceHelper.getDrawable(R.drawable.clock),
-            resourceHelper.getDrawable(R.drawable.dustbin),
-            resourceHelper.getDrawable(R.drawable.face),
-            resourceHelper.getDrawable(R.drawable.heart),
-            resourceHelper.getDrawable(R.drawable.home),
-            resourceHelper.getDrawable(R.drawable.invader),
-            resourceHelper.getDrawable(R.drawable.mail),
-            resourceHelper.getDrawable(R.drawable.mix1),
-            resourceHelper.getDrawable(R.drawable.mix2),
-            resourceHelper.getDrawable(R.drawable.mushroom),
-            resourceHelper.getDrawable(R.drawable.mustache),
-            resourceHelper.getDrawable(R.drawable.oneup),
-            resourceHelper.getDrawable(R.drawable.pause),
-            resourceHelper.getDrawable(R.drawable.spider),
-            resourceHelper.getDrawable(R.drawable.sun),
-            resourceHelper.getDrawable(R.drawable.thumbs_up)
+            resourceHelper.getDrawable(R.drawable.clip_apple),
+            resourceHelper.getDrawable(R.drawable.clip_clock),
+            resourceHelper.getDrawable(R.drawable.clip_dustbin),
+            resourceHelper.getDrawable(R.drawable.clip_face),
+            resourceHelper.getDrawable(R.drawable.clip_heart),
+            resourceHelper.getDrawable(R.drawable.clip_home),
+            resourceHelper.getDrawable(R.drawable.clip_invader),
+            resourceHelper.getDrawable(R.drawable.clip_mail),
+            resourceHelper.getDrawable(R.drawable.clip_mix1),
+            resourceHelper.getDrawable(R.drawable.clip_mix2),
+            resourceHelper.getDrawable(R.drawable.clip_mushroom),
+            resourceHelper.getDrawable(R.drawable.clip_mustache),
+            resourceHelper.getDrawable(R.drawable.clip_oneup),
+            resourceHelper.getDrawable(R.drawable.clip_pause),
+            resourceHelper.getDrawable(R.drawable.clip_spider),
+            resourceHelper.getDrawable(R.drawable.clip_sun),
+            resourceHelper.getDrawable(R.drawable.clip_thumbs_up)
         )
         listOfDrawables.forEachIndexed { index, drawable ->
             drawable?.let {
