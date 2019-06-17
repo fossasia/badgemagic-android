@@ -16,7 +16,7 @@ val viewModelModules = module {
     viewModel { TextArtViewModel(get(), get()) }
     viewModel { FilesViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
-    viewModel { DrawViewModel() }
+    viewModel { DrawViewModel(get()) }
 }
 
 val singletonModules = module {

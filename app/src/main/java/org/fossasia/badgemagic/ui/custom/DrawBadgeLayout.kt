@@ -15,6 +15,7 @@ import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.badge_preview.Cell
 import org.fossasia.badgemagic.data.badge_preview.CheckList
 import org.fossasia.badgemagic.data.draw_layout.DrawMode
+import org.fossasia.badgemagic.util.Converters
 
 class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -22,6 +23,8 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
     private var ledEnabled: Drawable? = context?.getDrawable(R.drawable.ic_led_lit)
 
     private lateinit var bgBounds: RectF
+
+    private val oneByte = 8
 
     private var badgeHeight = 11
     private var badgeWidth = 40
@@ -33,18 +36,24 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
     private var drawMode = DrawMode.NOTHING
 
     init {
-        resetCheckList()
+        resetCheckListWithDummyData()
     }
 
     fun changeDrawState(mode: DrawMode) {
         drawMode = mode
     }
 
-    fun resetCheckList() {
+    fun getCheckedList() = checkList
+
+    private fun resetCheckList() {
         checkList = ArrayList()
         for (i in 0 until badgeHeight) {
             checkList.add(CheckList())
         }
+    }
+
+    fun resetCheckListWithDummyData() {
+        resetCheckList()
         for (i in 0 until badgeHeight) {
             for (j in 0 until badgeWidth) {
                 checkList[i].list.add(false)
@@ -151,4 +160,23 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
 
     private fun liesWithinX(x: Float) = x < cells[0].list[0].left || x > cells[0].list[badgeWidth - 1].right
     private fun liesWithinY(y: Float) = y < cells[0].list[0].top || y > cells[badgeHeight - 1].list[0].bottom
+
+    fun setValue(hexStrings: List<String>) {
+        resetCheckList()
+        for (hex in hexStrings) {
+            for (i in 0 until badgeHeight) {
+                val bin = Converters.hexToBin(hex.substring(i * 2, i * 2 + 2))
+                for (j in 0 until oneByte) {
+                    checkList[i].list.add(Character.getNumericValue(bin[j]) == 1)
+                }
+            }
+        }
+        val diff = (badgeWidth - (oneByte * hexStrings.size))
+        for (i in 0 until badgeHeight) {
+            for (j in 0 until diff) {
+                checkList[i].list.add(false)
+            }
+        }
+        invalidate()
+    }
 }

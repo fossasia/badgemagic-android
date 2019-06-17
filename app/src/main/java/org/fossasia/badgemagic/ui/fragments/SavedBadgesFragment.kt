@@ -24,6 +24,7 @@ import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
+import org.fossasia.badgemagic.ui.DrawActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
@@ -89,6 +90,17 @@ class SavedBadgesFragment : BaseFragment() {
             savedConfigRecyclerView.adapter = null
 
             recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
+                override fun onEdit(item: ConfigInfo?) {
+                    startActivity(
+                        Intent(requireContext(), DrawActivity::class.java).apply {
+                            putExtra("badgeJSON", item?.badgeJSON)
+                            putExtra("fileName", item?.fileName)
+                        }
+                    )
+                    setPreviewNull()
+                    recyclerAdapter?.resetSelectedItem()
+                }
+
                 override fun onOptionsSelected(item: ConfigInfo) {
                     showLoadAlert(item)
                 }
@@ -106,47 +118,53 @@ class SavedBadgesFragment : BaseFragment() {
     }
 
     private fun showLoadAlert(item: ConfigInfo) {
+        val buttons = arrayOf(
+            getString(R.string.share),
+            getString(R.string.transfer_button),
+            getString(R.string.delete)
+        )
         val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.saveactivity_operation_title))
-            .setPositiveButton(R.string.delete, null)
-            .setNegativeButton(R.string.share, null)
-            .setNeutralButton(R.string.transfer_button, null)
-            .create()
+            .setItems(
+                buttons
+            ) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        // Share Condition
+                        val intentShareFile = Intent(Intent.ACTION_SEND)
+                        intentShareFile.type = "text/*"
+                        intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                            requireContext(),
+                            getString(R.string.file_provider_authority),
+                            File(
+                                viewModel.getAbsPath(item.fileName)
+                            )))
+                        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
+                        intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
 
-        alertDialog.setOnShowListener {
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                viewModel.deleteFile(item.fileName)
-
-                alertDialog.dismiss()
-                setPreviewNull()
-                Toast.makeText(context, R.string.deleted_saved, Toast.LENGTH_SHORT).show()
-            }
-            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
-
-                val intentShareFile = Intent(Intent.ACTION_SEND)
-                intentShareFile.type = "text/*"
-                intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                    requireContext(),
-                    getString(R.string.file_provider_authority),
-                    File(
-                        viewModel.getAbsPath(item.fileName)
-                    )))
-                intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
-                intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
-
-                this.startActivity(Intent.createChooser(intentShareFile, item.fileName))
-                alertDialog.dismiss()
-            }
-            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                    // Easter egg
-                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                    SendingUtils.sendMessage(requireContext(), getSendData())
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+                        this.startActivity(Intent.createChooser(intentShareFile, item.fileName))
+                        dialog.dismiss()
+                    }
+                    1 -> {
+                        // Transfer Condition
+                        if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                            Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                            SendingUtils.sendMessage(requireContext(), getSendData())
+                        } else {
+                            Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    2 -> {
+                        // Delete Condition
+                        viewModel.deleteFile(item.fileName)
+                        dialog.dismiss()
+                        setPreviewNull()
+                        Toast.makeText(requireContext(), R.string.deleted_saved, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
+            .create()
+
         alertDialog.show()
     }
 

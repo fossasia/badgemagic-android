@@ -82,4 +82,6 @@
     <string name="language">语言</string>
     <string name="drawer_settings">设置</string>
     <string name="change_language">为了更改语言，我们需要重新启动应用程序。</string>
+    <string name="saved_edited_badge">Saved Badge Successfully</string>
+    <string name="save">Save</string>
 </resources>
