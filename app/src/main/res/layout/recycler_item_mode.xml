@@ -22,7 +22,7 @@
             android:layout_margin="@dimen/drawable_image_margin"
             android:contentDescription="@string/image_bitmap_description"
             android:scaleType="fitCenter"
-            android:src="@drawable/mix1" />
+            android:src="@drawable/clip_mix1" />
 
         <TextView
             android:id="@+id/title_tile"

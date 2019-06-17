@@ -1,7 +1,7 @@
 package org.fossasia.badgemagic.util
 
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
 import java.math.BigInteger
@@ -11,7 +11,7 @@ const val DRAWABLE_END = '»'
 
 object Converters {
     private fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
-        val bm = (drawableIcon as BitmapDrawable).bitmap
+        val bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon as VectorDrawable), 40)
 
         val height = bm.height
         val width = bm.width

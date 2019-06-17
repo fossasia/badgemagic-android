@@ -1,7 +1,10 @@
 package org.fossasia.badgemagic.util
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.VectorDrawable
+import org.fossasia.badgemagic.core.android.log.Timber
 
 object ImageUtils {
     fun trim(source: Bitmap, toDimen: Int): Bitmap {
@@ -57,7 +60,10 @@ object ImageUtils {
         }
 
         val trimmedBitmap = Bitmap.createBitmap(source, firstX, firstY, lastX - firstX, lastY - firstY)
+        return scaleBitmap(trimmedBitmap, toDimen)
+    }
 
+    fun scaleBitmap(trimmedBitmap: Bitmap, toDimen: Int): Bitmap {
         val outWidth: Int
         val outHeight: Int
         val inWidth = trimmedBitmap.width
@@ -70,5 +76,20 @@ object ImageUtils {
             outWidth = inWidth * toDimen / inHeight
         }
         return Bitmap.createScaledBitmap(trimmedBitmap, outWidth, outHeight, false)
+    }
+
+    fun vectorToBitmap(drawable: VectorDrawable): Bitmap {
+        val bitmap: Bitmap = Bitmap.createBitmap(200, 55, Bitmap.Config.ARGB_8888)
+        return try {
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            bitmap
+        } catch (e: OutOfMemoryError) {
+            Timber.e {
+                "Error Converting Bitmap: $e"
+            }
+            bitmap
+        }
     }
 }
