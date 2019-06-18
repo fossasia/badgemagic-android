@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.fossasia.badgemagic.data.draw_layout.DrawMode
 import org.fossasia.badgemagic.database.StorageFilesService
 
-class DrawViewModel(
+class EditBadgeViewModel(
     private val storageFilesService: StorageFilesService
 ) : ViewModel() {
     var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.NOTHING)

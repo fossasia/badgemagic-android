@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="org.fossasia.badgemagic.viewmodels.DrawViewModel" />
+            type="org.fossasia.badgemagic.viewmodels.EditBadgeViewModel" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        tools:context=".ui.DrawActivity">
+        tools:context=".ui.EditBadgeActivity">
 
         <org.fossasia.badgemagic.ui.custom.DrawBadgeLayout
             android:id="@+id/draw_layout"
