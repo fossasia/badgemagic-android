@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_create"
             android:title="@string/drawer_create_badges" />
         <item
+            android:id="@+id/draw"
+            android:icon="@drawable/ic_menu_draw"
+            android:title="@string/drawer_draw_badge" />
+        <item
             android:id="@+id/saved"
             android:icon="@drawable/ic_menu_save"
             android:title="@string/drawer_saved_badge" />

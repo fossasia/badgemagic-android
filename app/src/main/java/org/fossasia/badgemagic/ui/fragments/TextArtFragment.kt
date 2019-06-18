@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.os.AsyncTask
 import android.os.Bundle
@@ -378,7 +379,11 @@ class TextArtFragment : BaseFragment() {
     private fun putBitmapInEditText(drawableInfo: DrawableInfo) {
         val strToAppend = "«${drawableInfo.id}»"
         val spanStringBuilder = SpannableStringBuilder(strToAppend)
-        spanStringBuilder.setSpan(CenteredImageSpan(requireContext(), ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image as VectorDrawable), 70)), 0, strToAppend.length, 33)
+        if (drawableInfo.image is VectorDrawable)
+            spanStringBuilder.setSpan(CenteredImageSpan(requireContext(), ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image), 70)), 0, strToAppend.length, 33)
+        else if (drawableInfo.image is BitmapDrawable)
+            spanStringBuilder.setSpan(CenteredImageSpan(requireContext(), ImageUtils.trim((drawableInfo.image).bitmap, 70)), 0, strToAppend.length, 33)
+
         val editable = textViewMainText.text
         val n = textViewMainText.selectionEnd
         if (n < editable.length) {

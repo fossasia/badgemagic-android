@@ -1,5 +1,6 @@
 package org.fossasia.badgemagic.adapter
 
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.view.View
 import android.widget.ImageView
@@ -16,7 +17,11 @@ class DrawableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var listener: OnDrawableSelected? = null
 
     fun bind(drawableInfo: DrawableInfo) {
-        image.setImageBitmap(ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image as VectorDrawable), 80))
+
+        if (drawableInfo.image is VectorDrawable)
+            image.setImageBitmap(ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image), 80))
+        else if (drawableInfo.image is BitmapDrawable)
+            image.setImageBitmap(ImageUtils.trim(drawableInfo.image.bitmap, 80))
 
         image.setColorFilter(itemView.context.resources.getColor(android.R.color.black))
 

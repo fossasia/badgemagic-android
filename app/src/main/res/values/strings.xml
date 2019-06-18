@@ -98,4 +98,7 @@
     <string name="erase_text" translatable="false">Erase</string>
     <string name="saved_edited_badge">Saved Badge Successfully</string>
     <string name="save">Save</string>
+    <string name="drawer_draw_badge">Draw Clipart</string>
+    <string name="clipart_saved_success">ClipArt Saved Successfully</string>
+    <string name="clipart_saved_error">Error in saving Clipart</string>
 </resources>
