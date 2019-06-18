@@ -24,7 +24,7 @@ import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
-import org.fossasia.badgemagic.ui.DrawActivity
+import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
@@ -92,7 +92,7 @@ class SavedBadgesFragment : BaseFragment() {
             recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
                 override fun onEdit(item: ConfigInfo?) {
                     startActivity(
-                        Intent(requireContext(), DrawActivity::class.java).apply {
+                        Intent(requireContext(), EditBadgeActivity::class.java).apply {
                             putExtra("badgeJSON", item?.badgeJSON)
                             putExtra("fileName", item?.fileName)
                         }
