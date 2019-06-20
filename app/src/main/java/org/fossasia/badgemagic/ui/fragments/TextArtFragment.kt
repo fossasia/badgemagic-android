@@ -309,7 +309,7 @@ class TextArtFragment : BaseFragment() {
     }
 
     private fun setupRecyclerViews() {
-        drawablesRecyclerView.layoutManager = GridLayoutManager(context, 6)
+        drawablesRecyclerView.layoutManager = GridLayoutManager(context, 9)
         drawablesRecyclerView.adapter = null
 
         val drawableListener = object : OnDrawableSelected {

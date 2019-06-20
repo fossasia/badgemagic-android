@@ -16,7 +16,7 @@ class DrawableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var listener: OnDrawableSelected? = null
 
     fun bind(drawableInfo: DrawableInfo) {
-        image.setImageBitmap(ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image as VectorDrawable), 200))
+        image.setImageBitmap(ImageUtils.trim(ImageUtils.vectorToBitmap(drawableInfo.image as VectorDrawable), 80))
 
         image.setColorFilter(itemView.context.resources.getColor(android.R.color.black))
 
