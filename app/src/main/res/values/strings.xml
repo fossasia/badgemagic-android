@@ -8,11 +8,11 @@
     <string name="scanner_github" translatable="false">https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library</string>
     <string name="licences_github" translatable="false">https://github.com/PSDev/LicensesDialog</string>
     <string name="gif_github" translatable="false">https://github.com/koral&#8211;&#8211;/android&#8211;gif&#8211;drawable</string>
+    <string name="file_provider_authority" translatable="false">org.fossasia.badgemagic.fileprovider</string>
 
     <string name="app_name">Badge Magic</string>
 
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
-    <string name="grant_required_permission">You must grant the required permissions</string>
 
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
@@ -41,7 +41,6 @@
     <string name="delete">Delete</string>
     <string name="share">Share</string>
     <string name="deleted_saved">Saved Badge Deleted.</string>
-    <string name="file_provider_authority" translatable="false">org.fossasia.badgemagic.fileprovider</string>
     <string name="menu_import">Import</string>
     <string name="invalid_import_json">Select a Valid Badge Magic Configuration</string>
     <string name="save_dialog_already_present">File Already Present</string>
@@ -93,9 +92,9 @@
     <string name="drawer_settings">Settings</string>
     <string name="change_language">In order to change the language we need to restart the app.</string>
 
-    <string name="reset" translatable="false">Reset</string>
-    <string name="draw_text" translatable="false">Draw</string>
-    <string name="erase_text" translatable="false">Erase</string>
+    <string name="reset">Reset</string>
+    <string name="draw_text">Draw</string>
+    <string name="erase_text">Erase</string>
     <string name="saved_edited_badge">Saved Badge Successfully</string>
     <string name="save">Save</string>
     <string name="drawer_draw_badge">Draw Clipart</string>
