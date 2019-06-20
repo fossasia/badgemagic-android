@@ -11,15 +11,17 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="@dimen/square_image_dimension_half"
-            android:layout_height="@dimen/square_image_dimension_half"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:contentDescription="@string/image_bitmap_description"
-            android:layout_margin="@dimen/drawable_image_margin"
             android:scaleType="fitCenter"
             android:src="@drawable/clip_mix1" />
     </LinearLayout>
