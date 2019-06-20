@@ -2,7 +2,6 @@
     <string name="app_name">徽章魔术</string>
 
     <string name="enable_bluetooth">您必须打开蓝牙才能使用发送功能</string>
-    <string name="grant_required_permission">您必须授予所需的权限</string>
 
     <string name="flash">闪</string>
     <string name="marquee">华盖</string>
@@ -31,7 +30,6 @@
     <string name="delete">删除</string>
     <string name="share">分享</string>
     <string name="deleted_saved">已保存的徽章已删除。</string>
-
     <string name="menu_import">进口</string>
     <string name="invalid_import_json">选择有效徽章魔术配置</string>
     <string name="save_dialog_already_present">文件已存在</string>
@@ -82,9 +80,13 @@
     <string name="language">语言</string>
     <string name="drawer_settings">设置</string>
     <string name="change_language">为了更改语言，我们需要重新启动应用程序。</string>
-    <string name="saved_edited_badge">Saved Badge Successfully</string>
-    <string name="save">Save</string>
-    <string name="drawer_draw_badge">Draw Badge</string>
-    <string name="clipart_saved_success">ClipArt Saved Successfully</string>
-    <string name="clipart_saved_error">Error in saving Clipart</string>
+
+    <string name="reset">重启</string>
+    <string name="draw_text">画</string>
+    <string name="erase_text">抹去</string>
+    <string name="saved_edited_badge">成功保存徽章</string>
+    <string name="save">保存</string>
+    <string name="drawer_draw_badge">画剪贴画</string>
+    <string name="clipart_saved_success">ClipArt已成功保存</string>
+    <string name="clipart_saved_error">保存剪贴画时出错</string>
 </resources>
