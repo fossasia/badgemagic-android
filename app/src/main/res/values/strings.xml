@@ -12,7 +12,6 @@
     <string name="app_name">Badge Magic</string>
 
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
-    <string name="grant_required_permission">You must grant the required permissions</string>
 
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
