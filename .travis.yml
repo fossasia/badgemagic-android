@@ -17,12 +17,10 @@ cache:
       - "$HOME/.gradle/caches/"
       - "$HOME/.gradle/wrapper/"
 install:
-  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28"
+  - echo yes | sdkmanager "platforms;android-28"
 script:
   - ./gradlew spotlessCheck
   - ./gradlew build --stacktrace
 after_success:
     - bash scripts/prep-key.sh
     - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash scripts/upload-apk.sh; fi'
-before_install:
-- yes | sdkmanager "platforms;android-28"
