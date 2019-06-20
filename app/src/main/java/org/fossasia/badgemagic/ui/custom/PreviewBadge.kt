@@ -93,7 +93,7 @@ class PreviewBadge : View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         val ratioHeight = 1
-        val ratioWidth = 3.45
+        val ratioWidth = 3
 
         val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
         val calculatedHeight = originalWidth * ratioHeight / ratioWidth
