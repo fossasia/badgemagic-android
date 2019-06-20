@@ -2,9 +2,10 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
-            type="org.fossasia.badgemagic.viewmodels.DrawViewModel" />
+            type="org.fossasia.badgemagic.viewmodels.EditBadgeViewModel" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        tools:context=".ui.DrawActivity">
+        tools:context=".ui.EditBadgeActivity">
 
         <org.fossasia.badgemagic.ui.custom.DrawBadgeLayout
+            android:id="@+id/draw_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/tools_bar"
@@ -23,7 +25,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             app:drawState="@{viewModel.drawModeState}"
-            app:resetState="@{viewModel.resetState}" />
+            app:drawingJSON="@{viewModel.drawingJSON}" />
 
         <LinearLayout
             android:id="@+id/tools_bar"
@@ -90,6 +92,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/reset" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.saveBadge()}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_draw_save" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

@@ -1,6 +1,8 @@
 package org.fossasia.badgemagic.util
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
 import org.fossasia.badgemagic.data.fragments.CONF_HEX_STRINGS
@@ -10,21 +12,27 @@ import org.fossasia.badgemagic.data.fragments.CONF_FLASH
 import org.fossasia.badgemagic.data.fragments.CONF_MODE
 import org.fossasia.badgemagic.data.fragments.CONF_SPEED
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.data.fragments.BadgeConfig
 import org.json.JSONObject
 import java.io.File
 import java.io.BufferedReader
+import java.io.FileOutputStream
 import java.io.InputStreamReader
 
 object StorageUtils {
-    private val EXTERNAL_STORAGE_DIRECTORY = Environment.getExternalStorageDirectory()
-        .absolutePath + "/Badge-Magic/"
+    private val EXTERNAL_STORAGE_DIRECTORY = "${Environment.getExternalStorageDirectory()
+        .absolutePath}/Badge-Magic/"
+    private val EXTERNAL_CLIPART_DIRECTORY = "${EXTERNAL_STORAGE_DIRECTORY}ClipArts/"
     private const val BADGE_EXTENSION = ".txt"
+    private const val CLIP_EXTENSION = ".png"
 
     private fun checkDirectory(): Boolean {
         val directory = File(EXTERNAL_STORAGE_DIRECTORY)
-        if (!directory.exists()) {
+        val directoryClips = File(EXTERNAL_CLIPART_DIRECTORY)
+        if (!directory.exists())
             return directory.mkdirs()
-        }
+        if (!directoryClips.exists())
+            return directoryClips.mkdirs()
         return true
     }
 
@@ -130,5 +138,38 @@ object StorageUtils {
         if (cut != -1)
             result = result.substring(cut + 1)
         return result
+    }
+
+    fun saveEditedBadge(badgeConfig: BadgeConfig?, fileName: String) {
+        checkDirectory()
+        val saveFile = File(EXTERNAL_STORAGE_DIRECTORY, fileName)
+        saveFile.writeText(MoshiUtils.getAdapter().toJson(badgeConfig))
+    }
+
+    fun saveClipArt(bitmap: Bitmap): Boolean {
+        checkDirectory()
+        val file = File.createTempFile("clip", CLIP_EXTENSION, File(EXTERNAL_CLIPART_DIRECTORY))
+        try {
+            val out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            out.flush()
+            out.close()
+        } catch (e: Exception) {
+            return false
+        }
+        return true
+    }
+
+    fun getAllClips(): List<Drawable> {
+        checkDirectory()
+        val list = mutableListOf<Drawable>()
+
+        val files = File(EXTERNAL_CLIPART_DIRECTORY).listFiles() ?: return list
+        for (i in files.indices) {
+            if (getFileExtension(files[i].name) == CLIP_EXTENSION) {
+                list.add(Drawable.createFromPath(files[i].absolutePath))
+            }
+        }
+        return list
     }
 }

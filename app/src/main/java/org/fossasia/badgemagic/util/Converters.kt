@@ -1,8 +1,12 @@
 package org.fossasia.badgemagic.util
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
+import org.fossasia.badgemagic.data.badge_preview.CheckList
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
 import java.math.BigInteger
 
@@ -11,8 +15,15 @@ const val DRAWABLE_END = '»'
 
 object Converters {
     private fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
-        val bm = (drawableIcon as BitmapDrawable).bitmap
+        var bm = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+        if (drawableIcon is VectorDrawable)
+            bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon), 40)
+        else if (drawableIcon is BitmapDrawable)
+            bm = ImageUtils.scaleBitmap((drawableIcon).bitmap, 40)
+        return convertBitmapToLEDHex(bm, invertLED)
+    }
 
+    fun convertBitmapToLEDHex(bm: Bitmap, invertLED: Boolean): List<String> {
         val height = bm.height
         val width = bm.width
 
@@ -188,5 +199,20 @@ object Converters {
             }
         }
         return listOfArt
+    }
+
+    fun convertStringsToLEDHex(list: ArrayList<CheckList>): Bitmap {
+        val newBitmap = Bitmap.createBitmap(list[0].list.size, list.size, Bitmap.Config.ARGB_8888)
+        for (i in 0 until list.size) {
+            for (j in 0 until list[0].list.size) {
+                newBitmap.setPixel(j, i,
+                    if (list[i].list[j])
+                        Color.BLACK
+                    else
+                        Color.TRANSPARENT
+                )
+            }
+        }
+        return newBitmap
     }
 }

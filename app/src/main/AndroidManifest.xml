@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DrawActivity" android:screenOrientation="landscape">
+        <activity android:name=".ui.EditBadgeActivity" android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".ui.DrawerActivity"

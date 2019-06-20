@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="square_image_dimension">64dp</dimen>
-    <dimen name="square_image_dimension_half">48dp</dimen>
     <dimen name="card_radius">8dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
 
@@ -13,11 +12,9 @@
     <dimen name="spacing_large">16dp</dimen>
 
     <dimen name="button_padding_left_right">42dp</dimen>
-    <dimen name="bottom_bar_margin">32dp</dimen>
     <dimen name="drawable_image_margin">5dp</dimen>
     <dimen name="title_min_height_medium">20dp</dimen>
     <dimen name="title_min_height_large">40dp</dimen>
-    <dimen name="knob_margin">20dp</dimen>
     <dimen name="knob_width">180dp</dimen>
     <dimen name="card_spacing">10dp</dimen>
     <dimen name="card_corner_radius">1dp</dimen>
@@ -38,4 +35,7 @@
     <dimen name="header_text_size">22sp</dimen>
     <dimen name="content_text_size">16sp</dimen>
     <dimen name="saved_badges_image">50dp</dimen>
+    <dimen name="draw_button_generic_dimen">48dp</dimen>
+    <dimen name="draw_layout_margin">50dp</dimen>
+    <dimen name="draw_layout_button_padding">10dp</dimen>
 </resources>

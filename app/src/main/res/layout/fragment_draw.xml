@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="org.fossasia.badgemagic.viewmodels.DrawViewModel" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:context=".ui.EditBadgeActivity">
+
+        <org.fossasia.badgemagic.ui.custom.DrawBadgeLayout
+            android:id="@+id/draw_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tools_bar"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/draw_layout_margin"
+            android:layout_marginEnd="@dimen/draw_layout_margin"
+            app:drawState="@{viewModel.drawModeState}" />
+
+        <LinearLayout
+            android:id="@+id/tools_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:padding="@dimen/draw_layout_button_padding">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/draw_layout_button_padding"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.changeDrawState()}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/draw_button_generic_dimen"
+                    android:layout_height="@dimen/draw_button_generic_dimen"
+                    android:src="@drawable/ic_draw_pencil"
+                    app:changeColor="@{viewModel.drawState}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/draw_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/draw_layout_button_padding"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.changeEraseState()}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/draw_button_generic_dimen"
+                    android:layout_height="@dimen/draw_button_generic_dimen"
+                    android:src="@drawable/ic_draw_erase"
+                    app:changeColor="@{viewModel.eraseState}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/erase_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/draw_layout_button_padding"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.changeResetState()}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/draw_button_generic_dimen"
+                    android:layout_height="@dimen/draw_button_generic_dimen"
+                    android:src="@drawable/ic_draw_reset" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reset" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/draw_layout_button_padding"
+                android:gravity="center"
+                android:onClick="@{() -> viewModel.saveBadge()}"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/draw_button_generic_dimen"
+                    android:layout_height="@dimen/draw_button_generic_dimen"
+                    android:src="@drawable/ic_draw_save" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

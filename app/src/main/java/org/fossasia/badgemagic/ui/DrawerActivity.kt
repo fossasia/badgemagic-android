@@ -25,15 +25,17 @@ import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
+import org.fossasia.badgemagic.extensions.setRotation
 import org.fossasia.badgemagic.ui.base.BaseFragment
-import org.fossasia.badgemagic.viewmodels.FilesViewModel
+import org.fossasia.badgemagic.ui.base.BaseActivity
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
 import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
 import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
-import org.fossasia.badgemagic.ui.base.BaseActivity
+import org.fossasia.badgemagic.ui.fragments.DrawFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
+import org.fossasia.badgemagic.viewmodels.DrawerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -46,8 +48,9 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
+    private var isItemCheckedNew = false
 
-    private val viewModel by viewModel<FilesViewModel>()
+    private val viewModel by viewModel<DrawerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +73,10 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        Timber.e {
+            "OnCreate, ${viewModel.swappingOrientation}"
+        }
+
         drawer_layout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
             }
@@ -78,29 +85,44 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                when (drawerCheckedID) {
-                    R.id.create -> {
-                        switchFragment(TextArtFragment.newInstance())
-                        showMenu?.setGroupVisible(R.id.saved_group, false)
+                if (isItemCheckedNew) {
+                    when (drawerCheckedID) {
+                        R.id.create -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(TextArtFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
+                        R.id.draw -> {
+                            viewModel.swappingOrientation = true
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                            switchFragment(DrawFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
+                        R.id.saved -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(SavedBadgesFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, true)
+                        }
+                        R.id.settings -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(SettingsFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
+                        R.id.feedback -> {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badge-magic-android/issues")))
+                        }
+                        R.id.buy -> {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
+                        }
+                        R.id.about -> {
+                            switchFragment(AboutFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
                     }
-                    R.id.saved -> {
-                        switchFragment(SavedBadgesFragment.newInstance())
-                        showMenu?.setGroupVisible(R.id.saved_group, true)
-                    }
-                    R.id.settings -> {
-                        switchFragment(SettingsFragment.newInstance())
-                        showMenu?.setGroupVisible(R.id.saved_group, false)
-                    }
-                    R.id.feedback -> {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badge-magic-android/issues")))
-                    }
-                    R.id.buy -> {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
-                    }
-                    R.id.about -> {
-                        switchFragment(AboutFragment.newInstance())
-                        showMenu?.setGroupVisible(R.id.saved_group, false)
-                    }
+                    isItemCheckedNew = false
                 }
             }
 
@@ -109,18 +131,32 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         })
 
         nav_view.setNavigationItemSelectedListener(this)
-        when (intent.action) {
-            Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
-                switchFragment(TextArtFragment.newInstance())
-                showMenu?.setGroupVisible(R.id.saved_group, false)
-                nav_view.setCheckedItem(R.id.create)
-            }
-            "org.fossasia.badgemagic.savedBadges.shortcut" -> {
-                switchFragment(SavedBadgesFragment.newInstance())
-                showMenu?.setGroupVisible(R.id.saved_group, true)
-                nav_view.setCheckedItem(R.id.saved)
-            }
+        if (!viewModel.swappingOrientation)
+            when (intent.action) {
+                Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
+                    switchFragment(TextArtFragment.newInstance())
+                    showMenu?.setGroupVisible(R.id.saved_group, false)
+                    nav_view.setCheckedItem(R.id.create)
+                }
+                "org.fossasia.badgemagic.savedBadges.shortcut" -> {
+                    switchFragment(SavedBadgesFragment.newInstance())
+                    showMenu?.setGroupVisible(R.id.saved_group, true)
+                    nav_view.setCheckedItem(R.id.saved)
+                }
+            } else {
+            switchFragment(DrawFragment.newInstance())
+            showMenu?.setGroupVisible(R.id.saved_group, false)
+            nav_view.setCheckedItem(R.id.draw)
         }
+    }
+
+    fun switchToDrawLayout() {
+        drawerCheckedID = R.id.draw
+        viewModel.swappingOrientation = true
+        setRotation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        switchFragment(DrawFragment.newInstance())
+        showMenu?.setGroupVisible(R.id.saved_group, false)
+        nav_view.setCheckedItem(R.id.draw)
     }
 
     private fun prepareForScan() {
@@ -269,6 +305,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        isItemCheckedNew = true
         drawerCheckedID = item.itemId
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)

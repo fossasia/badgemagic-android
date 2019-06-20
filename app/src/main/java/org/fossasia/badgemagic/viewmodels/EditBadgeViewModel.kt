@@ -5,12 +5,13 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.fossasia.badgemagic.data.draw_layout.DrawMode
-import org.fossasia.badgemagic.database.ClipArtService
+import org.fossasia.badgemagic.database.StorageFilesService
 
-class DrawViewModel(
-    private val clipArtService: ClipArtService
+class EditBadgeViewModel(
+    private val storageFilesService: StorageFilesService
 ) : ViewModel() {
     var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.NOTHING)
+    var drawingJSON: ObservableField<String> = ObservableField("[]")
 
     var drawState: ObservableBoolean = ObservableBoolean(false)
     var eraseState: ObservableBoolean = ObservableBoolean(false)
@@ -43,5 +44,5 @@ class DrawViewModel(
         resetButton.value = true
     }
 
-    fun updateCliparts() = clipArtService.updateClipArts()
+    fun updateFiles() = storageFilesService.update()
 }

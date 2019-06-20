@@ -11,7 +11,5 @@ class FilesViewModel(
 
     fun deleteFile(fileName: String) = storageFilesService.deleteFile(fileName)
 
-    fun updateList() = storageFilesService.update()
-
     fun getAbsPath(fileName: String): String? = storageFilesService.getAbsPath(fileName)
 }

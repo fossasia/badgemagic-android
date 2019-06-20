@@ -8,6 +8,8 @@ import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
 import org.fossasia.badgemagic.viewmodels.SettingsViewModel
 import org.fossasia.badgemagic.viewmodels.DrawViewModel
+import org.fossasia.badgemagic.viewmodels.DrawerViewModel
+import org.fossasia.badgemagic.viewmodels.EditBadgeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -16,7 +18,9 @@ val viewModelModules = module {
     viewModel { TextArtViewModel(get(), get()) }
     viewModel { FilesViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
-    viewModel { DrawViewModel() }
+    viewModel { EditBadgeViewModel(get()) }
+    viewModel { DrawViewModel(get()) }
+    viewModel { DrawerViewModel(get()) }
 }
 
 val singletonModules = module {

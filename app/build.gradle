@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.23.0"
+    id "com.diffplug.gradle.spotless" version "3.23.1"
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -18,8 +18,8 @@ android {
         applicationId 'org.fossasia.badgemagic'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 3
-        versionName '1.1.0'
+        versionCode 4
+        versionName '1.2.0'
         vectorDrawables.useSupportLibrary = true
     }
 
