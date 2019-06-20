@@ -2,6 +2,7 @@ package org.fossasia.badgemagic.util
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
@@ -14,7 +15,11 @@ const val DRAWABLE_END = '»'
 
 object Converters {
     private fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
-        val bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon as VectorDrawable), 40)
+        var bm = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
+        if (drawableIcon is VectorDrawable)
+            bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon), 40)
+        else if (drawableIcon is BitmapDrawable)
+            bm = ImageUtils.scaleBitmap((drawableIcon).bitmap, 40)
         return convertBitmapToLEDHex(bm, invertLED)
     }
 

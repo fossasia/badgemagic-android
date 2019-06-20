@@ -5,25 +5,37 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.DrawableInfo
+import org.fossasia.badgemagic.ui.DrawerActivity
 
 class DrawableAdapter : RecyclerView.Adapter<DrawableItemHolder>() {
     var onDrawableSelected: OnDrawableSelected? = null
     private val drawableList = mutableListOf<DrawableInfo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawableItemHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
-        return DrawableItemHolder(v)
+        return DrawableItemHolder(
+            when (viewType) {
+                R.layout.recycler_item -> LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
+                else -> LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_add, parent, false)
+            }
+        )
     }
 
-    override fun getItemViewType(position: Int) = position
+    override fun getItemViewType(position: Int) = if (position == drawableList.size) R.layout.recycler_item_add else R.layout.recycler_item
 
     override fun getItemId(position: Int) = position.toLong()
 
     override fun onBindViewHolder(holder: DrawableItemHolder, position: Int) {
-        holder.apply {
-            bind(drawableList[position])
-            listener = onDrawableSelected
-        }
+        if (position != drawableList.size)
+            holder.apply {
+                bind(drawableList[position])
+                listener = onDrawableSelected
+            }
+        else
+            holder.itemView.setOnClickListener {
+                val contextAct = it.context
+                if (contextAct is DrawerActivity)
+                    contextAct.switchToDrawLayout()
+            }
     }
 
     fun addAll(newDrawableList: List<DrawableInfo>) {
@@ -32,7 +44,7 @@ class DrawableAdapter : RecyclerView.Adapter<DrawableItemHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun getItemCount() = drawableList.size
+    override fun getItemCount() = drawableList.size + 1
 }
 
 interface OnDrawableSelected {

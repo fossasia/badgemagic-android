@@ -38,4 +38,7 @@
     <dimen name="header_text_size">22sp</dimen>
     <dimen name="content_text_size">16sp</dimen>
     <dimen name="saved_badges_image">50dp</dimen>
+    <dimen name="draw_button_generic_dimen">48dp</dimen>
+    <dimen name="draw_layout_margin">50dp</dimen>
+    <dimen name="draw_layout_button_padding">10dp</dimen>
 </resources>
