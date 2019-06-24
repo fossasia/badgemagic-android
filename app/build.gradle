@@ -83,5 +83,5 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
 
     //Display third party licenses
-    implementation 'de.psdev.licensesdialog:licensesdialog:2.0.0'
+    implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
 }
