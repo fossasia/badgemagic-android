@@ -10,5 +10,6 @@
     <color name="progress_secondary_color">#EEEEEE</color>
 
     <color name="md_grey_400">#BDBDBD</color>
+    <color name="dividerColor">#e0e0e0</color>
 
 </resources>

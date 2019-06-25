@@ -89,4 +89,5 @@
     <string name="drawer_draw_badge">画剪贴画</string>
     <string name="clipart_saved_success">ClipArt已成功保存</string>
     <string name="clipart_saved_error">保存剪贴画时出错</string>
+    <string name="drawer_saved_cliparts">保存的教具</string>
 </resources>

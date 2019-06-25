@@ -33,6 +33,7 @@ import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
 import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
 import org.fossasia.badgemagic.ui.fragments.DrawFragment
+import org.fossasia.badgemagic.ui.fragments.SavedClipartFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
@@ -99,11 +100,17 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             switchFragment(DrawFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
-                        R.id.saved -> {
+                        R.id.saved_badges -> {
                             viewModel.swappingOrientation = false
                             setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                             switchFragment(SavedBadgesFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, true)
+                        }
+                        R.id.saved_cliparts -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(SavedClipartFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
                         R.id.settings -> {
                             viewModel.swappingOrientation = false
@@ -141,7 +148,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                 "org.fossasia.badgemagic.savedBadges.shortcut" -> {
                     switchFragment(SavedBadgesFragment.newInstance())
                     showMenu?.setGroupVisible(R.id.saved_group, true)
-                    nav_view.setCheckedItem(R.id.saved)
+                    nav_view.setCheckedItem(R.id.saved_badges)
                 }
             } else {
             switchFragment(DrawFragment.newInstance())
