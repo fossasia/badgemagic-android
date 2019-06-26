@@ -3,6 +3,8 @@ package org.fossasia.badgemagic.util
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import org.fossasia.badgemagic.core.android.log.Timber
 
@@ -91,5 +93,12 @@ object ImageUtils {
             }
             bitmap
         }
+    }
+
+    fun convertToBitmap(drawable: Drawable?): Bitmap {
+        return if (drawable is BitmapDrawable)
+            drawable.bitmap
+        else
+            Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
     }
 }

@@ -100,4 +100,5 @@
     <string name="drawer_draw_badge">Draw Clipart</string>
     <string name="clipart_saved_success">ClipArt Saved Successfully</string>
     <string name="clipart_saved_error">Error in saving Clipart</string>
+    <string name="drawer_saved_cliparts">Saved Cliparts</string>
 </resources>

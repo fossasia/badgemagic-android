@@ -46,9 +46,9 @@ class ClipArtService : KoinComponent {
                 tempSparseArray.append(index, it)
             }
         }
-        val drawablesInStorage = StorageUtils.getAllClips()
+        val drawablesInStorage = getClipsFromStorage()
         drawablesInStorage.forEach {
-            tempSparseArray.append(++lastIndex, it)
+            tempSparseArray.append(++lastIndex, it.value)
         }
 
         return tempSparseArray
@@ -59,4 +59,6 @@ class ClipArtService : KoinComponent {
     }
 
     fun getClipArts(): LiveData<SparseArray<Drawable>> = clipArts
+
+    fun getClipsFromStorage() = StorageUtils.getAllClips()
 }
