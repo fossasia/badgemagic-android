@@ -22,6 +22,7 @@
     <string name="enter_text">输入文字</string>
     <string name="image_bitmap_description">位图图像</string>
     <string name="save_button">保存</string>
+    <string name="saved_badge">Saved Badge</string>
     <string name="save_hint">文件名</string>
     <string name="validation_save_dialog">继续之前输入文件名</string>
     <string name="save_dialog_title">保存徽章</string>

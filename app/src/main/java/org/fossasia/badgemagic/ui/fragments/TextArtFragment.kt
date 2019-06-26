@@ -445,6 +445,7 @@ class TextArtFragment : BaseFragment() {
                         showFileOverrideDialog(fileTitle.toString(), configToJSON())
                     } else {
                         saveFile(fileTitle.toString(), configToJSON())
+                        Toast.makeText(context, R.string.saved_badge, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
