@@ -1,1 +1,363 @@
-My Page
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Badge Magic Android</title> 
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="_static/fossasia.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT:    './',
+      VERSION:     'development',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      HAS_SOURCE:  true,
+      SOURCELINK_SUFFIX: '.txt'
+    };
+  </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/fossasia/loklak-timeline-plugin/master/plugin.js"></script>    
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          if (target.length) {
+            event.preventDefault();
+            $('html, body').animate({
+              scrollTop: target.offset().top - 80
+            }, 1000, function() {
+              var $target = $(target);
+                $target.focus();
+              if ($target.is(":focus")) { // Checking if the target was focused
+              return false;
+              } else {
+                $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                $target.focus(); // Set focus again
+              };
+            });
+          }
+        }
+      });
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 50) {
+          $('#back-to-top').fadeIn();
+        } else {
+          $('#back-to-top').fadeOut();
+        }
+      });
+      $('#back-to-top').click(function () {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    });
+  </script>
+  </head>
+  <body>
+    <div class="container-fluid main"> 
+  <nav class="navbar navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="#"><img class="img-responsive" src="http://fossasia.org/img/fossasia-dark.png" style="width: 50%" /></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right menu">
+              
+              <li><a href=http://fossasia.org/about/>About</a></li>
+              
+              
+              <li><a href=#>Docs</a></li>
+              
+              
+              <li><a href=http://blog.fossasia.org/>Blog</a></li>
+              
+              
+              <li><a href=http://fossasia.org/donate/>Donate</a></li>
+              
+              
+              <li><a href=http://blog.fossasia.org/contact/>Contact</a></li>
+              
+              
+              <li class="social-link hidden-md hidden-sm hidden-xs"><a href=https://twitter.com/fossasia><i class="fa fa-twitter fa-lg"></i></a></li>
+              
+              
+              <li class="social-link hidden-md hidden-sm hidden-xs"><a href=https://facebook.com/fossasia><i class="fa fa-facebook fa-lg"></i></a></li>
+              
+          </ul>
+      </div>
+    </div>
+  </nav>
+      <div class="container">
+        <div class="document col-md-1"></div>
+        <div class="document col-md-10"> <!-- Document -->
+          <div> <!-- Document Wrapper -->
+            <div class="body" role="main" > <!-- Body-->
+  <div class="section" id="badge-magic-android">
+<h1>Badge Magic Android<a class="headerlink" href="#badge-magic-android" title="Permalink to this headline">¶</a></h1>
+<p>
+  Magically Create Symbols and Text on LED Name Badges using Bluetooth
+  
+  The Badge Magic Android app lets you create scrolling symbols and text on LED name badges through Bluetooth. The app provides options to portray names, clipart and simple animations on LED badges. For the data transfer from the smartphone to the LED badge we use Bluetooth.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="13%" />
+<col width="17%" />
+<col width="16%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Master</th>
+<th class="head">Development</th>
+<th class="head">Chat</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://travis-ci.org/fossasia/badge-magic-android"><img alt="Build Status" src="https://travis-ci.org/fossasia/badge-magic-android.svg?branch=master" /></a></td>
+<td><a class="reference external" href="https://travis-ci.org/fossasia/badge-magic-android"><img alt="Build Status" src="https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development" /></a></td>
+<td><a class="reference external" href="https://gitter.im/fossasia/badge-magic"><img alt="Gitter Room" src="https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-blue.svg" /></a></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="screenshots">
+<h2>Screenshots<a class="headerlink" href="#screenshots" title="Permalink to this headline">¶</a></h2>
+<p float="left">
+  <table>
+    <tr>
+      <td><img src="./docs/images/screen-1.png" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /></td>
+      <td><img src="./docs/images/screen-2.png" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /></td>
+      <td><img src="./docs/images/screen-3.png" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /></td>
+    </tr>
+    <tr>
+      <td><img src="./docs/images/screen-4.png" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /></td>
+      <td><img src="./docs/images/screen-5.png" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /></td>
+      <td><img src="./docs/images/screen-6.png" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /></td>
+    </tr>
+  </table>
+</p>
+</div>
+<div class="section" id="features">
+<h2>Key Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Get a preview before programming your badge</li>
+<li>Program your badge with 8 Speed Options, 7 Animations and 3 Effects</li>
+<li>Options to create badges from almost the entire english keyboard</li>
+<li>Save Badges and use them according to your needs</li>
+<li>Share Badges with your friends</li>
+<li>You can draw your own badge with an astonishing draw layout preincluded inside the app</li>
+</ul>
+</div>
+<div class="section" id="how-to-contribute">
+<h2>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
+<p>This is an Open Source project and we would be happy to see contributors
+who report bugs and file feature requests by submitting pull requests as
+well.This project adheres to the <a class="reference external" href="https://github.com/fossasia/badge-magic-android/blob/development/CONTRIBUTING.md">Contributor
+Covenant</a>.
+By participating, you are expected to uphold this code style. Please
+report issues here <a class="reference external" href="https://github.com/fossasia/badge-magic-android/issues">https://github.com/fossasia/badge-magic-android/issues</a></p>
+<div class="section" id="branch-policy">
+<h3>Branch Policy<a class="headerlink" href="#branch-policy" title="Permalink to this headline">¶</a></h3>
+<p>We have the following branches</p>
+<ul>
+<li><div class="first line-block">
+<div class="line"><strong>development</strong></div>
+<div class="line-block">
+<div class="line">All development goes on in this branch. If you&#8217;re making a
+contribution,</div>
+<div class="line">you are supposed to make a pull request to <em>development</em>.</div>
+<div class="line">Make sure it passes a build check on Travis</div>
+</div>
+</div>
+<p>It is advisable to clone only the development branch using the
+following command:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">&lt;branch&gt;</span> <span class="pre">&lt;remote_repo&gt;</span></code></p>
+<p>Example:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">my-branch</span> <span class="pre">git&#64;github.com:user/myproject.git</span></code></p>
+<p>Alternative (no public key setup needed):</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">my-branch</span> <span class="pre">https://git&#64;github.com/username/myproject.git</span></code></p>
+<p>With Git 1.7.10 and later, add &#8211;single-branch to prevent fetching of
+all branches. Example, with development branch:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">development</span> <span class="pre">--single-branch</span> <span class="pre">https://github.com/username/badge-magic-android.git</span></code></p>
+</li>
+<li><div class="first line-block">
+<div class="line"><strong>master</strong></div>
+<div class="line-block">
+<div class="line">This contains the stable code. After significant features/bugfixes
+are accumulated on development, we move it to master.</div>
+</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line"><strong>apk</strong></div>
+<div class="line-block">
+<div class="line">This branch contains automatically generated apk file for testing.</div>
+</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line"><strong>gh-pages</strong></div>
+<div class="line-block">
+<div class="line">Hosting the landing page <a class="reference external" href="https://fossasia.github.io/badge-magic-android">https://fossasia.github.io/badge-magic-android</a></div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="development-setup">
+<h2>Development Setup<a class="headerlink" href="#development-setup" title="Permalink to this headline">¶</a></h2>
+<p>Before you begin, you should have already downloaded the Android Studio
+SDK and set it up correctly. You can find a guide on how to do this
+here: <a class="reference external" href="http://developer.android.com/sdk/installing/index.html?pkg=studio">Setting up Android
+Studio</a></p>
+<div class="section" id="setting-up-the-android-project">
+<h3>Setting up the Android Project<a class="headerlink" href="#setting-up-the-android-project" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Download the <em>badge-magic-android</em> project source. You can do this either
+by forking and cloning the repository (recommended if you plan on
+pushing changes) or by downloading it as a ZIP file and extracting
+it.</li>
+<li>Open Android Studio, you will see a <strong>Welcome to Android</strong> window.
+Under Quick Start, select <em>Import Project (Eclipse ADT, Gradle,
+etc.)</em></li>
+<li>Navigate to the directory where you saved the badge-magic-android
+project, select the root folder of the project (the folder named
+&#8220;badge-magic-android&#8221;), and hit OK. Android Studio should now begin
+building the project with Gradle.</li>
+<li>Once this process is complete and Android Studio opens, check the
+Console for any build errors.<ul>
+<li><em>Note:</em> If you receive a Gradle sync error titled, &#8220;failed to find
+...&#8221;, you should click on the link below the error message (if
+available) that says <em>Install missing platform(s) and sync
+project</em> and allow Android studio to fetch you what is missing.</li>
+</ul>
+</li>
+</li>
+<li>To Build the app, go to <em>Build &gt; Make Project</em> (or alternatively
+press the Make Project icon in the toolbar).</li>
+<li>If the app was built successfully, you can test it by running it on
+either a real device or an emulated one by going to <em>Run &gt; Run &#8216;app&#8217;</em>
+or pressing the Run icon in the toolbar.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>This project is currently licensed under the Apache License 2.0. A copy of <a class="reference external" href="https://github.com/fossasia/badge-magic-android/blob/development/LICENSE">LICENSE</a> is to be present along with
+the source code. To obtain the software under a different license,
+please contact <a class="reference external" href="http://fossasia.org/">FOSSASIA</a>.</p>
+</div>
+<div class="section" id="maintainers">
+<h2>Maintainers<a class="headerlink" href="#maintainers" title="Permalink to this headline">¶</a></h2>
+<p>The project is maintained by</p>
+<ul class="simple">
+<li>Areej Jamal (<a class="reference external" href="https://github.com/iamareebjamal">&#64;iamareebjamal</a>)</li>
+<li>Mario Behling (<a class="reference external" href="http://github.com/mariobehling">&#64;mariobehling</a>)</li>
+<li>Padmal (<a class="reference external" href="http://github.com/CloudyPadmal">&#64;CloudyPadmal</a>)</li>
+</ul>
+</div>
+<div class="section" id="developers">
+<h2>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h2>
+<table border="0">
+<tr>
+<td width="240">
+     <p align="center">
+     <img src="https://avatars1.githubusercontent.com/u/11988517?s=150&v=4" />
+     </p>
+     <div align="center">
+     Aditya Gupta
+</div>
+<p align="center">
+    Github (<a class="reference external" href="https://github.com/adityastic">&#64;adityastic</a>)
+</p>
+</td>
+<td width="240">
+     <p align="center">
+     <img src="https://avatars0.githubusercontent.com/u/41234408?s=150&v=4" />
+     </p>
+     <div align="center">
+     Yash Khare
+</div>
+<p align="center">
+    Github (<a class="reference external" href="https://github.com/yashk2000">&#64;yashk2000</a>)
+</p>
+</td>
+</tr>
+</table></div>
+</div>
+
+
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="footer-container">
+        <footer role="contentinfo" class="footer">
+          <div class="container">
+            
+    <div class="row">
+      <div class="col-sm-2">
+        <ul class="menu">
+        <li><a target="_self" href="http://blog.fossasia.org">Blog</a></li>
+        <li><a target="_self" href="http://github.com/fossasia">Github</a></li>
+        <li><a target="_self" href="http://labs.fossasia.org/#projects">Projects</a></li>
+        <li><a target="_self" href="http://coc.fossasia.org/">Code of Conduct</a></li>
+        <li><a target="_self" href="http://fossasia.org/about/">About</a></li>
+        <li><a target="_self" href="http://blog.fossasia.org/contact">Contact</a></li>
+        <li><a target="_self" href="http://fossasia.org/donate">Donate</a></li>
+        <li><a class="inner-link" id="back-to-top" href="#top">Back To Top</a></li>
+      </ul>
+      </div>
+      <div class="col-sm-7">
+        <span class="lead color-heading">About FOSSASIA</span>
+      <p>
+FOSSASIA is the premier Free and Open Source technology organization in Asia for developers, designers, start-ups, and contributors. Projects at FOSSASIA range from open hardware, to design, graphics and software. FOSSASIA was established in 2009. The annual FOSSASIA Summit took place in Cambodia, Vietnam and Singapore. FOSSASIA meetup groups exist throughout Asia.</p>
+      </div>
+      <div class="col-sm-3">
+        <ul class="contact-methods">
+        <li><i class="fa fa-envelope fa-lg"></i><span><a id="mailAdd" href="mailto:fossasia@googlegroups.com" target="_self" style="color:#777777">&nbsp;fossasia@googlegroups.com</a></span></li>
+        <li><i class="fa fa-mobile fa-lg"></i><span>&nbsp;+65 83435672</span></li>
+        <li><i class="fa fa-map-marker fa-lg"></i><span>&nbsp;Ms. DANG Hong Phuc</span></li>
+        <li><span>FOSSASIA</span></li>
+        <li><span>Xoai Building, 93 Mau Than Street Xuan Khan, Ninh Kieu 9000 Can Tho, Vietnam</span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+      <ul class="social-profiles">
+        <li><a target="_self" href="http://twitter.com/fossasia"><i class="fa fa-twitter"></i></a></li>
+        <li><a target="_self" href="http://facebook.com/fossasia"><i class="fa fa-facebook"></i></a></li>
+        <li><a target="_self" href="https://www.linkedin.com/groups/FOSSASIA-3762811"><i class="fa fa-linkedin fa-lg"></i></a></li>
+        <li><a target="_self" href="https://www.youtube.com/channel/UCQprMsG-raCIMlBudm20iLQ"><i class="fa fa-youtube icon-large"></i></a></li>
+        <li><a target="_self" href="https://www.flickr.com/photos/fossasia"><i class="fa fa-flickr fa-lg"></i></a></li>
+        <li><a target="_self" href="https://www.instagram.com/explore/tags/fossasia/"><i class="fa fa-instagram"></i></a></li>
+        <li><a target="_self" href="https://github.com/fossasia"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+      </div>
+    </div>
+            <hr />
+            <div class="copy">
+                  &copy; 2019, FOSSASIA. All Rights Reserved.
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
