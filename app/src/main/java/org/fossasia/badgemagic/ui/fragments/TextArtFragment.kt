@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -23,6 +24,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -63,6 +65,7 @@ import java.util.TimerTask
 class TextArtFragment : BaseFragment() {
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
+        private const val REQUEST_PERMISSION_CODE = 10
         @JvmStatic
         fun newInstance() =
             TextArtFragment()
@@ -108,8 +111,9 @@ class TextArtFragment : BaseFragment() {
 
     private fun setupButton() {
         save_button.setOnClickListener {
-            textViewMainText.hideKeyboard()
-            showSaveFileDialog()
+            if (checkStoragePermission()) {
+                startSaveFile()
+            }
         }
 
         transfer_button.setOnClickListener {
@@ -137,6 +141,31 @@ class TextArtFragment : BaseFragment() {
             } else
                 Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun startSaveFile() {
+        textViewMainText.hideKeyboard()
+        showSaveFileDialog()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startSaveFile()
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun checkStoragePermission(): Boolean {
+        return if (ActivityCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
+            false
+        } else
+            true
     }
 
     private fun showAlertDialog() {
