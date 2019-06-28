@@ -3,8 +3,6 @@ package org.fossasia.badgemagic.ui
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.bluetooth.BluetoothManager
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -249,14 +247,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
 
-    private fun disableBluetooth() {
-        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        if (btAdapter.isEnabled) {
-            btAdapter.disable()
-        }
-    }
-
     private fun saveImportFile(uri: Uri?) {
         if (StorageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
@@ -295,11 +285,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        disableBluetooth()
-        super.onDestroy()
     }
 
     override fun onBackPressed() {
