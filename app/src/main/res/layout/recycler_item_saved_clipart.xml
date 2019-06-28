@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="savedItem"
-            type="org.fossasia.badgemagic.data.SavedClipart" />
+            name="bitmap"
+            type="android.graphics.Bitmap" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -36,7 +36,7 @@
                     android:padding="@dimen/card_spacing"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_clipart_add"
-                    app:bindImage="@{savedItem.bitmap}" />
+                    app:bindImage="@{bitmap}" />
 
                 <View
                     android:layout_width="@dimen/divider_width"
