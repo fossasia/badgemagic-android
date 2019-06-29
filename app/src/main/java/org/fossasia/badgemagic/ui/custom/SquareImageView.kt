@@ -3,7 +3,7 @@ package org.fossasia.badgemagic.ui.custom
 import androidx.appcompat.widget.AppCompatImageView
 import android.content.Context
 import android.util.AttributeSet
-import kotlin.math.min
+import kotlin.math.max
 
 class SquareImageView : AppCompatImageView {
 
@@ -15,7 +15,7 @@ class SquareImageView : AppCompatImageView {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val width = min(measuredWidth, measuredHeight)
+        val width = max(measuredWidth, measuredHeight)
         setMeasuredDimension(width, width)
     }
 }

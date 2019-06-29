@@ -172,4 +172,10 @@ object StorageUtils {
         }
         return list
     }
+
+    fun deleteClipart(fileName: String) {
+        checkDirectory()
+        val deleteFile = File(EXTERNAL_CLIPART_DIRECTORY, fileName)
+        deleteFile.delete()
+    }
 }
