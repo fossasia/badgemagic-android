@@ -22,30 +22,24 @@ else
 fi
 
 \cp -r ../app/build/outputs/apk/*/**.apk .
-\cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
-\cp -r ../app/build/outputs/apk/release/output.json release-output.json
-\cp -r ../README.md .
 
 # Signing Apps
+cp app-release-unsigned.apk app-release-unaligned.apk
+jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
+${ANDROID_HOME}/build-tools/28.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
 
-if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-    echo "Push to master branch detected, signing the app..."
-    cp app-release-unsigned.apk app-release-unaligned.apk
-	jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
-	${ANDROID_HOME}/build-tools/28.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
-fi
-
-if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-    for file in app*; do
-          mv ${file} badge-magic-master-${file%%}
-    done
-fi
-
-if [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
-    for file in app*; do
-          mv ${file} badge-magic-dev-${file%%}
-    done
-fi
+#removing unused apps
+for file in app*; do
+    if [[ ${file} =~ "unsigned" || ${file} =~ "unaligned" ]]; then
+        rm ${file}
+    else
+        if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
+            mv ${file} badge-magic-master-${file:4}
+        elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
+            mv ${file} badge-magic-dev-${file:4}
+        fi
+    fi
+done
 
 # Create a new branch that will contains only latest apk
 git checkout --orphan temporary
