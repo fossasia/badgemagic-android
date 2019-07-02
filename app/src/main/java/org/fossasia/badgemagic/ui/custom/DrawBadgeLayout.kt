@@ -158,8 +158,8 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
         }
     }
 
-    private fun liesWithinX(x: Float) = x < cells[0].list[0].left || x > cells[0].list[badgeWidth - 1].right
-    private fun liesWithinY(y: Float) = y < cells[0].list[0].top || y > cells[badgeHeight - 1].list[0].bottom
+    private fun liesWithinX(x: Float) = x <= cells[0].list[0].left || x >= cells[0].list[badgeWidth - 1].right
+    private fun liesWithinY(y: Float) = y <= cells[0].list[0].top || y >= cells[badgeHeight - 1].list[0].bottom
 
     fun setValue(hexStrings: List<String>) {
         resetCheckList()
