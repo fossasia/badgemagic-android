@@ -14,7 +14,7 @@ const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'
 
 object Converters {
-    private fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
+    fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
         var bm = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
         if (drawableIcon is VectorDrawable)
             bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon), 40)
