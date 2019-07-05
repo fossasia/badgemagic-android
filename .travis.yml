@@ -1,7 +1,7 @@
 language: android
 sudo: false
 jdk:
-    - oraclejdk8
+  - oraclejdk8
 android:
   components:
     - tools
@@ -11,16 +11,17 @@ android:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
-    directories:
-      - "${TRAVIS_BUILD_DIR}/gradle/caches/"
-      - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
-      - "$HOME/.gradle/caches/"
-      - "$HOME/.gradle/wrapper/"
+  directories:
+    - "${TRAVIS_BUILD_DIR}/gradle/caches/"
+    - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
 install:
   - echo yes | sdkmanager "platforms;android-28"
+before_script:
+  - bash scripts/prep-key.sh
 script:
   - ./gradlew spotlessCheck
   - ./gradlew build --stacktrace
 after_success:
-    - bash scripts/prep-key.sh
-    - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then bash scripts/upload-apk.sh; fi'
+  - bash scripts/upload-apk.sh
