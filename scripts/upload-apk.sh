@@ -32,15 +32,15 @@ for file in app*; do
     else
         if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
             if [[ ${file} =~ ".aab" ]]; then
-                mv ${file} badge-magic-master-${file:4}
-            else
                 mv ${file} badge-magic-master-${file}
+            else
+                mv ${file} badge-magic-master-${file:4}
             fi
         elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
             if [[ ${file} =~ ".aab" ]]; then
-                mv ${file} badge-magic-dev-${file:4}
-            else
                 mv ${file} badge-magic-dev-${file}
+            else
+                mv ${file} badge-magic-dev-${file:4}
             fi
         fi
     fi
