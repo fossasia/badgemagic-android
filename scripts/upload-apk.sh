@@ -12,6 +12,8 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/badge
     exit 0
 fi
 
+./gradlew bundleRelease
+
 git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android apk > /dev/null
 cd apk
 
@@ -21,12 +23,7 @@ else
 	/bin/rm -f badge-magic-dev-*.apk
 fi
 
-\cp -r ../app/build/outputs/apk/*/**.apk .
-
-# Signing Apps
-cp app-release-unsigned.apk app-release-unaligned.apk
-jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
-${ANDROID_HOME}/build-tools/28.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
+find ../app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
 
 #removing unused apps
 for file in app*; do
@@ -34,9 +31,17 @@ for file in app*; do
         rm ${file}
     else
         if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-            mv ${file} badge-magic-master-${file:4}
+            if [[ ${file} =~ ".aab" ]]; then
+                mv ${file} badge-magic-master-${file:4}
+            else
+                mv ${file} badge-magic-master-${file}
+            fi
         elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
-            mv ${file} badge-magic-dev-${file:4}
+            if [[ ${file} =~ ".aab" ]]; then
+                mv ${file} badge-magic-dev-${file:4}
+            else
+                mv ${file} badge-magic-dev-${file}
+            fi
         fi
     fi
 done
@@ -63,4 +68,4 @@ if [[ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]]; then
 fi
 
 gem install fastlane
-fastlane supply --apk badge-magic-master-app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab badge-magic-master-app.aab --track alpha --json_key fastlane.json --package_name $PACKAGE_NAME

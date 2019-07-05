@@ -1,10 +1,15 @@
 plugins {
     id "com.diffplug.gradle.spotless" version "3.23.1"
 }
+apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
+def KEYSTORE_FILE = rootProject.file('scripts/key.jks')
+def TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
+def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
 
 androidExtensions {
     experimental = true
@@ -28,11 +33,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        if (TRAVIS_BUILD) {
+            release {
+                storeFile KEYSTORE_FILE
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        } else if (LOCAL_KEY_PRESENT) {
+            release {
+                storeFile rootProject.file(SIGNING_KEY_FILE)
+                storePassword STORE_PASS
+                keyAlias ALIAS
+                keyPassword KEY_PASS
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
+                signingConfig signingConfigs.release
         }
     }
     dataBinding.enabled= true
