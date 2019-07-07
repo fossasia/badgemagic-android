@@ -3,8 +3,6 @@ package org.fossasia.badgemagic.ui
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.bluetooth.BluetoothManager
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -33,6 +31,7 @@ import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
 import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
 import org.fossasia.badgemagic.ui.fragments.DrawFragment
+import org.fossasia.badgemagic.ui.fragments.SavedClipartFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
@@ -99,11 +98,17 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             switchFragment(DrawFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
-                        R.id.saved -> {
+                        R.id.saved_badges -> {
                             viewModel.swappingOrientation = false
                             setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                             switchFragment(SavedBadgesFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, true)
+                        }
+                        R.id.saved_cliparts -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(SavedClipartFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
                         R.id.settings -> {
                             viewModel.swappingOrientation = false
@@ -141,7 +146,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                 "org.fossasia.badgemagic.savedBadges.shortcut" -> {
                     switchFragment(SavedBadgesFragment.newInstance())
                     showMenu?.setGroupVisible(R.id.saved_group, true)
-                    nav_view.setCheckedItem(R.id.saved)
+                    nav_view.setCheckedItem(R.id.saved_badges)
                 }
             } else {
             switchFragment(DrawFragment.newInstance())
@@ -242,14 +247,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         return packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
     }
 
-    private fun disableBluetooth() {
-        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        if (btAdapter.isEnabled) {
-            btAdapter.disable()
-        }
-    }
-
     private fun saveImportFile(uri: Uri?) {
         if (StorageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
@@ -288,11 +285,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        disableBluetooth()
-        super.onDestroy()
     }
 
     override fun onBackPressed() {

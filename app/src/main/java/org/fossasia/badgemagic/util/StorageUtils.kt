@@ -160,16 +160,22 @@ object StorageUtils {
         return true
     }
 
-    fun getAllClips(): List<Drawable> {
+    fun getAllClips(): HashMap<String, Drawable?> {
         checkDirectory()
-        val list = mutableListOf<Drawable>()
+        val list = HashMap<String, Drawable?>()
 
         val files = File(EXTERNAL_CLIPART_DIRECTORY).listFiles() ?: return list
         for (i in files.indices) {
             if (getFileExtension(files[i].name) == CLIP_EXTENSION) {
-                list.add(Drawable.createFromPath(files[i].absolutePath))
+                list[files[i].name] = Drawable.createFromPath(files[i].absolutePath)
             }
         }
         return list
+    }
+
+    fun deleteClipart(fileName: String) {
+        checkDirectory()
+        val deleteFile = File(EXTERNAL_CLIPART_DIRECTORY, fileName)
+        deleteFile.delete()
     }
 }

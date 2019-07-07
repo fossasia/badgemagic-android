@@ -12,40 +12,39 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/badge
     exit 0
 fi
 
+./gradlew bundleRelease
+
 git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android apk > /dev/null
 cd apk
 
 if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
 	/bin/rm -f *
 else
-	/bin/rm -f badge-magic-dev-*.apk
+	/bin/rm -f badge-magic-dev-*
 fi
 
-\cp -r ../app/build/outputs/apk/*/**.apk .
-\cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
-\cp -r ../app/build/outputs/apk/release/output.json release-output.json
-\cp -r ../README.md .
+find ../app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
 
-# Signing Apps
-
-if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-    echo "Push to master branch detected, signing the app..."
-    cp app-release-unsigned.apk app-release-unaligned.apk
-	jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
-	${ANDROID_HOME}/build-tools/28.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
-fi
-
-if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-    for file in app*; do
-          mv ${file} badge-magic-master-${file%%}
-    done
-fi
-
-if [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
-    for file in app*; do
-          mv ${file} badge-magic-dev-${file%%}
-    done
-fi
+#removing unused apps
+for file in app*; do
+    if [[ ${file} =~ "unsigned" || ${file} =~ "unaligned" ]]; then
+        rm ${file}
+    else
+        if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
+            if [[ ${file} =~ ".aab" ]]; then
+                mv ${file} badge-magic-master-${file}
+            else
+                mv ${file} badge-magic-master-${file:4}
+            fi
+        elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
+            if [[ ${file} =~ ".aab" ]]; then
+                mv ${file} badge-magic-dev-${file}
+            else
+                mv ${file} badge-magic-dev-${file:4}
+            fi
+        fi
+    fi
+done
 
 # Create a new branch that will contains only latest apk
 git checkout --orphan temporary
@@ -69,4 +68,4 @@ if [[ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]]; then
 fi
 
 gem install fastlane
-fastlane supply --apk badge-magic-master-app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab badge-magic-master-app.aab --skip_upload_apk true --track alpha --json_key fastlane.json --package_name $PACKAGE_NAME

@@ -36,6 +36,7 @@
     <string name="save_hint">File Name</string>
     <string name="validation_save_dialog">Enter file name before continuing</string>
     <string name="save_dialog_title">Save Badge</string>
+    <string name="saved_badge">Saved Badge</string>
     <string name="saved_configurations">Saved Badges</string>
     <string name="saveactivity_operation_title">Perform Operation</string>
     <string name="delete">Delete</string>
@@ -100,4 +101,5 @@
     <string name="drawer_draw_badge">Draw Clipart</string>
     <string name="clipart_saved_success">ClipArt Saved Successfully</string>
     <string name="clipart_saved_error">Error in saving Clipart</string>
+    <string name="drawer_saved_cliparts">Saved Cliparts</string>
 </resources>
