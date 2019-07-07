@@ -68,4 +68,4 @@ if [[ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]]; then
 fi
 
 gem install fastlane
-fastlane supply --aab badge-magic-master-app.aab --skip_upload_apk true --track alpha --json_key fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab badge-magic-master-app.aab --skip_upload_apk true --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
