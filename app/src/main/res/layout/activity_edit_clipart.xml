@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="org.fossasia.badgemagic.viewmodels.EditBadgeViewModel" />
+            type="org.fossasia.badgemagic.viewmodels.EditClipartViewModel" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/draw_layout_margin"
             android:layout_marginEnd="@dimen/draw_layout_margin"
             app:drawState="@{viewModel.drawModeState}"
-            app:drawingBadgeJSON="@{viewModel.drawingJSON}" />
+            app:drawingClipartJSON="@{viewModel.drawingJSON}" />
 
         <LinearLayout
             android:id="@+id/tools_bar"

@@ -160,6 +160,20 @@ object StorageUtils {
         return true
     }
 
+    fun saveEditedClipart(bitmap: Bitmap, fileName: String): Boolean {
+        checkDirectory()
+        val file = File(EXTERNAL_CLIPART_DIRECTORY, fileName)
+        try {
+            val out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+            out.flush()
+            out.close()
+        } catch (e: Exception) {
+            return false
+        }
+        return true
+    }
+
     fun getAllClips(): HashMap<String, Drawable?> {
         checkDirectory()
         val list = HashMap<String, Drawable?>()
@@ -171,6 +185,10 @@ object StorageUtils {
             }
         }
         return list
+    }
+
+    fun getClipartFromPath(filename: String): Drawable? {
+        return Drawable.createFromPath(File(EXTERNAL_CLIPART_DIRECTORY, filename).absolutePath)
     }
 
     fun deleteClipart(fileName: String) {
