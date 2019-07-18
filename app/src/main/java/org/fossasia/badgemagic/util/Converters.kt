@@ -185,7 +185,7 @@ object Converters {
                 val foundIndex = editable.indexOf(DRAWABLE_END, i)
                 i = if (foundIndex > 0) {
                     listOfArt.addAll(
-                        convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED)
+                        handleInvertLED(convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED), i == 0 && invertLED)
                     )
                     foundIndex + 1
                 } else {
@@ -193,12 +193,31 @@ object Converters {
                 }
             } else {
                 listOfArt.addAll(
-                    convertTextToLEDHex(ch.toString(), invertLED).second
+                    handleInvertLED(convertTextToLEDHex(ch.toString(), invertLED).second, i == 0 && invertLED)
                 )
                 i++
             }
         }
         return listOfArt
+    }
+
+    private fun handleInvertLED(hexStrings: List<String>, addPrefix: Boolean): List<String> {
+        if (!addPrefix)
+            return hexStrings
+
+        val listNew = mutableListOf<String>()
+        if (checkValueInFirstColumn(hexStrings))
+            listNew.add("0101010101010101010101")
+        listNew.addAll(hexStrings)
+        return listNew
+    }
+
+    private fun checkValueInFirstColumn(hexStrings: List<String>): Boolean {
+        for (i in 0 until hexStrings[0].length step 2) {
+            if (BigInteger(hexStrings[0][i].toString(), 16).toString(10).toInt() < 8)
+                return true
+        }
+        return false
     }
 
     fun convertStringsToLEDHex(list: ArrayList<CheckList>): Bitmap {
