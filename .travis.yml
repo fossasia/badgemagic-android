@@ -16,8 +16,6 @@ cache:
     - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
     - "$HOME/.gradle/caches/"
     - "$HOME/.gradle/wrapper/"
-install:
-  - echo yes | sdkmanager "platforms;android-28"
 before_script:
   - bash scripts/prep-key.sh
 script:
