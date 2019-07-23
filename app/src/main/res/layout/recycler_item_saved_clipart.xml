@@ -60,7 +60,7 @@
                     app:srcCompat="@drawable/ic_draw_pencil" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/options"
+                    android:id="@+id/button_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/title_min_height_large"

@@ -54,7 +54,7 @@ import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
 import java.util.Timer
@@ -74,7 +74,7 @@ class TextArtFragment : BaseFragment() {
     private val drawableRecyclerAdapter = DrawableAdapter()
     private val modeAdapter = ModeAdapter()
 
-    private val viewModel by viewModel<TextArtViewModel>()
+    private val viewModel by sharedViewModel<TextArtViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -143,7 +143,7 @@ class TextArtFragment : BaseFragment() {
         }
     }
 
-    fun startSaveFile() {
+    private fun startSaveFile() {
         textViewMainText.hideKeyboard()
         showSaveFileDialog()
     }

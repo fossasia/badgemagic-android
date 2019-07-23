@@ -14,10 +14,15 @@ fun setBadgeDrawState(badge: DrawBadgeLayout, drawModeState: ObservableField<Dra
     drawModeState.get()?.let { badge.changeDrawState(it) }
 }
 
-@BindingAdapter("drawingJSON")
-fun setBadgeValues(badge: DrawBadgeLayout, drawJSON: ObservableField<String>) {
+@BindingAdapter("drawingBadgeJSON")
+fun setEditBadgeValues(badge: DrawBadgeLayout, drawJSON: ObservableField<String>) {
     val badgeConfig = SendingUtils.getBadgeFromJSON(drawJSON.get() ?: "{}")
     badgeConfig?.hexStrings?.let { badge.setValue(it) }
+}
+
+@BindingAdapter("drawingClipartJSON")
+fun setEditClipartValues(badge: DrawBadgeLayout, drawJSON: ObservableField<List<String>>) {
+    drawJSON.get()?.let { badge.setValue(it) }
 }
 
 @BindingAdapter("changeColor")
