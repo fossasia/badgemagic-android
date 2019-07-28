@@ -12,7 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/badge
     exit 0
 fi
 
-./gradlew bundleRelease
+bundle exec fastlane buildAAB
 
 git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android apk > /dev/null
 cd apk
@@ -27,21 +27,17 @@ find ../app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp 
 
 #removing unused apps
 for file in app*; do
-    if [[ ${file} =~ "unsigned" || ${file} =~ "unaligned" ]]; then
-        rm ${file}
-    else
-        if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
-            if [[ ${file} =~ ".aab" ]]; then
-                mv ${file} badge-magic-master-${file}
-            else
-                mv ${file} badge-magic-master-${file:4}
-            fi
-        elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
-            if [[ ${file} =~ ".aab" ]]; then
-                mv ${file} badge-magic-dev-${file}
-            else
-                mv ${file} badge-magic-dev-${file:4}
-            fi
+    if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
+        if [[ ${file} =~ ".aab" ]]; then
+            mv ${file} badge-magic-master-${file}
+        else
+            mv ${file} badge-magic-master-${file:4}
+        fi
+    elif [[ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]]; then
+        if [[ ${file} =~ ".aab" ]]; then
+            mv ${file} badge-magic-dev-${file}
+        else
+            mv ${file} badge-magic-dev-${file:4}
         fi
     fi
 done
@@ -67,5 +63,4 @@ if [[ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]]; then
     exit 0
 fi
 
-gem install fastlane
-fastlane supply --aab badge-magic-master-app.aab --skip_upload_apk true --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+bundle exec fastlane uploadToPlaystore
