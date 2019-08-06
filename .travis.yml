@@ -17,12 +17,20 @@ cache:
     - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
     - "$HOME/.gradle/caches/"
     - "$HOME/.gradle/wrapper/"
+
 install:
   - bundle install
+
 before_script:
   - bash scripts/prep-key.sh
+
 script:
   - ./gradlew spotlessCheck
   - ./gradlew build --stacktrace
-after_success:
-  - bash scripts/upload-apk.sh
+
+deploy:
+  provider: script
+  script: bash scripts/upload-apk.sh
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|development)$
