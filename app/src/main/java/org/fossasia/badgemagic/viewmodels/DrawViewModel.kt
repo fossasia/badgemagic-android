@@ -12,7 +12,7 @@ class DrawViewModel(
 ) : ViewModel() {
     var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.NOTHING)
 
-    var drawState: ObservableBoolean = ObservableBoolean(false)
+    var drawState: ObservableBoolean = ObservableBoolean(true)
     var eraseState: ObservableBoolean = ObservableBoolean(false)
 
     var savedButton: MutableLiveData<Boolean> = MutableLiveData()
