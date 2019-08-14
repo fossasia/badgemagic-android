@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.23.1"
+    id "com.diffplug.gradle.spotless" version "3.24.1"
 }
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
@@ -23,8 +23,8 @@ android {
         applicationId 'org.fossasia.badgemagic'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 6
-        versionName '1.4.0'
+        versionCode 7
+        versionName '1.5.0'
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -85,7 +85,7 @@ dependencies {
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -93,12 +93,12 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin_version}"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation 'no.nordicsemi.android.support.v18:scanner:1.4.0'
+    implementation 'no.nordicsemi.android.support.v18:scanner:1.4.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
