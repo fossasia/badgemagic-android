@@ -1,34 +1,29 @@
 <img height="200px" src="./docs/images/app_icon.png" align="right" />
 
-# Badge Magic [![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android) [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Badge Magic :name_badge: [![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android) [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Magically Create Symbols and Text on LED Name Badges using Bluetooth**
 
 The Badge Magic Android app lets you create scrolling symbols and text on LED name badges through Bluetooth. The app provides options to portray names, clipart and simple animations on LED badges. For the data transfer from the smartphone to the LED badge we use Bluetooth. The project is based on the work of [Nilhcem](https://github.com/Nilhcem).
 
-<table align='right'>
-    <tr>
-        <a href='https://play.google.com/store/apps/details?id=org.fossasia.badgemagic'><img align='center' height='55' src='./docs/images/google_play_badge.png'></a>
-    </tr>
-    <tr>
-        <a href='https://f-droid.org/en/packages/org.fossasia.badgemagic/'><img align='center' alt='Get it on F-Droid' src='./docs/images/fdroid_badge.png' height="55"/></a>
-    </tr>
-</table>
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.badgemagic'><img align='center' height='55' src='./docs/images/google_play_badge.png'></a>
+<a href='https://f-droid.org/en/packages/org.fossasia.badgemagic/'><img align='center' alt='Get it on F-Droid' src='./docs/images/fdroid_badge.png' height="55"/></a>
 
-## Download
+## Download :point_down:
 
-* Download **[Badge Magic Dev Release here](https://github.com/fossasia/badge-magic-android/blob/apk/badge-magic-dev-release.apk)**
-* Download Tested [LED Badge Version here](https://github.com/fossasia/badge-magic-android/blob/apk/LED-badge-dev.apk)
+* **[Latest Release Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-master-release.apk)**
+* **[Latest Development Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-development-release.apk)**
 
-## Permissions
-* Bluetooth: For sending data to the badge.
-* GPS Location: This has been the standard set by Android for use with Bluetooth Low Energy (BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble).
+## Permissions :exclamation:
+* :blue_heart: **Bluetooth**: For sending data to the badge.
+* :round_pushpin: **GPS Location**: This has been the standard set by Android for use with Bluetooth Low Energy (BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble).
+* :blue_book: **Storage**: For storing and saving badges.
 
-## Communication
+## Communication :phone:
 
 Please talk to us on the badge-magic [Gitter channel here](https://gitter.im/fossasia/badge-magic).
 
-## Reverse-Engineering Bluetooth LE Devices
+## Reverse-Engineering Bluetooth LE Devices :mag:
 
 Security in Bluetooth LE devices is optional, and many cheap products you can find on the market are not secured at all. This applies to our Bluetooth LED Badge. While this could lead to some privacy issues, this can also be a source of fun, especially when you want to use an LED Badge in a different way. It also makes it easy for us to get started with the development of a Free and Open Source Android app. 
 
@@ -36,12 +31,12 @@ As we understand how the Bluetooth LED badge works, converting a text to multipl
 
 The implementation in the Android app consists of manipulating bits. That may be tricky. A single bit error and nothing will work, plus it will be hard to debug. For those reasons, and since the specs are perfectly clear the reverse engineer Gautier Mechling strongly recommends to start writing unit tests before the code implementation. 
 
-## Available Devices
+## Available Devices :iphone:
 
 There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
 * Get one from [here](https://sg.pslab.io/product/led-badge/)
 
-## Screenshots
+## Screenshots :sunrise_over_mountains:
 
 | <!-- -->    | <!-- -->    | <!-- -->    |
 |-------------|-------------|-------------|
