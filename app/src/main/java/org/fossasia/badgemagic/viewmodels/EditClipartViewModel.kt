@@ -10,7 +10,7 @@ import org.fossasia.badgemagic.database.ClipArtService
 class EditClipartViewModel(
     private val clipArtService: ClipArtService
 ) : ViewModel() {
-    var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.NOTHING)
+    var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.DRAW)
     var drawingJSON: ObservableField<List<String>> = ObservableField(listOf())
 
     var drawState: ObservableBoolean = ObservableBoolean(true)

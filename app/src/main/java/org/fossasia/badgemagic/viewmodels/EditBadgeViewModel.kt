@@ -10,7 +10,7 @@ import org.fossasia.badgemagic.database.StorageFilesService
 class EditBadgeViewModel(
     private val storageFilesService: StorageFilesService
 ) : ViewModel() {
-    var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.NOTHING)
+    var drawModeState: ObservableField<DrawMode> = ObservableField(DrawMode.DRAW)
     var drawingJSON: ObservableField<String> = ObservableField("[]")
 
     var drawState: ObservableBoolean = ObservableBoolean(true)
