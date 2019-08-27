@@ -24,18 +24,10 @@ The Badge Magic Android app lets you create moving text and draw cliparts for to
 
 Please talk to us on the badge-magic [Gitter channel here](https://gitter.im/fossasia/badge-magic).
 
-## Reverse-Engineering Bluetooth LE Devices
-
-Security in Bluetooth LE devices is optional, and many cheap products you can find on the market are not secured at all. This applies to our Bluetooth LED Badge. While this could lead to some privacy issues, this can also be a source of fun, especially when you want to use an LED Badge in a different way. It also makes it easy for us to get started with the development of a Free and Open Source Android app. 
-
-As we understand how the Bluetooth LED badge works, converting a text to multiple byte arrays, we can send using the Bluetooth LE APIs. An indepth blog post about reverse-engineering the Bluetooth community [is here](http://nilhcem.com/iot/reverse-engineering-bluetooth-led-name-badge). 
-
-The implementation in the Android app consists of manipulating bits. That may be tricky. A single bit error and nothing will work, plus it will be hard to debug. For those reasons, and since the specs are perfectly clear the reverse engineer Gautier Mechling strongly recommends to start writing unit tests before the code implementation. 
-
 ## Available Devices
 
 There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
-* Get one from [here](https://fossasia.com/product/led-badge/)
+* Get one from the [FOSSASIA Shop here](https://fossasia.com/product/led-badge/)
 
 ## Screenshots
 
@@ -44,6 +36,14 @@ There are a number of devices with Bluetooth on the market. As far as we can tel
 | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-1.png" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-2.png" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-3.png" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /> |
 | <!-- -->    | <!-- -->    | <!-- -->    |
 | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-4.png" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-5.png" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-6.png" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /> |
+
+## Reverse-Engineering Bluetooth LE Devices
+
+Security in Bluetooth LE devices is optional, and many cheap products you can find on the market are not secured at all. This applies to our Bluetooth LED Badge. While this could lead to some privacy issues, this can also be a source of fun, especially when you want to use an LED Badge in a different way. It also makes it easy for us to get started with the development of a Free and Open Source Android app. 
+
+As we understand how the Bluetooth LED badge works, converting a text to multiple byte arrays, we can send using the Bluetooth LE APIs. An indepth blog post about reverse-engineering the Bluetooth community [is here](http://nilhcem.com/iot/reverse-engineering-bluetooth-led-name-badge). 
+
+The implementation in the Android app consists of manipulating bits. That may be tricky. A single bit error and nothing will work, plus it will be hard to debug. For those reasons, and since the specs are perfectly clear the reverse engineer Gautier Mechling strongly recommends to start writing unit tests before the code implementation. 
 
 ## Branch Policy
 
