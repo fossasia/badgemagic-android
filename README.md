@@ -12,8 +12,8 @@ The Badge Magic Android app lets you create scrolling symbols and text on LED na
 
 ## Download
 
-* **[Latest Release Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-master-release.apk)**
-* **[Latest Development Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-development-release.apk)**
+* [Latest Release Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-master-release.apk) in the apk branch
+* [Latest Development Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-development-release.apk) in the apk branch
 
 ## Permissions
 * **Bluetooth**: For sending data to the badge.
