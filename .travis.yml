@@ -23,6 +23,7 @@ install:
 
 before_script:
   - bash scripts/prep-key.sh
+  - bash scripts/check-screenshots.sh
 
 script:
   - ./gradlew spotlessCheck
