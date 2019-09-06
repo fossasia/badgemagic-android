@@ -33,9 +33,9 @@ There are a number of devices with Bluetooth on the market. As far as we can tel
 
 | <!-- -->    | <!-- -->    | <!-- -->    |
 |-------------|-------------|-------------|
-| <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-1.png" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-2.png" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-3.png" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /> |
+| <img src="./docs/images/screen-1.png" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /> | <img src="./docs/images/screen-2.png" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /> | <img src="./docs/images/screen-3.png" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /> |
 | <!-- -->    | <!-- -->    | <!-- -->    |
-| <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-4.png" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-5.png" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /> | <img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/screen-6.png" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /> |
+| <img src="./docs/images/screen-4.png" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /> | <img src="./docs/images/screen-5.png" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /> | <img src="./docs/images/screen-6.png" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /> |
 
 ## Reverse-Engineering Bluetooth LE Devices
 
