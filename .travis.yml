@@ -12,6 +12,7 @@ android:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
+  bundler : true
   directories:
     - "${TRAVIS_BUILD_DIR}/gradle/caches/"
     - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
