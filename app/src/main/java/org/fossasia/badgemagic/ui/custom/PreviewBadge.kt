@@ -121,12 +121,12 @@ class PreviewBadge : View {
             this.ifMarquee = currentState.getBoolean(BUNDLE_MARQUEE)
             this.badgeSpeed = currentState.getInt(BUNDLE_SPEED)
             this.badgeMode = Mode.values()[currentState.getInt(BUNDLE_MODE)]
-            this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST)
+            this.checkList = currentState.getParcelableArrayList(BUNDLE_CHECKLIST) ?: ArrayList()
 
             countFrame = 0
             lastFrame = 0
 
-            currentState = currentState.getParcelable(BUNDLE_STATE) as Parcelable
+            currentState.getParcelable<Parcelable>(BUNDLE_STATE)?.let { currentState = it }
         }
         super.onRestoreInstanceState(currentState)
     }
