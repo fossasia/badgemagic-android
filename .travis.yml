@@ -37,8 +37,10 @@ deploy:
     on:
       all_branches: true
       condition: $TRAVIS_BRANCH =~ ^(master|development)$
+      repo: fossasia/badge-magic-android
   - provider: script
     skip_cleanup: true
     script: bash scripts/upload-gh-pages.sh
     on:
       all_branches: true
+      repo: fossasia/badge-magic-android
