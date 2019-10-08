@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.24.3"
+    id "com.diffplug.gradle.spotless" version "3.25.0"
 }
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
