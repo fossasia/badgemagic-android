@@ -3,13 +3,13 @@ package org.fossasia.badgemagic.data.device.bluetooth
 import android.bluetooth.BluetoothDevice
 import android.os.Handler
 import android.os.ParcelUuid
-import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.data.device.bluetooth.Constants.SERVICE_UUID
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanCallback
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
+import org.fossasia.badgemagic.core.android.log.Timber
+import org.fossasia.badgemagic.data.device.bluetooth.Constants.SERVICE_UUID
 
 class ScanHelper {
 

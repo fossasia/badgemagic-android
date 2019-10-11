@@ -1,13 +1,13 @@
 package org.fossasia.badgemagic.adapter
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.fragments.BadgeConfig

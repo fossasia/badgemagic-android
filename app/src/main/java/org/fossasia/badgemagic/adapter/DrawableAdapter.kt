@@ -1,8 +1,8 @@
 package org.fossasia.badgemagic.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.DrawableInfo
 import org.fossasia.badgemagic.ui.DrawerActivity

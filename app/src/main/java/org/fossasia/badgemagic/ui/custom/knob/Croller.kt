@@ -10,7 +10,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
-
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.ui.custom.knob.utilities.Utils
 

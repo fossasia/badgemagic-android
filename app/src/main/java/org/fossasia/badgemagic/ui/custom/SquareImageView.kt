@@ -1,8 +1,8 @@
 package org.fossasia.badgemagic.ui.custom
 
-import androidx.appcompat.widget.AppCompatImageView
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
 import kotlin.math.max
 
 class SquareImageView : AppCompatImageView {

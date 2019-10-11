@@ -3,30 +3,29 @@ package org.fossasia.badgemagic.ui.fragments
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import java.io.File
 import kotlinx.android.synthetic.main.fragment_main_save.*
-
 import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.adapter.OnSavedItemSelected
+import org.fossasia.badgemagic.adapter.SaveAdapter
 import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
-import org.fossasia.badgemagic.viewmodels.FilesViewModel
+import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
-import org.fossasia.badgemagic.adapter.OnSavedItemSelected
-import org.fossasia.badgemagic.adapter.SaveAdapter
-import org.fossasia.badgemagic.ui.EditBadgeActivity
+import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.io.File
 
 class SavedBadgesFragment : BaseFragment() {
 

@@ -6,9 +6,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
+import java.math.BigInteger
 import org.fossasia.badgemagic.data.badge_preview.CheckList
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
-import java.math.BigInteger
 
 const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'
