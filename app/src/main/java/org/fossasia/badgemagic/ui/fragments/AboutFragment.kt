@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.ui.base.BaseFragment
 import de.psdev.licensesdialog.LicensesDialog
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
 import kotlinx.android.synthetic.main.fragment_about_us.*
+import org.fossasia.badgemagic.R
+import org.fossasia.badgemagic.ui.base.BaseFragment
 
 class AboutFragment : BaseFragment() {
 

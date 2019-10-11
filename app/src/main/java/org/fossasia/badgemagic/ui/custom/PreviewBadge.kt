@@ -1,21 +1,20 @@
 package org.fossasia.badgemagic.ui.custom
 
-import android.content.Context
-import android.graphics.RectF
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import androidx.annotation.Nullable
-import android.util.AttributeSet
-import android.view.View
-
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.AttributeSet
+import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.annotation.Nullable
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.badge_preview.Cell
 import org.fossasia.badgemagic.data.badge_preview.CheckList

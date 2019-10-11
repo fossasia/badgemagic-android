@@ -1,9 +1,9 @@
 package org.fossasia.badgemagic.data.fragments
 
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.fossasia.badgemagic.data.device.model.Mode
+import org.fossasia.badgemagic.data.device.model.Speed
 
 const val CONF_HEX_STRINGS = "hex_strings"
 const val CONF_SPEED = "speed"

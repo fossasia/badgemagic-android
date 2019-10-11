@@ -8,11 +8,11 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
+import java.util.LinkedList
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.core.utils.ByteArrayUtils
 import org.fossasia.badgemagic.data.device.bluetooth.Constants.CHARACTERISTIC_UUID
 import org.fossasia.badgemagic.data.device.bluetooth.Constants.SERVICE_UUID
-import java.util.LinkedList
 
 class GattClient {
 
