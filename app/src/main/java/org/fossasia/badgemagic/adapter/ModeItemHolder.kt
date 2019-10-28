@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.ModeInfo
@@ -25,14 +26,14 @@ class ModeItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         when (itemPosition == modeSelectedPosition) {
             true -> {
-                card.background = itemView.context.resources.getDrawable(R.color.colorAccent)
-                title.setTextColor(itemView.context.resources.getColor(android.R.color.white))
-                image.setColorFilter(itemView.context.resources.getColor(android.R.color.white))
+                card.background = ContextCompat.getDrawable(itemView.context, R.color.colorAccent)
+                title.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
+                image.setColorFilter(ContextCompat.getColor(itemView.context, android.R.color.white))
             }
             false -> {
-                card.background = itemView.context.resources.getDrawable(android.R.color.transparent)
-                title.setTextColor(itemView.context.resources.getColor(android.R.color.black))
-                image.setColorFilter(itemView.context.resources.getColor(android.R.color.black))
+                card.background = ContextCompat.getDrawable(itemView.context, android.R.color.transparent)
+                title.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.black))
+                image.setColorFilter(ContextCompat.getColor(itemView.context, android.R.color.black))
             }
         }
 

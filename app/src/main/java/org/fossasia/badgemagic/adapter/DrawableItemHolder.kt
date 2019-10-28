@@ -5,6 +5,7 @@ import android.graphics.drawable.VectorDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.DrawableInfo
@@ -23,7 +24,7 @@ class DrawableItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         else if (drawableInfo.image is BitmapDrawable)
             image.setImageBitmap(ImageUtils.trim(drawableInfo.image.bitmap, 80))
 
-        image.setColorFilter(itemView.context.resources.getColor(android.R.color.black))
+        image.setColorFilter(ContextCompat.getColor(itemView.context, android.R.color.black))
 
         card.setOnClickListener {
             listener?.onSelected(drawableInfo)
