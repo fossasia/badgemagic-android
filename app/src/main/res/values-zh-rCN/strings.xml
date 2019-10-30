@@ -91,4 +91,5 @@
     <string name="clipart_saved_success">ClipArt已成功保存</string>
     <string name="clipart_saved_error">保存剪贴画时出错</string>
     <string name="drawer_saved_cliparts">保存的教具</string>
+    <string name="no_gps_enabled">找不到GPS，请从设置中启用GPS</string>
 </resources>
