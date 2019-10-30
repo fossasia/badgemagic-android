@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import org.fossasia.badgemagic.R
@@ -71,32 +72,32 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
             text.text = item.fileName.substring(0, item.fileName.lastIndexOf("."))
 
             card.background = when {
-                selectedPosition != -1 && selectedPosition == adapterPosition -> context?.resources?.getDrawable(R.color.colorAccent)
-                else -> context?.resources?.getDrawable(android.R.color.transparent)
+                selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getDrawable(itemView.context, R.color.colorAccent)
+                else -> ContextCompat.getDrawable(itemView.context, android.R.color.transparent)
             }
             text.setTextColor(
-                when {
-                    selectedPosition != -1 && selectedPosition == adapterPosition -> context?.resources?.getColor(android.R.color.white) as Int
-                    else -> context?.resources?.getColor(android.R.color.black) as Int
-                }
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
             )
             playPause.setColorFilter(
-                when {
-                    selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
-                    else -> context.resources.getColor(android.R.color.black)
-                }
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
             )
             editButton.setColorFilter(
-                when {
-                    selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
-                    else -> context.resources.getColor(android.R.color.black)
-                }
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
             )
             options.setColorFilter(
-                when {
-                    selectedPosition != -1 && selectedPosition == adapterPosition -> context.resources.getColor(android.R.color.white)
-                    else -> context.resources.getColor(android.R.color.black)
-                }
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
             )
 
             val badge: BadgeConfig? = MoshiUtils.getAdapter().fromJson(item.badgeJSON)

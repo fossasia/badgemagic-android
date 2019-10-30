@@ -11,7 +11,7 @@ class SavedClipartsViewHolder(private val binding: RecyclerItemSavedClipartBindi
         binding.bitmap = bitmap
     }
 
-    fun getBindingView() = binding.root
+    private fun getBindingView() = binding.root
     fun getDeleteButton(): AppCompatImageView = getBindingView().findViewById(R.id.button_delete)
     fun getEditButton(): AppCompatImageView = getBindingView().findViewById(R.id.button_edit)
 }
