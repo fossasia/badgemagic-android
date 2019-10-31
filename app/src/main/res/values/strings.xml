@@ -103,4 +103,5 @@
     <string name="clipart_saved_error">Error in saving Clipart</string>
     <string name="drawer_saved_cliparts">Saved Cliparts</string>
     <string name="no_gps_enabled">No GPS Found, Please Enable GPS from Settings</string>
+    <string name="saved_badges">Saved Badges</string>
 </resources>

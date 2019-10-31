@@ -2,6 +2,8 @@ package org.fossasia.badgemagic.ui
 
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -49,6 +51,21 @@ class EditBadgeActivity : AppCompatActivity() {
                 draw_layout.resetCheckListWithDummyData()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.open_folder, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.open_Folder -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 
     companion object {
