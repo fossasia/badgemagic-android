@@ -59,6 +59,7 @@
     <string name="drawer_other">Other</string>
     <string name="drawer_feedback">Feedback/Bug Reports</string>
     <string name="drawer_buy_badge">Buy Badge</string>
+    <string name="drawer_share_app">Share</string>
     <string name="drawer_about_us">About Us</string>
     <string name="drawer_saved_badge">Saved Badges</string>
     <string name="drawer_create_badges">Create Badges</string>
@@ -103,4 +104,6 @@
     <string name="clipart_saved_error">Error in saving Clipart</string>
     <string name="drawer_saved_cliparts">Saved Cliparts</string>
     <string name="no_gps_enabled">No GPS Found, Please Enable GPS from Settings</string>
+
+    <string name="share_msg">Badge Magic is an Android app to control LED name badges. This app provides features to portray names, graphics and simple animations on LED badges. \nI really loved this application, even you can download it from below link \nhttps://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
 </resources>
