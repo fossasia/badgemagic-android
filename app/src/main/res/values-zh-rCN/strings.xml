@@ -94,5 +94,5 @@
     <string name="drawer_saved_cliparts">保存的教具</string>
     <string name="no_gps_enabled">找不到GPS，请从设置中启用GPS</string>
 
-    <string name="share_msg">Badge Magic是一个用于控制LED名称徽章的Android应用。该应用程序提供了在LED徽章上描绘姓名，图形和简单动画的功能。 \ n我真的很喜欢这个应用程序，即使您可以从下面的链接下载它 https://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
+    <string name="share_msg">Badge Magic是一个用于控制LED名称徽章的Android应用。该应用程序提供了在LED徽章上描绘姓名，图形和简单动画的功能。 \n您也可以从下面的链接下载它 https://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
 </resources>
