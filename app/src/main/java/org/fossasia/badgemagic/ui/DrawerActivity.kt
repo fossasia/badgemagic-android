@@ -124,10 +124,10 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                         }
                         R.id.share_app_details -> {
                             val shareIntent = Intent()
-                            shareIntent.type   = "text/plain"
+                            shareIntent.type = getString(R.string.share_msg)
                             shareIntent.action = Intent.ACTION_SEND
                             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg))
-                            startActivity(Intent.createChooser(shareIntent,"Share Using"))
+                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_msg)))
                         }
                         R.id.about -> {
                             switchFragment(AboutFragment.newInstance())
