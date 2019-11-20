@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id "com.diffplug.gradle.spotless" version "3.26.0"
 }
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
@@ -103,7 +103,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
-    testImplementation 'org.amshove.kluent:kluent:1.56'
+    testImplementation 'org.amshove.kluent:kluent:1.57'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
