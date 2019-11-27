@@ -1,7 +1,10 @@
 package org.fossasia.badgemagic.ui
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -35,8 +38,8 @@ class EditBadgeActivity : AppCompatActivity() {
             if (it) {
                 val badgeConfig = SendingUtils.getBadgeFromJSON(viewModel.drawingJSON.get() ?: "{}")
                 badgeConfig?.hexStrings = Converters.convertBitmapToLEDHex(
-                    Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
-                    false
+                        Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
+                        false
                 )
                 badgeConfig?.let { config -> StoreAsync(fileName, config, viewModel).execute() }
                 Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()
@@ -49,6 +52,22 @@ class EditBadgeActivity : AppCompatActivity() {
                 draw_layout.resetCheckListWithDummyData()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.open_folder, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.open_Folder -> {
+                val intent = Intent(this, DrawerActivity::class.java)
+                intent.putExtra("badge", "badge")
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
