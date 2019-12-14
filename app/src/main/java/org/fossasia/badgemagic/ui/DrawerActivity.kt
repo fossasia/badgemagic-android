@@ -141,6 +141,13 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                         R.id.buy -> {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
                         }
+                        R.id.share_app_details -> {
+                            val shareIntent = Intent()
+                            shareIntent.type = "text/plain"
+                            shareIntent.action = Intent.ACTION_SEND
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg))
+                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)))
+                        }
                         R.id.about -> {
                             switchFragment(AboutFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
