@@ -1,10 +1,10 @@
 package org.fossasia.badgemagic.data.device
 
+import java.util.Calendar
+import kotlin.experimental.or
 import org.fossasia.badgemagic.core.utils.ByteArrayUtils.byteArrayToHexString
 import org.fossasia.badgemagic.core.utils.ByteArrayUtils.hexStringToByteArray
 import org.fossasia.badgemagic.data.device.model.DataToSend
-import java.util.Calendar
-import kotlin.experimental.or
 
 object DataToByteArrayConverter {
 

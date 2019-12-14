@@ -5,19 +5,19 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
+import org.fossasia.badgemagic.data.fragments.BadgeConfig
+import org.fossasia.badgemagic.data.fragments.CONF_FLASH
 import org.fossasia.badgemagic.data.fragments.CONF_HEX_STRINGS
 import org.fossasia.badgemagic.data.fragments.CONF_INVERTED
 import org.fossasia.badgemagic.data.fragments.CONF_MARQUEE
-import org.fossasia.badgemagic.data.fragments.CONF_FLASH
 import org.fossasia.badgemagic.data.fragments.CONF_MODE
 import org.fossasia.badgemagic.data.fragments.CONF_SPEED
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
 import org.json.JSONObject
-import java.io.File
-import java.io.BufferedReader
-import java.io.FileOutputStream
-import java.io.InputStreamReader
 
 object StorageUtils {
     private val EXTERNAL_STORAGE_DIRECTORY = "${Environment.getExternalStorageDirectory()

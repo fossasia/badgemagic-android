@@ -4,8 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.SavedClipart
 import org.fossasia.badgemagic.databinding.RecyclerItemSavedClipartBinding

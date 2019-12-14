@@ -9,29 +9,29 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_drawer.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.extensions.setRotation
-import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.base.BaseActivity
+import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
+import org.fossasia.badgemagic.ui.fragments.DrawFragment
 import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
+import org.fossasia.badgemagic.ui.fragments.SavedClipartFragment
 import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
-import org.fossasia.badgemagic.ui.fragments.DrawFragment
-import org.fossasia.badgemagic.ui.fragments.SavedClipartFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
@@ -62,13 +62,32 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         setupDrawerAndToolbar()
 
         prepareForScan()
+
+        handleIfReceiveIntent()
+    }
+
+    private fun handleIfReceiveIntent() {
+        val bundle = intent.extras
+        if (bundle?.getString("clipart").equals("clipart")) {
+            val clipart = SavedClipartFragment()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frag_container, clipart)
+                    .commit()
+            nav_view.setCheckedItem(R.id.saved_cliparts)
+        } else if (bundle?.getString("badge").equals("badge")) {
+            val badge = SavedBadgesFragment()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frag_container, badge)
+                    .commit()
+            nav_view.setCheckedItem(R.id.saved_badges)
+        }
     }
 
     private fun setupDrawerAndToolbar() {
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -121,6 +140,13 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                         }
                         R.id.buy -> {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
+                        }
+                        R.id.share_app_details -> {
+                            val shareIntent = Intent()
+                            shareIntent.type = "text/plain"
+                            shareIntent.action = Intent.ACTION_SEND
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg))
+                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)))
                         }
                         R.id.about -> {
                             switchFragment(AboutFragment.newInstance())
@@ -179,19 +205,19 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.import_dialog))
-            .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
-                ?: Uri.EMPTY)}")
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                if (!StorageUtils.checkIfFilePresent(this, uri)) {
-                    saveImportFile(uri)
-                } else
-                    showOverrideDialog(uri)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
+                .setTitle(getString(R.string.import_dialog))
+                .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
+                        ?: Uri.EMPTY)}")
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    if (!StorageUtils.checkIfFilePresent(this, uri)) {
+                        saveImportFile(uri)
+                    } else
+                        showOverrideDialog(uri)
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
     }
 
     override fun onPause() {
@@ -219,16 +245,16 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun switchFragment(fragment: BaseFragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frag_container, fragment)
-            .commit()
+                .replace(R.id.frag_container, fragment)
+                .commit()
     }
 
     private fun checkManifestPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Timber.i { "Coarse permission granted" }
         } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
         }
     }
 
@@ -256,15 +282,15 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun showOverrideDialog(uri: Uri?) {
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.save_dialog_already_present))
-            .setMessage(getString(R.string.save_dialog_already_present_override))
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                saveImportFile(uri)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
+                .setTitle(getString(R.string.save_dialog_already_present))
+                .setMessage(getString(R.string.save_dialog_already_present_override))
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    saveImportFile(uri)
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

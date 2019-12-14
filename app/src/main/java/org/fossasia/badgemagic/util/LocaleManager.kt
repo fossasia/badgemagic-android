@@ -2,8 +2,8 @@ package org.fossasia.badgemagic.util
 
 import android.content.Context
 import android.content.res.Configuration
-import org.fossasia.badgemagic.data.Language
 import java.util.Locale
+import org.fossasia.badgemagic.data.Language
 
 object LocaleManager {
 

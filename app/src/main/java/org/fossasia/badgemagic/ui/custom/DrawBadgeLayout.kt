@@ -2,11 +2,11 @@ package org.fossasia.badgemagic.ui.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent

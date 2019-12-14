@@ -6,13 +6,16 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
+import android.location.LocationManager
 import android.os.AsyncTask
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -21,46 +24,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.Timer
+import java.util.TimerTask
 import kotlinx.android.synthetic.main.effects_layout.*
-
-import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.data.DrawableInfo
-import org.fossasia.badgemagic.data.ModeInfo
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.ui.custom.knob.Croller
-import org.fossasia.badgemagic.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_main_textart.*
 import kotlinx.android.synthetic.main.sections_tab.*
+import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.adapter.DrawableAdapter
 import org.fossasia.badgemagic.adapter.ModeAdapter
 import org.fossasia.badgemagic.adapter.OnDrawableSelected
 import org.fossasia.badgemagic.adapter.OnModeSelected
 import org.fossasia.badgemagic.core.android.ext.hideKeyboard
 import org.fossasia.badgemagic.core.android.ext.showKeyboard
+import org.fossasia.badgemagic.data.DrawableInfo
+import org.fossasia.badgemagic.data.ModeInfo
 import org.fossasia.badgemagic.data.device.model.DataToSend
 import org.fossasia.badgemagic.data.device.model.Message
+import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
-import org.fossasia.badgemagic.util.SendingUtils
+import org.fossasia.badgemagic.ui.base.BaseFragment
+import org.fossasia.badgemagic.ui.custom.knob.Croller
 import org.fossasia.badgemagic.util.Converters
-import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
+import org.fossasia.badgemagic.util.ImageUtils
+import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.droidsonroids.gif.GifImageView
-import java.text.SimpleDateFormat
-import java.util.Timer
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimerTask
 
 class TextArtFragment : BaseFragment() {
     companion object {
@@ -68,7 +70,7 @@ class TextArtFragment : BaseFragment() {
         private const val REQUEST_PERMISSION_CODE = 10
         @JvmStatic
         fun newInstance() =
-            TextArtFragment()
+                TextArtFragment()
     }
 
     private val drawableRecyclerAdapter = DrawableAdapter()
@@ -94,14 +96,14 @@ class TextArtFragment : BaseFragment() {
     override fun getSendData(): DataToSend {
         textViewMainText.hideKeyboard()
         return SendingUtils.convertToDeviceDataModel(
-            Message(
-                Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
-                    ?: SparseArray()),
-                flash.isChecked,
-                marquee.isChecked,
-                Speed.values()[speedKnob.progress.minus(1)],
-                Mode.values()[modeAdapter.getSelectedItemPosition()]
-            )
+                Message(
+                        Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
+                                ?: SparseArray()),
+                        flash.isChecked,
+                        marquee.isChecked,
+                        Speed.values()[speedKnob.progress.minus(1)],
+                        Mode.values()[modeAdapter.getSelectedItemPosition()]
+                )
         )
     }
 
@@ -119,28 +121,46 @@ class TextArtFragment : BaseFragment() {
         transfer_button.setOnClickListener {
             if (textViewMainText.text.trim().toString() != "") {
                 if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-                    // Easter egg
-                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                    if (scanLocationPermissions()) {
+                        // Easter egg
+                        Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
 
-                    transfer_button.visibility = View.GONE
-                    send_progress.visibility = View.VISIBLE
+                        transfer_button.visibility = View.GONE
+                        send_progress.visibility = View.VISIBLE
 
-                    val buttonTimer = Timer()
-                    buttonTimer.schedule(object : TimerTask() {
-                        override fun run() {
-                            activity?.runOnUiThread {
-                                transfer_button.visibility = View.VISIBLE
-                                send_progress.visibility = View.GONE
+                        val buttonTimer = Timer()
+                        buttonTimer.schedule(object : TimerTask() {
+                            override fun run() {
+                                activity?.runOnUiThread {
+                                    transfer_button.visibility = View.VISIBLE
+                                    send_progress.visibility = View.GONE
+                                }
                             }
-                        }
-                    }, SCAN_TIMEOUT_MS)
+                        }, SCAN_TIMEOUT_MS)
 
-                    SendingUtils.sendMessage(requireContext(), getSendData())
+                        SendingUtils.sendMessage(requireContext(), getSendData())
+                    }
                 } else
                     showAlertDialog()
             } else
                 Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun scanLocationPermissions(): Boolean {
+        val lm = requireContext().getSystemService(Context.LOCATION_SERVICE)
+        if (lm is LocationManager) {
+            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                AlertDialog.Builder(requireContext())
+                        .setMessage(R.string.no_gps_enabled)
+                        .setPositiveButton("OK") { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                return false
+            }
+            return true
+        }
+        return false
     }
 
     private fun startSaveFile() {
@@ -161,7 +181,7 @@ class TextArtFragment : BaseFragment() {
 
     private fun checkStoragePermission(): Boolean {
         return if (ActivityCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
             false
         } else
@@ -225,10 +245,10 @@ class TextArtFragment : BaseFragment() {
         viewModel.showClipart.let {
             clipart_layout.visibility = if (it) View.VISIBLE else View.GONE
             clipart_handler.setImageResource(
-                if (it)
-                    R.drawable.ic_clipart_switcher_enabled
-                else
-                    R.drawable.ic_clipart_switcher_disabled
+                    if (it)
+                        R.drawable.ic_clipart_switcher_enabled
+                    else
+                        R.drawable.ic_clipart_switcher_disabled
             )
             if (it) textViewMainText.hideKeyboard() else textViewMainText.showKeyboard()
         }
@@ -379,15 +399,15 @@ class TextArtFragment : BaseFragment() {
         modeRecyclerView.adapter = null
 
         val listOfAnimations = listOf(
-            ModeInfo(R.drawable.ic_anim_left, Mode.LEFT),
-            ModeInfo(R.drawable.ic_anim_right, Mode.RIGHT),
-            ModeInfo(R.drawable.ic_anim_up, Mode.UP),
-            ModeInfo(R.drawable.ic_anim_down, Mode.DOWN),
-            ModeInfo(R.drawable.ic_anim_fixed, Mode.FIXED),
-            ModeInfo(R.drawable.ic_anim_fixed, Mode.SNOWFLAKE),
-            ModeInfo(R.drawable.ic_anim_picture, Mode.PICTURE),
-            ModeInfo(R.drawable.ic_anim_animation, Mode.ANIMATION),
-            ModeInfo(R.drawable.ic_anim_laser, Mode.LASER)
+                ModeInfo(R.drawable.ic_anim_left, Mode.LEFT),
+                ModeInfo(R.drawable.ic_anim_right, Mode.RIGHT),
+                ModeInfo(R.drawable.ic_anim_up, Mode.UP),
+                ModeInfo(R.drawable.ic_anim_down, Mode.DOWN),
+                ModeInfo(R.drawable.ic_anim_fixed, Mode.FIXED),
+                ModeInfo(R.drawable.ic_anim_fixed, Mode.SNOWFLAKE),
+                ModeInfo(R.drawable.ic_anim_picture, Mode.PICTURE),
+                ModeInfo(R.drawable.ic_anim_animation, Mode.ANIMATION),
+                ModeInfo(R.drawable.ic_anim_laser, Mode.LASER)
         )
         modeAdapter.addAll(listOfAnimations)
         modeAdapter.setSelectedAnimationPosition(viewModel.animationPosition)
@@ -435,12 +455,12 @@ class TextArtFragment : BaseFragment() {
 
     private fun setPreview() {
         preview_badge.setValue(
-            Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
-                ?: SparseArray()),
-            marquee.isChecked,
-            flash.isChecked,
-            Speed.values()[speedKnob.progress.minus(1)],
-            Mode.values()[modeAdapter.getSelectedItemPosition()]
+                Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
+                        ?: SparseArray()),
+                marquee.isChecked,
+                flash.isChecked,
+                Speed.values()[speedKnob.progress.minus(1)],
+                Mode.values()[modeAdapter.getSelectedItemPosition()]
         )
     }
 
@@ -455,13 +475,13 @@ class TextArtFragment : BaseFragment() {
         saveFileEditText.setText(getCurrentDate())
 
         val alertDialog = AlertDialog.Builder(context)
-            .setTitle(getString(R.string.save_dialog_title))
-            .setView(view)
-            .setPositiveButton(R.string.save_button, null)
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .create()
+                .setTitle(getString(R.string.save_dialog_title))
+                .setView(view)
+                .setPositiveButton(R.string.save_button, null)
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .create()
 
         alertDialog.setOnShowListener {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
@@ -487,29 +507,29 @@ class TextArtFragment : BaseFragment() {
 
     private fun configToJSON(): String {
         return SendingUtils.configToJSON(
-            Message(
-                Converters.convertEditableToLEDHex(textViewMainText.text.toString(), false, viewModel.getClipArts().value
-                    ?: SparseArray()),
-                flash.isChecked,
-                marquee.isChecked,
-                Speed.values()[speedKnob.progress.minus(1)],
-                Mode.values()[modeAdapter.getSelectedItemPosition()]
-            ),
-            invertLED.isChecked
+                Message(
+                        Converters.convertEditableToLEDHex(textViewMainText.text.toString(), false, viewModel.getClipArts().value
+                                ?: SparseArray()),
+                        flash.isChecked,
+                        marquee.isChecked,
+                        Speed.values()[speedKnob.progress.minus(1)],
+                        Mode.values()[modeAdapter.getSelectedItemPosition()]
+                ),
+                invertLED.isChecked
         )
     }
 
     private fun showFileOverrideDialog(fileName: String, jsonString: String) {
         AlertDialog.Builder(context)
-            .setTitle(context?.getString(R.string.save_dialog_already_present))
-            .setMessage(context?.getString(R.string.save_dialog_already_present_override))
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                saveFile(fileName, jsonString)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
+                .setTitle(context?.getString(R.string.save_dialog_already_present))
+                .setMessage(context?.getString(R.string.save_dialog_already_present_override))
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    saveFile(fileName, jsonString)
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
     }
 
     private fun saveFile(fileName: String, jsonString: String) {

@@ -1,11 +1,11 @@
 package org.fossasia.badgemagic.util
 
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.fossasia.badgemagic.data.device.model.Mode
 import org.fossasia.badgemagic.data.device.model.Speed
+import org.fossasia.badgemagic.data.fragments.BadgeConfig
 
 class MoshiUtils private constructor() {
     companion object {

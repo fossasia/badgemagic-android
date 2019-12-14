@@ -49,6 +49,7 @@
     <string name="drawer_feedback">反馈/错误报告</string>
     <string name="drawer_buy_badge">买徽章</string>
     <string name="drawer_about_us">关于我们</string>
+    <string name="drawer_share_app">分享</string>
     <string name="drawer_saved_badge">保存的徽章</string>
     <string name="drawer_create_badges">创建徽章</string>
     <string name="success_import_json">导入成功</string>
@@ -91,4 +92,8 @@
     <string name="clipart_saved_success">ClipArt已成功保存</string>
     <string name="clipart_saved_error">保存剪贴画时出错</string>
     <string name="drawer_saved_cliparts">保存的教具</string>
+    <string name="no_gps_enabled">找不到GPS，请从设置中启用GPS</string>
+
+    <string name="share_msg">Badge Magic是一个用于控制LED名称徽章的Android应用。该应用程序提供了在LED徽章上描绘姓名，图形和简单动画的功能。 \n您也可以从下面的链接下载它 https://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
+    <string name="share_using">分享使用</string>
 </resources>
