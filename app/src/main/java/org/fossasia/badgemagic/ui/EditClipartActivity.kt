@@ -59,6 +59,7 @@ class EditClipartActivity : AppCompatActivity() {
             R.id.open_Folder -> {
                 val intent = Intent(this, DrawerActivity::class.java)
                 intent.putExtra("clipart", "clipart")
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
         }

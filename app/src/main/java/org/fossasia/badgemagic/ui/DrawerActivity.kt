@@ -63,17 +63,23 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
         prepareForScan()
 
+        handleIfReceiveIntent()
+    }
+
+    private fun handleIfReceiveIntent() {
         val bundle = intent.extras
         if (bundle?.getString("clipart").equals("clipart")) {
             val clipart = SavedClipartFragment()
             supportFragmentManager.beginTransaction()
                     .replace(R.id.frag_container, clipart)
                     .commit()
+            nav_view.setCheckedItem(R.id.saved_cliparts)
         } else if (bundle?.getString("badge").equals("badge")) {
             val badge = SavedBadgesFragment()
             supportFragmentManager.beginTransaction()
                     .replace(R.id.frag_container, badge)
                     .commit()
+            nav_view.setCheckedItem(R.id.saved_badges)
         }
     }
 

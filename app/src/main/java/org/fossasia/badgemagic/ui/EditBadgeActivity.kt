@@ -64,6 +64,7 @@ class EditBadgeActivity : AppCompatActivity() {
             R.id.open_Folder -> {
                 val intent = Intent(this, DrawerActivity::class.java)
                 intent.putExtra("badge", "badge")
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
         }
