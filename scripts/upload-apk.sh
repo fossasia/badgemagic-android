@@ -37,6 +37,9 @@ git push origin apk --force --quiet > /dev/null
 if [[ $TRAVIS_BRANCH =~ ^(master)$ ]]; then
     cd ..
     bundle exec fastlane uploadToPlaystore
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
     exit 0
 fi
 
