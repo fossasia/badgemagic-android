@@ -48,6 +48,8 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
     private var isItemCheckedNew = false
+    private var backPressedtime: Long = 0
+    private lateinit var backToast: Toast
 
     private val viewModel by viewModel<DrawerViewModel>()
 
@@ -318,7 +320,16 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (backPressedtime + 200 > System.currentTimeMillis()) {
+                backToast.cancel()
+                super.onBackPressed()
+                return
+            } else {
+                backToast = Toast.makeText(applicationContext, "Press back again to exit", Toast.LENGTH_SHORT)
+                backToast.show()
+            }
+
+            backPressedtime = System.currentTimeMillis()
         }
     }
 
