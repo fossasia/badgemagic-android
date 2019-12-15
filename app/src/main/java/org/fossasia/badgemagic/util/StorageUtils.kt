@@ -21,7 +21,7 @@ import org.json.JSONObject
 
 object StorageUtils {
     private val EXTERNAL_STORAGE_DIRECTORY = "${Environment.getExternalStorageDirectory()
-        .absolutePath}/Badge-Magic/"
+        .absolutePath}/Android/data/org.fossasia.badgemagic/Badge-Magic/"
     private val EXTERNAL_CLIPART_DIRECTORY = "${EXTERNAL_STORAGE_DIRECTORY}ClipArts/"
     private const val BADGE_EXTENSION = ".txt"
     private const val CLIP_EXTENSION = ".png"
