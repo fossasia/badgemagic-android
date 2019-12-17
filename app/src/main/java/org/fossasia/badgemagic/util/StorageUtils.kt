@@ -20,8 +20,7 @@ import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.json.JSONObject
 
 class StorageUtils(val context: Context) {
-    private val EXTERNAL_STORAGE_DIRECTORY = "${Environment.getExternalStorageDirectory()
-        .absolutePath}/Android/data/org.fossasia.badgemagic/Badge-Magic/"
+    private val EXTERNAL_STORAGE_DIRECTORY = context.getExternalFilesDir("/Android/data/org.fossasia.badgemagic/Badge-Magic/")?.absolutePath
     private val EXTERNAL_CLIPART_DIRECTORY = "${EXTERNAL_STORAGE_DIRECTORY}ClipArts/"
     private val BADGE_EXTENSION = ".txt"
     private val CLIP_EXTENSION = ".png"
