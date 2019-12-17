@@ -35,6 +35,7 @@ import org.fossasia.badgemagic.ui.fragments.TextArtFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +49,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
     private var isItemCheckedNew = false
+    private val storageUtils : StorageUtils by inject()
 
     private val viewModel by viewModel<DrawerViewModel>()
 
@@ -206,10 +208,10 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.import_dialog))
-                .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
+                .setMessage("${getString(R.string.import_dialog_message)} ${storageUtils.getFileName(this, uri
                         ?: Uri.EMPTY)}")
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                    if (!StorageUtils.checkIfFilePresent(this, uri)) {
+                    if (!storageUtils.checkIfFilePresent(this, uri)) {
                         saveImportFile(uri)
                     } else
                         showOverrideDialog(uri)
@@ -274,7 +276,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun saveImportFile(uri: Uri?) {
-        if (StorageUtils.copyFileToDirectory(this, uri)) {
+        if (storageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
             viewModel.updateList()
         } else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()

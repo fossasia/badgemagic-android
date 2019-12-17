@@ -17,12 +17,14 @@ import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.EditBadgeViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditBadgeActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<EditBadgeViewModel>()
     private lateinit var fileName: String
+    private val StorageUtils : StorageUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

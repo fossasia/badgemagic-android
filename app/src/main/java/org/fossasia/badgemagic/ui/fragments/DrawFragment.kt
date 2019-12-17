@@ -14,6 +14,7 @@ import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DrawFragment : BaseFragment() {
@@ -25,6 +26,7 @@ class DrawFragment : BaseFragment() {
     }
 
     private val drawViewModel by viewModel<DrawViewModel>()
+    private val storageUtils : StorageUtils by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentDrawBinding>(inflater, R.layout.fragment_draw, container, false)
@@ -37,7 +39,7 @@ class DrawFragment : BaseFragment() {
 
         drawViewModel.savedButton.observe(this, Observer {
             if (it) {
-                if (StorageUtils.saveClipArt(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()))) {
+                if (storageUtils.saveClipArt(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()))) {
                     Toast.makeText(requireContext(), R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
                     drawViewModel.updateCliparts()
                 } else
