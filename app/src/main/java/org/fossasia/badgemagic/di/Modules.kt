@@ -4,6 +4,7 @@ import org.fossasia.badgemagic.database.ClipArtService
 import org.fossasia.badgemagic.database.StorageFilesService
 import org.fossasia.badgemagic.util.PreferenceUtils
 import org.fossasia.badgemagic.util.Resource
+import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawViewModel
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
 import org.fossasia.badgemagic.viewmodels.EditBadgeViewModel
@@ -35,4 +36,5 @@ val singletonModules = module {
 val utilModules = module {
     single { PreferenceUtils(androidContext()) }
     single { Resource(androidContext()) }
+    single { StorageUtils(androidContext()) }
 }

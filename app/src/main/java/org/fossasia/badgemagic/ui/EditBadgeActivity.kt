@@ -17,12 +17,14 @@ import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.EditBadgeViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditBadgeActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<EditBadgeViewModel>()
     private lateinit var fileName: String
+    private val storageUtils: StorageUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,7 @@ class EditBadgeActivity : AppCompatActivity() {
                         Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
                         false
                 )
-                badgeConfig?.let { config -> StoreAsync(fileName, config, viewModel).execute() }
+                badgeConfig?.let { config -> StoreAsync(fileName, config, viewModel, storageUtils).execute() }
                 Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()
                 finish()
             }
@@ -73,9 +75,9 @@ class EditBadgeActivity : AppCompatActivity() {
 
     companion object {
 
-        class StoreAsync(private val fileName: String, private val badgeConfig: BadgeConfig, private val viewModel: EditBadgeViewModel) : AsyncTask<Void, Void, Void>() {
+        class StoreAsync(private val fileName: String, private val badgeConfig: BadgeConfig, private val viewModel: EditBadgeViewModel, val storageUtil: StorageUtils) : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void?): Void? {
-                StorageUtils.saveEditedBadge(badgeConfig, fileName)
+                storageUtil.saveEditedBadge(badgeConfig, fileName)
                 return null
             }
 

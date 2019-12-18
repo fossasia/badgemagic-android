@@ -14,12 +14,14 @@ import org.fossasia.badgemagic.databinding.ActivityEditClipartBinding
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.EditClipartViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditClipartActivity : AppCompatActivity() {
 
     private val editClipartViewModel by viewModel<EditClipartViewModel>()
     private lateinit var fileName: String
+    private val storageUtils: StorageUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +30,12 @@ class EditClipartActivity : AppCompatActivity() {
 
         if (intent.hasExtra("fileName")) {
             fileName = intent?.extras?.getString("fileName") ?: ""
-            editClipartViewModel.drawingJSON.set(Converters.convertDrawableToLEDHex(StorageUtils.getClipartFromPath(fileName), false))
+            editClipartViewModel.drawingJSON.set(Converters.convertDrawableToLEDHex(storageUtils.getClipartFromPath(fileName), false))
         }
 
         editClipartViewModel.savedButton.observe(this, Observer {
             if (it) {
-                if (StorageUtils.saveEditedClipart(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()), fileName)) {
+                if (storageUtils.saveEditedClipart(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()), fileName)) {
                     Toast.makeText(this, R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
                     editClipartViewModel.updateClipArts()
                 } else
