@@ -49,7 +49,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
     private var isItemCheckedNew = false
-    private val storageUtils : StorageUtils by inject()
+    private val storageUtils: StorageUtils by inject()
 
     private val viewModel by viewModel<DrawerViewModel>()
 

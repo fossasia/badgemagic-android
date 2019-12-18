@@ -21,7 +21,7 @@ class EditClipartActivity : AppCompatActivity() {
 
     private val editClipartViewModel by viewModel<EditClipartViewModel>()
     private lateinit var fileName: String
-    private val storageUtils : StorageUtils by inject()
+    private val storageUtils: StorageUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

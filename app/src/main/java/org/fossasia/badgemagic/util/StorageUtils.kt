@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Environment
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -20,7 +19,7 @@ import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.json.JSONObject
 
 class StorageUtils(val context: Context) {
-    private val EXTERNAL_STORAGE_DIRECTORY = context.getExternalFilesDir("/Android/data/org.fossasia.badgemagic/Badge-Magic/")?.absolutePath
+    private val EXTERNAL_STORAGE_DIRECTORY = context.getExternalFilesDir(null)?.absolutePath
     private val EXTERNAL_CLIPART_DIRECTORY = "${EXTERNAL_STORAGE_DIRECTORY}ClipArts/"
     private val BADGE_EXTENSION = ".txt"
     private val CLIP_EXTENSION = ".png"
@@ -104,11 +103,11 @@ class StorageUtils(val context: Context) {
         return try {
             val obj = JSONObject(jsonString)
             return obj.has(CONF_HEX_STRINGS) &&
-                obj.has(CONF_INVERTED) &&
-                obj.has(CONF_MARQUEE) &&
-                obj.has(CONF_FLASH) &&
-                obj.has(CONF_MODE) &&
-                obj.has(CONF_SPEED)
+                    obj.has(CONF_INVERTED) &&
+                    obj.has(CONF_MARQUEE) &&
+                    obj.has(CONF_FLASH) &&
+                    obj.has(CONF_MODE) &&
+                    obj.has(CONF_SPEED)
         } catch (e: Exception) {
             false
         }

@@ -14,7 +14,7 @@ class ClipArtService : KoinComponent {
     private val clipArts = MutableLiveData<SparseArray<Drawable>>()
     private val storageClipArts = MutableLiveData<HashMap<String, Drawable?>>()
     private val resourceHelper: Resource by inject()
-    private val storageUtils : StorageUtils by inject()
+    private val storageUtils: StorageUtils by inject()
 
     init {
         updateClipArts()

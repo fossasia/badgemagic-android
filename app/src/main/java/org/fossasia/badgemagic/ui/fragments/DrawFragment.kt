@@ -26,7 +26,7 @@ class DrawFragment : BaseFragment() {
     }
 
     private val drawViewModel by viewModel<DrawViewModel>()
-    private val storageUtils : StorageUtils by inject()
+    private val storageUtils: StorageUtils by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentDrawBinding>(inflater, R.layout.fragment_draw, container, false)
