@@ -19,37 +19,44 @@ import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.json.JSONObject
 
 class StorageUtils(val context: Context) {
-    private val EXTERNAL_STORAGE_DIRECTORY = context.getExternalFilesDir(null)?.absolutePath
-    private val EXTERNAL_CLIPART_DIRECTORY = "${EXTERNAL_STORAGE_DIRECTORY}ClipArts/"
-    private val BADGE_EXTENSION = ".txt"
-    private val CLIP_EXTENSION = ".png"
+    private val externalStorageDir = context.getExternalFilesDir(null)?.absolutePath
+    private val externalClipartDir = "$externalStorageDir/ClipArts/"
+    private val badgeExt = ".txt"
+    private val clipExt = ".png"
 
     private fun checkDirectory(): Boolean {
-        val directory = File(EXTERNAL_STORAGE_DIRECTORY)
-        val directoryClips = File(EXTERNAL_CLIPART_DIRECTORY)
-        if (!directory.exists())
-            return directory.mkdirs()
-        if (!directoryClips.exists())
-            return directoryClips.mkdirs()
-        return true
+        externalStorageDir?.let {
+            val directory = File(it)
+            val directoryClips = File(externalClipartDir)
+            if (!directory.exists())
+                return directory.mkdirs()
+            if (!directoryClips.exists())
+                return directoryClips.mkdirs()
+            return true
+        }
+        return false
     }
 
     fun saveFile(filename: String, json: String) {
         checkDirectory()
-        val saveFile = File(EXTERNAL_STORAGE_DIRECTORY, "$filename$BADGE_EXTENSION")
-        saveFile.writeText(json)
+        externalStorageDir?.let {
+            val saveFile = File(it, "$filename$badgeExt")
+            saveFile.writeText(json)
+        }
     }
 
     fun getAllFiles(): List<ConfigInfo> {
         checkDirectory()
         val list = mutableListOf<ConfigInfo>()
 
-        val files = File(EXTERNAL_STORAGE_DIRECTORY).listFiles() ?: return list
-        for (i in files.indices) {
-            if (getFileExtension(files[i].name) == BADGE_EXTENSION) {
-                val json = files[i].readText()
-                if (checkValidJSON(json))
-                    list.add(ConfigInfo(json, files[i].name))
+        externalStorageDir?.let {
+            val files = File(externalStorageDir).listFiles() ?: return list
+            for (i in files.indices) {
+                if (getFileExtension(files[i].name) == badgeExt) {
+                    val json = files[i].readText()
+                    if (checkValidJSON(json))
+                        list.add(ConfigInfo(json, files[i].name))
+                }
             }
         }
         return list
@@ -64,33 +71,33 @@ class StorageUtils(val context: Context) {
 
     fun deleteFile(fileName: String) {
         checkDirectory()
-        val deleteFile = File(EXTERNAL_STORAGE_DIRECTORY, fileName)
+        val deleteFile = File(externalStorageDir, fileName)
         deleteFile.delete()
     }
 
     fun getAbsolutePathofFiles(fileName: String): String {
-        return "$EXTERNAL_STORAGE_DIRECTORY/$fileName"
+        return "$externalStorageDir/$fileName"
     }
 
     fun checkIfFilePresent(fileName: String): Boolean {
         checkDirectory()
-        return (File(EXTERNAL_STORAGE_DIRECTORY, "$fileName$BADGE_EXTENSION").exists())
+        return (File(externalStorageDir, "$fileName$badgeExt").exists())
     }
 
     fun checkIfFilePresent(context: Context, uri: Uri?): Boolean {
         checkDirectory()
-        return (File(EXTERNAL_STORAGE_DIRECTORY, getFileName(context, uri ?: Uri.EMPTY)).exists())
+        return (File(externalStorageDir, getFileName(context, uri ?: Uri.EMPTY)).exists())
     }
 
     fun copyFileToDirectory(context: Context, uri: Uri?): Boolean {
         checkDirectory()
         val inputStream = context.contentResolver.openInputStream(uri ?: Uri.EMPTY)
         var fileName = getFileName(context, uri ?: Uri.EMPTY)
-        if (fileName != null) {
-            if (!fileName.contains(BADGE_EXTENSION))
-                fileName += BADGE_EXTENSION
-            val dest = File(EXTERNAL_STORAGE_DIRECTORY, fileName)
-            val jsonString = BufferedReader(InputStreamReader(inputStream)).readLine()
+        if (!fileName.contains(badgeExt))
+            fileName += badgeExt
+        val dest = File(externalStorageDir, fileName)
+        inputStream?.let {
+            val jsonString = BufferedReader(InputStreamReader(it)).readLine()
             if (checkValidJSON(jsonString)) {
                 dest.writeText(jsonString)
                 return true
@@ -113,7 +120,7 @@ class StorageUtils(val context: Context) {
         }
     }
 
-    fun getFileName(context: Context, uriOriginal: Uri): String? {
+    fun getFileName(context: Context, uriOriginal: Uri): String {
         var uri = uriOriginal
         var result: String
 
@@ -140,13 +147,13 @@ class StorageUtils(val context: Context) {
 
     fun saveEditedBadge(badgeConfig: BadgeConfig?, fileName: String) {
         checkDirectory()
-        val saveFile = File(EXTERNAL_STORAGE_DIRECTORY, fileName)
+        val saveFile = File(externalStorageDir, fileName)
         saveFile.writeText(MoshiUtils.getAdapter().toJson(badgeConfig))
     }
 
     fun saveClipArt(bitmap: Bitmap): Boolean {
         checkDirectory()
-        val file = File.createTempFile("clip", CLIP_EXTENSION, File(EXTERNAL_CLIPART_DIRECTORY))
+        val file = File.createTempFile("clip", clipExt, File(externalClipartDir))
         try {
             val out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
@@ -160,7 +167,7 @@ class StorageUtils(val context: Context) {
 
     fun saveEditedClipart(bitmap: Bitmap, fileName: String): Boolean {
         checkDirectory()
-        val file = File(EXTERNAL_CLIPART_DIRECTORY, fileName)
+        val file = File(externalClipartDir, fileName)
         try {
             val out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
@@ -176,9 +183,9 @@ class StorageUtils(val context: Context) {
         checkDirectory()
         val list = HashMap<String, Drawable?>()
 
-        val files = File(EXTERNAL_CLIPART_DIRECTORY).listFiles() ?: return list
+        val files = File(externalClipartDir).listFiles() ?: return list
         for (i in files.indices) {
-            if (getFileExtension(files[i].name) == CLIP_EXTENSION) {
+            if (getFileExtension(files[i].name) == clipExt) {
                 list[files[i].name] = Drawable.createFromPath(files[i].absolutePath)
             }
         }
@@ -186,12 +193,12 @@ class StorageUtils(val context: Context) {
     }
 
     fun getClipartFromPath(filename: String): Drawable? {
-        return Drawable.createFromPath(File(EXTERNAL_CLIPART_DIRECTORY, filename).absolutePath)
+        return Drawable.createFromPath(File(externalClipartDir, filename).absolutePath)
     }
 
     fun deleteClipart(fileName: String) {
         checkDirectory()
-        val deleteFile = File(EXTERNAL_CLIPART_DIRECTORY, fileName)
+        val deleteFile = File(externalClipartDir, fileName)
         deleteFile.delete()
     }
 }
