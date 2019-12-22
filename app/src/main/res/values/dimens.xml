@@ -24,7 +24,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_height">100dp</dimen>
+    <dimen name="nav_header_padding">10dp</dimen>
 
     <dimen name="about_group_text_padding">16dp</dimen>
     <dimen name="about_group_item_text_size">18sp</dimen>
