@@ -11,5 +11,6 @@
 
     <color name="md_grey_400">#BDBDBD</color>
     <color name="dividerColor">#e0e0e0</color>
+    <color name="header_name">#000000</color>
 
 </resources>
