@@ -35,6 +35,7 @@ import org.fossasia.badgemagic.ui.fragments.TextArtFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +49,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private var showMenu: Menu? = null
     private var drawerCheckedID = R.id.create
     private var isItemCheckedNew = false
+    private val storageUtils: StorageUtils by inject()
 
     private val viewModel by viewModel<DrawerViewModel>()
 
@@ -62,13 +64,32 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         setupDrawerAndToolbar()
 
         prepareForScan()
+
+        handleIfReceiveIntent()
+    }
+
+    private fun handleIfReceiveIntent() {
+        val bundle = intent.extras
+        if (bundle?.getString("clipart").equals("clipart")) {
+            val clipart = SavedClipartFragment()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frag_container, clipart)
+                    .commit()
+            nav_view.setCheckedItem(R.id.saved_cliparts)
+        } else if (bundle?.getString("badge").equals("badge")) {
+            val badge = SavedBadgesFragment()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frag_container, badge)
+                    .commit()
+            nav_view.setCheckedItem(R.id.saved_badges)
+        }
     }
 
     private fun setupDrawerAndToolbar() {
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -186,19 +207,19 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.import_dialog))
-            .setMessage("${getString(R.string.import_dialog_message)} ${StorageUtils.getFileName(this, uri
-                ?: Uri.EMPTY)}")
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                if (!StorageUtils.checkIfFilePresent(this, uri)) {
-                    saveImportFile(uri)
-                } else
-                    showOverrideDialog(uri)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
+                .setTitle(getString(R.string.import_dialog))
+                .setMessage("${getString(R.string.import_dialog_message)} ${storageUtils.getFileName(this, uri
+                        ?: Uri.EMPTY)}")
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    if (!storageUtils.checkIfFilePresent(this, uri)) {
+                        saveImportFile(uri)
+                    } else
+                        showOverrideDialog(uri)
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
     }
 
     override fun onPause() {
@@ -226,13 +247,13 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun switchFragment(fragment: BaseFragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frag_container, fragment)
-            .commit()
+                .replace(R.id.frag_container, fragment)
+                .commit()
     }
 
     private fun checkManifestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Timber.i { "Coarse permission granted" }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
@@ -255,7 +276,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun saveImportFile(uri: Uri?) {
-        if (StorageUtils.copyFileToDirectory(this, uri)) {
+        if (storageUtils.copyFileToDirectory(this, uri)) {
             Toast.makeText(this, R.string.success_import_json, Toast.LENGTH_SHORT).show()
             viewModel.updateList()
         } else Toast.makeText(this, R.string.invalid_import_json, Toast.LENGTH_SHORT).show()
@@ -263,15 +284,15 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun showOverrideDialog(uri: Uri?) {
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.save_dialog_already_present))
-            .setMessage(getString(R.string.save_dialog_already_present_override))
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                saveImportFile(uri)
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .show()
+                .setTitle(getString(R.string.save_dialog_already_present))
+                .setMessage(getString(R.string.save_dialog_already_present_override))
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                    saveImportFile(uri)
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

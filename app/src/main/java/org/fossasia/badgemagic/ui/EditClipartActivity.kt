@@ -1,6 +1,9 @@
 package org.fossasia.badgemagic.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,12 +14,14 @@ import org.fossasia.badgemagic.databinding.ActivityEditClipartBinding
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.EditClipartViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditClipartActivity : AppCompatActivity() {
 
     private val editClipartViewModel by viewModel<EditClipartViewModel>()
     private lateinit var fileName: String
+    private val storageUtils: StorageUtils by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +30,12 @@ class EditClipartActivity : AppCompatActivity() {
 
         if (intent.hasExtra("fileName")) {
             fileName = intent?.extras?.getString("fileName") ?: ""
-            editClipartViewModel.drawingJSON.set(Converters.convertDrawableToLEDHex(StorageUtils.getClipartFromPath(fileName), false))
+            editClipartViewModel.drawingJSON.set(Converters.convertDrawableToLEDHex(storageUtils.getClipartFromPath(fileName), false))
         }
 
         editClipartViewModel.savedButton.observe(this, Observer {
             if (it) {
-                if (StorageUtils.saveEditedClipart(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()), fileName)) {
+                if (storageUtils.saveEditedClipart(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()), fileName)) {
                     Toast.makeText(this, R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
                     editClipartViewModel.updateClipArts()
                 } else
@@ -44,5 +49,22 @@ class EditClipartActivity : AppCompatActivity() {
                 draw_layout.resetCheckListWithDummyData()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.open_folder, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.open_Folder -> {
+                val intent = Intent(this, DrawerActivity::class.java)
+                intent.putExtra("clipart", "clipart")
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
