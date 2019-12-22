@@ -1,12 +1,16 @@
 package org.fossasia.badgemagic.util
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
 import java.math.BigInteger
+import kotlin.math.ceil
+import kotlin.math.floor
 import org.fossasia.badgemagic.data.badge_preview.CheckList
 import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
 
@@ -14,6 +18,24 @@ const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'
 
 object Converters {
+
+    private fun textAsBitmap(text: String, invertLED: Boolean): List<String> {
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = 11f
+        paint.color = Color.BLACK
+        paint.textAlign = Paint.Align.LEFT
+        val baseline: Float = -paint.ascent()
+        var width = (paint.measureText(text) + 0.0f).toInt()
+        var height = (baseline + paint.descent() + 0.0f).toInt()
+        val trueWidth = width
+        if (width > height) height = width else width = height
+        val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(image)
+        canvas.drawText(text, width.div(2).minus(trueWidth.div(2)).toFloat(), baseline, paint)
+
+        return convertBitmapToLEDHex(image, invertLED)
+    }
+
     fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
         var bm = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
         if (drawableIcon is VectorDrawable)
@@ -68,8 +90,8 @@ object Converters {
         if ((height - finalSum) % 8 > 0)
             diff = 8 - (height - finalSum) % 8
 
-        val rOff = Math.floor((diff.toFloat() / 2).toDouble()).toInt()
-        val lOff = Math.ceil((diff.toFloat() / 2).toDouble()).toInt()
+        val rOff = floor((diff.toFloat() / 2).toDouble()).toInt()
+        val lOff = ceil((diff.toFloat() / 2).toDouble()).toInt()
 
         val list: MutableList<MutableList<Int>> = mutableListOf()
         for (i in 0 until height) {
@@ -153,10 +175,10 @@ object Converters {
         for (letter in data) {
             if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
                 list.add(
-                    if (invertLED)
-                        invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
-                    else
-                        DataToByteArrayConverter.CHAR_CODES.getValue(letter)
+                        if (invertLED)
+                            invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+                        else
+                            DataToByteArrayConverter.CHAR_CODES.getValue(letter)
                 )
             } else {
                 valid = false
@@ -185,20 +207,38 @@ object Converters {
                 val foundIndex = editable.indexOf(DRAWABLE_END, i)
                 i = if (foundIndex > 0) {
                     listOfArt.addAll(
-                        handleInvertLED(convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED), i == 0 && invertLED)
+                            handleInvertLED(convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED), i == 0 && invertLED)
                     )
                     foundIndex + 1
                 } else {
                     editable.length
                 }
             } else {
-                listOfArt.addAll(
-                    handleInvertLED(convertTextToLEDHex(ch.toString(), invertLED).second, i == 0 && invertLED)
-                )
-                i++
+                val foundIndex = getIndexOfNextKnown(editable.substring(i, editable.length))
+                if (foundIndex == 0) {
+                    listOfArt.addAll(
+                            handleInvertLED(convertTextToLEDHex(ch.toString(), invertLED).second, i == 0 && invertLED)
+                    )
+                    i++
+                } else {
+                    val targetLength = if (foundIndex > 0) i + foundIndex + 1 else editable.length
+                    listOfArt.addAll(
+                            handleInvertLED(textAsBitmap(editable.substring(i, targetLength), invertLED), i == 0 && invertLED)
+                    )
+                    i = targetLength
+                }
             }
         }
         return listOfArt
+    }
+
+    private fun getIndexOfNextKnown(str: String): Int {
+        str.forEachIndexed { index, c ->
+            if (DataToByteArrayConverter.CHAR_CODES.containsKey(c) || c == DRAWABLE_START) {
+                return index
+            }
+        }
+        return -1
     }
 
     private fun handleInvertLED(hexStrings: List<String>, addPrefix: Boolean): List<String> {
@@ -213,7 +253,7 @@ object Converters {
     }
 
     private fun checkValueInFirstColumn(hexStrings: List<String>): Boolean {
-        for (i in 0 until hexStrings[0].length step 2) {
+        for (i in hexStrings[0].indices step 2) {
             if (BigInteger(hexStrings[0][i].toString(), 16).toString(10).toInt() < 8)
                 return true
         }
@@ -225,10 +265,10 @@ object Converters {
         for (i in 0 until list.size) {
             for (j in 0 until list[0].list.size) {
                 newBitmap.setPixel(j, i,
-                    if (list[i].list[j])
-                        Color.BLACK
-                    else
-                        Color.TRANSPARENT
+                        if (list[i].list[j])
+                            Color.BLACK
+                        else
+                            Color.TRANSPARENT
                 )
             }
         }
