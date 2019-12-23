@@ -17,4 +17,8 @@ class SavedClipartViewModel(
     fun deleteClipart(position: Int) {
         clipArtService.deleteClipart(cliparts[position].fileName)
     }
+
+    fun setList(list: List<SavedClipart>) {
+        cliparts = list
+    }
 }
