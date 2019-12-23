@@ -17,7 +17,7 @@
     <dimen name="title_min_height_large">40dp</dimen>
     <dimen name="knob_width">180dp</dimen>
     <dimen name="card_spacing">10dp</dimen>
-    <dimen name="card_corner_radius">1dp</dimen>
+    <dimen name="card_corner_radius">5dp</dimen>
     <dimen name="about_card_elevation">5dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
@@ -39,4 +39,5 @@
     <dimen name="draw_layout_margin">50dp</dimen>
     <dimen name="draw_layout_button_padding">10dp</dimen>
     <dimen name="divider_width">2dp</dimen>
+    <dimen name="margin_left_right">8dp</dimen>
 </resources>
