@@ -59,7 +59,7 @@ class StorageUtils(val context: Context) {
                 }
             }
         }
-        return list
+        return list.asReversed()
     }
 
     private fun getFileExtension(name: String): String {
