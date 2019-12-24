@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Badge Magic</string>
+
+    <string name="enable_bluetooth">Vous devez activer Bluetooth pour utiliser la fonction d\'envoi</string>
+
+    <string name="flash">Éclat</string>
+    <string name="marquee">Chapiteau</string>
+    <string name="speed">La vitesse</string>
+    <string name="mode">Animation</string>
+    <string name="mode_left">La gauche</string>
+    <string name="mode_right">Droite</string>
+    <string name="mode_up">En haut</string>
+    <string name="mode_down">Vers le bas</string>
+    <string name="mode_fixed">Fixé</string>
+    <string name="mode_snowflake">Flocon de neige</string>
+    <string name="mode_picture">Image</string>
+    <string name="mode_animation">Animation</string>
+    <string name="mode_laser">Laser</string>
+    <string name="permission_required">Autorisation requise</string>
+    <string name="no_device_found">Aucun appareil trouvé. Veuillez réessayer.</string>
+    <string name="invertLED">LED inversée</string>
+    <string name="enter_text">Entrez du texte</string>
+    <string name="image_bitmap_description">Image bitmap</string>
+    <string name="save_button">sauvegarder</string>
+    <string name="save_hint">Nom de fichier</string>
+    <string name="validation_save_dialog">Entrez le nom du fichier avant de continuer</string>
+    <string name="save_dialog_title">Enregistrer le badge</string>
+    <string name="saved_badge">Saved Badge</string>
+    <string name="saved_configurations">Badge enregistré</string>
+    <string name="saveactivity_operation_title">Réaliser une opération</string>
+    <string name="delete">Supprimer</string>
+    <string name="share">Partager</string>
+    <string name="deleted_saved">Badge enregistré supprimé.</string>
+    <string name="menu_import">Importation</string>
+    <string name="invalid_import_json">Sélectionnez une configuration magique de badge valide</string>
+    <string name="save_dialog_already_present">Fichier déjà présent</string>
+    <string name="save_dialog_already_present_override">Voulez-vous remplacer les modifications?</string>
+    <string name="import_dialog">Importer le fichier</string>
+    <string name="import_dialog_message">Do you want to import</string>
+    <string name="sending_data">Envoi de données.</string>
+    <string name="transfer_button">Transfert</string>
+    <string name="effects">Effets</string>
+
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+
+    <string name="drawer_other">Autre</string>
+    <string name="drawer_feedback">Commentaires / rapports de bogues</string>
+    <string name="drawer_buy_badge">Acheter un badge</string>
+    <string name="drawer_share_app">Partager</string>
+    <string name="drawer_about_us">À propos de nous</string>
+    <string name="drawer_saved_badge">Badges enregistrés</string>
+    <string name="drawer_create_badges">Créer un badge</string>
+    <string name="success_import_json">Importation réussie</string>
+    <string name="about_us_description">Badge Magic est une application Android pour contrôler les badges nominatifs LED. L\'objectif est de fournir des options pour représenter des noms, des graphiques et des animations simples sur des badges LED. Pour le transfert de données du smartphone au badge LED, nous utilisons Bluetooth. Le projet est basé sur le travail de Nilhcem.</string>
+    <string name="about_us_connect">Connecte-toi avec nous</string>
+    <string name="about_support_github">GitHub</string>
+    <string name="about_support_github_sub">Forkez le repo et envoyez des modifications ou soumettez de nouveaux problèmes.</string>
+    <string name="about_license">Licence</string>
+    <string name="about_license_sub">Vérifiez les termes de la licence Apache 2.0 utilisés sur Badge Magic</string>
+    <string name="about_library_license">Licences de bibliothèque</string>
+    <string name="about_library_license_sub">Check third-party libs used on Badge Magic.</string>
+    <string name="moshi">Moshi</string>
+    <string name="moshi_copy">Copyright 2015 Square, Inc.</string>
+    <string name="gif">android-gif-drawable</string>
+    <string name="gif_copy">Copyright 2013 - présent Karol Wrótniak, Droids on Roids LLC</string>
+    <string name="timber">Charpente</string>
+    <string name="timber_copy">Copyright 2013 Jake Wharton</string>
+    <string name="scanner">Bibliothèque de compatibilité Android BLE Scanner</string>
+    <string name="scanner_copy">Copyright 2015, Nordic Semiconductor</string>
+    <string name="licences">Boîte de dialogue Licences</string>
+    <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
+    <string name="empty_saved_section">Il semble qu\'il n\'y ait pas encore de badges enregistrés</string>
+    <string name="empty_saved_section_title">Aucun badge enregistré!</string>
+    <string name="create">Créer un badge</string>
+    <string name="saved">Badge enregistré</string>
+    <string name="disabled">Les raccourcis d\'application ne sont pas pris en charge sur votre appareil.</string>
+    <string name="empty_text_to_send">Veuillez entrer quelque chose à envoyer</string>
+    <string name="bluetooth_enabled">Le Bluetooth a été activé</string>
+
+    <string name="language">Langue</string>
+    <string name="drawer_settings">Réglages</string>
+    <string name="change_language">Afin de changer la langue, nous devons redémarrer l\'application.</string>
+
+    <string name="reset">Réinitialiser</string>
+    <string name="draw_text">Dessiner</string>
+    <string name="erase_text">Entrez du texte</string>
+    <string name="saved_edited_badge">Badge enregistré avec succès</string>
+    <string name="save">sauvegarder</string>
+    <string name="drawer_draw_badge">Dessiner des cliparts</string>
+    <string name="clipart_saved_success">ClipArt enregistré avec succès</string>
+    <string name="clipart_saved_error">Erreur lors de l\'enregistrement de Clipart</string>
+    <string name="drawer_saved_cliparts">Cliparts enregistrés</string>
+    <string name="no_gps_enabled">Aucun GPS trouvé, veuillez activer le GPS à partir des paramètres</string>
+
+    <string name="share_msg">Badge Magic est une application Android pour contrôler les badges nominatifs LED. Cette application fournit des fonctionnalités pour représenter des noms, des graphiques et des animations simples sur des badges LED. \ nVous pouvez également le télécharger à partir du lien ci-dessous \ nhttps: //play.google.com/store/apps/details? id = org.fossasia.badgemagic</string>
+    <string name="share_using">Partager en utilisant</string>
+
+
+</resources>
