@@ -16,6 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
             android:clickable="true"
+            android:layout_marginTop="@dimen/card_spacing"
+            android:layout_marginRight="@dimen/margin_left_right"
+            android:layout_marginLeft="@dimen/margin_left_right"
             android:paddingBottom="@dimen/card_spacing"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="@dimen/about_card_elevation">
@@ -59,6 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
             android:clickable="true"
+            android:layout_marginRight="@dimen/margin_left_right"
+            android:layout_marginLeft="@dimen/margin_left_right"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="@dimen/card_elevation">
 
@@ -121,6 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_spacing"
             android:clickable="true"
+            android:layout_marginRight="@dimen/margin_left_right"
+            android:layout_marginLeft="@dimen/margin_left_right"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="@dimen/card_elevation">
 
