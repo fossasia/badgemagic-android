@@ -213,18 +213,36 @@ class TextArtFragment : BaseFragment() {
     }
 
     private val textChangedListener = object : TextWatcher {
+        var startPos = -1
+        var endPos = -1
         override fun afterTextChanged(s: Editable?) {
-            if (s != null) {
-                val drawableStartIndex = s.lastIndexOf(DRAWABLE_START)
-                if (drawableStartIndex > s.lastIndexOf(DRAWABLE_END))
-                    s.delete(drawableStartIndex, s.length)
-            }
+            if (startPos != -1)
+                s?.delete(startPos, endPos)
+            setPreview()
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            viewModel.text = s.toString()
-            setPreview()
+            var counter = 0
+            endPos = start
+            for (i in s.toString().indices) {
+                if (s?.get(i) == DRAWABLE_START) {
+                    counter++
+                    if (startPos == -1)
+                        startPos = i
+                }
+                else if (s?.get(i) == DRAWABLE_END)
+                    counter--
+
+                if (counter == 0) {
+                    startPos = -1
+                }
+            }
+
+            if (startPos != -1)
+                viewModel.text = s.toString().removeRange(startPos, start)
+            else
+                viewModel.text = s.toString()
         }
     }
 
