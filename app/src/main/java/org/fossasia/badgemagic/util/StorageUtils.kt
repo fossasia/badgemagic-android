@@ -180,11 +180,12 @@ class StorageUtils(val context: Context) {
         return true
     }
 
-    fun getAllClips(): HashMap<String, Drawable?> {
+    fun getAllClips(): MutableMap<String, Drawable?> {
         checkDirectory()
-        val list = HashMap<String, Drawable?>()
+        val list = mutableMapOf<String, Drawable?>()
 
         val files = File(externalClipartDir).listFiles() ?: return list
+        files.sortWith(Comparator<File> { a, b -> (b.lastModified() - a.lastModified()).toInt() })
         for (i in files.indices) {
             if (getFileExtension(files[i].name) == clipExt) {
                 list[files[i].name] = Drawable.createFromPath(files[i].absolutePath)
