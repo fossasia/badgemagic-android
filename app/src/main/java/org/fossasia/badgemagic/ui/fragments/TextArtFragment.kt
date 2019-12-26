@@ -230,8 +230,7 @@ class TextArtFragment : BaseFragment() {
                     counter++
                     if (startPos == -1)
                         startPos = i
-                }
-                else if (s?.get(i) == DRAWABLE_END)
+                } else if (s?.get(i) == DRAWABLE_END)
                     counter--
 
                 if (counter == 0) {
