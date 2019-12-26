@@ -12,7 +12,7 @@ import org.koin.core.inject
 
 class ClipArtService : KoinComponent {
     private val clipArts = MutableLiveData<SparseArray<Drawable>>()
-    private val storageClipArts = MutableLiveData<HashMap<String, Drawable?>>()
+    private val storageClipArts = MutableLiveData<MutableMap<String, Drawable?>>()
     private val resourceHelper: Resource by inject()
     private val storageUtils: StorageUtils by inject()
 
@@ -63,7 +63,7 @@ class ClipArtService : KoinComponent {
 
     fun getClipArts(): LiveData<SparseArray<Drawable>> = clipArts
 
-    fun getClipsFromStorage(): LiveData<HashMap<String, Drawable?>> = storageClipArts
+    fun getClipsFromStorage(): LiveData<MutableMap<String, Drawable?>> = storageClipArts
 
     fun deleteClipart(fileName: String) {
         storageUtils.deleteClipart(fileName)
