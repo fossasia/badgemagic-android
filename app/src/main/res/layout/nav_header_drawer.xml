@@ -21,6 +21,7 @@
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/header_name"
+        android:paddingTop="@dimen/nav_header_padding"
         android:textSize="@dimen/title_min_height_large"
         android:typeface="serif" />
 
