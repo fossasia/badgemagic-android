@@ -40,6 +40,7 @@ class SavedClipartsAdapter(
 
     fun setList(list: List<SavedClipart>) {
         clipartList = list
+        viewModel.setList(list)
         notifyDataSetChanged()
     }
 }
