@@ -150,7 +150,7 @@ class SavedBadgesFragment : BaseFragment() {
                             Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
                             SendingUtils.sendMessage(requireContext(), getSendData())
                         } else {
-                            Toast.makeText(requireContext(), getString(R.string.enable_bluetooth), Toast.LENGTH_LONG).show()
+                            startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 1)
                         }
                     }
                     2 -> {
