@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
@@ -160,6 +161,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             override fun onDrawerOpened(drawerView: View) {
+                hideKeyboard()
             }
         })
 
@@ -180,6 +182,14 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             switchFragment(DrawFragment.newInstance())
             showMenu?.setGroupVisible(R.id.saved_group, false)
             nav_view.setCheckedItem(R.id.draw)
+        }
+    }
+
+    private fun hideKeyboard() {
+        val view = this.currentFocus
+        view?.let { v ->
+            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
 
