@@ -103,6 +103,9 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                if (slideOffset > .1) {
+                    hideKeyboard()
+                }
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -161,7 +164,6 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                hideKeyboard()
             }
         })
 
