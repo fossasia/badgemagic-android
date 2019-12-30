@@ -3,7 +3,6 @@ package org.fossasia.badgemagic.ui.fragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -61,6 +60,7 @@ import org.fossasia.badgemagic.util.DRAWABLE_START
 import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.droidsonroids.gif.GifImageView
 
@@ -77,6 +77,7 @@ class TextArtFragment : BaseFragment() {
     private val modeAdapter = ModeAdapter()
 
     private val viewModel by sharedViewModel<TextArtViewModel>()
+    private val bluetoothManager: org.fossasia.badgemagic.util.BluetoothManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -205,10 +206,8 @@ class TextArtFragment : BaseFragment() {
     }
 
     private fun turnOnBluetooth() {
-        val btManager = requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        if (btAdapter.disable()) {
-            btAdapter.enable()
+        if (bluetoothManager.btAdapter.disable()) {
+            bluetoothManager.btAdapter.enable()
         }
     }
 

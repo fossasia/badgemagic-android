@@ -1,6 +1,5 @@
 package org.fossasia.badgemagic.ui.fragments
 
-import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +24,7 @@ import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SavedBadgesFragment : BaseFragment() {
@@ -38,6 +38,8 @@ class SavedBadgesFragment : BaseFragment() {
     private var recyclerAdapter: SaveAdapter? = null
 
     private val viewModel by sharedViewModel<FilesViewModel>()
+
+    private val bluetoothManager: org.fossasia.badgemagic.util.BluetoothManager by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_save, container, false)
@@ -146,11 +148,11 @@ class SavedBadgesFragment : BaseFragment() {
                     }
                     1 -> {
                         // Transfer Condition
-                        if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                        if (bluetoothManager.btAdapter.isEnabled) {
                             Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
                             SendingUtils.sendMessage(requireContext(), getSendData())
                         } else {
-                            startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 1)
+                            showAlertDialog()
                         }
                     }
                     2 -> {
@@ -165,6 +167,28 @@ class SavedBadgesFragment : BaseFragment() {
             .create()
 
         alertDialog.show()
+    }
+
+    private fun showAlertDialog() {
+        val dialogMessage = getString(R.string.enable_bluetooth)
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
+        builder.setTitle(getString(R.string.permission_required))
+        builder.setMessage(dialogMessage)
+        builder.setPositiveButton("OK") { _, _ ->
+            turnOnBluetooth()
+            Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("CANCEL") { _, _ ->
+            Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
+        }
+        builder.create().show()
+    }
+
+    private fun turnOnBluetooth() {
+        if (bluetoothManager.btAdapter.disable()) {
+            bluetoothManager.btAdapter.enable()
+        }
     }
 
     private fun setPreviewNull() {

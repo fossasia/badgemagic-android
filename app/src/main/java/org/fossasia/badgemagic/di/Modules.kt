@@ -37,4 +37,5 @@ val utilModules = module {
     single { PreferenceUtils(androidContext()) }
     single { Resource(androidContext()) }
     single { StorageUtils(androidContext()) }
+    single { org.fossasia.badgemagic.util.BluetoothManager(androidContext()) }
 }
