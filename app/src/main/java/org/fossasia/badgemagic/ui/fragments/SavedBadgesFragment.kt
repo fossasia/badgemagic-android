@@ -21,7 +21,7 @@ import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
-import org.fossasia.badgemagic.util.BluetoothManager
+import org.fossasia.badgemagic.util.BluetoothAdapter
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
@@ -40,7 +40,7 @@ class SavedBadgesFragment : BaseFragment() {
 
     private val viewModel by sharedViewModel<FilesViewModel>()
 
-    private val bluetoothManager: BluetoothManager by inject()
+    private val bluetoothAdapter: BluetoothAdapter by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_save, container, false)
@@ -149,7 +149,7 @@ class SavedBadgesFragment : BaseFragment() {
                     }
                     1 -> {
                         // Transfer Condition
-                        if (bluetoothManager.btAdapter.isEnabled) {
+                        if (bluetoothAdapter.isOn()) {
                             Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
                             SendingUtils.sendMessage(requireContext(), getSendData())
                         } else {
@@ -177,19 +177,13 @@ class SavedBadgesFragment : BaseFragment() {
         builder.setTitle(getString(R.string.permission_required))
         builder.setMessage(dialogMessage)
         builder.setPositiveButton("OK") { _, _ ->
-            turnOnBluetooth()
+            bluetoothAdapter.turnBluetoothOn()
             Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
         }
         builder.setNegativeButton("CANCEL") { _, _ ->
             Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
         }
         builder.create().show()
-    }
-
-    private fun turnOnBluetooth() {
-        if (bluetoothManager.btAdapter.disable()) {
-            bluetoothManager.btAdapter.enable()
-        }
     }
 
     private fun setPreviewNull() {
