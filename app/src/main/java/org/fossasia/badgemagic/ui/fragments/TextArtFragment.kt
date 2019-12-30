@@ -2,8 +2,6 @@ package org.fossasia.badgemagic.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -55,12 +53,14 @@ import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.custom.knob.Croller
+import org.fossasia.badgemagic.util.BluetoothAdapter
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
 import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.droidsonroids.gif.GifImageView
 
@@ -77,6 +77,8 @@ class TextArtFragment : BaseFragment() {
     private val modeAdapter = ModeAdapter()
 
     private val viewModel by sharedViewModel<TextArtViewModel>()
+
+    private val bluetoothAdapter: BluetoothAdapter by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -120,7 +122,7 @@ class TextArtFragment : BaseFragment() {
 
         transfer_button.setOnClickListener {
             if (textViewMainText.text.trim().toString() != "") {
-                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                if (bluetoothAdapter.isOn()) {
                     if (scanLocationPermissions()) {
                         // Easter egg
                         Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
@@ -195,21 +197,13 @@ class TextArtFragment : BaseFragment() {
         builder.setTitle(getString(R.string.permission_required))
         builder.setMessage(dialogMessage)
         builder.setPositiveButton("OK") { _, _ ->
-            turnOnBluetooth()
+            bluetoothAdapter.turnBluetoothOn()
             Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
         }
         builder.setNegativeButton("CANCEL") { _, _ ->
             Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
         }
         builder.create().show()
-    }
-
-    private fun turnOnBluetooth() {
-        val btManager = requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val btAdapter = btManager.adapter
-        if (btAdapter.disable()) {
-            btAdapter.enable()
-        }
     }
 
     private val textChangedListener = object : TextWatcher {
