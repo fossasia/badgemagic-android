@@ -21,6 +21,7 @@ import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.data.fragments.ConfigInfo
 import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
+import org.fossasia.badgemagic.util.BluetoothManager
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
@@ -39,7 +40,7 @@ class SavedBadgesFragment : BaseFragment() {
 
     private val viewModel by sharedViewModel<FilesViewModel>()
 
-    private val bluetoothManager: org.fossasia.badgemagic.util.BluetoothManager by inject()
+    private val bluetoothManager: BluetoothManager by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_save, container, false)

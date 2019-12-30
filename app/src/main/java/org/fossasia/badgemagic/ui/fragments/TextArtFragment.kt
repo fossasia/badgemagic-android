@@ -2,7 +2,6 @@ package org.fossasia.badgemagic.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -54,6 +53,7 @@ import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.custom.knob.Croller
+import org.fossasia.badgemagic.util.BluetoothManager
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
@@ -77,7 +77,8 @@ class TextArtFragment : BaseFragment() {
     private val modeAdapter = ModeAdapter()
 
     private val viewModel by sharedViewModel<TextArtViewModel>()
-    private val bluetoothManager: org.fossasia.badgemagic.util.BluetoothManager by inject()
+
+    private val bluetoothManager: BluetoothManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -121,7 +122,7 @@ class TextArtFragment : BaseFragment() {
 
         transfer_button.setOnClickListener {
             if (textViewMainText.text.trim().toString() != "") {
-                if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
+                if (bluetoothManager.btAdapter.isEnabled) {
                     if (scanLocationPermissions()) {
                         // Easter egg
                         Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
