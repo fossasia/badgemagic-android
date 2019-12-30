@@ -51,7 +51,7 @@ class StorageUtils(val context: Context) {
 
         externalStorageDir?.let {
             val files = File(externalStorageDir).listFiles() ?: return list
-            files.sortWith(Comparator<File> { a, b -> (a.lastModified() - b.lastModified()).toInt() })
+            files.sortWith(Comparator<File> { a, b -> (b.lastModified() - a.lastModified()).toInt() })
             for (i in files.indices) {
                 if (getFileExtension(files[i].name) == badgeExt) {
                     val json = files[i].readText()
@@ -60,7 +60,7 @@ class StorageUtils(val context: Context) {
                 }
             }
         }
-        return list.asReversed()
+        return list
     }
 
     private fun getFileExtension(name: String): String {
