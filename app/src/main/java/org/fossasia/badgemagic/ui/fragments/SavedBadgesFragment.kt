@@ -158,16 +158,30 @@ class SavedBadgesFragment : BaseFragment() {
                     }
                     2 -> {
                         // Delete Condition
-                        viewModel.deleteFile(item.fileName)
+                        deleteWarning(item)
                         dialog.dismiss()
-                        setPreviewNull()
-                        Toast.makeText(requireContext(), R.string.deleted_saved, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             .create()
 
         alertDialog.show()
+    }
+
+    private fun deleteWarning(item: ConfigInfo) {
+        val dialogMessage = "Are you sure want to delete this badge?"
+        val builder = android.app.AlertDialog.Builder(requireContext())
+        builder.setIcon(resources.getDrawable(R.drawable.ic_delete_black_24dp))
+        builder.setTitle("Delete")
+        builder.setMessage(dialogMessage)
+        builder.setPositiveButton("OK") { _, _ ->
+            viewModel.deleteFile(item.fileName)
+            setPreviewNull()
+            Toast.makeText(context, "Delete Badge Successfully", Toast.LENGTH_LONG).show()
+        }
+        builder.setNegativeButton("CANCEL") { _, _ ->
+        }
+        builder.create().show()
     }
 
     private fun showAlertDialog() {

@@ -2,6 +2,7 @@ package org.fossasia.badgemagic.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -26,8 +27,7 @@ class SavedClipartsAdapter(
     override fun onBindViewHolder(holder: SavedClipartsViewHolder, position: Int) {
         holder.bind(clipartList[position].bitmap)
         holder.getDeleteButton().setOnClickListener {
-            viewModel.deleteClipart(position)
-            Toast.makeText(it.context, "Delete Clipart Successfully", Toast.LENGTH_LONG).show()
+            deleteWarning(it, position)
         }
         holder.getEditButton().setOnClickListener {
             it.context.startActivity(
@@ -36,6 +36,21 @@ class SavedClipartsAdapter(
                 }
             )
         }
+    }
+
+    private fun deleteWarning(it: View, position: Int) {
+        val dialogMessage = "Are you sure want to delete this clipart?"
+        val builder = android.app.AlertDialog.Builder(it.context)
+        builder.setIcon(R.drawable.ic_delete_black_24dp)
+        builder.setTitle("Delete")
+        builder.setMessage(dialogMessage)
+        builder.setPositiveButton("OK") { _, _ ->
+            viewModel.deleteClipart(position)
+            Toast.makeText(it.context, "Delete Clipart Successfully", Toast.LENGTH_LONG).show()
+        }
+        builder.setNegativeButton("CANCEL") { _, _ ->
+        }
+        builder.create().show()
     }
 
     fun setList(list: List<SavedClipart>) {
