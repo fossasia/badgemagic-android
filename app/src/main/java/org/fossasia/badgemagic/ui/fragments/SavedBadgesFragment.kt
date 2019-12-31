@@ -169,15 +169,15 @@ class SavedBadgesFragment : BaseFragment() {
     }
 
     private fun deleteWarning(item: ConfigInfo) {
-        val dialogMessage = "Are you sure want to delete this badge?"
+        val dialogMessage = getString(R.string.badge_delete_warning)
         val builder = android.app.AlertDialog.Builder(requireContext())
         builder.setIcon(resources.getDrawable(R.drawable.ic_delete_black_24dp))
-        builder.setTitle("Delete")
+        builder.setTitle(getString(R.string.delete))
         builder.setMessage(dialogMessage)
         builder.setPositiveButton("OK") { _, _ ->
             viewModel.deleteFile(item.fileName)
             setPreviewNull()
-            Toast.makeText(context, "Delete Badge Successfully", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.delete_badge_confirm), Toast.LENGTH_LONG).show()
         }
         builder.setNegativeButton("CANCEL") { _, _ ->
         }

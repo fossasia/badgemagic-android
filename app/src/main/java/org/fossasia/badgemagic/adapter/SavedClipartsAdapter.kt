@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.fossasia.badgemagic.R
@@ -39,14 +40,14 @@ class SavedClipartsAdapter(
     }
 
     private fun deleteWarning(it: View, position: Int) {
-        val dialogMessage = "Are you sure want to delete this clipart?"
+        val dialogMessage = it.resources.getString(R.string.clipart_delete_warning)
         val builder = android.app.AlertDialog.Builder(it.context)
         builder.setIcon(R.drawable.ic_delete_black_24dp)
-        builder.setTitle("Delete")
+        builder.setTitle(it.resources.getString(R.string.delete))
         builder.setMessage(dialogMessage)
         builder.setPositiveButton("OK") { _, _ ->
             viewModel.deleteClipart(position)
-            Toast.makeText(it.context, "Delete Clipart Successfully", Toast.LENGTH_LONG).show()
+            Toast.makeText(it.context, it.resources.getString(R.string.delete_clipart_confirm), Toast.LENGTH_LONG).show()
         }
         builder.setNegativeButton("CANCEL") { _, _ ->
         }
