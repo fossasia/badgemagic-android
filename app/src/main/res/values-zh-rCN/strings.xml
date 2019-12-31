@@ -96,4 +96,8 @@
 
     <string name="share_msg">Badge Magic是一个用于控制LED名称徽章的Android应用。该应用程序提供了在LED徽章上描绘姓名，图形和简单动画的功能。 \n您也可以从下面的链接下载它 https://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
     <string name="share_using">分享使用</string>
+    <string name="badge_delete_warning">" 您确定要删除此徽章吗？"</string>
+    <string name="clipart_delete_warning">" 您确定要删除此剪贴画吗？"</string>
+    <string name="delete_badge_confirm">" 成功删除徽章"</string>
+    <string name="delete_clipart_confirm">" 成功删除剪贴画"</string>
 </resources>
