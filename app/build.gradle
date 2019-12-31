@@ -61,7 +61,12 @@ android {
                 signingConfig signingConfigs.release
         }
     }
-    dataBinding.enabled= true
+
+    dataBinding.enabled = true
+
+    packagingOptions {
+        pickFirst 'META-INF/kotlinx-serialization-runtime.kotlin_module'
+    }
 }
 
 spotless {
@@ -71,14 +76,17 @@ spotless {
     }
 }
 
+gradle.projectsEvaluated {
+    preBuild.dependsOn(spotlessApply)
+}
+
 dependencies {
+    // BadgeMagicModule
+    implementation project(':BadgeMagicModule')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin_version}"
 
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
-
-    //Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi_version}"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi_version}"
 
     //Gif Library
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'

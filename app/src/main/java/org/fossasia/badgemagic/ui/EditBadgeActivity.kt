@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit_badge.*
 import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
+import org.fossasia.badgemagic.data.BadgeConfig
 import org.fossasia.badgemagic.databinding.ActivityEditBadgeBinding
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
@@ -39,11 +39,11 @@ class EditBadgeActivity : AppCompatActivity() {
         viewModel.savedButton.observe(this, Observer {
             if (it) {
                 val badgeConfig = SendingUtils.getBadgeFromJSON(viewModel.drawingJSON.get() ?: "{}")
-                badgeConfig?.hexStrings = Converters.convertBitmapToLEDHex(
+                badgeConfig.hexStrings = Converters.convertBitmapToLEDHex(
                         Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
                         false
                 )
-                badgeConfig?.let { config -> StoreAsync(fileName, config, viewModel, storageUtils).execute() }
+                StoreAsync(fileName, badgeConfig, viewModel, storageUtils).execute()
                 Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()
                 finish()
             }
@@ -75,7 +75,7 @@ class EditBadgeActivity : AppCompatActivity() {
 
     companion object {
 
-        class StoreAsync(private val fileName: String, private val badgeConfig: BadgeConfig, private val viewModel: EditBadgeViewModel, val storageUtil: StorageUtils) : AsyncTask<Void, Void, Void>() {
+        class StoreAsync(private val fileName: String, private val badgeConfig: BadgeConfig, private val viewModel: EditBadgeViewModel, private val storageUtil: StorageUtils) : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void?): Void? {
                 storageUtil.saveEditedBadge(badgeConfig, fileName)
                 return null

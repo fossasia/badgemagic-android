@@ -16,10 +16,10 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.Nullable
 import org.fossasia.badgemagic.R
+import org.fossasia.badgemagic.data.Mode
+import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.data.badge_preview.Cell
 import org.fossasia.badgemagic.data.badge_preview.CheckList
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
 import org.fossasia.badgemagic.util.Converters.hexToBin
 
 private const val BUNDLE_STATE = "superState"

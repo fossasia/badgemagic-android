@@ -12,7 +12,7 @@ import java.math.BigInteger
 import kotlin.math.ceil
 import kotlin.math.floor
 import org.fossasia.badgemagic.data.badge_preview.CheckList
-import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
+import org.fossasia.badgemagic.device.DataToByteArrayConverter
 
 const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'

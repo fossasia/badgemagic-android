@@ -11,9 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import org.fossasia.badgemagic.R
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
-import org.fossasia.badgemagic.data.fragments.ConfigInfo
-import org.fossasia.badgemagic.util.MoshiUtils
+import org.fossasia.badgemagic.data.BadgeConfig
+import org.fossasia.badgemagic.data.ConfigInfo
+import org.fossasia.badgemagic.helpers.JSONHelper
 
 class SaveAdapter(private val context: Context?, private val list: List<ConfigInfo>, private val listener: OnSavedItemSelected) : RecyclerView.Adapter<SaveAdapter.SaveItemHolder>() {
     private var selectedPosition: Int = -1
@@ -122,13 +122,13 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                     }
             )
 
-            val badge: BadgeConfig? = MoshiUtils.getAdapter().fromJson(item.badgeJSON)
-            chipSpeed.text = (badge?.speed?.ordinal?.plus(1)).toString()
-            chipMode.text = badge?.mode?.toString()
+            val badge: BadgeConfig = JSONHelper.decodeJSON(item.badgeJSON)
+            chipSpeed.text = (badge.speed.ordinal.plus(1)).toString()
+            chipMode.text = badge.mode.toString()
 
-            chipFlash.visibility = if (badge?.isFlash == true) View.VISIBLE else View.GONE
-            chipMarquee.visibility = if (badge?.isMarquee == true) View.VISIBLE else View.GONE
-            chipInverted.visibility = if (badge?.isInverted == true) View.VISIBLE else View.GONE
+            chipFlash.visibility = if (badge.isFlash) View.VISIBLE else View.GONE
+            chipMarquee.visibility = if (badge.isMarquee) View.VISIBLE else View.GONE
+            chipInverted.visibility = if (badge.isInverted) View.VISIBLE else View.GONE
         }
 
         private fun changeCardBackgrounds() {

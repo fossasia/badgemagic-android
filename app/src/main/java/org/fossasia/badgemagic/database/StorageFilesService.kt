@@ -2,7 +2,7 @@ package org.fossasia.badgemagic.database
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.data.ConfigInfo
 import org.fossasia.badgemagic.util.StorageUtils
 import org.koin.core.KoinComponent
 import org.koin.core.inject

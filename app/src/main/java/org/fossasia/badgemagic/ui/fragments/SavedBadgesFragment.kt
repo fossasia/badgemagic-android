@@ -14,10 +14,10 @@ import kotlinx.android.synthetic.main.fragment_main_save.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
-import org.fossasia.badgemagic.data.device.model.DataToSend
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
-import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.data.ConfigInfo
+import org.fossasia.badgemagic.data.DataToSend
+import org.fossasia.badgemagic.data.Mode
+import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.BluetoothAdapter
@@ -32,7 +32,7 @@ class SavedBadgesFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-                SavedBadgesFragment()
+            SavedBadgesFragment()
     }
 
     private var recyclerAdapter: SaveAdapter? = null
@@ -93,10 +93,10 @@ class SavedBadgesFragment : BaseFragment() {
             recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
                 override fun onEdit(item: ConfigInfo?) {
                     startActivity(
-                            Intent(requireContext(), EditBadgeActivity::class.java).apply {
-                                putExtra("badgeJSON", item?.badgeJSON)
-                                putExtra("fileName", item?.fileName)
-                            }
+                        Intent(requireContext(), EditBadgeActivity::class.java).apply {
+                            putExtra("badgeJSON", item?.badgeJSON)
+                            putExtra("fileName", item?.fileName)
+                        }
                     )
                     setPreviewNull()
                     recyclerAdapter?.resetSelectedItem()
@@ -133,11 +133,11 @@ class SavedBadgesFragment : BaseFragment() {
         val intentShareFile = Intent(Intent.ACTION_SEND)
         intentShareFile.type = "text/*"
         intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                requireContext(),
-                getString(R.string.file_provider_authority),
-                File(
-                        viewModel.getAbsPath(item.fileName)
-                )))
+            requireContext(),
+            getString(R.string.file_provider_authority),
+            File(
+                viewModel.getAbsPath(item.fileName)
+            )))
         intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
         intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
 
@@ -162,14 +162,14 @@ class SavedBadgesFragment : BaseFragment() {
 
     private fun setPreviewNull() {
         preview_badge.setValue(
-                Converters.convertTextToLEDHex(
-                        " ",
-                        false
-                ).second,
-                ifMar = false,
-                ifFla = false,
-                speed = Speed.ONE,
-                mode = Mode.LEFT
+            Converters.convertTextToLEDHex(
+                " ",
+                false
+            ).second,
+            ifMar = false,
+            ifFla = false,
+            speed = Speed.ONE,
+            mode = Mode.LEFT
         )
     }
 
@@ -177,12 +177,12 @@ class SavedBadgesFragment : BaseFragment() {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
 
         preview_badge.setValue(
-                Converters.fixLEDHex(
-                        badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
-                badgeConfig?.isMarquee ?: false,
-                badgeConfig?.isFlash ?: false,
-                badgeConfig?.speed ?: Speed.ONE,
-                badgeConfig?.mode ?: Mode.LEFT
+            Converters.fixLEDHex(
+                badgeConfig.hexStrings, badgeConfig.isInverted),
+            badgeConfig.isMarquee,
+            badgeConfig.isFlash,
+            badgeConfig.speed,
+            badgeConfig.mode
         )
     }
 }

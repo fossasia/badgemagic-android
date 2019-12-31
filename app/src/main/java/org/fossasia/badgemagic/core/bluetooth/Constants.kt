@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.data.device.bluetooth
+package org.fossasia.badgemagic.core.bluetooth
 
 import java.util.UUID
 
