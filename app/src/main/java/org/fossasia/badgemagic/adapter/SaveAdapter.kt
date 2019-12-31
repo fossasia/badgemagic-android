@@ -54,6 +54,9 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
         private val chipInverted: Chip = itemView.findViewById(R.id.chip_inverted)
         private val chipSpeed: Chip = itemView.findViewById(R.id.chip_speed)
         private val chipMode: Chip = itemView.findViewById(R.id.chip_mode)
+        private val delete : AppCompatImageView  = itemView.findViewById(R.id.button_delete)
+        private val transfer : AppCompatImageView = itemView.findViewById(R.id.button_transfer)
+        private val export : AppCompatImageView = itemView.findViewById(R.id.button_export)
 
         init {
             playPause.setOnClickListener {
@@ -65,6 +68,15 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
             }
             editButton.setOnClickListener {
                 listener.onEdit(list[adapterPosition])
+            }
+            delete.setOnClickListener{
+                listener.onOptionSelectDelete(list[adapterPosition])
+            }
+            transfer.setOnClickListener{
+                listener.transfer(list[adapterPosition])
+            }
+            export.setOnClickListener{
+                listener.export(list[adapterPosition])
             }
         }
 
@@ -99,6 +111,26 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                         else -> ContextCompat.getColor(itemView.context, android.R.color.black)
                     }
             )
+            delete.setColorFilter(
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
+            )
+
+            transfer.setColorFilter(
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
+            )
+
+            export.setColorFilter(
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
+            )
 
             val badge: BadgeConfig? = MoshiUtils.getAdapter().fromJson(item.badgeJSON)
             chipSpeed.text = (badge?.speed?.ordinal?.plus(1)).toString()
@@ -128,4 +160,7 @@ interface OnSavedItemSelected {
     fun onSelected(item: ConfigInfo?)
     fun onEdit(item: ConfigInfo?)
     fun onOptionsSelected(item: ConfigInfo)
+    fun onOptionSelectDelete(item: ConfigInfo)
+    fun transfer(item: ConfigInfo)
+    fun export(item: ConfigInfo)
 }

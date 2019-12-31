@@ -107,6 +107,23 @@ class SavedBadgesFragment : BaseFragment() {
                     showLoadAlert(item)
                 }
 
+                override fun onOptionSelectDelete(item: ConfigInfo) {
+                    deleteWarning(item)
+                }
+
+                override fun transfer(item: ConfigInfo) {
+                    transferItem(item)
+                }
+
+                override fun export(item: ConfigInfo) {
+                    if (bluetoothAdapter.isOn()) {
+                        Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                        SendingUtils.sendMessage(requireContext(), getSendData())
+                    } else {
+                        showAlertDialog()
+                    }
+
+                }
                 override fun onSelected(item: ConfigInfo?) {
                     if (item != null)
                         setPreview(item.badgeJSON)
@@ -117,6 +134,22 @@ class SavedBadgesFragment : BaseFragment() {
             savedConfigRecyclerView.adapter = recyclerAdapter
             updateEmptyLayout()
         })
+    }
+
+    private fun transferItem(item: ConfigInfo) {
+        val intentShareFile = Intent(Intent.ACTION_SEND)
+        intentShareFile.type = "text/*"
+        intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                requireContext(),
+                getString(R.string.file_provider_authority),
+                File(
+                        viewModel.getAbsPath(item.fileName)
+                )))
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
+
+        this.startActivity(Intent.createChooser(intentShareFile, item.fileName))
+
     }
 
     private fun showLoadAlert(item: ConfigInfo) {
