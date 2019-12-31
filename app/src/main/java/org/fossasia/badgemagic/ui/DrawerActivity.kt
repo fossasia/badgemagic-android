@@ -168,7 +168,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         nav_view.setNavigationItemSelectedListener(this)
         if (!viewModel.swappingOrientation)
             when (intent.action) {
-                Intent.ACTION_MAIN, "org.fossasia.badgemagic.createBadge.shortcut" -> {
+                "org.fossasia.badgemagic.createBadge.shortcut" -> {
                     switchFragment(TextArtFragment.newInstance())
                     showMenu?.setGroupVisible(R.id.saved_group, false)
                     nav_view.setCheckedItem(R.id.create)
