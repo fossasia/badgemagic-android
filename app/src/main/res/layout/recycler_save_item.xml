@@ -45,7 +45,7 @@
                         android:id="@+id/play_pause"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:minHeight="@dimen/title_min_height_large"
@@ -55,27 +55,17 @@
                         android:id="@+id/button_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:minHeight="@dimen/title_min_height_large"
                         app:srcCompat="@drawable/ic_draw_pencil" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/button_delete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_large"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:minHeight="@dimen/title_min_height_large"
-                        app:srcCompat="@drawable/ic_delete_black_24dp" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/button_export"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:minHeight="@dimen/title_min_height_large"
@@ -85,20 +75,22 @@
                         android:id="@+id/button_transfer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:minHeight="@dimen/title_min_height_large"
                         app:srcCompat="@drawable/ic_send_black_24dp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/options"
+                        android:id="@+id/button_delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_normal"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:minHeight="@dimen/title_min_height_large"
-                        app:srcCompat="@drawable/ic_settings" />
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
