@@ -74,7 +74,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:minHeight="@dimen/title_min_height_large"
-                    app:srcCompat="@drawable/ic_send_black_24dp" />
+                    app:srcCompat="@drawable/ic_share" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/button_delete"
