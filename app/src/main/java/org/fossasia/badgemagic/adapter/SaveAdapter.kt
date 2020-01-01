@@ -46,7 +46,6 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
 
         private val card: LinearLayout = itemView.findViewById(R.id.card)
         private val text: TextView = itemView.findViewById(R.id.text)
-        private val options: AppCompatImageView = itemView.findViewById(R.id.options)
         private val playPause: AppCompatImageView = itemView.findViewById(R.id.play_pause)
         private val editButton: AppCompatImageView = itemView.findViewById(R.id.button_edit)
         private val chipFlash: Chip = itemView.findViewById(R.id.chip_flash)
@@ -54,17 +53,26 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
         private val chipInverted: Chip = itemView.findViewById(R.id.chip_inverted)
         private val chipSpeed: Chip = itemView.findViewById(R.id.chip_speed)
         private val chipMode: Chip = itemView.findViewById(R.id.chip_mode)
+        private val delete: AppCompatImageView = itemView.findViewById(R.id.button_delete)
+        private val transfer: AppCompatImageView = itemView.findViewById(R.id.button_transfer)
+        private val export: AppCompatImageView = itemView.findViewById(R.id.button_export)
 
         init {
             playPause.setOnClickListener {
                 changeCardBackgrounds()
                 listener.onSelected(if (selectedPosition == -1) null else list[selectedPosition])
             }
-            options.setOnClickListener {
-                listener.onOptionsSelected(list[adapterPosition])
-            }
             editButton.setOnClickListener {
                 listener.onEdit(list[adapterPosition])
+            }
+            delete.setOnClickListener {
+                listener.onOptionSelectDelete(list[adapterPosition])
+            }
+            transfer.setOnClickListener {
+                listener.transfer(list[adapterPosition])
+            }
+            export.setOnClickListener {
+                listener.export(list[adapterPosition])
             }
         }
 
@@ -93,7 +101,21 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                         else -> ContextCompat.getColor(itemView.context, android.R.color.black)
                     }
             )
-            options.setColorFilter(
+            delete.setColorFilter(
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
+            )
+
+            transfer.setColorFilter(
+                    when {
+                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                    }
+            )
+
+            export.setColorFilter(
                     when {
                         selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
                         else -> ContextCompat.getColor(itemView.context, android.R.color.black)
@@ -127,5 +149,7 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
 interface OnSavedItemSelected {
     fun onSelected(item: ConfigInfo?)
     fun onEdit(item: ConfigInfo?)
-    fun onOptionsSelected(item: ConfigInfo)
+    fun onOptionSelectDelete(item: ConfigInfo)
+    fun transfer(item: ConfigInfo)
+    fun export(item: ConfigInfo)
 }
