@@ -87,7 +87,9 @@
     <string name="licences">Licences Dialog</string>
     <string name="licences_copy">Copyright 2013 Philip Schiffer</string>
     <string name="empty_saved_section">Looks like there are no saved badges yet</string>
+    <string name="empty_saved_clipart_message">Looks like there are no saved cliparts yet</string>
     <string name="empty_saved_section_title">No Saved Badges !</string>
+    <string name="empty_saved_cliparts_title">No Saved Cliparts !</string>
     <string name="create">Create Badge</string>
     <string name="saved">Saved Badges</string>
     <string name="disabled">App shortcuts are not supported on your device.</string>

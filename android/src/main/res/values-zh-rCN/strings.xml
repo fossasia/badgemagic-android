@@ -98,8 +98,9 @@
     <string name="share_using">分享使用</string>
     <string name="badge_delete_warning">" 您确定要删除此徽章吗？"</string>
     <string name="clipart_delete_warning">" 您确定要删除此剪贴画吗？"</string>
-    <string name="delete_badge_confirm">徽章已成功刪除</string>
-    <string name="delete_clipart_confirm">剪貼畫已成功刪除</string>
+    <string name="delete_badge_confirm">" 成功删除徽章"</string>
+    <string name="delete_clipart_confirm">" 成功删除剪贴画"</string>
+    <string name="empty_saved_clipart_message">看起来还没有保存的剪贴画</string>
+    <string name="empty_saved_cliparts_title">没有保存的剪贴画！</string>
     <string name="rate_app">評價我們</string>
-
 </resources>

@@ -9,9 +9,65 @@
             type="org.fossasia.badgemagic.viewmodels.SavedClipartViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/card_spacing"
-        app:setAdapter="@{viewModel.getAdapter()}" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/empty_saved_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <org.fossasia.badgemagic.ui.custom.SquareImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical|clip_horizontal"
+                android:layout_marginEnd="@dimen/saved_badges_image"
+                android:layout_marginStart="@dimen/saved_badges_image"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_emoji" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/empty_saved_cliparts_title"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/header_text_size" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1.1"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/empty_saved_clipart_message"
+                    android:textAlignment="center"
+                    android:textColor="#191919"
+                    android:textSize="@dimen/content_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/card_spacing"
+            app:setAdapter="@{viewModel.getAdapter()}" />
+
+    </FrameLayout>
+
 </layout>

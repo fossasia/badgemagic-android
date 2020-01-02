@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_saved_cliparts.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.SavedClipart
 import org.fossasia.badgemagic.databinding.FragmentSavedClipartsBinding
@@ -37,6 +38,7 @@ class SavedClipartFragment : BaseFragment() {
             viewModel.adapter.setList(
                 list.map { SavedClipart(it.key, ImageUtils.convertToBitmap(it.value)) }
             )
+            empty_saved_layout.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         })
     }
 }
