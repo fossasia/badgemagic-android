@@ -22,13 +22,13 @@
             android:visibility="gone">
 
             <org.fossasia.badgemagic.ui.custom.SquareImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center|center_vertical|clip_horizontal"
                 android:layout_marginEnd="@dimen/saved_badges_image"
                 android:layout_marginStart="@dimen/saved_badges_image"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_emoji" />
+                app:srcCompat="@drawable/ic_sad_empty" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="48dp"
                     android:fontFamily="sans-serif"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
@@ -50,6 +50,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
                     android:lineSpacingMultiplier="1.1"
