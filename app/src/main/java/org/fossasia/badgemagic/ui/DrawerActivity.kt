@@ -74,6 +74,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun defaultFragment() {
         if (supportFragmentManager.findFragmentById(R.id.frag_container) == null) {
             switchFragment(TextArtFragment())
+            nav_view.setCheckedItem(R.id.create)
         }
     }
 
