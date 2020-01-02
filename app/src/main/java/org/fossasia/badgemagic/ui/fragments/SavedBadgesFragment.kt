@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,7 +32,7 @@ class SavedBadgesFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            SavedBadgesFragment()
+                SavedBadgesFragment()
     }
 
     private var recyclerAdapter: SaveAdapter? = null
@@ -94,10 +93,10 @@ class SavedBadgesFragment : BaseFragment() {
             recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
                 override fun onEdit(item: ConfigInfo?) {
                     startActivity(
-                        Intent(requireContext(), EditBadgeActivity::class.java).apply {
-                            putExtra("badgeJSON", item?.badgeJSON)
-                            putExtra("fileName", item?.fileName)
-                        }
+                            Intent(requireContext(), EditBadgeActivity::class.java).apply {
+                                putExtra("badgeJSON", item?.badgeJSON)
+                                putExtra("fileName", item?.fileName)
+                            }
                     )
                     setPreviewNull()
                     recyclerAdapter?.resetSelectedItem()
@@ -112,13 +111,12 @@ class SavedBadgesFragment : BaseFragment() {
                 }
 
                 override fun export(item: ConfigInfo) {
-                    if (bluetoothAdapter.isOn()) {
+                    if (bluetoothAdapter.isTurnedOn(requireContext())) {
                         Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
                         SendingUtils.sendMessage(requireContext(), getSendData())
-                    } else {
-                        showAlertDialog()
                     }
                 }
+
                 override fun onSelected(item: ConfigInfo?) {
                     if (item != null)
                         setPreview(item.badgeJSON)
@@ -162,32 +160,16 @@ class SavedBadgesFragment : BaseFragment() {
         builder.create().show()
     }
 
-    private fun showAlertDialog() {
-        val dialogMessage = getString(R.string.enable_bluetooth)
-        val builder = android.app.AlertDialog.Builder(requireContext())
-        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
-        builder.setTitle(getString(R.string.permission_required))
-        builder.setMessage(dialogMessage)
-        builder.setPositiveButton("OK") { _, _ ->
-            bluetoothAdapter.turnBluetoothOn()
-            Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
-        }
-        builder.setNegativeButton("CANCEL") { _, _ ->
-            Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
-        }
-        builder.create().show()
-    }
-
     private fun setPreviewNull() {
         preview_badge.setValue(
-            Converters.convertTextToLEDHex(
-                " ",
-                false
-            ).second,
-            false,
-            false,
-            Speed.ONE,
-            Mode.LEFT
+                Converters.convertTextToLEDHex(
+                        " ",
+                        false
+                ).second,
+                ifMar = false,
+                ifFla = false,
+                speed = Speed.ONE,
+                mode = Mode.LEFT
         )
     }
 
@@ -195,12 +177,12 @@ class SavedBadgesFragment : BaseFragment() {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
 
         preview_badge.setValue(
-            Converters.fixLEDHex(
-                badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
-            badgeConfig?.isMarquee ?: false,
-            badgeConfig?.isFlash ?: false,
-            badgeConfig?.speed ?: Speed.ONE,
-            badgeConfig?.mode ?: Mode.LEFT
+                Converters.fixLEDHex(
+                        badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted ?: false),
+                badgeConfig?.isMarquee ?: false,
+                badgeConfig?.isFlash ?: false,
+                badgeConfig?.speed ?: Speed.ONE,
+                badgeConfig?.mode ?: Mode.LEFT
         )
     }
 }
