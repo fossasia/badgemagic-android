@@ -1,1 +1,1 @@
-include ':app', ':BadgeMagicModule'
+include ':android', ':BadgeMagicModule'
