@@ -8,14 +8,15 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
-import org.fossasia.badgemagic.data.fragments.CONF_FLASH
-import org.fossasia.badgemagic.data.fragments.CONF_HEX_STRINGS
-import org.fossasia.badgemagic.data.fragments.CONF_INVERTED
-import org.fossasia.badgemagic.data.fragments.CONF_MARQUEE
-import org.fossasia.badgemagic.data.fragments.CONF_MODE
-import org.fossasia.badgemagic.data.fragments.CONF_SPEED
-import org.fossasia.badgemagic.data.fragments.ConfigInfo
+import org.fossasia.badgemagic.data.BadgeConfig
+import org.fossasia.badgemagic.data.CONF_FLASH
+import org.fossasia.badgemagic.data.CONF_HEX_STRINGS
+import org.fossasia.badgemagic.data.CONF_INVERTED
+import org.fossasia.badgemagic.data.CONF_MARQUEE
+import org.fossasia.badgemagic.data.CONF_MODE
+import org.fossasia.badgemagic.data.CONF_SPEED
+import org.fossasia.badgemagic.data.ConfigInfo
+import org.fossasia.badgemagic.helpers.JSONHelper
 import org.json.JSONObject
 
 class StorageUtils(val context: Context) {
@@ -146,10 +147,10 @@ class StorageUtils(val context: Context) {
         return result
     }
 
-    fun saveEditedBadge(badgeConfig: BadgeConfig?, fileName: String) {
+    fun saveEditedBadge(badgeConfig: BadgeConfig, fileName: String) {
         checkDirectory()
         val saveFile = File(externalStorageDir, fileName)
-        saveFile.writeText(MoshiUtils.getAdapter().toJson(badgeConfig))
+        saveFile.writeText(JSONHelper.encodeJSON(badgeConfig))
     }
 
     fun saveClipArt(bitmap: Bitmap): Boolean {

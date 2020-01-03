@@ -4,15 +4,16 @@ import android.content.Context
 import android.widget.Toast
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.core.utils.ByteArrayUtils
-import org.fossasia.badgemagic.data.device.DataToByteArrayConverter
-import org.fossasia.badgemagic.data.device.bluetooth.GattClient
-import org.fossasia.badgemagic.data.device.bluetooth.ScanHelper
-import org.fossasia.badgemagic.data.device.model.DataToSend
-import org.fossasia.badgemagic.data.device.model.Message
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
-import org.fossasia.badgemagic.data.fragments.BadgeConfig
+import org.fossasia.badgemagic.core.bluetooth.GattClient
+import org.fossasia.badgemagic.core.bluetooth.ScanHelper
+import org.fossasia.badgemagic.data.BadgeConfig
+import org.fossasia.badgemagic.data.DataToSend
+import org.fossasia.badgemagic.data.Message
+import org.fossasia.badgemagic.data.Mode
+import org.fossasia.badgemagic.data.Speed
+import org.fossasia.badgemagic.device.DataToByteArrayConverter
+import org.fossasia.badgemagic.helpers.JSONHelper
+import org.fossasia.badgemagic.utils.ByteArrayUtils
 
 object SendingUtils {
 
@@ -20,7 +21,7 @@ object SendingUtils {
     private val gattClient = GattClient()
 
     fun sendMessage(context: Context, dataToSend: DataToSend) {
-        Timber.i { "About to send data: $dataToSend" }
+        Timber.i { "About to send org.fossasia.badgemagic.data: $dataToSend" }
         val byteData = DataToByteArrayConverter.convert(dataToSend)
         sendBytes(context, byteData)
     }
@@ -35,7 +36,7 @@ object SendingUtils {
 
         scanHelper.startLeScan { device ->
             if (device == null) {
-                Timber.e { "Scan could not find any device" }
+                Timber.e { "Scan could not find any org.fossasia.badgemagic.device" }
                 Toast.makeText(context, R.string.no_device_found, Toast.LENGTH_SHORT).show()
             } else {
                 Timber.e { "Device found: $device" }
@@ -64,22 +65,21 @@ object SendingUtils {
                 " ",
                 false
             ).second,
-            false,
-            false,
-            Speed.ONE,
-            Mode.LEFT
+            flash = false,
+            marquee = false,
+            speed = Speed.ONE,
+            mode = Mode.LEFT
         )))
     }
 
     fun returnMessageWithJSON(badgeJSON: String): DataToSend {
         val badgeConfig = getBadgeFromJSON(badgeJSON)
         return DataToSend(listOf(Message(
-            Converters.fixLEDHex(badgeConfig?.hexStrings ?: listOf(), badgeConfig?.isInverted
-                ?: false),
-            badgeConfig?.isMarquee ?: false,
-            badgeConfig?.isFlash ?: false,
-            badgeConfig?.speed ?: Speed.ONE,
-            badgeConfig?.mode ?: Mode.LEFT
+            Converters.fixLEDHex(badgeConfig.hexStrings, badgeConfig.isInverted),
+            badgeConfig.isMarquee,
+            badgeConfig.isFlash,
+            badgeConfig.speed,
+            badgeConfig.mode
         )))
     }
 
@@ -92,8 +92,8 @@ object SendingUtils {
         bConfig.mode = data.mode
         bConfig.speed = data.speed
 
-        return MoshiUtils.getAdapter().toJson(bConfig)
+        return JSONHelper.encodeJSON(bConfig)
     }
 
-    internal fun getBadgeFromJSON(json: String): BadgeConfig? = MoshiUtils.getAdapter().fromJson(json)
+    internal fun getBadgeFromJSON(json: String): BadgeConfig = JSONHelper.decodeJSON(json)
 }

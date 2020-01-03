@@ -40,12 +40,12 @@ import org.fossasia.badgemagic.adapter.OnDrawableSelected
 import org.fossasia.badgemagic.adapter.OnModeSelected
 import org.fossasia.badgemagic.core.android.ext.hideKeyboard
 import org.fossasia.badgemagic.core.android.ext.showKeyboard
+import org.fossasia.badgemagic.data.DataToSend
 import org.fossasia.badgemagic.data.DrawableInfo
+import org.fossasia.badgemagic.data.Message
+import org.fossasia.badgemagic.data.Mode
 import org.fossasia.badgemagic.data.ModeInfo
-import org.fossasia.badgemagic.data.device.model.DataToSend
-import org.fossasia.badgemagic.data.device.model.Message
-import org.fossasia.badgemagic.data.device.model.Mode
-import org.fossasia.badgemagic.data.device.model.Speed
+import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.custom.knob.Croller

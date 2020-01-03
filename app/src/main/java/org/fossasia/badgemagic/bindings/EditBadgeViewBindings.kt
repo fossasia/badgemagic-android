@@ -17,7 +17,7 @@ fun setBadgeDrawState(badge: DrawBadgeLayout, drawModeState: ObservableField<Dra
 @BindingAdapter("drawingBadgeJSON")
 fun setEditBadgeValues(badge: DrawBadgeLayout, drawJSON: ObservableField<String>) {
     val badgeConfig = SendingUtils.getBadgeFromJSON(drawJSON.get() ?: "{}")
-    badgeConfig?.hexStrings?.let { badge.setValue(it) }
+    badge.setValue(badgeConfig.hexStrings)
 }
 
 @BindingAdapter("drawingClipartJSON")

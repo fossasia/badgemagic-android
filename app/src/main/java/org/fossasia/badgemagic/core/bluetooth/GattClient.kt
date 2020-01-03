@@ -1,4 +1,4 @@
-package org.fossasia.badgemagic.data.device.bluetooth
+package org.fossasia.badgemagic.core.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothGatt
@@ -10,9 +10,9 @@ import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
 import java.util.LinkedList
 import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.core.utils.ByteArrayUtils
-import org.fossasia.badgemagic.data.device.bluetooth.Constants.CHARACTERISTIC_UUID
-import org.fossasia.badgemagic.data.device.bluetooth.Constants.SERVICE_UUID
+import org.fossasia.badgemagic.core.bluetooth.Constants.CHARACTERISTIC_UUID
+import org.fossasia.badgemagic.core.bluetooth.Constants.SERVICE_UUID
+import org.fossasia.badgemagic.utils.ByteArrayUtils
 
 class GattClient {
 
