@@ -2,18 +2,14 @@ package org.fossasia.badgemagic.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
-import android.location.LocationManager
 import android.os.AsyncTask
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -122,47 +118,28 @@ class TextArtFragment : BaseFragment() {
 
         transfer_button.setOnClickListener {
             if (textViewMainText.text.trim().toString() != "") {
-                if (bluetoothAdapter.isOn()) {
-                    if (scanLocationPermissions()) {
-                        // Easter egg
-                        Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                if (bluetoothAdapter.isTurnedOn(requireContext())) {
+                    // Easter egg
+                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
 
-                        transfer_button.visibility = View.GONE
-                        send_progress.visibility = View.VISIBLE
+                    transfer_button.visibility = View.GONE
+                    send_progress.visibility = View.VISIBLE
 
-                        val buttonTimer = Timer()
-                        buttonTimer.schedule(object : TimerTask() {
-                            override fun run() {
-                                activity?.runOnUiThread {
-                                    transfer_button.visibility = View.VISIBLE
-                                    send_progress.visibility = View.GONE
-                                }
+                    val buttonTimer = Timer()
+                    buttonTimer.schedule(object : TimerTask() {
+                        override fun run() {
+                            activity?.runOnUiThread {
+                                transfer_button.visibility = View.VISIBLE
+                                send_progress.visibility = View.GONE
                             }
-                        }, SCAN_TIMEOUT_MS)
+                        }
+                    }, SCAN_TIMEOUT_MS)
 
-                        SendingUtils.sendMessage(requireContext(), getSendData())
-                    }
-                } else
-                    showAlertDialog()
+                    SendingUtils.sendMessage(requireContext(), getSendData())
+                }
             } else
                 Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun scanLocationPermissions(): Boolean {
-        val lm = requireContext().getSystemService(Context.LOCATION_SERVICE)
-        if (lm is LocationManager) {
-            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                AlertDialog.Builder(requireContext())
-                        .setMessage(R.string.no_gps_enabled)
-                        .setPositiveButton("OK") { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                        .setNegativeButton("Cancel", null)
-                        .show()
-                return false
-            }
-            return true
-        }
-        return false
     }
 
     private fun startSaveFile() {
@@ -188,22 +165,6 @@ class TextArtFragment : BaseFragment() {
             false
         } else
             true
-    }
-
-    private fun showAlertDialog() {
-        val dialogMessage = getString(R.string.enable_bluetooth)
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setIcon(resources.getDrawable(R.drawable.ic_caution))
-        builder.setTitle(getString(R.string.permission_required))
-        builder.setMessage(dialogMessage)
-        builder.setPositiveButton("OK") { _, _ ->
-            bluetoothAdapter.turnBluetoothOn()
-            Toast.makeText(context, R.string.bluetooth_enabled, Toast.LENGTH_SHORT).show()
-        }
-        builder.setNegativeButton("CANCEL") { _, _ ->
-            Toast.makeText(context, R.string.enable_bluetooth, Toast.LENGTH_SHORT).show()
-        }
-        builder.create().show()
     }
 
     private val textChangedListener = object : TextWatcher {
