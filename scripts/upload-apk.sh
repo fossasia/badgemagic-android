@@ -14,9 +14,9 @@ else
 	rm -rf badge-magic-dev*
 fi
 
-find ../app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
+find ../android/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
 
-for file in app*; do
+for file in android*; do
     if [[ $file =~ ".aab" ]]; then
         mv $file badge-magic-$TRAVIS_BRANCH-$file
     else
