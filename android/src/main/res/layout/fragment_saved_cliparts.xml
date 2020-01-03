@@ -28,7 +28,7 @@
                 android:layout_marginEnd="@dimen/saved_badges_image"
                 android:layout_marginStart="@dimen/saved_badges_image"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_sad_empty" />
+                app:srcCompat="@drawable/ic_empty_list" />
 
             <LinearLayout
                 android:layout_width="match_parent"
