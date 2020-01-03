@@ -1,6 +1,6 @@
 jobs:
   include:
-    - stage: build android and ios-framework
+    - name: Build Android
       language: android
       dist: trusty
       sudo: true
@@ -15,7 +15,7 @@ jobs:
       before_cache:
         - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
       cache:
-        bundler : true
+        bundler: true
         directories:
           - "${TRAVIS_BUILD_DIR}/gradle/caches/"
           - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
@@ -48,14 +48,48 @@ jobs:
           on:
             all_branches: true
             repo: fossasia/badge-magic-android
+    - name: Build iOS
+      os: osx
+      osx_image: xcode11.3
+      language: objective-c
+
+      before_cache:
+        - brew cleanup
+
+      cache:
+        bundler: true
+        directories:
+          - $HOME/.konan
+          - $HOME/Library/Caches/Homebrew
+
+      before_script:
+        # Java Installation
+        - java -version
+        - sudo rm -rf /Library/Java/*
+        - sudo rm -rf /Library/PreferencePanes/Java*
+        - sudo rm -rf /Library/Internet\ Plug-Ins/Java*
+        - brew tap AdoptOpenJDK/openjdk
+        - brew cask install adoptopenjdk8
+        - java -version
+        # -----------
+        # -----------
+        # Remove Project from gradle.settings
+        - echo "include ':BadgeMagicModule'" > settings.gradle
+        # -----------
+        - brew install swiftlint
+        - ./gradlew BadgeMagicModule:packForXcode --stacktrace
+        - cp -r BadgeMagicModule/build/xcode-frameworks/BadgeMagicModule.framework iOS/badgemagic
+
+      script:
+        - cd iOS
+        - bundle exec fastlane run swiftlint strict:"true"
+        - bundle exec fastlane gym --skip_codesigning --skip_archive --skip_package_ipa
+
+      deploy:
         - provider: script
           skip_cleanup: true
           script: bash scripts/upload-ios-framework.sh
           on:
             all_branches: true
+            condition: $TRAVIS_BRANCH =~ ^(master|development)$
             repo: fossasia/badge-magic-android
-    - stage: build ios
-      os: osx
-      osx_image: xcode11.3
-      language: objective-c
-      script: echo "Hello IOS"

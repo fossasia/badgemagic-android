@@ -8,3 +8,5 @@ local.properties
 # IntelliJ
 *.iml
 .idea/
+
+.DS_Store
