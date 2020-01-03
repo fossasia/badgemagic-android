@@ -62,11 +62,20 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         if (intent.action == Intent.ACTION_VIEW)
             importFile(intent)
 
+        setDefaultFragment()
+
         setupDrawerAndToolbar()
 
         prepareForScan()
 
         handleIfReceiveIntent()
+    }
+
+    private fun setDefaultFragment() {
+        if (supportFragmentManager.findFragmentById(R.id.frag_container) == null) {
+            switchFragment(TextArtFragment())
+            nav_view.setCheckedItem(R.id.create)
+        }
     }
 
     private fun handleIfReceiveIntent() {
