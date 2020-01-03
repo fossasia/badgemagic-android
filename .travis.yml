@@ -32,6 +32,7 @@ jobs:
       script:
         - ./gradlew spotlessCheck
         - ./gradlew build --stacktrace
+        - ./gradlew :BadgeMagicModule:packForXcode --stacktrace
 
       deploy:
         - provider: script
