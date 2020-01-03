@@ -6,8 +6,9 @@ git config --global user.email "noreply+travis@fossasia.org"
 git clone --quiet --branch=ios-framework https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android ios-framework > /dev/null
 cd ios-framework
 
-rm -rf *
-cp -r ../BadgeMagicModule/build/xcode-frameworks/BadgeMagicModule.framework .
+rm -rf $TRAVIS_BRANCH
+
+mkdir -p $TRAVIS_BRANCH && cp -r ../BadgeMagicModule/build/xcode-frameworks/BadgeMagicModule.framework $TRAVIS_BRANCH/.
 
 git checkout --orphan temporary
 
