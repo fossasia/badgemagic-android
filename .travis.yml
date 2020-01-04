@@ -32,7 +32,6 @@ jobs:
       script:
         - ./gradlew spotlessCheck
         - ./gradlew build --stacktrace
-        - ./gradlew :BadgeMagicModule:packForXcode --stacktrace
 
       deploy:
         - provider: script
@@ -48,6 +47,7 @@ jobs:
           on:
             all_branches: true
             repo: fossasia/badge-magic-android
+
     - name: Build iOS
       os: osx
       osx_image: xcode11.3
@@ -61,6 +61,10 @@ jobs:
         directories:
           - $HOME/.konan
           - $HOME/Library/Caches/Homebrew
+          - "${TRAVIS_BUILD_DIR}/gradle/caches/"
+          - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
+          - "$HOME/.gradle/caches/"
+          - "$HOME/.gradle/wrapper/"
 
       before_script:
         # Java Installation
@@ -84,6 +88,7 @@ jobs:
         - cd iOS
         - bundle exec fastlane run swiftlint strict:"true"
         - bundle exec fastlane gym --skip_codesigning --skip_archive --skip_package_ipa
+        - cd ..
 
       deploy:
         - provider: script
