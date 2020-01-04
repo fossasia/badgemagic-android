@@ -24,6 +24,10 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_menu_settings"
             android:title="@string/drawer_settings" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/drawer_about_us" />
     </group>
 
     <item android:title="@string/drawer_other">
@@ -36,10 +40,6 @@
                 android:id="@+id/share_app_details"
                 android:icon="@drawable/ic_share"
                 android:title="@string/drawer_share_app" />
-            <item
-                android:id="@+id/about"
-                android:icon="@drawable/ic_menu_about"
-                android:title="@string/drawer_about_us" />
             <item
                 android:id="@+id/feedback"
                 android:icon="@drawable/ic_menu_bug"
