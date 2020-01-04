@@ -100,4 +100,7 @@
     <string name="clipart_delete_warning">" 您确定要删除此剪贴画吗？"</string>
     <string name="delete_badge_confirm">" 成功删除徽章"</string>
     <string name="delete_clipart_confirm">" 成功删除剪贴画"</string>
+    <string name="yes">是</string>
+    <string name="no">没有</string>
+    <string name="exit_dialog_msg">您要退出Badge Magic吗？</string>
 </resources>

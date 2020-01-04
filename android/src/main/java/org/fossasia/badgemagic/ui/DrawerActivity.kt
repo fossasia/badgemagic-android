@@ -339,7 +339,14 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            val builder = AlertDialog.Builder(this)
+            builder.setIcon(android.R.drawable.ic_dialog_alert)
+            builder.setMessage(R.string.exit_dialog_msg)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes) { dialog, id -> super.onBackPressed() }
+                    .setNegativeButton(R.string.no) { dialog, id -> dialog.cancel() }
+            val alert = builder.create()
+            alert.show()
         }
     }
 
