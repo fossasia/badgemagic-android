@@ -160,6 +160,9 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_msg))
                             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_using)))
                         }
+                        R.id.rate_app -> {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + applicationContext.packageName)))
+                        }
                         R.id.about -> {
                             switchFragment(AboutFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
