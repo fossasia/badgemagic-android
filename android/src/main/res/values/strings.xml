@@ -15,8 +15,8 @@
     <string name="enable_bluetooth">You must turn Bluetooth on to use send feature</string>
     <string name="badge_delete_warning">Are you sure want to delete this badge?</string>
     <string name="clipart_delete_warning">Are you sure want to delete this clipart?</string>
-    <string name="delete_badge_confirm">Delete Badge Successfully</string>
-    <string name="delete_clipart_confirm">Delete Clipart Successfully</string>
+    <string name="delete_badge_confirm">Badge deleted Successfully</string>
+    <string name="delete_clipart_confirm">Clipart deleted Successfully</string>
 
     <string name="flash">Flash</string>
     <string name="marquee">Marquee</string>
