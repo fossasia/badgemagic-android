@@ -111,4 +111,5 @@
 
     <string name="share_msg">Badge Magic is an Android app to control LED name badges. This app provides features to portray names, graphics and simple animations on LED badges. \nYou can also download it from below link \nhttps://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
     <string name="share_using">Share Using</string>
+    <string name="rate_app">Rate Us</string>
 </resources>

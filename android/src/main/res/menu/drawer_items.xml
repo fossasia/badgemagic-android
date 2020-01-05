@@ -41,6 +41,10 @@
                 android:icon="@drawable/ic_share"
                 android:title="@string/drawer_share_app" />
             <item
+                android:id="@+id/rate_app"
+                android:icon="@drawable/ic_star"
+                android:title="@string/rate_app" />
+            <item
                 android:id="@+id/feedback"
                 android:icon="@drawable/ic_menu_bug"
                 android:title="@string/drawer_feedback" />
