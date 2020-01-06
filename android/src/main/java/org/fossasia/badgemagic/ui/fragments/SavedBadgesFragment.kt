@@ -56,9 +56,11 @@ class SavedBadgesFragment : BaseFragment() {
         if (viewModel.getFiles().value.isNullOrEmpty()) {
             saved_text.visibility = View.GONE
             empty_saved_layout.visibility = View.VISIBLE
+            preview_badge.visibility = View.GONE
         } else {
             saved_text.visibility = View.VISIBLE
             empty_saved_layout.visibility = View.GONE
+            preview_badge.visibility = View.VISIBLE
         }
     }
 

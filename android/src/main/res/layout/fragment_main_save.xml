@@ -2,13 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <org.fossasia.badgemagic.ui.custom.PreviewBadge
         android:id="@+id/preview_badge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/empty_saved_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <org.fossasia.badgemagic.ui.custom.SquareImageView
+            android:layout_width="@dimen/empty_icon_size"
+            android:layout_height="@dimen/empty_icon_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/saved_badges_image"
+            android:layout_marginStart="@dimen/saved_badges_image"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_empty_list" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38dp"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/empty_saved_section_title"
+            android:textColor="#000000"
+            android:textSize="@dimen/header_text_size" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:lineSpacingMultiplier="1.1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/empty_saved_section"
+            android:textAlignment="center"
+            android:textColor="#191919"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,60 +71,12 @@
             android:textStyle="bold"
             android:typeface="normal" />
 
-        <LinearLayout
-            android:id="@+id/empty_saved_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <org.fossasia.badgemagic.ui.custom.SquareImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_vertical|clip_horizontal"
-                android:layout_marginEnd="@dimen/saved_badges_image"
-                android:layout_marginStart="@dimen/saved_badges_image"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_emoji" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/empty_saved_section_title"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/header_text_size" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:lineSpacingMultiplier="1.1"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/empty_saved_section"
-                    android:textAlignment="center"
-                    android:textColor="#191919"
-                    android:textSize="@dimen/content_text_size" />
-            </LinearLayout>
-        </LinearLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedConfigRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small">
+            android:layout_marginTop="@dimen/spacing_small"/>
 
-        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+
 </LinearLayout>
