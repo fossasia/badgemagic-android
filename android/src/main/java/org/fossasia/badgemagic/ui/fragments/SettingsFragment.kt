@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment() {
 
+    lateinit var snackbar: Snackbar
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -34,13 +35,19 @@ class SettingsFragment : BaseFragment() {
 
         viewModel.changedLanguage.observe(viewLifecycleOwner, Observer {
 
-            Snackbar
+            snackbar = Snackbar
                 .make(view, requireContext().getString(R.string.change_language), Snackbar.LENGTH_INDEFINITE)
                 .setAction("RESTART") {
                     requireActivity().finishAffinity()
                     startActivity(requireActivity().intent)
                 }
-                .show()
+
+            snackbar.show()
         })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        snackbar.dismiss()
     }
 }
