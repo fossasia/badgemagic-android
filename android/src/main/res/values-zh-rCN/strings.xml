@@ -103,4 +103,6 @@
     <string name="empty_saved_clipart_message">看起来还没有保存的剪贴画</string>
     <string name="empty_saved_cliparts_title">没有保存的剪贴画！</string>
     <string name="rate_app">評價我們</string>
+    <string name="select_badge">选择徽章</string>
+    <string name="changed_badge">徽章现在更改为</string>
 </resources>

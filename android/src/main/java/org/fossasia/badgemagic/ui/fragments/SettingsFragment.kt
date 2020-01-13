@@ -10,7 +10,9 @@ import com.google.android.material.snackbar.Snackbar
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.databinding.FragmentSettingsBinding
 import org.fossasia.badgemagic.ui.base.BaseFragment
+import org.fossasia.badgemagic.util.PreferenceUtils
 import org.fossasia.badgemagic.viewmodels.SettingsViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : BaseFragment() {
@@ -22,6 +24,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     private val viewModel by viewModel<SettingsViewModel>()
+    private val prefsUtils: PreferenceUtils by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentSettingsBinding>(inflater, R.layout.fragment_settings, container, false)
@@ -40,6 +43,13 @@ class SettingsFragment : BaseFragment() {
                     requireActivity().finishAffinity()
                     startActivity(requireActivity().intent)
                 }
+                .show()
+        })
+
+        viewModel.changedBadge.observe(viewLifecycleOwner, Observer {
+
+            Snackbar
+                .make(view, requireContext().getString(R.string.changed_badge) + " ${prefsUtils.selectedBadge}", Snackbar.LENGTH_LONG)
                 .show()
         })
     }
