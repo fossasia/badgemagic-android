@@ -2,6 +2,7 @@ package org.fossasia.badgemagic.di
 
 import org.fossasia.badgemagic.database.ClipArtService
 import org.fossasia.badgemagic.database.StorageFilesService
+import org.fossasia.badgemagic.util.BadgeUtils
 import org.fossasia.badgemagic.util.BluetoothAdapter
 import org.fossasia.badgemagic.util.PreferenceUtils
 import org.fossasia.badgemagic.util.Resource
@@ -39,4 +40,5 @@ val utilModules = module {
     single { Resource(androidContext()) }
     single { StorageUtils(androidContext()) }
     single { BluetoothAdapter(androidContext()) }
+    single { BadgeUtils() }
 }

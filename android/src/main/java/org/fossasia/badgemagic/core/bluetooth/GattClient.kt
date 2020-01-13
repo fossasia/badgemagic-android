@@ -10,11 +10,12 @@ import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
 import java.util.LinkedList
 import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.core.bluetooth.Constants.CHARACTERISTIC_UUID
-import org.fossasia.badgemagic.core.bluetooth.Constants.SERVICE_UUID
+import org.fossasia.badgemagic.util.BadgeUtils
 import org.fossasia.badgemagic.utils.ByteArrayUtils
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class GattClient {
+class GattClient : KoinComponent {
 
     private var bluetoothManager: BluetoothManager? = null
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -23,6 +24,8 @@ class GattClient {
     private var onFinishWritingDataListener: (() -> Unit)? = null
 
     private val messagesToSend = LinkedList<ByteArray>()
+
+    private val badgeUtils: BadgeUtils by inject()
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
@@ -66,7 +69,9 @@ class GattClient {
             val data = messagesToSend.pop()
             Timber.e { "Writing: ${ByteArrayUtils.byteArrayToHexString(data)}" }
 
-            val characteristic = bluetoothGatt?.getService(SERVICE_UUID)?.getCharacteristic(CHARACTERISTIC_UUID)
+            val characteristic = bluetoothGatt
+                ?.getService(badgeUtils.currentDevice.serviceID)
+                ?.getCharacteristic(badgeUtils.currentDevice.characteristicsID)
             characteristic?.value = data
             if (characteristic != null)
                 bluetoothGatt?.writeCharacteristic(characteristic)

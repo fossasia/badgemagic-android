@@ -40,8 +40,8 @@ class EditBadgeActivity : AppCompatActivity() {
             if (it) {
                 val badgeConfig = SendingUtils.getBadgeFromJSON(viewModel.drawingJSON.get() ?: "{}")
                 badgeConfig.hexStrings = Converters.convertBitmapToLEDHex(
-                        Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
-                        false
+                    Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
+                    false
                 )
                 StoreAsync(fileName, badgeConfig, viewModel, storageUtils).execute()
                 Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()

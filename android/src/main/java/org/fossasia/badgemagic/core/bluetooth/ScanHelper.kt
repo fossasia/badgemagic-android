@@ -9,9 +9,11 @@ import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 import org.fossasia.badgemagic.core.android.log.Timber
-import org.fossasia.badgemagic.core.bluetooth.Constants.SERVICE_UUID
+import org.fossasia.badgemagic.util.BadgeUtils
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class ScanHelper {
+class ScanHelper : KoinComponent {
 
     companion object {
         private const val SCAN_TIMEOUT_MS = 10_000L
@@ -19,6 +21,8 @@ class ScanHelper {
 
     private var isScanning = false
     private var onDeviceFoundCallback: ((BluetoothDevice?) -> Unit)? = null
+
+    private val badgeUtils: BadgeUtils by inject()
 
     private val scanner by lazy { BluetoothLeScannerCompat.getScanner() }
     private val stopScanHandler = Handler()
@@ -48,7 +52,7 @@ class ScanHelper {
         isScanning = true
 
         val filters = listOf(ScanFilter.Builder()
-            .setServiceUuid(ParcelUuid(SERVICE_UUID))
+            .setServiceUuid(ParcelUuid(badgeUtils.currentDevice.serviceID))
             .build())
 
         val settings = ScanSettings.Builder()

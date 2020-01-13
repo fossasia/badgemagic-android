@@ -32,7 +32,21 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:createAdapterFrom="@{viewModel}" />
+                app:languageAdapterFrom="@{viewModel}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_badge" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/badge_spinner"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:badgesAdapterFrom="@{viewModel}" />
+
         </LinearLayout>
     </ScrollView>
 </layout>

@@ -101,5 +101,6 @@
     <string name="delete_badge_confirm">徽章已成功刪除</string>
     <string name="delete_clipart_confirm">剪貼畫已成功刪除</string>
     <string name="rate_app">評價我們</string>
-
+    <string name="select_badge">选择徽章</string>
+    <string name="changed_badge">徽章现在更改为</string>
 </resources>
