@@ -81,8 +81,6 @@ jobs:
         - echo "include ':BadgeMagicModule'" > settings.gradle
         # -----------
         - brew install swiftlint
-        - ./gradlew BadgeMagicModule:packForXcode --stacktrace
-        - cp -r BadgeMagicModule/build/xcode-frameworks/BadgeMagicModule.framework iOS/badgemagic
 
       script:
         - cd iOS
