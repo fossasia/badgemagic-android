@@ -215,6 +215,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04FBA35723AE761100D7F56A /* Build configuration list for PBXNativeTarget "badgemagic" */;
 			buildPhases = (
+				04EA245223E445630069BC04 /* ShellScript */,
 				04FBA33F23AE760F00D7F56A /* Sources */,
 				04FBA34023AE760F00D7F56A /* Frameworks */,
 				04FBA34123AE760F00D7F56A /* Resources */,
@@ -293,6 +294,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		04EA245223E445630069BC04 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$SRCROOT/..\" \n./gradlew BadgeMagicModule:packForXcode --stacktrace\ncp -r BadgeMagicModule/build/xcode-frameworks/BadgeMagicModule.framework iOS/badgemagic\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -2,6 +2,9 @@
 .gradle/
 build/
 
+#iOS framework
+iOS/badgemagic/BadgeMagicModule.framework
+
 # Local configuration
 local.properties
 
