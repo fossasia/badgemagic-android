@@ -59,8 +59,12 @@ object SendingUtils {
         return DataToSend(listOf(message))
     }
 
-    fun returnDefaultMessage(): DataToSend {
-        return DataToSend(listOf(Message(
+    fun convertToDeviceDataModel(messages: List<Message>): DataToSend {
+        return DataToSend(messages)
+    }
+
+    fun returnDefaultMessage(): Message {
+        return Message(
             Converters.convertTextToLEDHex(
                 " ",
                 false
@@ -69,18 +73,18 @@ object SendingUtils {
             marquee = false,
             speed = Speed.ONE,
             mode = Mode.LEFT
-        )))
+        )
     }
 
-    fun returnMessageWithJSON(badgeJSON: String): DataToSend {
+    fun returnMessageWithJSON(badgeJSON: String): Message {
         val badgeConfig = getBadgeFromJSON(badgeJSON)
-        return DataToSend(listOf(Message(
+        return Message(
             Converters.fixLEDHex(badgeConfig.hexStrings, badgeConfig.isInverted),
             badgeConfig.isMarquee,
             badgeConfig.isFlash,
             badgeConfig.speed,
             badgeConfig.mode
-        )))
+        )
     }
 
     fun configToJSON(data: Message, invertLED: Boolean): String {

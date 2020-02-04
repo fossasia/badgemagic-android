@@ -15,6 +15,7 @@ import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.fossasia.badgemagic.viewmodels.SavedClipartViewModel
 import org.fossasia.badgemagic.viewmodels.SettingsViewModel
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
+import org.fossasia.badgemagic.viewmodels.TransferQueueViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -28,6 +29,7 @@ val viewModelModules = module {
     viewModel { DrawViewModel(get()) }
     viewModel { DrawerViewModel(get()) }
     viewModel { SavedClipartViewModel(get()) }
+    viewModel { TransferQueueViewModel() }
 }
 
 val singletonModules = module {

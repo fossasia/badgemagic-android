@@ -114,4 +114,10 @@
     <string name="rate_app">Rate Us</string>
     <string name="select_badge">Select Badge</string>
     <string name="changed_badge">Badge is now changed to </string>
+
+    <string name="drawer_transfer">Transfer to badge</string>
+    <string name="transfer_queue">Transfer queue (up to 8 items)</string>
+    <string name="empty_transfer_queue_section_title">No entries for transfer!</string>
+    <string name="empty_transfer_queue_section">Create or select entries to transfer in the other menus</string>
+    <string name="prepared_for_transfer">Entry prepared for transfer. Go to "Transfer to badge" in the drawer menu to send</string>
 </resources>

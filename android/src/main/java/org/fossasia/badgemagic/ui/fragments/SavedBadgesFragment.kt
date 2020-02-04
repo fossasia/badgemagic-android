@@ -15,16 +15,15 @@ import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
 import org.fossasia.badgemagic.data.ConfigInfo
-import org.fossasia.badgemagic.data.DataToSend
+import org.fossasia.badgemagic.data.Message
 import org.fossasia.badgemagic.data.Mode
 import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
-import org.fossasia.badgemagic.util.BluetoothAdapter
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
-import org.koin.android.ext.android.inject
+import org.fossasia.badgemagic.viewmodels.TransferQueueViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SavedBadgesFragment : BaseFragment() {
@@ -38,8 +37,7 @@ class SavedBadgesFragment : BaseFragment() {
     private var recyclerAdapter: SaveAdapter? = null
 
     private val viewModel by sharedViewModel<FilesViewModel>()
-
-    private val bluetoothAdapter: BluetoothAdapter by inject()
+    private val transferQueueViewModel by sharedViewModel<TransferQueueViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_save, container, false)
@@ -73,7 +71,7 @@ class SavedBadgesFragment : BaseFragment() {
         }
     }
 
-    override fun getSendData(): DataToSend {
+    fun getMessage(): Message {
         val selectedItem = recyclerAdapter?.getSelectedItem()
         return if (selectedItem != null) {
             SendingUtils.returnMessageWithJSON(selectedItem.badgeJSON)
@@ -111,10 +109,9 @@ class SavedBadgesFragment : BaseFragment() {
                 }
 
                 override fun export(item: ConfigInfo) {
-                    if (bluetoothAdapter.isTurnedOn(requireContext())) {
-                        Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                        SendingUtils.sendMessage(requireContext(), getSendData())
-                    }
+                    transferQueueViewModel.add(getMessage())
+                    // TODO: Automatically switch to transfer screen
+                    Toast.makeText(requireContext(), getString(R.string.prepared_for_transfer), Toast.LENGTH_LONG).show()
                 }
 
                 override fun onSelected(item: ConfigInfo?) {

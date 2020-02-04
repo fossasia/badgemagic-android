@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_menu_save"
             android:title="@string/drawer_saved_cliparts" />
         <item
+            android:id="@+id/transfer"
+            android:icon="@drawable/ic_chip_flash"
+            android:title="@string/drawer_transfer" />
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_menu_settings"
             android:title="@string/drawer_settings" />
