@@ -15,7 +15,8 @@ class SavedClipartViewModel(
     fun getStorageClipartLiveData() = clipArtService.getClipsFromStorage()
 
     fun deleteClipart(position: Int) {
-        clipArtService.deleteClipart(cliparts[position].fileName)
+        if (cliparts.isNotEmpty() && position < cliparts.size)
+            clipArtService.deleteClipart(cliparts[position].fileName)
     }
 
     fun setList(list: List<SavedClipart>) {
