@@ -21,4 +21,6 @@ class SavedClipartViewModel(
     fun setList(list: List<SavedClipart>) {
         cliparts = list
     }
+
+    fun isEmpty() = cliparts.isEmpty()
 }
