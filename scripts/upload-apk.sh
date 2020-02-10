@@ -14,9 +14,9 @@ else
 	rm -rf badge-magic-dev*
 fi
 
-find ../app/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
+find ../android/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
 
-for file in app*; do
+for file in android*; do
     if [[ $file =~ ".aab" ]]; then
         mv $file badge-magic-$TRAVIS_BRANCH-$file
     else
@@ -37,6 +37,9 @@ git push origin apk --force --quiet > /dev/null
 if [[ $TRAVIS_BRANCH =~ ^(master)$ ]]; then
     cd ..
     bundle exec fastlane uploadToPlaystore
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
     exit 0
 fi
 

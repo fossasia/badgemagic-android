@@ -2,9 +2,14 @@
 .gradle/
 build/
 
+#iOS framework
+iOS/badgemagic/BadgeMagicModule.framework
+
 # Local configuration
 local.properties
 
 # IntelliJ
 *.iml
 .idea/
+
+.DS_Store

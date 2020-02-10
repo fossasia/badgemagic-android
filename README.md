@@ -3,9 +3,11 @@
 # Badge Magic
 [![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android) [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+**Python Library to program via desktop https://github.com/fossasia/led-name-badge-ls32
+
 **Magically Create Text and Draw Cliparts on LED Name Badges using Bluetooth**
 
-The Badge Magic Android app lets you create moving text and draw cliparts for to LED name badges. The app provides options to portray names, cliparts and simple animations on the badges. For the data transfer from the smartphone to the LED badge it uses Bluetooth. The project is based on the work of [Nilhcem](https://github.com/Nilhcem).
+The Badge Magic Android app lets you create moving text and draw cliparts for to LED name badges. The app provides options to portray names, cliparts and simple animations on the badges. For the org.fossasia.badgemagic.data transfer from the smartphone to the LED badge it uses Bluetooth. The project is based on the work of [Nilhcem](https://github.com/Nilhcem).
 
 <a href='https://play.google.com/store/apps/details?id=org.fossasia.badgemagic'><img align='center' height='55' src='./docs/images/google_play_badge.png'></a>
 <a href='https://f-droid.org/en/packages/org.fossasia.badgemagic/'><img align='center' alt='Get it on F-Droid' src='./docs/images/fdroid_badge.png' height="55"/></a>
@@ -16,7 +18,7 @@ The Badge Magic Android app lets you create moving text and draw cliparts for to
 * [Latest Development Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-development-release.apk) in the apk branch
 
 ## Permissions
-* **Bluetooth**: For sending data to the badge.
+* **Bluetooth**: For sending org.fossasia.badgemagic.data to the badge.
 * **GPS Location**: This has been the standard set by Android for use with Bluetooth Low Energy (BLE) devices. For more information, please read the notes on [Android website](https://source.android.com/devices/bluetooth/ble).
 * **Storage**: For storing and saving badges.
 
@@ -26,7 +28,7 @@ Please talk to us on the badge-magic [Gitter channel here](https://gitter.im/fos
 
 ## Available Devices
 
-There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
+There are a number of devices with Bluetooth on the market. As far as we can tell they are mostly from the same manufacturer. When you get a org.fossasia.badgemagic.device ensure it comes with Bluetooth. There are devices that don't support Bluetooth. These are not supported in the app currently.
 * Get one from the [FOSSASIA Shop here](https://fossasia.com/product/led-badge/)
 
 ## Screenshots
