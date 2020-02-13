@@ -175,10 +175,10 @@ object Converters {
         for (letter in data) {
             if (DataToByteArrayConverter.CHAR_CODES.containsKey(letter)) {
                 list.add(
-                        if (invertLED)
-                            invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
-                        else
-                            DataToByteArrayConverter.CHAR_CODES.getValue(letter)
+                    if (invertLED)
+                        invertHex(DataToByteArrayConverter.CHAR_CODES.getValue(letter))
+                    else
+                        DataToByteArrayConverter.CHAR_CODES.getValue(letter)
                 )
             } else {
                 valid = false
@@ -207,7 +207,7 @@ object Converters {
                 val foundIndex = editable.indexOf(DRAWABLE_END, i)
                 i = if (foundIndex > 0) {
                     listOfArt.addAll(
-                            handleInvertLED(convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED), i == 0 && invertLED)
+                        convertDrawableToLEDHex(drawableSparse.get(editable.substring(i + 1, foundIndex).toInt()), invertLED)
                     )
                     foundIndex + 1
                 } else {
@@ -217,19 +217,19 @@ object Converters {
                 val foundIndex = getIndexOfNextKnown(editable.substring(i, editable.length))
                 if (foundIndex == 0) {
                     listOfArt.addAll(
-                            handleInvertLED(convertTextToLEDHex(ch.toString(), invertLED).second, i == 0 && invertLED)
+                        convertTextToLEDHex(ch.toString(), invertLED).second
                     )
                     i++
                 } else {
                     val targetLength = if (foundIndex > 0) i + foundIndex + 1 else editable.length
                     listOfArt.addAll(
-                            handleInvertLED(textAsBitmap(editable.substring(i, targetLength), invertLED), i == 0 && invertLED)
+                        textAsBitmap(editable.substring(i, targetLength), invertLED)
                     )
                     i = targetLength
                 }
             }
         }
-        return listOfArt
+        return handleInvertLED(listOfArt, invertLED)
     }
 
     private fun getIndexOfNextKnown(str: String): Int {
@@ -241,22 +241,48 @@ object Converters {
         return -1
     }
 
-    private fun handleInvertLED(hexStrings: List<String>, addPrefix: Boolean): List<String> {
-        if (!addPrefix)
+    private fun handleInvertLED(hexStrings: List<String>, isInverted: Boolean): List<String> {
+        if (!isInverted || !checkValueInFirstColumn(hexStrings))
             return hexStrings
 
         val listNew = mutableListOf<String>()
-        if (checkValueInFirstColumn(hexStrings))
-            listNew.add("0101010101010101010101")
-        listNew.addAll(hexStrings)
-        return listNew
+
+        for (i in 0 until 11) {
+            listNew.add("")
+        }
+
+        for (line in hexStrings) {
+            for (i in line.indices step 2) {
+                listNew[i / 2] += line.substring(i, i + 2)
+            }
+        }
+
+        for (i in listNew.indices) {
+            var binary = BigInteger(listNew[i], 16).toString(2)
+            while (binary.length % 8 != 0)
+                binary = "0$binary"
+
+            listNew[i] = BigInteger("1" + binary + "0000000", 2).toString(16)
+        }
+
+        val allStrings = mutableListOf<String>()
+        for (i in listNew[0].indices step 2) {
+            var tempStr = ""
+            for (j in 0 until 11) {
+                tempStr += listNew[j].substring(i, i + 2)
+            }
+            allStrings.add(tempStr)
+        }
+
+        return allStrings
     }
 
     private fun checkValueInFirstColumn(hexStrings: List<String>): Boolean {
-        for (i in hexStrings[0].indices step 2) {
-            if (BigInteger(hexStrings[0][i].toString(), 16).toString(10).toInt() < 8)
-                return true
-        }
+        if (hexStrings.isNotEmpty())
+            for (i in hexStrings[0].indices step 2) {
+                if (BigInteger(hexStrings[0][i].toString(), 16).toString(10).toInt() < 8)
+                    return true
+            }
         return false
     }
 
@@ -265,10 +291,10 @@ object Converters {
         for (i in 0 until list.size) {
             for (j in 0 until list[0].list.size) {
                 newBitmap.setPixel(j, i,
-                        if (list[i].list[j])
-                            Color.BLACK
-                        else
-                            Color.TRANSPARENT
+                    if (list[i].list[j])
+                        Color.BLACK
+                    else
+                        Color.TRANSPARENT
                 )
             }
         }
