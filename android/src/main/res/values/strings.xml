@@ -114,6 +114,9 @@
     <string name="rate_app">Rate Us</string>
     <string name="select_badge">Select Badge</string>
     <string name="changed_badge">Badge is now changed to </string>
+  
+    <string name="empty_saved_clipart_message">Looks like there are no saved cliparts yet</string>
+    <string name="empty_saved_cliparts_title">No Saved Cliparts !</string>
 
     <string name="drawer_transfer">Transfer to badge</string>
     <string name="transfer_queue">Transfer queue (up to 8 items)</string>

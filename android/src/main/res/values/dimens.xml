@@ -41,4 +41,6 @@
     <dimen name="draw_layout_button_padding">10dp</dimen>
     <dimen name="divider_width">2dp</dimen>
     <dimen name="margin_left_right">8dp</dimen>
+
+    <dimen name="empty_icon_size">200dp</dimen>
 </resources>

@@ -3,6 +3,8 @@
 # Badge Magic
 [![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android) [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+**Python Library to program via desktop https://github.com/fossasia/led-name-badge-ls32
+
 **Magically Create Text and Draw Cliparts on LED Name Badges using Bluetooth**
 
 The Badge Magic Android app lets you create moving text and draw cliparts for to LED name badges. The app provides options to portray names, cliparts and simple animations on the badges. For the org.fossasia.badgemagic.data transfer from the smartphone to the LED badge it uses Bluetooth. The project is based on the work of [Nilhcem](https://github.com/Nilhcem).
@@ -33,9 +35,9 @@ There are a number of devices with Bluetooth on the market. As far as we can tel
 
 | <!-- -->    | <!-- -->    | <!-- -->    |
 |-------------|-------------|-------------|
-| <img src="./docs/images/screen-1.png" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /> | <img src="./docs/images/screen-2.png" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /> | <img src="./docs/images/screen-3.png" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /> |
+| <img src="./docs/images/screen-1.jpg" width="288" /> <img src="./docs/images/screen-1-hard.png" width="288" /> | <img src="./docs/images/screen-2.jpg" width="288" /> <img src="./docs/images/screen-2-hard.png" width="288" /> | <img src="./docs/images/screen-3.jpg" width="288" /> <img src="./docs/images/screen-3-hard.png" width="288" /> |
 | <!-- -->    | <!-- -->    | <!-- -->    |
-| <img src="./docs/images/screen-4.png" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /> | <img src="./docs/images/screen-5.png" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /> | <img src="./docs/images/screen-6.png" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /> |
+| <img src="./docs/images/screen-4.jpg" width="288" /> <img src="./docs/images/screen-4-hard.png" width="288" /> | <img src="./docs/images/screen-5.jpg" width="288" /> <img src="./docs/images/screen-5-hard.png" width="288" /> | <img src="./docs/images/screen-6.jpg" width="288" /> <img src="./docs/images/screen-6-hard.png" width="288" /> |
 
 ## Reverse-Engineering Bluetooth LE Devices
 

@@ -40,8 +40,11 @@ class SettingsFragment : BaseFragment() {
             Snackbar
                 .make(view, requireContext().getString(R.string.change_language), Snackbar.LENGTH_INDEFINITE)
                 .setAction("RESTART") {
-                    requireActivity().finishAffinity()
-                    startActivity(requireActivity().intent)
+
+                    activity?.let {
+                        it.finishAffinity()
+                        startActivity(requireActivity().intent)
+                    }
                 }
                 .show()
         })
