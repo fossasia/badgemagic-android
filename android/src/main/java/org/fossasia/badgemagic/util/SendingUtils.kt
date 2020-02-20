@@ -76,8 +76,8 @@ object SendingUtils {
         val badgeConfig = getBadgeFromJSON(badgeJSON)
         return DataToSend(listOf(Message(
             Converters.fixLEDHex(badgeConfig.hexStrings, badgeConfig.isInverted),
-            badgeConfig.isMarquee,
             badgeConfig.isFlash,
+            badgeConfig.isMarquee,
             badgeConfig.speed,
             badgeConfig.mode
         )))
