@@ -17,11 +17,7 @@ fi
 find ../android/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
 
 for file in android*; do
-    if [[ $file =~ ".aab" ]]; then
-        mv $file badge-magic-$TRAVIS_BRANCH-$file
-    else
-        mv $file badge-magic-$TRAVIS_BRANCH-${file:4}
-    fi
+    mv $file badge-magic-$TRAVIS_BRANCH-${file#*-}
 done
 
 git checkout --orphan temporary
