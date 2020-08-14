@@ -24,6 +24,6 @@
             android:contentDescription="@string/image_bitmap_description"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_clipart_add"
-            android:tint="@color/colorAccent" />
+            app:tint="@color/colorAccent" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
