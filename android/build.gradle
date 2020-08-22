@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.27.1"
+    id "com.diffplug.spotless" version "5.1.1"
 }
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
@@ -23,8 +23,8 @@ android {
         applicationId 'org.fossasia.badgemagic'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 9
-        versionName '1.7.0'
+        versionCode 10
+        versionName '1.8.0'
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -89,10 +89,10 @@ dependencies {
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
     //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.20'
 
     //Android X Libraries
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -101,7 +101,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin_version}"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -111,7 +111,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
-    testImplementation 'org.amshove.kluent:kluent:1.60'
+    testImplementation 'org.amshove.kluent:kluent:1.61'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
