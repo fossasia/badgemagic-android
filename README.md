@@ -3,7 +3,7 @@
 # Badge Magic
 [![Build Status](https://travis-ci.org/fossasia/badge-magic-android.svg?branch=development)](https://travis-ci.org/fossasia/badge-magic-android) [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ![Github](https://img.shields.io/github/license/fossasia/badge-magic-android?logo=github)
 
-**Python Library to program via desktop https://github.com/fossasia/led-name-badge-ls32
+**Python Library to program via desktop https://github.com/fossasia/led-name-badge-ls32**
 
 **Magically Create Text and Draw Cliparts on LED Name Badges using Bluetooth**
 
@@ -66,7 +66,7 @@ Please read FOSSASIA's [Best Practices](https://blog.fossasia.org/open-source-de
 * For writing commit messages please read the [CommitStyle.md](docs/commitStyle.md).
 * Follow uniform design practices. The design language must be consistent throughout the app.
 * The pull request will not get merged until and unless the commits are squashed. In case there are multiple commits on the PR, the commit author needs to squash them and not the maintainers cherrypicking and merging squashes.
-* If the PR is related to any front end change, please attach relevant screenshots in the pull request description.
+* If the PR is related to any frontend change, please attach relevant screenshots in the pull request description.
 * Before you join development, please set up the project on your local machine, run it and go through the application completely. Press on any button you can find and see where it leads to. Explore.
 * If you would like to work on an issue, drop in a comment at the issue. If it is already assigned to someone, but there is no sign of any work being done, please free to drop in a comment and start working on it.
 
