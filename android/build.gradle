@@ -109,7 +109,7 @@ dependencies {
     implementation 'no.nordicsemi.android.support.v18:scanner:1.4.3'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
     testImplementation 'org.amshove.kluent:kluent:1.61'
 
