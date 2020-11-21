@@ -1,0 +1,6 @@
+framework module BadgeMagicModule {
+    umbrella header "BadgeMagicModule.h"
+
+    export *
+    module * { export * }
+}
