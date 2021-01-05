@@ -101,7 +101,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin_version}"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.2.0-beta01'
+    implementation 'com.google.android.material:material:1.3.0-beta01'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
