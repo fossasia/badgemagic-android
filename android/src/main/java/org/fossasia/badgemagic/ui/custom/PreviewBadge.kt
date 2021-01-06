@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.Nullable
@@ -20,6 +21,7 @@ import org.fossasia.badgemagic.data.Mode
 import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.data.badge_preview.Cell
 import org.fossasia.badgemagic.data.badge_preview.CheckList
+import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.Converters.hexToBin
 
 private const val BUNDLE_STATE = "superState"
@@ -30,7 +32,7 @@ private const val BUNDLE_MODE = "badgeMode"
 private const val BUNDLE_CHECKLIST = "checkList"
 
 class PreviewBadge : View {
-
+    private val TAG = "PreviewBadge"
     private var ledDisabled: Drawable
     private var ledEnabled: Drawable
 
@@ -38,8 +40,8 @@ class PreviewBadge : View {
     private var cells = mutableListOf<Cell>()
 
     private var badgeHeight = 11
-    private var badgeWidth = 44
-
+    private var badgeWidth = 40
+    private val maxOffset: Int by lazy { Converters.DpToPx(24, context) }
     private var oneByte = 8
 
     private var animationIndex: Int = 0
@@ -91,18 +93,18 @@ class PreviewBadge : View {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        val ratioHeight = 1
-        val ratioWidth = 3
-
         val originalWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val calculatedHeight = originalWidth * ratioHeight / ratioWidth
+        val offset = (measuredWidth / 32).run { if (this > maxOffset) maxOffset else this }
+        val singleCell = (originalWidth - 4 * offset) / badgeWidth
+
+        val calculatedHeight = singleCell * badgeHeight + 4 * offset
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
     }
 
-    public override fun onSaveInstanceState(): Parcelable? {
+    public override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
         bundle.putParcelable(BUNDLE_STATE, super.onSaveInstanceState())
         bundle.putBoolean(BUNDLE_FLASH, this.ifFlash)
@@ -134,25 +136,24 @@ class PreviewBadge : View {
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        val offset = 30
-
-        val singleCell = (right - left - (offset * 3)) / badgeWidth
-
-        val offsetXToAdd: Int = ((((right - offset).toFloat() - (left + offset).toFloat()) - (singleCell * badgeWidth)) / 2).toInt() + 1
+        val offset: Float = (measuredWidth / 32f).run { if (this > maxOffset) maxOffset.toFloat() else this }
+        Log.d(TAG, "onLayout: $offset $maxOffset")
+        val singleCell = (measuredWidth - 4 * offset) / badgeWidth
 
         cells = mutableListOf()
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
                 cells[i].list.add(Rect(
-                    (offsetXToAdd * 2) + j * singleCell,
-                    (offsetXToAdd * 2) + i * singleCell,
-                    (offsetXToAdd * 2) + j * singleCell + singleCell,
-                    (offsetXToAdd * 2) + i * singleCell + singleCell
+                        ((offset * 2) + j * singleCell).toInt(),
+                        ((offset * 2) + i * singleCell).toInt(),
+                        ((offset * 2) + j * singleCell + singleCell).toInt(),
+                        ((offset * 2) + i * singleCell + singleCell).toInt()
                 ))
             }
         }
-        bgBounds = RectF((offsetXToAdd).toFloat(), (offsetXToAdd).toFloat(), ((singleCell * badgeWidth) + (offsetXToAdd * 3)).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())
+
+        bgBounds = RectF((offset).toFloat(), (offset).toFloat(), ((singleCell * badgeWidth) + (offset * 3)).toFloat(), ((singleCell * badgeHeight) + (offset * 3)).toFloat())
     }
 
     private fun drawLED(condition: Boolean, canvas: Canvas, xValue: Int, yValue: Int) {
