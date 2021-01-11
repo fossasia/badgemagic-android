@@ -43,4 +43,7 @@
     <dimen name="margin_left_right">8dp</dimen>
 
     <dimen name="empty_icon_size">200dp</dimen>
+
+    <dimen name="clip_height">11dp</dimen>
+    <dimen name="clip_width">44dp</dimen>
 </resources>

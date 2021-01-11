@@ -27,7 +27,7 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
     private val oneByte = 8
 
     private var badgeHeight = 11
-    private var badgeWidth = 40
+    private var badgeWidth = 44
 
     private var cells = mutableListOf<Cell>()
 

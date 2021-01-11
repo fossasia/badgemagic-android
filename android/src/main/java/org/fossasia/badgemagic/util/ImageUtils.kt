@@ -81,7 +81,7 @@ object ImageUtils {
     }
 
     fun vectorToBitmap(drawable: VectorDrawable): Bitmap {
-        val bitmap: Bitmap = Bitmap.createBitmap(200, 55, Bitmap.Config.ARGB_8888)
+        val bitmap: Bitmap = Bitmap.createBitmap(220, 55, Bitmap.Config.ARGB_8888)
         return try {
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.width, canvas.height)
