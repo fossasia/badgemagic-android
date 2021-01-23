@@ -3,6 +3,7 @@ package org.fossasia.badgemagic
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import androidx.databinding.library.BuildConfig
 import org.fossasia.badgemagic.di.singletonModules
 import org.fossasia.badgemagic.di.utilModules
 import org.fossasia.badgemagic.di.viewModelModules
