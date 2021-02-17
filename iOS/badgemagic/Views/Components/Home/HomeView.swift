@@ -20,7 +20,7 @@ struct HomeView: View {
 
     private var drawButton: some View {
         Button(action: {
-            //draw Badges
+            // draw Badges
             print("drawButton Pressed")
         }) {
             HStack {
@@ -31,7 +31,7 @@ struct HomeView: View {
 
     private var savedButton: some View {
         Button(action: {
-            //Saves Badges and Saved Cliparts
+            // Saves Badges and Saved Cliparts
             print("savedButton Pressed")
         }) {
             HStack {
