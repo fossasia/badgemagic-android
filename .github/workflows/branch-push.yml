@@ -49,7 +49,7 @@ jobs:
       - name: Setup Fastlane
         run: bundle install
       - name: Install Swiftlint
-        run: brew install swiftlint
+        run: brew install swiftlint || brew link --overwrite swiftlint
       - name: Remove Project from Gradle Settings
         run: echo "include ':BadgeMagicModule'" > settings.gradle
       - name: Run Scripts
