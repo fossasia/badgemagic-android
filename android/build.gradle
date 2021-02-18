@@ -89,7 +89,7 @@ dependencies {
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
     //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.21'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -101,7 +101,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin_version}"
 
     //Material Design
-    implementation 'com.google.android.material:material:1.3.0-rc01'
+    implementation 'com.google.android.material:material:1.3.0'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
