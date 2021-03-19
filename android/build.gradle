@@ -62,7 +62,7 @@ android {
         }
     }
 
-    dataBinding.enabled = true
+    buildFeatures.dataBinding = true
 
     packagingOptions {
         pickFirst 'META-INF/kotlinx-serialization-runtime.kotlin_module'
