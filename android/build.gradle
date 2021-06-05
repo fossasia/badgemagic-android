@@ -106,7 +106,7 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation 'no.nordicsemi.android.support.v18:scanner:1.4.3'
+    implementation 'no.nordicsemi.android.support.v18:scanner:1.4.4'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
