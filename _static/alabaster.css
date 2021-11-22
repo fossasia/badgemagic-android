@@ -42,7 +42,7 @@ div.body {
     padding: 0 30px 0 30px;
 }
 
-div.body > .section {
+div.body>.section {
     text-align: left;
 }
 
@@ -141,11 +141,11 @@ div.sphinxsidebar ul {
     color: #000;
 }
 
-div.sphinxsidebar ul li.toctree-l1 > a {
+div.sphinxsidebar ul li.toctree-l1>a {
     font-size: 120%;
 }
 
-div.sphinxsidebar ul li.toctree-l2 > a {
+div.sphinxsidebar ul li.toctree-l2>a {
     font-size: 110%;
 }
 
@@ -203,12 +203,31 @@ div.body h6 {
     padding: 0;
 }
 
-div.body h1 { margin-top: 0; padding-top: 0; font-size: 240%; }
-div.body h2 { font-size: 180%; }
-div.body h3 { font-size: 150%; }
-div.body h4 { font-size: 130%; }
-div.body h5 { font-size: 100%; }
-div.body h6 { font-size: 100%; }
+div.body h1 {
+    margin-top: 0;
+    padding-top: 0;
+    font-size: 240%;
+}
+
+div.body h2 {
+    font-size: 180%;
+}
+
+div.body h3 {
+    font-size: 150%;
+}
+
+div.body h4 {
+    font-size: 130%;
+}
+
+div.body h5 {
+    font-size: 100%;
+}
+
+div.body h6 {
+    font-size: 100%;
+}
 
 a.headerlink {
     color: #DDD;
@@ -221,7 +240,9 @@ a.headerlink:hover {
     background: #EAEAEA;
 }
 
-div.body p, div.body dd, div.body li {
+div.body p,
+div.body dd,
+div.body li {
     line-height: 1.4em;
 }
 
@@ -232,7 +253,9 @@ div.admonition {
     border: 1px solid #CCC;
 }
 
-div.admonition tt.xref, div.admonition code.xref, div.admonition a tt {
+div.admonition tt.xref,
+div.admonition code.xref,
+div.admonition a tt {
     background-color: #FBFBFB;
     border-bottom: 1px solid #fafafa;
 }
@@ -254,7 +277,8 @@ div.highlight {
     background-color: #fff;
 }
 
-dt:target, .highlight {
+dt:target,
+.highlight {
     background: #FAF3E8;
 }
 
@@ -326,7 +350,9 @@ p.admonition-title:after {
     content: ":";
 }
 
-pre, tt, code {
+pre,
+tt,
+code {
     font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     font-size: 0.9em;
 }
@@ -338,14 +364,17 @@ pre, tt, code {
     display: block;
 }
 
-img.screenshot {
-}
+img.screenshot {}
 
-tt.descname, tt.descclassname, code.descname, code.descclassname {
+tt.descname,
+tt.descclassname,
+code.descname,
+code.descclassname {
     font-size: 0.95em;
 }
 
-tt.descname, code.descname {
+tt.descname,
+code.descname {
     padding-right: 0.08em;
 }
 
@@ -362,12 +391,14 @@ table.docutils {
     box-shadow: 2px 2px 4px #EEE;
 }
 
-table.docutils td, table.docutils th {
+table.docutils td,
+table.docutils th {
     border: 1px solid #888;
     padding: 0.25em 0.7em;
 }
 
-table.field-list, table.footnote {
+table.field-list,
+table.footnote {
     border: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -382,7 +413,7 @@ table.footnote {
     font-size: 0.9em;
 }
 
-table.footnote + table.footnote {
+table.footnote+table.footnote {
     margin-top: -15px;
     border-top: none;
 }
@@ -432,7 +463,8 @@ blockquote {
     padding: 0;
 }
 
-ul, ol {
+ul,
+ol {
     /* Matches the 30px from the narrow-screen "li > ul" selector below */
     margin: 10px 0 10px 30px;
     padding: 0;
@@ -449,18 +481,23 @@ div.viewcode-block:target {
     background: #ffd;
 }
 
-dl pre, blockquote pre, li pre {
+dl pre,
+blockquote pre,
+li pre {
     margin-left: 0;
     padding-left: 30px;
 }
 
-tt, code {
+tt,
+code {
     background-color: #ecf0f3;
     color: #222;
     /* padding: 1px 2px; */
 }
 
-tt.xref, code.xref, a tt {
+tt.xref,
+code.xref,
+a tt {
     background-color: #FBFBFB;
     border-bottom: 1px solid #fff;
 }
@@ -471,7 +508,8 @@ a.reference {
 }
 
 /* Don't put an underline on images */
-a.image-reference, a.image-reference:hover {
+a.image-reference,
+a.image-reference:hover {
     border-bottom: none;
 }
 
@@ -490,7 +528,8 @@ a.footnote-reference:hover {
     border-bottom: 1px solid #6D4100;
 }
 
-a:hover tt, a:hover code {
+a:hover tt,
+a:hover code {
     background: #EEE;
 }
 
@@ -498,51 +537,51 @@ a:hover tt, a:hover code {
 @media screen and (max-width: 870px) {
 
     div.sphinxsidebar {
-    	display: none;
+        display: none;
     }
 
     div.document {
-       width: 100%;
+        width: 100%;
 
     }
 
     div.documentwrapper {
-    	margin-left: 0;
-    	margin-top: 0;
-    	margin-right: 0;
-    	margin-bottom: 0;
+        margin-left: 0;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
     }
 
     div.bodywrapper {
-    	margin-top: 0;
-    	margin-right: 0;
-    	margin-bottom: 0;
-    	margin-left: 0;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
     }
 
     ul {
-    	margin-left: 0;
+        margin-left: 0;
     }
 
-	li > ul {
+    li>ul {
         /* Matches the 30px from the "ul, ol" selector above */
-		margin-left: 30px;
-	}
+        margin-left: 30px;
+    }
 
     .document {
-    	width: auto;
+        width: auto;
     }
 
     .footer {
-    	width: auto;
+        width: auto;
     }
 
     .bodywrapper {
-    	margin: 0;
+        margin: 0;
     }
 
     .footer {
-    	width: auto;
+        width: auto;
     }
 
     .github {
@@ -577,7 +616,9 @@ a:hover tt, a:hover code {
         color: #FFF;
     }
 
-    div.sphinxsidebar h3, div.sphinxsidebar h4, div.sphinxsidebar p,
+    div.sphinxsidebar h3,
+    div.sphinxsidebar h4,
+    div.sphinxsidebar p,
     div.sphinxsidebar h3 a {
         color: #fff;
     }
@@ -633,24 +674,26 @@ a:hover tt, a:hover code {
 /* misc. */
 
 .revsys-inline {
-    display: none!important;
+    display: none !important;
 }
 
 /* Make nested-list/multi-paragraph items look better in Releases changelog
  * pages. Without this, docutils' magical list fuckery causes inconsistent
  * formatting between different release sub-lists.
  */
-div#changelog > div.section > ul > li > p:only-child {
+div#changelog>div.section>ul>li>p:only-child {
     margin-bottom: 0;
 }
 
 /* Hide fugly table cell borders in ..bibliography:: directive output */
-table.docutils.citation, table.docutils.citation td, table.docutils.citation th {
-  border: none;
-  /* Below needed in some edge cases; if not applied, bottom shadows appear */
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+table.docutils.citation,
+table.docutils.citation td,
+table.docutils.citation th {
+    border: none;
+    /* Below needed in some edge cases; if not applied, bottom shadows appear */
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 
