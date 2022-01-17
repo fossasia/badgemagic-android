@@ -89,7 +89,7 @@ dependencies {
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
     //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.2.0'
