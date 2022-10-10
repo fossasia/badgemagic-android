@@ -111,7 +111,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
-    testImplementation 'org.amshove.kluent:kluent:1.68'
+    testImplementation 'org.amshove.kluent:kluent:1.69'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
