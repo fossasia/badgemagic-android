@@ -28,8 +28,6 @@ import com.google.android.material.tabs.TabLayout
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.Timer
-import java.util.TimerTask
 import kotlinx.android.synthetic.main.effects_layout.*
 import kotlinx.android.synthetic.main.fragment_main_textart.*
 import kotlinx.android.synthetic.main.sections_tab.*
@@ -40,7 +38,6 @@ import org.fossasia.badgemagic.adapter.OnDrawableSelected
 import org.fossasia.badgemagic.adapter.OnModeSelected
 import org.fossasia.badgemagic.core.android.ext.hideKeyboard
 import org.fossasia.badgemagic.core.android.ext.showKeyboard
-import org.fossasia.badgemagic.data.DataToSend
 import org.fossasia.badgemagic.data.DrawableInfo
 import org.fossasia.badgemagic.data.Message
 import org.fossasia.badgemagic.data.Mode
@@ -49,14 +46,13 @@ import org.fossasia.badgemagic.data.Speed
 import org.fossasia.badgemagic.text.CenteredImageSpan
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.custom.knob.Croller
-import org.fossasia.badgemagic.util.BluetoothAdapter
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.DRAWABLE_END
 import org.fossasia.badgemagic.util.DRAWABLE_START
 import org.fossasia.badgemagic.util.ImageUtils
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.TextArtViewModel
-import org.koin.android.ext.android.inject
+import org.fossasia.badgemagic.viewmodels.TransferQueueViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.droidsonroids.gif.GifImageView
 
@@ -73,8 +69,7 @@ class TextArtFragment : BaseFragment() {
     private val modeAdapter = ModeAdapter()
 
     private val viewModel by sharedViewModel<TextArtViewModel>()
-
-    private val bluetoothAdapter: BluetoothAdapter by inject()
+    private val transferQueueViewModel by sharedViewModel<TransferQueueViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,20 +86,6 @@ class TextArtFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_main_textart, container, false)
     }
 
-    override fun getSendData(): DataToSend {
-        textViewMainText.hideKeyboard()
-        return SendingUtils.convertToDeviceDataModel(
-                Message(
-                        Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
-                                ?: SparseArray()),
-                        flash.isChecked,
-                        marquee.isChecked,
-                        Speed.values()[speedKnob.progress.minus(1)],
-                        Mode.values()[modeAdapter.getSelectedItemPosition()]
-                )
-        )
-    }
-
     override fun initializePreview() {
         setPreview()
     }
@@ -118,25 +99,17 @@ class TextArtFragment : BaseFragment() {
 
         transfer_button.setOnClickListener {
             if (textViewMainText.text.trim().toString() != "") {
-                if (bluetoothAdapter.isTurnedOn(requireContext())) {
-                    // Easter egg
-                    Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-
-                    transfer_button.visibility = View.GONE
-                    send_progress.visibility = View.VISIBLE
-
-                    val buttonTimer = Timer()
-                    buttonTimer.schedule(object : TimerTask() {
-                        override fun run() {
-                            activity?.runOnUiThread {
-                                transfer_button.visibility = View.VISIBLE
-                                send_progress.visibility = View.GONE
-                            }
-                        }
-                    }, SCAN_TIMEOUT_MS)
-
-                    SendingUtils.sendMessage(requireContext(), getSendData())
-                }
+                textViewMainText.hideKeyboard()
+                transferQueueViewModel.add(Message(
+                        Converters.convertEditableToLEDHex(textViewMainText.text.toString(), invertLED.isChecked, viewModel.getClipArts().value
+                                ?: SparseArray()),
+                        flash.isChecked,
+                        marquee.isChecked,
+                        Speed.values()[speedKnob.progress.minus(1)],
+                        Mode.values()[modeAdapter.getSelectedItemPosition()]
+                ))
+                // TODO: Automatically switch to transfer screen
+                Toast.makeText(requireContext(), getString(R.string.prepared_for_transfer), Toast.LENGTH_LONG).show()
             } else
                 Toast.makeText(requireContext(), getString(R.string.empty_text_to_send), Toast.LENGTH_LONG).show()
         }

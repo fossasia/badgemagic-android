@@ -34,6 +34,7 @@ import org.fossasia.badgemagic.ui.fragments.SavedBadgesFragment
 import org.fossasia.badgemagic.ui.fragments.SavedClipartFragment
 import org.fossasia.badgemagic.ui.fragments.SettingsFragment
 import org.fossasia.badgemagic.ui.fragments.TextArtFragment
+import org.fossasia.badgemagic.ui.fragments.TransferFragment
 import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.util.StorageUtils
 import org.fossasia.badgemagic.viewmodels.DrawerViewModel
@@ -140,6 +141,12 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             viewModel.swappingOrientation = false
                             setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                             switchFragment(SavedClipartFragment.newInstance())
+                            showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
+                        R.id.transfer -> {
+                            viewModel.swappingOrientation = false
+                            setRotation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                            switchFragment(TransferFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
                         R.id.settings -> {
