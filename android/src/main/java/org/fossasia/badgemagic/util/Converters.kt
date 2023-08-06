@@ -39,9 +39,9 @@ object Converters {
     fun convertDrawableToLEDHex(drawableIcon: Drawable?, invertLED: Boolean): List<String> {
         var bm = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888)
         if (drawableIcon is VectorDrawable)
-            bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon), 40)
+            bm = ImageUtils.scaleBitmap(ImageUtils.vectorToBitmap(drawableIcon), 44)
         else if (drawableIcon is BitmapDrawable)
-            bm = ImageUtils.scaleBitmap((drawableIcon).bitmap, 40)
+            bm = ImageUtils.scaleBitmap((drawableIcon).bitmap, 44)
         return convertBitmapToLEDHex(bm, invertLED)
     }
 

@@ -35,6 +35,7 @@ For example:
 - feat: Update UI of AbcActivity
 - fix: Remove deprecated methods
 - refactor: API endpoints and JSON assets
+
 instead of writing the following: 
 - Fixed bug with Y
 - Changing behaviour of X
