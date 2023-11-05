@@ -2,6 +2,7 @@ name: Publish GitHub Pages
 
 on:
   push:
+    branches: [ development ]
 
 jobs:
   build:
