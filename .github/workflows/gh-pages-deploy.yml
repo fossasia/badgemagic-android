@@ -1,0 +1,73 @@
+name: Publish GitHub Pages
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Sphinx
+      run: |
+        pip install Sphinx
+      continue-on-error: false
+
+    - name: Build HTML
+      run: |
+        cd docs/sources
+        make html
+        
+      continue-on-error: false
+
+    - name: Clone gh-pages branch
+      run: |
+        git config --global user.name "GitHub Actions "
+        git config --global user.email "hello@hello.com"
+        git clone --quiet --branch=gh-pages https://github.com/fossasia/badge-magic-android.git gh-pages
+        cd gh-pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
+
+    - name: Remove existing content
+      run: |
+        cd gh-pages
+        rm -rf *
+      continue-on-error: false
+
+    - name: Copy HTML files
+      run: |
+        cp -r ./docs/sources/_build/html/* ./gh-pages
+      continue-on-error: false
+
+    - name: Create and switch to a new orphan branch
+      run: |
+        git checkout --orphan temporary
+      continue-on-error: false
+
+    - name: Commit changes
+      run: |
+        git add --all .
+        git commit -am "[Auto] Update GH-Pages from ${{ github.ref }} ($(date +\%Y-\%m-\%d.\%H:\%M:\%S))"
+      continue-on-error: false
+
+    - name: Replace gh-pages branch
+      run: |
+        git branch -D gh-pages
+        git branch -m gh-pages
+      continue-on-error: false
+
+    - name: Push changes to GitHub Pages
+      run: |
+        git push origin gh-pages --force --quiet
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
+      continue-on-error: false
