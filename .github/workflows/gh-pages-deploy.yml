@@ -63,7 +63,9 @@ jobs:
 
     - name: Replace gh-pages branch
       run: |
-        git branch -D gh-pages
+        if git show-ref --quiet refs/heads/gh-pages; then
+          git branch -D gh-pages
+        fi
         git branch -m gh-pages
       continue-on-error: false
 
