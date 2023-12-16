@@ -1,8 +1,7 @@
 version: 2.1
 
 orbs:
- codecov/codecov@3.2.4
-  
+  codecov: codecov/codecov@3.2.4
 
 jobs:
   build:
@@ -43,4 +42,3 @@ workflows:
     requires:
       - build
       - test
-
