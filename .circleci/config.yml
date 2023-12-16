@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   android: circleci/android:latest
+  codecov/codecov@3.2.4
 
 jobs:
   build:
