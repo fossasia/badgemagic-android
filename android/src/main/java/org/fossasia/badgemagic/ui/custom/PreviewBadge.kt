@@ -99,7 +99,8 @@ class PreviewBadge : View {
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight.toInt(), MeasureSpec.EXACTLY)
+        )
     }
 
     public override fun onSaveInstanceState(): Parcelable? {
@@ -144,12 +145,14 @@ class PreviewBadge : View {
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
-                cells[i].list.add(Rect(
-                    (offsetXToAdd * 2) + j * singleCell,
-                    (offsetXToAdd * 2) + i * singleCell,
-                    (offsetXToAdd * 2) + j * singleCell + singleCell,
-                    (offsetXToAdd * 2) + i * singleCell + singleCell
-                ))
+                cells[i].list.add(
+                    Rect(
+                        (offsetXToAdd * 2) + j * singleCell,
+                        (offsetXToAdd * 2) + i * singleCell,
+                        (offsetXToAdd * 2) + j * singleCell + singleCell,
+                        (offsetXToAdd * 2) + i * singleCell + singleCell
+                    )
+                )
             }
         }
         bgBounds = RectF((offsetXToAdd).toFloat(), (offsetXToAdd).toFloat(), ((singleCell * badgeWidth) + (offsetXToAdd * 3)).toFloat(), ((singleCell * badgeHeight) + (offsetXToAdd * 3)).toFloat())

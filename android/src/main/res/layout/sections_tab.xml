@@ -60,7 +60,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <include
-        android:id="@+id/effectsLayout"
+        android:id="@+id/effects"
         layout="@layout/effects_layout"
         android:visibility="gone" />
 </LinearLayout>
