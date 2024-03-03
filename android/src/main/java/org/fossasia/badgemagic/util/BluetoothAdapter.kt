@@ -33,10 +33,10 @@ class BluetoothAdapter(appContext: Context) {
         if (lm is LocationManager) {
             if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 AlertDialog.Builder(context)
-                        .setMessage(R.string.no_gps_enabled)
-                        .setPositiveButton("OK") { _, _ -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                        .setNegativeButton("Cancel", null)
-                        .show()
+                    .setMessage(R.string.no_gps_enabled)
+                    .setPositiveButton("OK") { _, _ -> context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                    .setNegativeButton("Cancel", null)
+                    .show()
                 return false
             }
             return true

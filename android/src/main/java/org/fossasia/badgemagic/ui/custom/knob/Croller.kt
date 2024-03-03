@@ -285,8 +285,13 @@ class Croller : View {
         progressPrimaryDisabledColor = a.getColor(R.styleable.Croller_progress_primary_disable_color, this.progressPrimaryDisabledColor)
         progressSecondaryDisabledColor = a.getColor(R.styleable.Croller_progress_secondary_disable_color, this.progressSecondaryDisabledColor)
 
-        labelSize = a.getDimension(R.styleable.Croller_label_size, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-            this.labelSize, resources.displayMetrics).toInt().toFloat())
+        labelSize = a.getDimension(
+            R.styleable.Croller_label_size,
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                this.labelSize, resources.displayMetrics
+            ).toInt().toFloat()
+        )
         labelColor = a.getColor(R.styleable.Croller_label_color, this.labelColor)
         setlabelDisabledColor(a.getColor(R.styleable.Croller_label_disabled_color, labelDisabledColor))
         labelFont = a.getString(R.styleable.Croller_label_font)
@@ -450,8 +455,11 @@ class Croller : View {
             else
                 circlePaint.color = this.mainCircleDisabledColor
             canvas.drawCircle(midx, midy, mainCircleRadius, circlePaint)
-            canvas.drawText(this.label
-                ?: "", midx, midy + (radius * 1.1).toFloat() - textPaint.fontMetrics.descent, textPaint)
+            canvas.drawText(
+                this.label
+                    ?: "",
+                midx, midy + (radius * 1.1).toFloat() - textPaint.fontMetrics.descent, textPaint
+            )
             canvas.drawLine(x1, y1, x2, y2, linePaint)
         } else {
 
@@ -512,8 +520,11 @@ class Croller : View {
             else
                 circlePaint.color = this.mainCircleDisabledColor
             canvas.drawCircle(midx, midy, mainCircleRadius, circlePaint)
-            canvas.drawText(this.label
-                ?: "", midx, midy + (radius * 1.1).toFloat() - textPaint.fontMetrics.descent, textPaint)
+            canvas.drawText(
+                this.label
+                    ?: "",
+                midx, midy + (radius * 1.1).toFloat() - textPaint.fontMetrics.descent, textPaint
+            )
             canvas.drawLine(x1, y1, x2, y2, linePaint)
         }
     }

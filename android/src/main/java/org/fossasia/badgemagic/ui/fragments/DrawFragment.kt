@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_draw.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.databinding.FragmentDrawBinding
 import org.fossasia.badgemagic.ui.base.BaseFragment
@@ -28,8 +27,11 @@ class DrawFragment : BaseFragment() {
     private val drawViewModel by viewModel<DrawViewModel>()
     private val storageUtils: StorageUtils by inject()
 
+    private var _binding: FragmentDrawBinding? = null
+    val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentDrawBinding>(inflater, R.layout.fragment_draw, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_draw, container, false)
         binding.viewModel = drawViewModel
         return binding.root
     }
@@ -37,20 +39,31 @@ class DrawFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        drawViewModel.savedButton.observe(this, Observer {
-            if (it) {
-                if (storageUtils.saveClipArt(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()))) {
-                    Toast.makeText(requireContext(), R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
-                    drawViewModel.updateCliparts()
-                } else
-                    Toast.makeText(requireContext(), R.string.clipart_saved_error, Toast.LENGTH_LONG).show()
+        drawViewModel.savedButton.observe(
+            this,
+            Observer {
+                if (it) {
+                    if (storageUtils.saveClipArt(Converters.convertStringsToLEDHex(binding.drawLayout.getCheckedList()))) {
+                        Toast.makeText(requireContext(), R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
+                        drawViewModel.updateCliparts()
+                    } else
+                        Toast.makeText(requireContext(), R.string.clipart_saved_error, Toast.LENGTH_LONG).show()
+                }
             }
-        })
+        )
 
-        drawViewModel.resetButton.observe(this, Observer {
-            if (it) {
-                draw_layout.resetCheckListWithDummyData()
+        drawViewModel.resetButton.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.drawLayout.resetCheckListWithDummyData()
+                }
             }
-        })
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

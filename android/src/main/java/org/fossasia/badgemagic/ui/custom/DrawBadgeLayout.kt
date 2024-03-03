@@ -73,7 +73,8 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
 
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec(originalWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY))
+            MeasureSpec.makeMeasureSpec(calculatedHeight, MeasureSpec.EXACTLY)
+        )
     }
 
     @SuppressLint("DrawAllocation")
@@ -90,12 +91,14 @@ class DrawBadgeLayout(context: Context?, attrs: AttributeSet?) : View(context, a
         for (i in 0 until badgeHeight) {
             cells.add(Cell())
             for (j in 0 until badgeWidth) {
-                cells[i].list.add(Rect(
-                    (offsetXToAdd * 2) + j * singleCell,
-                    (offsetXToAdd * 2) + i * singleCell,
-                    (offsetXToAdd * 2) + j * singleCell + singleCell,
-                    (offsetXToAdd * 2) + i * singleCell + singleCell
-                ))
+                cells[i].list.add(
+                    Rect(
+                        (offsetXToAdd * 2) + j * singleCell,
+                        (offsetXToAdd * 2) + i * singleCell,
+                        (offsetXToAdd * 2) + j * singleCell + singleCell,
+                        (offsetXToAdd * 2) + i * singleCell + singleCell
+                    )
+                )
             }
         }
 

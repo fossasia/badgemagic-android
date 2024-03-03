@@ -27,11 +27,13 @@ class BadgeMagicApp : Application() {
         startKoin {
             androidLogger()
             androidContext(applicationContext)
-            modules(listOf(
-                singletonModules,
-                utilModules,
-                viewModelModules
-            ))
+            modules(
+                listOf(
+                    singletonModules,
+                    utilModules,
+                    viewModelModules
+                )
+            )
         }
 
         initLogger()

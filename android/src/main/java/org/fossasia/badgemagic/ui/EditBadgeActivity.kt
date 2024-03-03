@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_edit_badge.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.data.BadgeConfig
 import org.fossasia.badgemagic.databinding.ActivityEditBadgeBinding
@@ -28,32 +27,38 @@ class EditBadgeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val activityDrawBinding = DataBindingUtil.setContentView<ActivityEditBadgeBinding>(this, R.layout.activity_edit_badge)
-        activityDrawBinding.viewModel = viewModel
+        val binding = DataBindingUtil.setContentView<ActivityEditBadgeBinding>(this, R.layout.activity_edit_badge)
+        binding.viewModel = viewModel
 
         if (intent.hasExtra("badgeJSON") && intent.hasExtra("fileName")) {
             viewModel.drawingJSON.set(intent?.extras?.getString("badgeJSON"))
             fileName = intent?.extras?.getString("fileName") ?: ""
         }
 
-        viewModel.savedButton.observe(this, Observer {
-            if (it) {
-                val badgeConfig = SendingUtils.getBadgeFromJSON(viewModel.drawingJSON.get() ?: "{}")
-                badgeConfig.hexStrings = Converters.convertBitmapToLEDHex(
-                    Converters.convertStringsToLEDHex(draw_layout.getCheckedList()),
-                    false
-                )
-                StoreAsync(fileName, badgeConfig, viewModel, storageUtils).execute()
-                Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()
-                finish()
+        viewModel.savedButton.observe(
+            this,
+            Observer {
+                if (it) {
+                    val badgeConfig = SendingUtils.getBadgeFromJSON(viewModel.drawingJSON.get() ?: "{}")
+                    badgeConfig.hexStrings = Converters.convertBitmapToLEDHex(
+                        Converters.convertStringsToLEDHex(binding.drawLayout.getCheckedList()),
+                        false
+                    )
+                    StoreAsync(fileName, badgeConfig, viewModel, storageUtils).execute()
+                    Toast.makeText(this, R.string.saved_edited_badge, Toast.LENGTH_LONG).show()
+                    finish()
+                }
             }
-        })
+        )
 
-        viewModel.resetButton.observe(this, Observer {
-            if (it) {
-                draw_layout.resetCheckListWithDummyData()
+        viewModel.resetButton.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.drawLayout.resetCheckListWithDummyData()
+                }
             }
-        })
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
