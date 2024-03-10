@@ -241,40 +241,94 @@ object Converters {
         return -1
     }
 
+    /**
+     * Modifies the inverted LED text if the first bit column contains a bit with value 0,
+     * this method corrects the text by adding a bit column with value 1 so that a lit line is
+     * added to the left of the text to make the text fully surrounded from all sides but now
+     * including the left side correctly.
+     *
+     * Note: Adding an additional line (bit column) means using a second empty symbol but having bit value 1
+     * in the last column to form a line. This means that an undesired padding is added to the start (left)
+     * of the actual text (7 bit columns with value 0 and 1 bit column with value 1).
+     * This padding is divided between the left and the right of text to make it centered and for showing this padding.
+     * But when the text exceeds badge width, all the padding is added to the end of the it.
+     */
     private fun handleInvertLED(hexStrings: List<String>, isInverted: Boolean): List<String> {
         if (!isInverted || !checkValueInFirstColumn(hexStrings))
             return hexStrings
 
-        val listNew = mutableListOf<String>()
+        val badgeWidth = 44
+        val badgeHeight = 11
+        var totalBits = 0
 
-        for (i in 0 until 11) {
-            listNew.add("")
+        // Count the number of bits used of the full text.
+        for (hex in hexStrings) {
+            totalBits += hex.length * 4
         }
 
-        for (line in hexStrings) {
-            for (i in line.indices step 2) {
-                listNew[i / 2] += line.substring(i, i + 2)
+        if (totalBits <= badgeHeight * (badgeWidth - 6)) {
+            // If the text is fully contained within the badge width minus 3 left and 3 right padding bits,
+            // center it and divide the padding between the left and the right of the text.
+
+            val newHexStrings = List(hexStrings.size + 1) { CharArray(badgeHeight * 2) { '0' } }
+
+            // Add a line (bit column) to the start of text after 3 columns padding,
+            // totally 4 bit columns in the additional (first) slot.
+            val firstHex = newHexStrings.first()
+            for (i in firstHex.indices step 2) {
+                firstHex[i] = '1' // Hexadecimal: 1
             }
-        }
 
-        for (i in listNew.indices) {
-            var binary = BigInteger(listNew[i], 16).toString(2)
-            while (binary.length % 8 != 0)
-                binary = "0$binary"
+            // Shift the text to start from the other 4 bit columns of the additional slot.
+            // This leaves 4 bit columns at the end of the text (right padding).
+            for (i in hexStrings.indices) {
+                val hex = hexStrings[i]
+                for (j in 0 until hex.length step 2) {
+                    newHexStrings[i][j + 1] = hex[j]
+                }
 
-            listNew[i] = BigInteger("1" + binary + "0000000", 2).toString(16)
-        }
-
-        val allStrings = mutableListOf<String>()
-        for (i in listNew[0].indices step 2) {
-            var tempStr = ""
-            for (j in 0 until 11) {
-                tempStr += listNew[j].substring(i, i + 2)
+                for (j in 1 until hex.length step 2) {
+                    newHexStrings[i + 1][j - 1] = hex[j]
+                }
             }
-            allStrings.add(tempStr)
-        }
 
-        return allStrings
+            val list = newHexStrings.map { it.concatToString() }
+
+            return list
+        } else {
+            // If the text exceeds badge width, align it to the left and don't add left padding.
+
+            val listNew = mutableListOf<String>()
+
+            for (i in 0 until 11) {
+                listNew.add("")
+            }
+
+            for (line in hexStrings) {
+                for (i in line.indices step 2) {
+                    listNew[i / 2] += line.substring(i, i + 2)
+                }
+            }
+
+            for (i in listNew.indices) {
+                var binary = BigInteger(listNew[i], 16).toString(2)
+                while (binary.length % 8 != 0)
+                    binary = "0$binary"
+
+                listNew[i] = BigInteger("1" + binary + "0000000", 2).toString(16)
+            }
+
+            val allStrings = mutableListOf<String>()
+            for (i in listNew[0].indices step 2) {
+                var tempStr = ""
+                for (j in 0 until 11) {
+                    tempStr += listNew[j].substring(i, i + 2)
+                }
+                allStrings.add(tempStr)
+            }
+
+            return allStrings
+        }
     }
 
     private fun checkValueInFirstColumn(hexStrings: List<String>): Boolean {
