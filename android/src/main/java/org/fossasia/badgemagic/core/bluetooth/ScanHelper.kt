@@ -51,9 +51,11 @@ class ScanHelper : KoinComponent {
         this.onDeviceFoundCallback = onDeviceFoundCallback
         isScanning = true
 
-        val filters = listOf(ScanFilter.Builder()
-            .setServiceUuid(ParcelUuid(badgeUtils.currentDevice.serviceID))
-            .build())
+        val filters = listOf(
+            ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid(badgeUtils.currentDevice.serviceID))
+                .build()
+        )
 
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)

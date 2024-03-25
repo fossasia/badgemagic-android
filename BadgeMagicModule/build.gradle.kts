@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization")
-
+    kotlin("plugin.serialization")
 }
 
-val kt_serial = "0.14.0"
+val kt_serial = "1.6.3"
 val klockVersion = "1.8.6"
 
 kotlin {
@@ -24,18 +23,23 @@ kotlin {
 
     sourceSets["commonMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kt_serial")
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
     }
 
     sourceSets["androidMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kt_serial")
     }
 
     sourceSets["iosMain"].dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kt_serial")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kt_serial")
     }
+    sourceSets["androidMain"].dependsOn(sourceSets["commonMain"])
+    sourceSets["iosMain"].dependsOn(sourceSets["commonMain"])
 }
 
 val packForXcode by tasks.creating(Sync::class) {

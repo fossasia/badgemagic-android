@@ -4,16 +4,12 @@ plugins {
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 def KEYSTORE_FILE = rootProject.file('scripts/key.jks')
 def TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
-
-androidExtensions {
-    experimental = true
-}
 
 android {
     compileSdkVersion versions.compileSdk
@@ -29,8 +25,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_15
+        targetCompatibility JavaVersion.VERSION_15
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     signingConfigs {
@@ -83,8 +83,6 @@ gradle.projectsEvaluated {
 dependencies {
     // BadgeMagicModule
     implementation project(':BadgeMagicModule')
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin_version}"
 
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 

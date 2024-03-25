@@ -8,11 +8,11 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.util.SparseArray
+import org.fossasia.badgemagic.data.badge_preview.CheckList
+import org.fossasia.badgemagic.device.DataToByteArrayConverter
 import java.math.BigInteger
 import kotlin.math.ceil
 import kotlin.math.floor
-import org.fossasia.badgemagic.data.badge_preview.CheckList
-import org.fossasia.badgemagic.device.DataToByteArrayConverter
 
 const val DRAWABLE_START = '«'
 const val DRAWABLE_END = '»'
@@ -104,7 +104,8 @@ object Converters {
         for (i in 0 until height) {
             for (j in 0 until width) {
                 if (image[i][j] != -1)
-                    list[i].add(image[i][j]
+                    list[i].add(
+                        image[i][j]
                     )
             }
         }
@@ -290,7 +291,8 @@ object Converters {
         val newBitmap = Bitmap.createBitmap(list[0].list.size, list.size, Bitmap.Config.ARGB_8888)
         for (i in 0 until list.size) {
             for (j in 0 until list[0].list.size) {
-                newBitmap.setPixel(j, i,
+                newBitmap.setPixel(
+                    j, i,
                     if (list[i].list[j])
                         Color.BLACK
                     else

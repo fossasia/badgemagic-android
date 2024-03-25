@@ -2,13 +2,14 @@ package org.fossasia.badgemagic.util
 
 import android.content.Context
 import android.content.res.Configuration
-import java.util.Locale
 import org.fossasia.badgemagic.data.Language
+import java.util.Locale
 
 object LocaleManager {
 
     fun setLocale(context: Context?): Context {
-        return updateResources(context as Context,
+        return updateResources(
+            context as Context,
             Language.values()[PreferenceUtils(context).selectedLanguage].locale
         )
     }

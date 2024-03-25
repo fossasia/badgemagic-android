@@ -35,25 +35,31 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.changedLanguage.observe(viewLifecycleOwner, Observer {
+        viewModel.changedLanguage.observe(
+            viewLifecycleOwner,
+            Observer {
 
-            Snackbar
-                .make(view, requireContext().getString(R.string.change_language), Snackbar.LENGTH_INDEFINITE)
-                .setAction("RESTART") {
+                Snackbar
+                    .make(view, requireContext().getString(R.string.change_language), Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RESTART") {
 
-                    activity?.let {
-                        it.finishAffinity()
-                        startActivity(requireActivity().intent)
+                        activity?.let {
+                            it.finishAffinity()
+                            startActivity(requireActivity().intent)
+                        }
                     }
-                }
-                .show()
-        })
+                    .show()
+            }
+        )
 
-        viewModel.changedBadge.observe(viewLifecycleOwner, Observer {
+        viewModel.changedBadge.observe(
+            viewLifecycleOwner,
+            Observer {
 
-            Snackbar
-                .make(view, requireContext().getString(R.string.changed_badge) + " ${prefsUtils.selectedBadge}", Snackbar.LENGTH_LONG)
-                .show()
-        })
+                Snackbar
+                    .make(view, requireContext().getString(R.string.changed_badge) + " ${prefsUtils.selectedBadge}", Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        )
     }
 }

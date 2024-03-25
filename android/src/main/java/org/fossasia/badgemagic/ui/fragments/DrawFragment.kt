@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_draw.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.databinding.FragmentDrawBinding
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.Converters
 import org.fossasia.badgemagic.util.StorageUtils
-import org.fossasia.badgemagic.viewmodels.DrawViewModel
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DrawFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentDrawBinding
 
     companion object {
         @JvmStatic
@@ -25,32 +23,36 @@ class DrawFragment : BaseFragment() {
             DrawFragment()
     }
 
-    private val drawViewModel by viewModel<DrawViewModel>()
     private val storageUtils: StorageUtils by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<FragmentDrawBinding>(inflater, R.layout.fragment_draw, container, false)
-        binding.viewModel = drawViewModel
+        binding = FragmentDrawBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        drawViewModel.savedButton.observe(this, Observer {
-            if (it) {
-                if (storageUtils.saveClipArt(Converters.convertStringsToLEDHex(draw_layout.getCheckedList()))) {
-                    Toast.makeText(requireContext(), R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
-                    drawViewModel.updateCliparts()
-                } else
-                    Toast.makeText(requireContext(), R.string.clipart_saved_error, Toast.LENGTH_LONG).show()
+        binding.viewModel?.savedButton?.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it) {
+                    if (storageUtils.saveClipArt(Converters.convertStringsToLEDHex(binding.drawLayout.getCheckedList()))) {
+                        Toast.makeText(requireContext(), R.string.clipart_saved_success, Toast.LENGTH_LONG).show()
+                        binding.viewModel?.updateCliparts()
+                    } else
+                        Toast.makeText(requireContext(), R.string.clipart_saved_error, Toast.LENGTH_LONG).show()
+                }
             }
-        })
+        )
 
-        drawViewModel.resetButton.observe(this, Observer {
-            if (it) {
-                draw_layout.resetCheckListWithDummyData()
+        binding.viewModel?.resetButton?.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it) {
+                    binding.drawLayout.resetCheckListWithDummyData()
+                }
             }
-        })
+        )
     }
 }
