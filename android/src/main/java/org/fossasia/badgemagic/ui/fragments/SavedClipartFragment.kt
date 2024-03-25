@@ -33,10 +33,13 @@ class SavedClipartFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getStorageClipartLiveData().observe(viewLifecycleOwner, Observer { list ->
-            viewModel.adapter.setList(
-                list.map { SavedClipart(it.key, ImageUtils.convertToBitmap(it.value)) }
-            )
-        })
+        viewModel.getStorageClipartLiveData().observe(
+            viewLifecycleOwner,
+            Observer { list ->
+                viewModel.adapter.setList(
+                    list.map { SavedClipart(it.key, ImageUtils.convertToBitmap(it.value)) }
+                )
+            }
+        )
     }
 }

@@ -15,16 +15,16 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_drawer.*
-import kotlinx.android.synthetic.main.app_bar_drawer.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
+import org.fossasia.badgemagic.databinding.ActivityDrawerBinding
 import org.fossasia.badgemagic.extensions.setRotation
 import org.fossasia.badgemagic.ui.base.BaseActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
@@ -55,8 +55,13 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private val viewModel by viewModel<DrawerViewModel>()
 
+    private lateinit var binding: ActivityDrawerBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityDrawerBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setContentView(R.layout.activity_drawer)
 
@@ -75,7 +80,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun setDefaultFragment() {
         if (supportFragmentManager.findFragmentById(R.id.frag_container) == null) {
             switchFragment(TextArtFragment())
-            nav_view.setCheckedItem(R.id.create)
+            binding.navView.setCheckedItem(R.id.create)
         }
     }
 
@@ -86,29 +91,32 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frag_container, clipart)
                 .commit()
-            nav_view.setCheckedItem(R.id.saved_cliparts)
+            binding.navView.setCheckedItem(R.id.saved_cliparts)
         } else if (bundle?.getString("badge").equals("badge")) {
             val badge = SavedBadgesFragment()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frag_container, badge)
                 .commit()
-            nav_view.setCheckedItem(R.id.saved_badges)
+            binding.navView.setCheckedItem(R.id.saved_badges)
         }
     }
 
     private fun setupDrawerAndToolbar() {
+        val toolbar = Toolbar(applicationContext)
         setSupportActionBar(toolbar)
+        val drawerLayout = DrawerLayout(applicationContext)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
+            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         Timber.e {
             "OnCreate, ${viewModel.swappingOrientation}"
         }
 
-        drawer_layout.addDrawerListener(object : DrawerLayout.DrawerListener {
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
             }
 
@@ -178,23 +186,23 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         })
 
-        nav_view.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
         if (!viewModel.swappingOrientation)
             when (intent.action) {
                 "org.fossasia.badgemagic.createBadge.shortcut" -> {
                     switchFragment(TextArtFragment.newInstance())
                     showMenu?.setGroupVisible(R.id.saved_group, false)
-                    nav_view.setCheckedItem(R.id.create)
+                    binding.navView.setCheckedItem(R.id.create)
                 }
                 "org.fossasia.badgemagic.savedBadges.shortcut" -> {
                     switchFragment(SavedBadgesFragment.newInstance())
                     showMenu?.setGroupVisible(R.id.saved_group, true)
-                    nav_view.setCheckedItem(R.id.saved_badges)
+                    binding.navView.setCheckedItem(R.id.saved_badges)
                 }
             } else {
             switchFragment(DrawFragment.newInstance())
             showMenu?.setGroupVisible(R.id.saved_group, false)
-            nav_view.setCheckedItem(R.id.draw)
+            binding.navView.setCheckedItem(R.id.draw)
         }
     }
 
@@ -212,7 +220,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         setRotation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         switchFragment(DrawFragment.newInstance())
         showMenu?.setGroupVisible(R.id.saved_group, false)
-        nav_view.setCheckedItem(R.id.draw)
+        binding.navView.setCheckedItem(R.id.draw)
     }
 
     private fun prepareForScan() {
@@ -231,8 +239,13 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun showImportDialog(uri: Uri?) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.import_dialog))
-            .setMessage("${getString(R.string.import_dialog_message)} ${storageUtils.getFileName(this, uri
-                ?: Uri.EMPTY)}")
+            .setMessage(
+                "${getString(R.string.import_dialog_message)} ${storageUtils.getFileName(
+                    this,
+                    uri
+                        ?: Uri.EMPTY
+                )}"
+            )
             .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                 if (!storageUtils.checkIfFilePresent(this, uri)) {
                     saveImportFile(uri)
@@ -271,13 +284,14 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun switchFragment(fragment: BaseFragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frag_container, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }
 
     private fun checkManifestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        ) {
             Timber.i { "Coarse permission granted" }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)

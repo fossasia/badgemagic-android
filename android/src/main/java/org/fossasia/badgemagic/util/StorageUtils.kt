@@ -4,10 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStreamReader
 import org.fossasia.badgemagic.data.BadgeConfig
 import org.fossasia.badgemagic.data.CONF_FLASH
 import org.fossasia.badgemagic.data.CONF_HEX_STRINGS
@@ -18,6 +14,10 @@ import org.fossasia.badgemagic.data.CONF_SPEED
 import org.fossasia.badgemagic.data.ConfigInfo
 import org.fossasia.badgemagic.helpers.JSONHelper
 import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
 
 class StorageUtils(val context: Context) {
     private val externalStorageDir = context.getExternalFilesDir(null)?.absolutePath
@@ -112,11 +112,11 @@ class StorageUtils(val context: Context) {
         return try {
             val obj = JSONObject(jsonString)
             return obj.has(CONF_HEX_STRINGS) &&
-                    obj.has(CONF_INVERTED) &&
-                    obj.has(CONF_MARQUEE) &&
-                    obj.has(CONF_FLASH) &&
-                    obj.has(CONF_MODE) &&
-                    obj.has(CONF_SPEED)
+                obj.has(CONF_INVERTED) &&
+                obj.has(CONF_MARQUEE) &&
+                obj.has(CONF_FLASH) &&
+                obj.has(CONF_MODE) &&
+                obj.has(CONF_SPEED)
         } catch (e: Exception) {
             false
         }

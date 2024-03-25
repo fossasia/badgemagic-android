@@ -84,42 +84,42 @@ class SaveAdapter(private val context: Context?, private val list: List<ConfigIn
                 else -> ContextCompat.getDrawable(itemView.context, android.R.color.transparent)
             }
             text.setTextColor(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
             playPause.setColorFilter(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
             editButton.setColorFilter(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
             delete.setColorFilter(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
 
             transfer.setColorFilter(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
 
             export.setColorFilter(
-                    when {
-                        selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
-                        else -> ContextCompat.getColor(itemView.context, android.R.color.black)
-                    }
+                when {
+                    selectedPosition != -1 && selectedPosition == adapterPosition -> ContextCompat.getColor(itemView.context, android.R.color.white)
+                    else -> ContextCompat.getColor(itemView.context, android.R.color.black)
+                }
             )
 
             val badge: BadgeConfig = JSONHelper.decodeJSON(item.badgeJSON)
