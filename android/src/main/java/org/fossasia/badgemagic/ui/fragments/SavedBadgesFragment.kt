@@ -9,8 +9,6 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import java.io.File
-import kotlinx.android.synthetic.main.fragment_main_save.*
 import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.adapter.OnSavedItemSelected
 import org.fossasia.badgemagic.adapter.SaveAdapter
@@ -18,6 +16,7 @@ import org.fossasia.badgemagic.data.ConfigInfo
 import org.fossasia.badgemagic.data.DataToSend
 import org.fossasia.badgemagic.data.Mode
 import org.fossasia.badgemagic.data.Speed
+import org.fossasia.badgemagic.databinding.FragmentMainSaveBinding
 import org.fossasia.badgemagic.ui.EditBadgeActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.util.BluetoothAdapter
@@ -26,6 +25,7 @@ import org.fossasia.badgemagic.util.SendingUtils
 import org.fossasia.badgemagic.viewmodels.FilesViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.io.File
 
 class SavedBadgesFragment : BaseFragment() {
 
@@ -41,8 +41,12 @@ class SavedBadgesFragment : BaseFragment() {
 
     private val bluetoothAdapter: BluetoothAdapter by inject()
 
+    private var _binding: FragmentMainSaveBinding? = null
+    val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main_save, container, false)
+        _binding = FragmentMainSaveBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,15 +56,15 @@ class SavedBadgesFragment : BaseFragment() {
         updateEmptyLayout()
     }
 
-    private fun updateEmptyLayout() {
+    private fun updateEmptyLayout() = with(binding) {
         if (viewModel.getFiles().value.isNullOrEmpty()) {
-            saved_text.visibility = View.GONE
-            empty_saved_layout.visibility = View.VISIBLE
-            preview_badge.visibility = View.GONE
+            savedText.visibility = View.GONE
+            emptySavedLayout.visibility = View.VISIBLE
+            previewBadge.visibility = View.GONE
         } else {
-            saved_text.visibility = View.VISIBLE
-            empty_saved_layout.visibility = View.GONE
-            preview_badge.visibility = View.VISIBLE
+            savedText.visibility = View.VISIBLE
+            emptySavedLayout.visibility = View.GONE
+            previewBadge.visibility = View.VISIBLE
         }
     }
 
@@ -84,62 +88,72 @@ class SavedBadgesFragment : BaseFragment() {
         }
     }
 
-    private fun setupRecycler() {
+    private fun setupRecycler() = with(binding) {
         if (savedConfigRecyclerView == null) return
         savedConfigRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.getFiles().observe(this, Observer { files ->
-            recyclerAdapter = null
-            savedConfigRecyclerView.adapter = null
+        viewModel.getFiles().observe(
+            this@SavedBadgesFragment,
+            Observer { files ->
+                recyclerAdapter = null
+                savedConfigRecyclerView.adapter = null
 
-            recyclerAdapter = SaveAdapter(requireContext(), files, object : OnSavedItemSelected {
-                override fun onEdit(item: ConfigInfo?) {
-                    startActivity(
-                        Intent(requireContext(), EditBadgeActivity::class.java).apply {
-                            putExtra("badgeJSON", item?.badgeJSON)
-                            putExtra("fileName", item?.fileName)
+                recyclerAdapter = SaveAdapter(
+                    requireContext(), files,
+                    object : OnSavedItemSelected {
+                        override fun onEdit(item: ConfigInfo?) {
+                            startActivity(
+                                Intent(requireContext(), EditBadgeActivity::class.java).apply {
+                                    putExtra("badgeJSON", item?.badgeJSON)
+                                    putExtra("fileName", item?.fileName)
+                                }
+                            )
+                            setPreviewNull()
+                            recyclerAdapter?.resetSelectedItem()
                         }
-                    )
-                    setPreviewNull()
-                    recyclerAdapter?.resetSelectedItem()
-                }
 
-                override fun onOptionSelectDelete(item: ConfigInfo) {
-                    deleteWarning(item)
-                }
+                        override fun onOptionSelectDelete(item: ConfigInfo) {
+                            deleteWarning(item)
+                        }
 
-                override fun transfer(item: ConfigInfo) {
-                    transferItem(item)
-                }
+                        override fun transfer(item: ConfigInfo) {
+                            transferItem(item)
+                        }
 
-                override fun export(item: ConfigInfo) {
-                    if (bluetoothAdapter.isTurnedOn(requireContext())) {
-                        Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
-                        SendingUtils.sendMessage(requireContext(), getSendData())
+                        override fun export(item: ConfigInfo) {
+                            if (bluetoothAdapter.isTurnedOn(requireContext())) {
+                                Toast.makeText(requireContext(), getString(R.string.sending_data), Toast.LENGTH_LONG).show()
+                                SendingUtils.sendMessage(requireContext(), getSendData())
+                            }
+                        }
+
+                        override fun onSelected(item: ConfigInfo?) {
+                            if (item != null)
+                                setPreview(item.badgeJSON)
+                            else
+                                setPreviewNull()
+                        }
                     }
-                }
-
-                override fun onSelected(item: ConfigInfo?) {
-                    if (item != null)
-                        setPreview(item.badgeJSON)
-                    else
-                        setPreviewNull()
-                }
-            })
-            savedConfigRecyclerView.adapter = recyclerAdapter
-            updateEmptyLayout()
-        })
+                )
+                savedConfigRecyclerView.adapter = recyclerAdapter
+                updateEmptyLayout()
+            }
+        )
     }
 
     private fun transferItem(item: ConfigInfo) {
         val intentShareFile = Intent(Intent.ACTION_SEND)
         intentShareFile.type = "text/*"
-        intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-            requireContext(),
-            getString(R.string.file_provider_authority),
-            File(
-                viewModel.getAbsPath(item.fileName)
-            )))
+        intentShareFile.putExtra(
+            Intent.EXTRA_STREAM,
+            FileProvider.getUriForFile(
+                requireContext(),
+                getString(R.string.file_provider_authority),
+                File(
+                    viewModel.getAbsPath(item.fileName)
+                )
+            )
+        )
         intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
         intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
 
@@ -163,7 +177,7 @@ class SavedBadgesFragment : BaseFragment() {
     }
 
     private fun setPreviewNull() {
-        preview_badge.setValue(
+        binding.previewBadge.setValue(
             Converters.convertTextToLEDHex(
                 " ",
                 false
@@ -178,13 +192,19 @@ class SavedBadgesFragment : BaseFragment() {
     private fun setPreview(badgeJSON: String) {
         val badgeConfig = SendingUtils.getBadgeFromJSON(badgeJSON)
 
-        preview_badge.setValue(
+        binding.previewBadge.setValue(
             Converters.fixLEDHex(
-                badgeConfig.hexStrings, badgeConfig.isInverted),
+                badgeConfig.hexStrings, badgeConfig.isInverted
+            ),
             badgeConfig.isMarquee,
             badgeConfig.isFlash,
             badgeConfig.speed,
             badgeConfig.mode
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

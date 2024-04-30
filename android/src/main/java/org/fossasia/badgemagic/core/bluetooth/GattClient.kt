@@ -8,12 +8,12 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
-import java.util.LinkedList
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.util.BadgeUtils
 import org.fossasia.badgemagic.utils.ByteArrayUtils
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.LinkedList
 
 class GattClient : KoinComponent {
 

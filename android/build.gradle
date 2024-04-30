@@ -4,16 +4,12 @@ plugins {
 apply plugin: "com.github.b3er.local.properties"
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 def KEYSTORE_FILE = rootProject.file('scripts/key.jks')
 def TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
-
-androidExtensions {
-    experimental = true
-}
 
 android {
     compileSdkVersion versions.compileSdk
@@ -63,6 +59,7 @@ android {
     }
 
     buildFeatures.dataBinding = true
+    buildFeatures.viewBinding = true
 
     packagingOptions {
         pickFirst 'META-INF/kotlinx-serialization-runtime.kotlin_module'

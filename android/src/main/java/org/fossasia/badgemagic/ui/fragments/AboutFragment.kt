@@ -11,8 +11,8 @@ import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
-import kotlinx.android.synthetic.main.fragment_about_us.*
 import org.fossasia.badgemagic.R
+import org.fossasia.badgemagic.databinding.FragmentAboutUsBinding
 import org.fossasia.badgemagic.ui.base.BaseFragment
 
 class AboutFragment : BaseFragment() {
@@ -20,30 +20,36 @@ class AboutFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-                AboutFragment()
+            AboutFragment()
     }
 
+    private var _binding: FragmentAboutUsBinding? = null
+    val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_about_us, container, false)
+        _binding = FragmentAboutUsBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        about_fossasia.setOnClickListener {
-            contributorsLink()
-        }
+        with(binding) {
+            aboutFossasia.setOnClickListener {
+                contributorsLink()
+            }
 
-        githubLayout.setOnClickListener {
-            github()
-        }
+            githubLayout.setOnClickListener {
+                github()
+            }
 
-        ll_about_license.setOnClickListener {
-            license()
-        }
+            llAboutLicense.setOnClickListener {
+                license()
+            }
 
-        ll_about_libs.setOnClickListener {
-            libraryLicenseDialog()
+            llAboutLibs.setOnClickListener {
+                libraryLicenseDialog()
+            }
         }
     }
 
@@ -72,50 +78,55 @@ class AboutFragment : BaseFragment() {
         val notices = Notices()
 
         notices.addNotice(
-                Notice(
-                        context?.getString(R.string.moshi),
-                        context?.getString(R.string.moshi_github),
-                        context?.getString(R.string.moshi_copy),
-                        ApacheSoftwareLicense20()
-                )
+            Notice(
+                context?.getString(R.string.moshi),
+                context?.getString(R.string.moshi_github),
+                context?.getString(R.string.moshi_copy),
+                ApacheSoftwareLicense20()
+            )
         )
         notices.addNotice(
-                Notice(
-                        context?.getString(R.string.gif),
-                        context?.getString(R.string.gif_github),
-                        context?.getString(R.string.gif_copy),
-                        ApacheSoftwareLicense20()
-                )
+            Notice(
+                context?.getString(R.string.gif),
+                context?.getString(R.string.gif_github),
+                context?.getString(R.string.gif_copy),
+                ApacheSoftwareLicense20()
+            )
         )
         notices.addNotice(
-                Notice(
-                        context?.getString(R.string.timber),
-                        context?.getString(R.string.timber_github),
-                        context?.getString(R.string.timber_copy),
-                        MITLicense()
-                )
+            Notice(
+                context?.getString(R.string.timber),
+                context?.getString(R.string.timber_github),
+                context?.getString(R.string.timber_copy),
+                MITLicense()
+            )
         )
         notices.addNotice(
-                Notice(
-                        context?.getString(R.string.scanner),
-                        context?.getString(R.string.scanner_github),
-                        context?.getString(R.string.scanner_copy),
-                        ApacheSoftwareLicense20()
-                )
+            Notice(
+                context?.getString(R.string.scanner),
+                context?.getString(R.string.scanner_github),
+                context?.getString(R.string.scanner_copy),
+                ApacheSoftwareLicense20()
+            )
         )
         notices.addNotice(
-                Notice(
-                        context?.getString(R.string.licences),
-                        context?.getString(R.string.licences_github),
-                        context?.getString(R.string.licences_copy),
-                        ApacheSoftwareLicense20()
-                )
+            Notice(
+                context?.getString(R.string.licences),
+                context?.getString(R.string.licences_github),
+                context?.getString(R.string.licences_copy),
+                ApacheSoftwareLicense20()
+            )
         )
 
         LicensesDialog.Builder(context)
-                .setNotices(notices)
-                .setIncludeOwnLicense(true)
-                .build()
-                .show()
+            .setNotices(notices)
+            .setIncludeOwnLicense(true)
+            .build()
+            .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
