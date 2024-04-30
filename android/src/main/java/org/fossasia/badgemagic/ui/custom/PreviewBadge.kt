@@ -235,7 +235,7 @@ class PreviewBadge : View {
                         val rightCondition = validMarquee || flashLEDOn &&
                             i < checkList.size &&
                             j < checkList[i].list.size &&
-                            checkList[i].list[(animationValue + j + checkListLength - badgeWidth / 2).rem(checkListLength)]
+                            checkList[i].list[(animationValue + j + checkListLength - badgeWidth).rem(checkListLength)]
 
                         drawLED(
                             rightCondition,
