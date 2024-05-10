@@ -26,7 +26,27 @@ jobs:
       - name: Syntax Check
         run: ./gradlew spotlessCheck
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace
+        run: ./gradlew build  --no-daemon --stacktrace
+      - name: Build app bundle release
+        run: ./gradlew bundleRelease
+
+      - name: Upload APK Debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Debug generated
+          path: android/build/outputs/apk/debug
+                
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Release generated
+          path: android/build/outputs/apk/release
+
+      - name: Upload AAB Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: AAB Release generated
+          path: android/build/outputs/bundle/release
         
   build-ios:
     runs-on: macos-latest
