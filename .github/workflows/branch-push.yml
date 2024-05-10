@@ -26,8 +26,56 @@ jobs:
       - name: Syntax Check
         run: ./gradlew spotlessCheck
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace
-        
+        run: ./gradlew build  --no-daemon --stacktrace
+      - name: Build app bundle release
+        run: ./gradlew bundleRelease
+
+      - name: Upload APK Debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Debug generated
+          path: android/build/outputs/apk/debug
+                
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Release generated
+          path: android/build/outputs/apk/release
+
+      - name: Upload AAB Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: AAB Release generated 
+          path: android/build/outputs/bundle/release
+
+      - name: Upload APK to apk branch
+        run: |
+          git config --global user.name "${{ github.workflow }}"
+          git config --global user.email "gh-actions@${{ github.repository_owner }}"
+
+          git clone --branch=apk https://${{ github.repository_owner }}:${{ github.token }}@github.com/${{ github.repository }} apk
+          cd apk
+          
+          if [[ ${{ github.ref_name }} =~ ^(master)$ ]]; then
+            rm -rf *
+          else
+            rm -rf badge-magic-dev*
+          fi
+          ls
+
+          find ../android/build/outputs -type f \( -name '*.apk' -o -name '*.aab' \) -exec cp -v {} . \;
+
+          for file in android*; do
+            mv $file badge-magic-development-${file#*-}
+          done
+
+          git checkout --orphan temporary
+          git add --all .
+          git commit -am "[Auto] Update Test Apk ($(date +%Y-%m-%d.%H:%M:%S))"
+          git branch -D apk
+          git branch -m apk
+          git push --force origin apk
+
   build-ios:
     runs-on: macos-latest
     name: iOS Build
