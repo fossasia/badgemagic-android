@@ -62,6 +62,7 @@
 
     <string name="drawer_other">Other</string>
     <string name="drawer_feedback">Feedback/Bug Reports</string>
+    <string name="drawer_privacy_policy">Privacy Policy</string>
     <string name="drawer_buy_badge">Buy Badge</string>
     <string name="drawer_share_app">Share</string>
     <string name="drawer_about_us">About Us</string>
