@@ -156,7 +156,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badge-magic-android/issues")))
                         }
                         R.id.buy -> {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://sg.pslab.io")))
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://badgemagic.fossasia.org/shop")))
                         }
                         R.id.share_app_details -> {
                             val shareIntent = Intent()
@@ -171,6 +171,9 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                         R.id.about -> {
                             switchFragment(AboutFragment.newInstance())
                             showMenu?.setGroupVisible(R.id.saved_group, false)
+                        }
+                        R.id.privacy -> {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://badgemagic.fossasia.org/privacy")))
                         }
                     }
                     isItemCheckedNew = false
