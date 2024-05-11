@@ -48,6 +48,10 @@
                 android:id="@+id/feedback"
                 android:icon="@drawable/ic_menu_bug"
                 android:title="@string/drawer_feedback" />
+            <item
+                android:id="@+id/privacy"
+                android:icon="@drawable/ic_menu_privacy_policy"
+                android:title="@string/drawer_privacy_policy" />
         </menu>
     </item>
 </menu>
