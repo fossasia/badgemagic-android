@@ -7,7 +7,7 @@ plugins {
 }
 
 val kt_serial = "1.6.2"
-val klockVersion = "1.8.6"
+val klockVersion = "3.4.0"
 
 kotlin {
     val iOSTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = ::iosArm64
