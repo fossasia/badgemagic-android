@@ -49,6 +49,8 @@ jobs:
           path: android/build/outputs/bundle/release
 
       - name: Upload APK to apk branch
+        # Skip upload APK for pull requests
+        if: ${{ github.event_name != 'pull_request'}} 
         run: |
           git config --global user.name "${{ github.workflow }}"
           git config --global user.email "gh-actions@${{ github.repository_owner }}"
