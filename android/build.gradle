@@ -82,11 +82,12 @@ dependencies {
     implementation project(':BadgeMagicModule')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin_version}"
+	implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin_version}"
 
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
     //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -101,7 +102,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
 
     //Timber
-    implementation 'com.jakewharton.timber:timber:5.0.1'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'no.nordicsemi.android.support.v18:scanner:1.6.0'
 

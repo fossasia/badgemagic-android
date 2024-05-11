@@ -47,6 +47,7 @@
 
     <string name="drawer_other">其他</string>
     <string name="drawer_feedback">反馈/错误报告</string>
+    <string name="drawer_privacy_policy">隐私政策</string>
     <string name="drawer_buy_badge">买徽章</string>
     <string name="drawer_about_us">关于我们</string>
     <string name="drawer_share_app">分享</string>
