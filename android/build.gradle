@@ -82,6 +82,7 @@ dependencies {
     implementation project(':BadgeMagicModule')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin_version}"
+	implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin_version}"
 
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
