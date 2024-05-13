@@ -87,7 +87,7 @@ dependencies {
     kapt "androidx.databinding:compiler:3.2.0-alpha11"
 
     //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
 
     //Android X Libraries
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -108,8 +108,8 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
-    testImplementation 'org.amshove.kluent:kluent:1.68'
+    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.6.0'
+    testImplementation 'org.amshove.kluent:kluent:1.73'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
