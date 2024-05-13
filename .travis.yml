@@ -1,0 +1,49 @@
+jobs:
+  include:
+    - name: Build Android
+      language: android
+      dist: trusty
+      sudo: true
+      jdk:
+        - oraclejdk8
+      android:
+        components:
+          - tools
+          - android-29
+          - build-tools-29.0.2
+          - platform-tools
+      before_cache:
+        - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+      cache:
+        bundler: true
+        directories:
+          - "${TRAVIS_BUILD_DIR}/gradle/caches/"
+          - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
+          - "$HOME/.gradle/caches/"
+          - "$HOME/.gradle/wrapper/"
+
+      install:
+        - bundle install
+
+      before_script:
+        - bash scripts/prep-key.sh
+        - bash scripts/check-screenshots.sh
+
+      script:
+        - ./gradlew spotlessCheck
+        - ./gradlew build --stacktrace
+
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script: bash scripts/upload-apk.sh
+          on:
+            all_branches: true
+            condition: $TRAVIS_BRANCH =~ ^(master|development)$
+            repo: fossasia/badge-magic-android
+        - provider: script
+          skip_cleanup: true
+          script: bash scripts/upload-gh-pages.sh
+          on:
+            all_branches: true
+            repo: fossasia/badge-magic-android
