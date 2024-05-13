@@ -77,35 +77,3 @@ jobs:
           git branch -D apk
           git branch -m apk
           git push --force origin apk
-
-  build-ios:
-    runs-on: macos-latest
-    name: iOS Build
-    
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-      - name: Setup Fastlane
-        run: bundle install
-      - name: Install Swiftlint
-        run: brew install swiftlint || brew link --overwrite swiftlint
-      - name: Remove Project from Gradle Settings
-        run: echo "include ':BadgeMagicModule'" > settings.gradle
-      - name: Run Scripts
-        run: |
-          cd iOS
-          bundle exec fastlane run swiftlint strict:"true"
-          bundle exec fastlane gym --skip_codesigning --skip_archive --skip_package_ipa
-          cd ..
-        
