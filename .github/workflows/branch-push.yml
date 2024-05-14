@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-gems-
 
       - name: Prepare Bundler
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
+        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' && github.ref == 'refs/heads/master' }}
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
