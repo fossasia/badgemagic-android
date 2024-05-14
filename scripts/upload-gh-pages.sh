@@ -9,7 +9,7 @@ cd docs/sources
 
 make html
 
-git clone --quiet --branch=gh-pages https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android gh-pages > /dev/null
+git clone --quiet --branch=gh-pages https://fossasia:$GITHUB_KEY@github.com/fossasia/badgemagic-android gh-pages > /dev/null
 cd gh-pages
 
 rm -rf *

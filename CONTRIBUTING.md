@@ -4,13 +4,13 @@
  This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.
  This project adheres to the Contributor Covenant code of conduct.
  By participating, you are expected to uphold this code style.
- Please report issues here [Issues - fossasia/badge-magic-android](https://github.com/fossasia/badge-magic-android/issues)
+ Please report issues here [Issues - fossasia/badgemagic-android](https://github.com/fossasia/badgemagic-android/issues)
 
 ### Branch Policy
 
 #### Sending pull requests:
 
-Go to the repository on github at https://github.com/fossasia/badge-magic-android .
+Go to the repository on github at https://github.com/fossasia/badgemagic-android .
 
 Click the “Fork” button at the top right.
 
@@ -20,19 +20,19 @@ Open a terminal/shell.
 
 Type
 
-`$ git clone https://github.com/username/badge-magic-android`
+`$ git clone https://github.com/username/badgemagic-android`
 
 where 'username' is your username.
 
 You’ll now have a local copy of your version of the original FOSSASIA repository.
 
-#### Change into that project directory (badge-magic-android):
+#### Change into that project directory (badgemagic-android):
 
-`$ cd badge-magic-android`
+`$ cd badgemagic-android`
 
 #### Add a connection to the original FOSSASIA repository.
 
-`$ git remote add upstream https://github.com/fossasia/badge-magic-android`
+`$ git remote add upstream https://github.com/fossasia/badgemagic-android`
 
 #### To check this remote add set up:
 

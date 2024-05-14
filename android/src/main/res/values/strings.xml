@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_fossasia" translatable="false">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
-        <a href="https://github.com/fossasia/badge-magic-android/graphs/contributors">contributors</a>.
+        <a href="https://github.com/fossasia/badgemagic-android/graphs/contributors">contributors</a>.
     </string>
     <string name="moshi_github" translatable="false">https://github.com/square/moshi</string>
     <string name="timber_github" translatable="false">https://github.com/JakeWharton/timber</string>

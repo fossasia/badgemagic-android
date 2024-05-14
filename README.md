@@ -2,7 +2,7 @@
 
 # Badge Magic
 [![Join the chat at https://gitter.im/fossasia/badge-magic](https://badges.gitter.im/fossasia/badge-magic.svg)](https://gitter.im/fossasia/badge-magic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
-![Github](https://img.shields.io/github/license/fossasia/badge-magic-android?logo=github)
+![Github](https://img.shields.io/github/license/fossasia/badgemagic-android?logo=github)
 
 **Python Library to program via desktop https://github.com/fossasia/led-name-badge-ls32**
 
@@ -15,8 +15,8 @@ The Badge Magic Android app lets you create moving text and draw clipart for LED
 
 ## Download
 
-* [Latest Release Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-master-release.apk) in the apk branch
-* [Latest Development Build](https://github.com/fossasia/badge-magic-android/raw/apk/badge-magic-development-release.apk) in the apk branch
+* [Latest Release Build](https://github.com/fossasia/badgemagic-android/raw/apk/badge-magic-master-release.apk) in the apk branch
+* [Latest Development Build](https://github.com/fossasia/badgemagic-android/raw/apk/badge-magic-development-release.apk) in the apk branch
 
 ## Permissions
 * **Bluetooth**: For sending org.fossasia.badgemagic.data to the badge.

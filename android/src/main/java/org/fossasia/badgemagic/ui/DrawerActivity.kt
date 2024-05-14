@@ -153,7 +153,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                             showMenu?.setGroupVisible(R.id.saved_group, false)
                         }
                         R.id.feedback -> {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badge-magic-android/issues")))
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/fossasia/badgemagic-android/issues")))
                         }
                         R.id.buy -> {
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://badgemagic.fossasia.org/shop")))

@@ -5,7 +5,7 @@ git config --global user.email "noreply+travis@fossasia.org"
 
 bundle exec fastlane buildAAB
 
-git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android apk > /dev/null
+git clone --quiet --branch=apk https://fossasia:$GITHUB_KEY@github.com/fossasia/badgemagic-android apk > /dev/null
 cd apk
 
 if [[ $TRAVIS_BRANCH =~ ^(master)$ ]]; then

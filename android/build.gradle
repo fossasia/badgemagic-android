@@ -8,7 +8,7 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 def KEYSTORE_FILE = rootProject.file('scripts/key.jks')
-def TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
+def GITHUB_BUILD = System.getenv("GITHUB_ACTIONS") == "true" && KEYSTORE_FILE.exists()
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
 
 android {
@@ -19,8 +19,8 @@ android {
         applicationId 'org.fossasia.badgemagic'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 10
-        versionName '1.8.0'
+        versionCode 11
+        versionName '1.8.1'
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -30,7 +30,7 @@ android {
     }
 
     signingConfigs {
-        if (TRAVIS_BUILD) {
+        if (GITHUB_BUILD) {
             release {
                 storeFile KEYSTORE_FILE
                 storePassword System.getenv("STORE_PASS")
@@ -53,7 +53,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
+            if (LOCAL_KEY_PRESENT || GITHUB_BUILD)
                 signingConfig signingConfigs.release
         }
     }
