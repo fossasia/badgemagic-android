@@ -39,7 +39,6 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Pre Checks
-        if: ${{ github.repository == 'fossasia/badgemagic-android' }}
         run: |
           bash scripts/check-screenshots.sh
 
