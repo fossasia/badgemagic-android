@@ -30,7 +30,8 @@
             android:name=".ui.DrawerActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +50,7 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".ui.EditBadgeActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.EditBadgeActivity"  android:screenOrientation="landscape"/>
         <activity android:name=".ui.EditClipartActivity" android:screenOrientation="landscape"/>
 
         <provider
