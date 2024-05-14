@@ -24,7 +24,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - uses: actions/cache@v3
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
+        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' && github.ref == 'refs/heads/master' }}
         with:
           path: |
             vendor/bundle
