@@ -114,7 +114,7 @@ jobs:
           git push --force origin apk
 
       - name: Upload alpha version to playstore
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
+        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' && github.ref == 'refs/heads/master' }}
         run: |
           bundle exec fastlane uploadToPlaystore
           if [[ $? -ne 0 ]]; then
