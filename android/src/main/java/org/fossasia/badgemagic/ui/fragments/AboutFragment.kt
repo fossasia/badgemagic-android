@@ -54,21 +54,21 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun contributorsLink() {
-        val url = "https://github.com/fossasia/badge-magic-android/graphs/contributors"
+        val url = "https://github.com/fossasia/badgemagic-android/graphs/contributors"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
     }
 
     private fun github() {
-        val url = "https://github.com/fossasia/badge-magic-android"
+        val url = "https://github.com/fossasia/badgemagic-android"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
     }
 
     private fun license() {
-        val url = "https://github.com/fossasia/badge-magic-android/blob/development/LICENSE"
+        val url = "https://github.com/fossasia/badgemagic-android/blob/development/LICENSE"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)

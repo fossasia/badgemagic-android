@@ -3,7 +3,7 @@
 git config --global user.name "Travis CI"
 git config --global user.email "noreply+travis@fossasia.org"
 
-git clone --quiet --branch=ios-framework https://fossasia:$GITHUB_KEY@github.com/fossasia/badge-magic-android ios-framework > /dev/null
+git clone --quiet --branch=ios-framework https://fossasia:$GITHUB_KEY@github.com/fossasia/badgemagic-android ios-framework > /dev/null
 cd ios-framework
 
 rm -rf $TRAVIS_BRANCH
