@@ -1,6 +1,5 @@
 package org.fossasia.badgemagic.ui
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -15,8 +14,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
@@ -25,6 +22,7 @@ import org.fossasia.badgemagic.R
 import org.fossasia.badgemagic.core.android.log.Timber
 import org.fossasia.badgemagic.databinding.ActivityDrawerBinding
 import org.fossasia.badgemagic.extensions.setRotation
+import org.fossasia.badgemagic.others.BadgeMagicPermission
 import org.fossasia.badgemagic.ui.base.BaseActivity
 import org.fossasia.badgemagic.ui.base.BaseFragment
 import org.fossasia.badgemagic.ui.fragments.AboutFragment
@@ -58,7 +56,8 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkLocationPermission()
+        val permission = BadgeMagicPermission.instance
+        permission.checkPermissions(this, permission.ALL_PERMISSION)
 
         binding = ActivityDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -226,7 +225,8 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
 
     private fun prepareForScan() {
         if (isBleSupported()) {
-            checkManifestPermission()
+            val permission = BadgeMagicPermission.instance
+            permission.checkPermissions(this, permission.BLUETOOTH_PERMISSION)
         } else {
             Toast.makeText(this, "BLE is not supported", Toast.LENGTH_LONG).show()
             finish()
@@ -289,32 +289,10 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             .commit()
     }
 
-    private fun checkManifestPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_PRIVILEGED) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        ) {
-            Timber.i { "Coarse permission granted" }
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.BLUETOOTH_PRIVILEGED,
-                    Manifest.permission.BLUETOOTH
-                ),
-                REQUEST_PERMISSION_CODE
-            )
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Timber.d { "Required Permission Accepted" }
                 }
             }
@@ -381,36 +359,5 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun hasLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-    private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            // Show an explanation to the user why the permission is needed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) ||
-                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            ) {
-
-                AlertDialog.Builder(this)
-                    .setTitle("Location Permission Needed")
-                    .setMessage("This app needs the Location permission to scan for nearby ble devices. Please grant the permission.")
-                    .setPositiveButton("OK") { _, _ ->
-                    }
-                    .create()
-                    .show()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSION_CODE
-                )
-            }
-        }
     }
 }
