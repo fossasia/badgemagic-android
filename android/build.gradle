@@ -19,8 +19,8 @@ android {
         applicationId 'org.fossasia.badgemagic'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 14
-        versionName '1.8.4'
+        versionCode 15
+        versionName '1.8.5'
         vectorDrawables.useSupportLibrary = true
     }
 
