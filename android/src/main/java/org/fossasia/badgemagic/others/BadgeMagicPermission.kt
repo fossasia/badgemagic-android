@@ -71,7 +71,7 @@ class BadgeMagicPermission private constructor() {
                 if (permission == Manifest.permission.ACCESS_FINE_LOCATION) {
                     val builder = AlertDialog.Builder(activity)
                     builder.setTitle("Location Permission Disclosure")
-                    builder.setMessage("Badge Magic requires access to location data to enable the transfer of data to LED Badges via Bluetooth LE.")
+                    builder.setMessage("Badge Magic collects location data to enable the transfer of data to LED Badges via Bluetooth LE in the background.")
                     builder.setCancelable(false)
                     builder.setPositiveButton("ACCEPT") { _, _ ->
                         activity.requestPermissions(locationPermissions, REQUEST_PERMISSION_CODE)
