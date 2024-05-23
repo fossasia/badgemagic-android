@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import org.fossasia.badgemagic.R
 
 class BadgeMagicPermission private constructor() {
 
@@ -69,32 +70,32 @@ class BadgeMagicPermission private constructor() {
         if (listPermissionsNeeded.size > 0) {
             for (permission in listPermissionsNeeded) {
                 if (permission == Manifest.permission.ACCESS_FINE_LOCATION) {
-                    val builder = AlertDialog.Builder(activity)
-                    builder.setTitle("Location Permission Disclosure")
-                    builder.setMessage("Badge Magic collects location data to enable the transfer of data to LED Badges via Bluetooth LE in the background.")
-                    builder.setCancelable(false)
-                    builder.setPositiveButton("ACCEPT") { _, _ ->
-                        activity.requestPermissions(locationPermissions, REQUEST_PERMISSION_CODE)
-                    }
-                    builder.setNegativeButton("DENY") { _, _ ->
-                        Toast.makeText(activity, "Please grant the permission", Toast.LENGTH_SHORT).show()
-                        activity.requestPermissions(locationPermissions, REQUEST_PERMISSION_CODE)
-                    }
-                    builder.show()
+                    AlertDialog.Builder(activity)
+                        .setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_caution))
+                        .setTitle(activity.getString(R.string.location_required_title))
+                        .setMessage(activity.getString(R.string.location_required_message))
+                        .setPositiveButton("OK") { _, _ ->
+                            activity.requestPermissions(locationPermissions, REQUEST_PERMISSION_CODE)
+                        }
+                        .setNegativeButton("Cancel") { _, _ ->
+                            Toast.makeText(activity, activity.getString(R.string.location_canceled_warning), Toast.LENGTH_SHORT).show()
+                        }
+                        .create()
+                        .show()
                 } else if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                    val builder = AlertDialog.Builder(activity)
-                    builder.setTitle("Storage Permission Disclosure")
-                    builder.setMessage("Badge Magic requires access to storage to enable the storage and import of data.")
-                    builder.setCancelable(false)
-                    builder.setPositiveButton("ACCEPT") { _, _ ->
-                        activity.requestPermissions(storagePermissions, REQUEST_PERMISSION_CODE)
-                    }
-                    builder.setNegativeButton("DENY") { _, _ ->
-                        Toast.makeText(activity, "Please grant the permission", Toast.LENGTH_SHORT).show()
-                        activity.requestPermissions(storagePermissions, REQUEST_PERMISSION_CODE)
-                    }
-                    builder.show()
-                } else if (permission == Manifest.permission.BLUETOOTH || permission == Manifest.permission.BLUETOOTH_ADMIN || permission == Manifest.permission.BLUETOOTH_PRIVILEGED || permission == Manifest.permission.BLUETOOTH_CONNECT || permission == Manifest.permission.BLUETOOTH_SCAN) {
+                    AlertDialog.Builder(activity)
+                        .setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_caution))
+                        .setTitle(activity.getString(R.string.storage_required_title))
+                        .setMessage(activity.getString(R.string.storage_required_message))
+                        .setPositiveButton("OK") { _, _ ->
+                            activity.requestPermissions(storagePermissions, REQUEST_PERMISSION_CODE)
+                        }
+                        .setNegativeButton("Cancel") { _, _ ->
+                            Toast.makeText(activity, activity.getString(R.string.storage_canceled_warning), Toast.LENGTH_SHORT).show()
+                        }
+                        .create()
+                        .show()
+                } else if (permission == Manifest.permission.BLUETOOTH_CONNECT || permission == Manifest.permission.BLUETOOTH_SCAN) {
                     activity.requestPermissions(bluetoothPermissions, REQUEST_PERMISSION_CODE)
                 }
             }

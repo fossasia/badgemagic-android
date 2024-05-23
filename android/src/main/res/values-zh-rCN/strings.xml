@@ -95,6 +95,19 @@
     <string name="drawer_saved_cliparts">保存的教具</string>
     <string name="no_gps_enabled">找不到GPS，请从设置中启用GPS</string>
 
+    <string name="location_required_title">需要位置许可</string>
+    <string name="location_required_message">
+		此应用程序使用蓝牙 LE 服务，需要启用位置权限才能扫描附近的设备。\n\n
+		该应用程序不会以任何方式使用用户的任何个人和位置信息。\n\n
+		如果您未启用定位服务，此应用程序可能无法找到附近的任何 LED 徽章并且无法正常运行。
+	</string>
+    <string name="location_canceled_warning">请允许位置权限。 蓝牙 LE 需要这个才能工作。</string>
+	
+
+    <string name="storage_required_title">需要存储权限</string>
+    <string name="storage_required_message">此应用程序需要访问存储空间才能保存和访问已保存的徽章/剪贴画。</string>
+    <string name="storage_canceled_warning">请允许存储权限来保存和访问已保存的徽章/剪贴画。</string>
+
     <string name="share_msg">Badge Magic是一个用于控制LED名称徽章的Android应用。该应用程序提供了在LED徽章上描绘姓名，图形和简单动画的功能。 \n您也可以从下面的链接下载它 https://play.google.com/store/apps/details?id=org.fossasia.badgemagic</string>
     <string name="share_using">分享使用</string>
     <string name="badge_delete_warning">" 您确定要删除此徽章吗？"</string>
