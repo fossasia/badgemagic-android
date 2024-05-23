@@ -16,9 +16,8 @@ class BadgeMagicPermission private constructor() {
     val allPermissions = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.BLUETOOTH,
-        Manifest.permission.BLUETOOTH_ADMIN,
-        Manifest.permission.BLUETOOTH_PRIVILEGED,
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
     )
 
     val storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -26,9 +25,8 @@ class BadgeMagicPermission private constructor() {
     val locationPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
     val bluetoothPermissions = arrayOf(
-        Manifest.permission.BLUETOOTH,
-        Manifest.permission.BLUETOOTH_ADMIN,
-        Manifest.permission.BLUETOOTH_PRIVILEGED,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.BLUETOOTH_SCAN,
     )
 
     val ALL_PERMISSION = 100
