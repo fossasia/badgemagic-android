@@ -108,13 +108,6 @@
     <string name="clipart_saved_success">ClipArt Saved Successfully</string>
     <string name="clipart_saved_error">Error in saving Clipart</string>
     <string name="drawer_saved_cliparts">Saved Cliparts</string>
-    <string name="no_gps_enabled">No GPS Found, Please Enable GPS from Settings</string>
-	
-    <string name="location_required_title">Location Permission Required</string>
-    <string name="location_required_message">
-		Badge Magic collects location data to enable Bluetooth Low Energy and to connect to LED badges and transfer data to the badges even when the app is closed or not in use.\nNo location data is transferred to external devices or our servers.
-	</string>
-    <string name="location_canceled_warning">Please allow Location permissions. Bluetooth LE requires this to work.</string>
 
     <string name="storage_required_title">Storage Permission Required</string>
     <string name="storage_required_message">Badge Magic requires access to storage to save and access saved Badges/Cliparts.</string>
