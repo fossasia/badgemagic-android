@@ -1,119 +1,18 @@
-plugins {
-    id "com.diffplug.spotless" version "6.0.0"
-}
-apply plugin: "com.github.b3er.local.properties"
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-parcelize'
-apply plugin: 'kotlin-kapt'
-
-def KEYSTORE_FILE = rootProject.file('scripts/key.jks')
-def GITHUB_BUILD = System.getenv("GITHUB_ACTIONS") == "true" && KEYSTORE_FILE.exists()
-def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
-
-android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
-
-    defaultConfig {
-        applicationId 'org.fossasia.badgemagic'
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
-        versionCode 20
-        versionName '1.8.10'
-        vectorDrawables.useSupportLibrary = true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    signingConfigs {
-        if (GITHUB_BUILD) {
-            release {
-                storeFile KEYSTORE_FILE
-                storePassword System.getenv("STORE_PASS")
-                keyAlias System.getenv("ALIAS")
-                keyPassword System.getenv("KEY_PASS")
-            }
-        } else if (LOCAL_KEY_PRESENT) {
-            release {
-                storeFile rootProject.file(SIGNING_KEY_FILE)
-                storePassword STORE_PASS
-                keyAlias ALIAS
-                keyPassword KEY_PASS
-            }
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            if (LOCAL_KEY_PRESENT || GITHUB_BUILD)
-                signingConfig signingConfigs.release
-        }
-    }
-
-    buildFeatures.dataBinding = true
-    buildFeatures.viewBinding = true
-
-    packagingOptions {
-        pickFirst 'META-INF/kotlinx-serialization-runtime.kotlin_module'
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
 }
 
-spotless {
-    kotlin {
-        ktlint()
-        target '**/*.kt'
-    }
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
 }
 
-gradle.projectsEvaluated {
-    preBuild.dependsOn(spotlessApply)
-}
-
-dependencies {
-    // BadgeMagicModule
-    implementation project(':BadgeMagicModule')
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin_version}"
-	implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin_version}"
-
-    kapt "androidx.databinding:compiler:3.2.0-alpha11"
-
-    //Gif Library
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
-
-    //Android X Libraries
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-
-    // Koin AndroidX
-    implementation "org.koin:koin-androidx-viewmodel:${versions.koin_version}"
-
-    //Material Design
-    implementation 'com.google.android.material:material:1.4.0'
-
-    //Timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-
-    implementation 'no.nordicsemi.android.support.v18:scanner:1.6.0'
-
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.6.0'
-    testImplementation 'org.amshove.kluent:kluent:1.73'
-
-    // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
-
-    //Display third party licenses
-    implementation 'de.psdev.licensesdialog:licensesdialog:2.2.0'
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
 }

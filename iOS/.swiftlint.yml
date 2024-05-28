@@ -1,7 +1,0 @@
-disabled_rules:
-  - vertical_parameter_alignment
-  - multiple_closures_with_trailing_closure
-
-excluded:
-  - Pods
-  - vendor
