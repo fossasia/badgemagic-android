@@ -1,65 +1,64 @@
 import 'package:badgemagic/constants.dart';
-import 'package:badgemagic/view/widgets/ani_container.dart';
+import 'package:badgemagic/view/widgets/animation_container.dart';
+import 'package:badgemagic/view/widgets/effects_container.dart';
 import 'package:flutter/material.dart';
 
 
 //effects tab to show effects that the user can select
-class Effects_Tab extends StatefulWidget {
-  const Effects_Tab({
+class EffectTab extends StatefulWidget {
+  const EffectTab({
     super.key,
   });
 
   @override
-  State<Effects_Tab> createState() => _Effects_TabState();
+  State<EffectTab> createState() => _Effects_TabState();
 }
 
-class _Effects_TabState extends State<Effects_Tab> {
+class _Effects_TabState extends State<EffectTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          aniContainer(animation: eff_invert, ani_name: 'Invert'),
-          aniContainer(animation: eff_flash, ani_name: 'Effect'),
-          aniContainer(animation: eff_marque, ani_name: 'Marquee'),
-        ],
-      ),
+    return const Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        EffectContainer(effect: eff_invert, effect_name: 'Invert', index: 0,),
+        EffectContainer(effect: eff_flash, effect_name: 'Effect', index: 1,),
+        EffectContainer(effect: eff_marque, effect_name: 'Marquee', index: 2,),
+      ],
     );
   }
 }
 
 //Animation tab to show animation choices for the user
-class Animation_Tab extends StatefulWidget {
-  const Animation_Tab({
+class AnimationTab extends StatefulWidget {
+  const AnimationTab({
     super.key,
   });
 
   @override
-  State<Animation_Tab> createState() => _Animation_TabState();
+  State<AnimationTab> createState() => _AnimationTabState();
 }
 
-class _Animation_TabState extends State<Animation_Tab> {
+class _AnimationTabState extends State<AnimationTab> {
   @override
   Widget build(BuildContext context) {
     return  Column(
       children: [
         Row(
           children: [
-            aniContainer(animation: ani_left, ani_name: 'Left'),
-            aniContainer(animation: ani_right, ani_name: 'Right'),
-            aniContainer(animation: ani_up, ani_name: 'Up'),
+            aniContainer(animation: ani_left, ani_name: 'Left', index: 0,),
+            aniContainer(animation: ani_right, ani_name: 'Right', index: 1,),
+            aniContainer(animation: ani_up, ani_name: 'Up', index: 2,),
           ],
         ),
         Row(children: [
-          aniContainer(animation: ani_down, ani_name: 'Down'),
-          aniContainer(animation: ani_fixed, ani_name: 'Fixed'),
-          aniContainer(animation: ani_fixed, ani_name: 'Snowflake'),
+          aniContainer(animation: ani_down, ani_name: 'Down', index: 3,),
+          aniContainer(animation: ani_fixed, ani_name: 'Fixed', index: 4,),
+          aniContainer(animation: ani_fixed, ani_name: 'Snowflake', index: 5,),
         ],),
         Row(children: [
-          aniContainer(animation: ani_picture, ani_name: 'Picture'),
-          aniContainer(animation: animation, ani_name: 'Animation'),
-          aniContainer(animation: ani_laser, ani_name: 'Laser'),
+          aniContainer(animation: ani_picture, ani_name: 'Picture', index: 6,),
+          aniContainer(animation: animation, ani_name: 'Animation', index: 7,),
+          aniContainer(animation: ani_laser, ani_name: 'Laser', index: 8,),
         ],),
       ],
     );

@@ -63,8 +63,8 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   controller: _tabController,
                   children: [
                   Container(),
-                  const Animation_Tab(),
-                  const Effects_Tab(),
+                  const AnimationTab(),
+                  const EffectTab(),
                 ],),
               ),
             ],
