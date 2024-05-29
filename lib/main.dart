@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(430, 932),
       builder: (context, child) {
         return MaterialApp(
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           initialRoute: '/',
-          routes:  {
-            '/' :(context) => SpalshScreen(),
-            '/homescreen' : (context) => homescreen(),
+          routes: {
+            '/': (context) => const SpalshScreen(),
+            '/homescreen': (context) => const HomeScreen(),
           },
         );
       },
