@@ -16,12 +16,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(430, 932),
-      builder: (context, child) {
-        return MaterialApp(
+    return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
             useMaterial3: true,
@@ -32,7 +28,5 @@ class MyApp extends StatelessWidget {
             '/homescreen': (context) => const HomeScreen(),
           },
         );
-      },
-    );
+      }
   }
-}
