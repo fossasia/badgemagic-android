@@ -6,9 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 /// Writes the given [data] to the specified [characteristicId] on the [device].
-Future<void> writeCharacteristic(BluetoothDevice device,Guid characteristicId,Data data,) async {
+Future<void> writeCharacteristic(
+  BluetoothDevice device,
+  Guid characteristicId,
+  Data data,
+) async {
   List<List<int>> dataChunks = convert(data);
-  debugPrint("Data to write: $dataChunks");
+  print("Data to write: $dataChunks");
+
   try {
     List<BluetoothService> services = await device.discoverServices();
     for (BluetoothService service in services) {
@@ -16,38 +21,33 @@ Future<void> writeCharacteristic(BluetoothDevice device,Guid characteristicId,Da
         if (characteristic.properties.write) {
           for (List<int> chunk in dataChunks) {
             await characteristic.write(chunk,
-                withoutResponse: false, timeout: 2, allowLongWrite: true);
+                withoutResponse: false, timeout:2, allowLongWrite: true);
           }
-          debugPrint("Characteristic written successfully");
+          print("Characteristic written successfully");
         }
       }
     }
   } catch (e) {
-    debugPrint("Failed to write characteristic: $e");
+    print("Failed to write characteristic: $e");
   }
 }
 
-/// Scans for devices with the specified service and writes the [data] to the first found device with the target UUID.
-Future<void> scanAndConnect(Data data, String targetUuid) async {
+/// Scans for devices with the specified service and writes the [data] to the first found device.
+Future<void> scanAndConnect(Data data) async {
   ScanResult? foundDevice;
+
   StreamSubscription<List<ScanResult>>? subscription;
+
   try {
     subscription = FlutterBluePlus.scanResults.listen(
       (results) async {
-        for (ScanResult result in results) {
-          if (result.advertisementData.serviceUuids.contains(Guid("0000fee0-0000-1000-8000-00805f9b34fb"))) {
-            foundDevice = result;
-            break;
-          }
-        }
-        if (foundDevice != null) {
+        if (results.isNotEmpty) {
+          foundDevice = results.last;
           await connectToDevice(foundDevice!, data);
-        } else {
-          debugPrint("Target device not found");
         }
       },
       onError: (e) {
-        debugPrint("Scan error: $e");
+        print("Scan error: $e");
       },
     );
 
@@ -70,13 +70,13 @@ Future<void> connectToDevice(ScanResult scanResult, Data data) async {
     BluetoothConnectionState connectionState = await scanResult.device.connectionState.first;
 
     if (connectionState == BluetoothConnectionState.connected) {
-      debugPrint("Device connected");
+      print("Device connected");
       await writeCharacteristic(scanResult.device, Guid("0000fee1-0000-1000-8000-00805f9b34fb"), data);
     } else {
-      debugPrint("Failed to connect to the device");
+      print("Failed to connect to the device");
     }
   } catch (e) {
-    debugPrint("Connection error: $e");
+    print("Connection error: $e");
   } finally {
     await scanResult.device.disconnect();
   }

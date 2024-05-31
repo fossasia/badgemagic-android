@@ -1,6 +1,8 @@
+import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
 import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,12 +21,14 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController messageController = TextEditingController();
+    BadgeMessageProvider badgeData = Provider.of<BadgeMessageProvider>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
-          title:const Text(
+          title: const Text(
             'Badge Magic',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -35,16 +39,17 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
             children: [
               badge(),
               Container(
-                margin:const EdgeInsets.all(15),
+                margin: const EdgeInsets.all(15),
                 child: Material(
                   borderRadius: BorderRadius.circular(10),
                   elevation: 10,
                   child: TextField(
+                    controller: messageController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.tag_faces_outlined),
-                        focusedBorder:const  OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red))),
                   ),
                 ),
@@ -62,11 +67,17 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                  Container(),
-                  const AnimationTab(),
-                  const EffectTab(),
-                ],),
+                    Container(),
+                    const AnimationTab(),
+                    const EffectTab(),
+                  ],
+                ),
               ),
+              TextButton(onPressed: () {
+                badgeData.generateMessage(messageController.text);
+                badgeData.dataFormed();
+                badgeData.transferData();
+              }, child: Text('Transffer'))
             ],
           ),
         ),
@@ -74,5 +85,3 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
-
-

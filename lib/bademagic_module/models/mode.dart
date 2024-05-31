@@ -13,3 +13,4 @@ enum Mode {
   final String hexValue;
   const Mode(this.hexValue);
 }
+

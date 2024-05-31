@@ -15,6 +15,11 @@ class EffectTab extends StatefulWidget {
 }
 
 class _Effects_TabState extends State<EffectTab> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return const Row(

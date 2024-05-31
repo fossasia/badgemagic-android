@@ -1,13 +1,16 @@
+import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/view/homescreen.dart';
 import 'package:badgemagic/view/splashscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => CardProvider(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => CardProvider()),
+      ChangeNotifierProvider(create: (context) => BadgeMessageProvider()),
+    ],
     child: const MyApp(),));
 }
 

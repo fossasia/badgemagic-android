@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -18,10 +17,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 3),
-                () =>
-            Navigator.of(context).pushReplacementNamed('/homescreen'));
-    return Scaffold(
+    Timer(Duration(seconds: 3),() => Navigator.of(context).pushReplacementNamed('/homescreen'));
+    return const Scaffold(
       body: Center(
         child: Image(image: AssetImage('assets/icons/splash.png'),),
       ),
