@@ -1,4 +1,9 @@
+import 'package:badgemagic/bademagic_module/bluetooth/bluetooth.dart';
+import 'package:badgemagic/bademagic_module/models/data.dart';
+import 'package:badgemagic/bademagic_module/models/mode.dart';
+import 'package:badgemagic/bademagic_module/models/speed.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
 import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +26,8 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController messageController = TextEditingController();
     BadgeMessageProvider badgeData = Provider.of<BadgeMessageProvider>(context);
+    CardProvider cardData = Provider.of<CardProvider>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -44,7 +49,7 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(10),
                   elevation: 10,
                   child: TextField(
-                    controller: messageController,
+                    controller: cardData.getController(),
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -73,11 +78,19 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              TextButton(onPressed: () {
-                badgeData.generateMessage(messageController.text);
-                badgeData.dataFormed();
-                badgeData.transferData();
-              }, child: Text('Transffer'))
+              TextButton(
+                  onPressed: () async {
+                    print(
+                        "${cardData.getAnimationIndex()} : ${cardData.getController().text} : ${cardData.getEffectIndex(2)}");
+                    badgeData.generateMessage(
+                        cardData.getController().text,
+                        cardData.getEffectIndex(1) == 1,
+                        cardData.getEffectIndex(2) == 1,
+                        Speed.EIGHT,
+                        badgeData
+                            .mode_value_map[cardData.getAnimationIndex()]!);
+                  },
+                  child: Text('Transffer'))
             ],
           ),
         ),

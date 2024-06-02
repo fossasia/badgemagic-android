@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CardProvider extends ChangeNotifier {
+  TextEditingController message = TextEditingController();
   int animationIndex = 0;
-  List effectsindex = [0, 0, 0];
+  List<int> effectsIndex = [0, 0, 0];
 
   int getAnimationIndex() => animationIndex;
+  
+  TextEditingController getController() => message;
 
-  int getEffectIndex(int index) => effectsindex[index];
+  int getEffectIndex(int index) => effectsIndex[index];
 
   void setAnimationIndex(int index) {
     animationIndex = index;
@@ -14,7 +17,7 @@ class CardProvider extends ChangeNotifier {
   }
 
   void setEffectIndex(int index) {
-    effectsindex[index] == 1 ? effectsindex[index] = 0 : effectsindex[index] = 1;
+    effectsIndex[index] = effectsIndex[index] == 1 ? 0 : 1;
     notifyListeners();
   }
 }
