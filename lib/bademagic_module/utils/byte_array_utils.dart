@@ -1,3 +1,7 @@
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
+
 String toHex(List<int> bytes) {
   StringBuffer buffer = StringBuffer();
   for (int byte in bytes) {
@@ -17,6 +21,6 @@ List<int> hexStringToByteArray(String hexString) {
     int secondDigit = int.parse(hexString[i + 1], radix: 16);
     data.add((firstDigit << 4) + secondDigit);
   }
-  print(data.length);
+  logger.d(data.length);
   return data;
 }

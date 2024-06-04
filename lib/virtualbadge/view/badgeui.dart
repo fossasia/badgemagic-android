@@ -1,35 +1,35 @@
 import 'package:badgemagic/virtualbadge/view/cell.dart';
 import 'package:flutter/material.dart';
 
-class badge extends StatefulWidget {
-  const badge({
+class BMBadge extends StatefulWidget {
+  const BMBadge({
     super.key,
   });
 
   @override
-  State<badge> createState() => _VirtualBadgeState();
+  State<BMBadge> createState() => _VirtualBadgeState();
 }
 
-class _VirtualBadgeState extends State<badge> {
+class _VirtualBadgeState extends State<BMBadge> {
   List<bool> selectedCells = List.filled(11 * 44, false);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.127,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.black),
       child: GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 44,
         ),
         itemCount: 11 * 44,
         itemBuilder: (context, index) {
-          return Container(
+          return SizedBox(
             width: 12,
             height: 12,
             child: GestureDetector(

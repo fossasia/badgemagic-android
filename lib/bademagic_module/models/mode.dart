@@ -1,16 +1,14 @@
 enum Mode {
-  LEFT('0x00'),
-  RIGHT('0x01'),
-  UP('0x02'),
-  DOWN('0x03'),
-  FIXED('0x04'),
-  SNOWFLAKE('0x05'),
-  PICTURE('0x06'),
-  ANIMATION('0x07'),
-  LASER('0x08');
-  
-  
+  left('0x00'),
+  right('0x01'),
+  up('0x02'),
+  down('0x03'),
+  fixed('0x04'),
+  snowflake('0x05'),
+  picture('0x06'),
+  animation('0x07'),
+  laser('0x08');
+
   final String hexValue;
   const Mode(this.hexValue);
 }
-

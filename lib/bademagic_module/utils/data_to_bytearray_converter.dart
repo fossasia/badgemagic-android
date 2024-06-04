@@ -1,11 +1,12 @@
-
 import 'package:badgemagic/bademagic_module/models/data.dart';
-import 'package:badgemagic/bademagic_module/utils/ByteArrayUtils.dart';
-import 'package:flutter/foundation.dart';
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:logger/logger.dart';
 
-var MAX_MESSAGES = 8;
-var PACKET_START = "77616E670000";
-var PACKET_BYTE_SIZE = 16;
+final Logger logger = Logger();
+
+var maxMessages = 8;
+var packetStart = "77616E670000";
+var packetByteSize = 16;
 
 Map<String, String> charCodes = {
   '0': "007CC6CEDEF6E6C6C67C00",
@@ -112,24 +113,15 @@ Map<String, String> charCodes = {
 //and each 32 bytes of the mesasge is then transmitted to the hexString to byte
 //array function which generates a list of bytes to pass
 List<List<int>> convert(Data data) {
-  assert(data.messages.length <= MAX_MESSAGES, "Max messages=$MAX_MESSAGES");
+  assert(data.messages.length <= maxMessages, "Max messages=$maxMessages");
 
-  String message = (PACKET_START +
-      getFlash(data) +
-      getMarquee(data) +
-      getOptions(data) +
-      getSizes(data) +
-      "000000000000" +
-      getTime(DateTime.now()) +
-      // "00000000"
-      "00000000" +
-      "00000000000000000000000000000000" +
-      getMessage(data));
+  String message =
+      ("$packetStart${getFlash(data)}${getMarquee(data)}${getOptions(data)}${getSizes(data)}000000000000${getTime(DateTime.now())}0000000000000000000000000000000000000000${getMessage(data)}");
   int length = message.length;
   message += fillZeros(length);
-  debugPrint("Final Message is = $message");
+  logger.d("Final Message is = $message");
   List<String> chunks = [];
-  int chunkSize = PACKET_BYTE_SIZE * 2;
+  int chunkSize = packetByteSize * 2;
   for (var i = 0; i < message.length; i += chunkSize) {
     int end = (i + chunkSize) < message.length ? i + chunkSize : message.length;
     chunks.add(message.substring(i, end));
@@ -139,7 +131,6 @@ List<List<int>> convert(Data data) {
     ans.add(hexStringToByteArray(chunks[x]));
   }
   return ans;
-  debugPrint("Final Message = " + message);
 }
 
 //Function to get flash bytes of the message
@@ -150,7 +141,7 @@ String getFlash(Data data) {
     int flashFlag = message.flash ? 1 : 0;
     flashByte[0] = flashByte[0] | (flashFlag << index) & 0xFF;
   });
-  debugPrint("Get flash = " + toHex(flashByte));
+  logger.d("Get flash = ${toHex(flashByte)}");
   return toHex(flashByte);
 }
 
@@ -158,10 +149,10 @@ String getFlash(Data data) {
 String getMarquee(Data data) {
   List<int> marqueeBytes = List<int>.filled(1, 0);
   data.messages.asMap().forEach((index, message) {
-    int MarqueeFlag = message.marquee ? 1 : 0;
-    marqueeBytes[0] = marqueeBytes[0] | (MarqueeFlag << index) & 0xFF;
+    int marqueeFlag = message.marquee ? 1 : 0;
+    marqueeBytes[0] = marqueeBytes[0] | (marqueeFlag << index) & 0xFF;
   });
-  debugPrint("Get Marquee = " + toHex(marqueeBytes));
+  logger.d("Get Marquee = ${toHex(marqueeBytes)}");
   return toHex(marqueeBytes);
 }
 
@@ -175,8 +166,8 @@ String getOptions(Data data) {
               int.parse(message.mode.hexValue))
           .map((value) => toHex(List<int>.filled(1, value)))
           .join() +
-      '00' * (MAX_MESSAGES - nbMessages);
-  debugPrint("get options = " + ans);
+      '00' * (maxMessages - nbMessages);
+  logger.d("get options = $ans");
   return ans;
 }
 
@@ -190,8 +181,8 @@ String getSizes(Data data) {
             int.parse((length & 0xFF).toRadixString(16).padLeft(2, '0')),
           ]))
       .join()
-      .padRight(32- nbMessages * 4 + 4, '0');
-  debugPrint("get sizes = " + ans);
+      .padRight(32 - nbMessages * 4 + 4, '0');
+  logger.d("get sizes = $ans");
   return ans;
 }
 
@@ -205,7 +196,7 @@ String getTime(DateTime now) {
     int.parse((now.minute & 0xFF).toString().padLeft(2, '0')),
     int.parse((now.second & 0xFF).toString().padLeft(2, '0'))
   ]);
-  debugPrint("get time = " + ans);
+  logger.d("get time = $ans");
   return ans;
 }
 
@@ -218,25 +209,23 @@ String getMessage(Data data) {
       .where((element) => charCodes.containsKey(element))
       .map((e) => charCodes[e])
       .join();
-  debugPrint("get message = " + msg);
-  return msg; 
+  logger.d("get message = $msg");
+  return msg;
 }
 
 //filling he rest length with the 0
 String fillZeros(int length) {
   String ans = "0" *
-      (((length / (PACKET_BYTE_SIZE * 2) + 1) * PACKET_BYTE_SIZE * 2) - length)
+      (((length / (packetByteSize * 2) + 1) * packetByteSize * 2) - length)
           .toInt();
-  debugPrint("Fill wit zeroes = " + ans);
+  logger.d("Fill wit zeroes = $ans");
   return ans;
 }
 
-
 //function to display messages on the virtual badge
-List<int> displayVirtualBadge(Data data)
-{
+List<int> displayVirtualBadge(Data data) {
   String display = getMessage(data);
   List<int> ans = hexStringToByteArray(display);
-  debugPrint(ans as String?);
+  logger.d(ans as String?);
   return ans;
 }

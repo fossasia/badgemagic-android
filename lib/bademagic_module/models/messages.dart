@@ -12,7 +12,7 @@ class Message {
     required this.text,
     this.flash = false,
     this.marquee = false,
-    this.speed = Speed.ONE,
-    this.mode = Mode.LEFT,
+    this.speed = Speed.one,
+    this.mode = Mode.left,
   });
 }

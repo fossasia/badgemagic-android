@@ -11,7 +11,8 @@ void main() {
       ChangeNotifierProvider(create: (context) => CardProvider()),
       ChangeNotifierProvider(create: (context) => BadgeMessageProvider()),
     ],
-    child: const MyApp(),));
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,16 +21,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-            useMaterial3: true,
-          ),
-          initialRoute: '/',
-          routes: {
-            '/': (context) => const SpalshScreen(),
-            '/homescreen': (context) => const HomeScreen(),
-          },
-        );
-      }
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        useMaterial3: true,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SpalshScreen(),
+        '/homescreen': (context) => const HomeScreen(),
+      },
+    );
   }
+}

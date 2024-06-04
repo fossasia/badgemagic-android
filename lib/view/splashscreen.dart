@@ -9,18 +9,21 @@ class SpalshScreen extends StatefulWidget {
 }
 
 class _SpalshScreenState extends State<SpalshScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 3),() => Navigator.of(context).pushReplacementNamed('/homescreen'));
+    Timer(const Duration(seconds: 3),
+        () => Navigator.of(context).pushReplacementNamed('/homescreen'));
     return const Scaffold(
       body: Center(
-        child: Image(image: AssetImage('assets/icons/splash.png'),),
+        child: Image(
+          image: AssetImage('assets/icons/splash.png'),
+        ),
       ),
     );
   }

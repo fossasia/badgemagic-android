@@ -3,7 +3,6 @@ import 'package:badgemagic/view/widgets/animation_container.dart';
 import 'package:badgemagic/view/widgets/effects_container.dart';
 import 'package:flutter/material.dart';
 
-
 //effects tab to show effects that the user can select
 class EffectTab extends StatefulWidget {
   const EffectTab({
@@ -11,23 +10,35 @@ class EffectTab extends StatefulWidget {
   });
 
   @override
-  State<EffectTab> createState() => _Effects_TabState();
+  State<EffectTab> createState() => _EffectsTabState();
 }
 
-class _Effects_TabState extends State<EffectTab> {
-
+class _EffectsTabState extends State<EffectTab> {
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        EffectContainer(effect: eff_invert, effect_name: 'Invert', index: 0,),
-        EffectContainer(effect: eff_flash, effect_name: 'Effect', index: 1,),
-        EffectContainer(effect: eff_marque, effect_name: 'Marquee', index: 2,),
+        EffectContainer(
+          effect: effInvert,
+          effectName: 'Invert',
+          index: 0,
+        ),
+        EffectContainer(
+          effect: effFlash,
+          effectName: 'Effect',
+          index: 1,
+        ),
+        EffectContainer(
+          effect: effMarque,
+          effectName: 'Marquee',
+          index: 2,
+        ),
       ],
     );
   }
@@ -46,25 +57,65 @@ class AnimationTab extends StatefulWidget {
 class _AnimationTabState extends State<AnimationTab> {
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return const Column(
       children: [
         Row(
           children: [
-            aniContainer(animation: ani_left, ani_name: 'Left', index: 0,),
-            aniContainer(animation: ani_right, ani_name: 'Right', index: 1,),
-            aniContainer(animation: ani_up, ani_name: 'Up', index: 2,),
+            AniContainer(
+              animation: aniLeft,
+              aniName: 'Left',
+              index: 0,
+            ),
+            AniContainer(
+              animation: aniRight,
+              aniName: 'Right',
+              index: 1,
+            ),
+            AniContainer(
+              animation: aniUp,
+              aniName: 'Up',
+              index: 2,
+            ),
           ],
         ),
-        Row(children: [
-          aniContainer(animation: ani_down, ani_name: 'Down', index: 3,),
-          aniContainer(animation: ani_fixed, ani_name: 'Fixed', index: 4,),
-          aniContainer(animation: ani_fixed, ani_name: 'Snowflake', index: 5,),
-        ],),
-        Row(children: [
-          aniContainer(animation: ani_picture, ani_name: 'Picture', index: 6,),
-          aniContainer(animation: animation, ani_name: 'Animation', index: 7,),
-          aniContainer(animation: ani_laser, ani_name: 'Laser', index: 8,),
-        ],),
+        Row(
+          children: [
+            AniContainer(
+              animation: aniDown,
+              aniName: 'Down',
+              index: 3,
+            ),
+            AniContainer(
+              animation: aniFixed,
+              aniName: 'Fixed',
+              index: 4,
+            ),
+            AniContainer(
+              animation: aniFixed,
+              aniName: 'Snowflake',
+              index: 5,
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            AniContainer(
+              animation: aniPicture,
+              aniName: 'Picture',
+              index: 6,
+            ),
+            AniContainer(
+              animation: animation,
+              aniName: 'Animation',
+              index: 7,
+            ),
+            AniContainer(
+              animation: aniLaser,
+              aniName: 'Laser',
+              index: 8,
+            ),
+          ],
+        ),
       ],
     );
   }
