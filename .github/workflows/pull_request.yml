@@ -14,6 +14,9 @@ jobs:
       - name: Fetch Flutter Dependencies
         run: flutter pub get
 
+      - name: Validate Code Format
+        run: dart format --output=none --set-exit-if-changed .
+
       - name: Analyze Code
         run: flutter analyze
 

@@ -6,7 +6,7 @@ class CardProvider extends ChangeNotifier {
   List<int> effectsIndex = [0, 0, 0];
 
   int getAnimationIndex() => animationIndex;
-  
+
   TextEditingController getController() => message;
 
   int getEffectIndex(int index) => effectsIndex[index];

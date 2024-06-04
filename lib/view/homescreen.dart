@@ -1,22 +1,21 @@
-import 'package:badgemagic/bademagic_module/bluetooth/bluetooth.dart';
-import 'package:badgemagic/bademagic_module/models/data.dart';
-import 'package:badgemagic/bademagic_module/models/mode.dart';
 import 'package:badgemagic/bademagic_module/models/speed.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
-import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _homescreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  static final Logger logger = Logger();
+
   late final TabController _tabController;
   @override
   void initState() {
@@ -42,7 +41,7 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
         body: SafeArea(
           child: Column(
             children: [
-              badge(),
+              const Badge(),
               Container(
                 margin: const EdgeInsets.all(15),
                 child: Material(
@@ -80,17 +79,16 @@ class _homescreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               TextButton(
                   onPressed: () async {
-                    print(
+                    logger.d(
                         "${cardData.getAnimationIndex()} : ${cardData.getController().text} : ${cardData.getEffectIndex(2)}");
                     badgeData.generateMessage(
                         cardData.getController().text,
                         cardData.getEffectIndex(1) == 1,
                         cardData.getEffectIndex(2) == 1,
-                        Speed.EIGHT,
-                        badgeData
-                            .mode_value_map[cardData.getAnimationIndex()]!);
+                        Speed.eight,
+                        badgeData.modeValueMap[cardData.getAnimationIndex()]!);
                   },
-                  child: Text('Transffer'))
+                  child: const Text('Transffer'))
             ],
           ),
         ),
