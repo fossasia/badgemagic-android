@@ -20,9 +20,6 @@ jobs:
       - name: Analyze Code
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test
-
   android-build:
     needs: common
     runs-on: ubuntu-latest
@@ -31,6 +28,9 @@ jobs:
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
+
+      - name: Run tests
+        run: flutter test
         
       - name: Build Android APK's
         run: flutter build apk
