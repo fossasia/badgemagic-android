@@ -1,6 +1,5 @@
 import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 final Logger logger = Logger();
