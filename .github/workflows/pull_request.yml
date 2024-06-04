@@ -1,0 +1,21 @@
+name: Badge Magic PR CI
+on:
+  pull_request:
+    branches: ["flutter_app"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Fetch Flutter Dependencies
+        run: flutter pub get
+
+      - name: Analyze Code
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
