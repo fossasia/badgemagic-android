@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: ["flutter_app"]
 jobs:
-  android-build:
+  common:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,3 +22,18 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+  android-build:
+    needs: common
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        
+      - name: Build Android APK's
+        run: flutter build apk
+
+      - name: Build Android AAB
+        run: flutter build appbundle
