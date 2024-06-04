@@ -1,4 +1,4 @@
-package com.example.badgemagic;
+package org.fossasia.badgemagic;
 
 import io.flutter.embedding.android.FlutterActivity;
 

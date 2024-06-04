@@ -1,0 +1,9 @@
+default_platform(:android)
+platform :android do
+    lane :buildAAB do
+        gradle(task: "bundle",build_type: "Release")
+    end
+    lane :uploadToPlaystore do
+        upload_to_play_store(track: "alpha",aab:"apk/badge-magic-master-release.aab")
+    end
+end

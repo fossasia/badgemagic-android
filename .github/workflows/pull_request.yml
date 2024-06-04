@@ -1,0 +1,41 @@
+name: Badge Magic PR CI
+on:
+  pull_request:
+    branches: ["flutter_app"]
+jobs:
+  common:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Fetch Flutter Dependencies
+        run: flutter pub get
+
+      - name: Validate Code Format
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze Code
+        run: flutter analyze
+
+  android-build:
+    needs: common
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+
+      - name: Run tests
+        run: flutter test
+        
+      - name: Build Android APK's
+        run: flutter build apk
+
+      - name: Build Android AAB
+        run: flutter build appbundle
