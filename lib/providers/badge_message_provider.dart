@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 class BadgeMessageProvider extends ChangeNotifier {
+  BadgeMagicBluetooth badgeMagicBluetooth = BadgeMagicBluetooth();
   static final Logger logger = Logger();
 
   Map<int, Mode> modeValueMap = {
@@ -21,13 +22,25 @@ class BadgeMessageProvider extends ChangeNotifier {
     8: Mode.laser
   };
 
-  void generateMessage(
+  Map<int, Speed> speedMap = {
+    1: Speed.one,
+    2: Speed.two,
+    3: Speed.three,
+    4: Speed.four,
+    5: Speed.five,
+    6: Speed.six,
+    7: Speed.seven,
+    8: Speed.eight,
+  };
+
+  Data generateMessage(
       String text, bool flash, bool marq, Speed speed, Mode mode) {
     Data data = Data(messages: [
       Message(text: text, flash: flash, marquee: marq, speed: speed, mode: mode)
     ]);
     dataFormed(data);
     transferData(data);
+    return data;
   }
 
   void transferData(Data data) {
