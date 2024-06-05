@@ -23,6 +23,7 @@ jobs:
         run: flutter analyze
 
   android:
+    name: Android Flutter Build
     needs: common
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +43,7 @@ jobs:
           flutter build appbundle
 
   ios:
+    name: iOS Flutter Build
     needs: common
     runs-on: macos-latest
     steps:

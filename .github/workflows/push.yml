@@ -62,6 +62,7 @@ jobs:
   
 
   android:
+    name: Android Flutter Build
     needs: common
     runs-on: ubuntu-latest
     steps:
@@ -182,6 +183,7 @@ jobs:
           fi
 
   ios:
+    name: iOS Flutter Build
     needs: common
     runs-on: macos-latest
     steps:
