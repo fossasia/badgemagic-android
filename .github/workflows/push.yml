@@ -62,6 +62,7 @@ jobs:
   
 
   android:
+    name: Android Flutter Build
     needs: common
     runs-on: ubuntu-latest
     steps:
@@ -182,6 +183,7 @@ jobs:
           fi
 
   ios:
+    name: iOS Flutter Build
     needs: common
     runs-on: macos-latest
     steps:
@@ -201,3 +203,17 @@ jobs:
           VERSION_CODE: ${{needs.common.outputs.VERSION_CODE}}
         run: |
           flutter build ipa --no-codesign --build-name $VERSION_NAME --build-number $VERSION_CODE
+  
+  update-release:
+    needs: [common, android, ios]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Release Drafter
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ needs.common.outputs.VERSION_NAME }}
+          name: 'Release v${{ needs.common.outputs.VERSION_NAME }} 🌈'
+          tag: 'v${{ needs.common.outputs.VERSION_CODE }}'
+    
