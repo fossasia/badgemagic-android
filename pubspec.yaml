@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   provider: ^6.1.2
   flutter_blue_plus: ^1.32.7
+  fluttertoast: ^8.2.6
   logger: ^2.3.0
 
 dev_dependencies:
@@ -94,3 +95,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
