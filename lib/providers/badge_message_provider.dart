@@ -33,14 +33,13 @@ class BadgeMessageProvider extends ChangeNotifier {
     8: Speed.eight,
   };
 
-  Data generateMessage(
+  void generateMessage(
       String text, bool flash, bool marq, Speed speed, Mode mode) {
     Data data = Data(messages: [
       Message(text: text, flash: flash, marquee: marq, speed: speed, mode: mode)
     ]);
     dataFormed(data);
     transferData(data);
-    return data;
   }
 
   void transferData(Data data) {

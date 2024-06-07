@@ -56,7 +56,7 @@ class RadialDialPainter extends CustomPainter {
       paint,
     );
 
-    final Progresspaint = Paint()
+    final progressPaint = Paint()
       ..color = Colors.red
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
@@ -67,7 +67,7 @@ class RadialDialPainter extends CustomPainter {
       startAngle,
       6 * pi / 4 * (value / max),
       false,
-      Progresspaint,
+      progressPaint,
     );
   }
 
@@ -146,7 +146,7 @@ class _RadialDialState extends State<RadialDial> {
   Widget build(BuildContext context) {
     CardProvider outerValueProvider = Provider.of<CardProvider>(context);
 
-    void _updateOuterValue(double angle) {
+    void updateOuterValue(double angle) {
       const startAngle = 155 * pi / 270;
       const endAngle = 360 * pi / 180;
 
@@ -165,7 +165,7 @@ class _RadialDialState extends State<RadialDial> {
       });
     }
 
-    void _updateAngle(Offset position, Size size) {
+    void updateAngle(Offset position, Size size) {
       if (!isDragging) return;
 
       final center = Offset(size.width / 2, size.height / 2);
@@ -189,7 +189,7 @@ class _RadialDialState extends State<RadialDial> {
             (angle < startAngle && previousAngle < startAngle) ||
             (angle - previousAngle).abs() < pi) {
           setState(() {
-            _updateOuterValue(angle);
+            updateOuterValue(angle);
           });
         }
         previousAngle = angle;
@@ -223,7 +223,7 @@ class _RadialDialState extends State<RadialDial> {
               RenderBox renderBox = context.findRenderObject() as RenderBox;
               Offset localPosition =
                   renderBox.globalToLocal(details.globalPosition);
-              _updateAngle(localPosition, renderBox.size);
+              updateAngle(localPosition, renderBox.size);
             }
           },
           child: CustomPaint(

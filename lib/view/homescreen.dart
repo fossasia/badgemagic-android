@@ -1,4 +1,3 @@
-import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
@@ -6,7 +5,6 @@ import 'package:badgemagic/view/widgets/speedial.dart';
 import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,8 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  static final Logger logger = Logger();
-
   late final TabController _tabController;
   BadgeMessageProvider badgeData = BadgeMessageProvider();
 
@@ -39,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
 
     try {
-      Data data = badgeData.generateMessage(
+      badgeData.generateMessage(
         cardData.getController().text,
         cardData.getEffectIndex(1) == 1,
         cardData.getEffectIndex(2) == 1,
@@ -84,12 +80,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           centerTitle: true,
         ),
         body: SafeArea(
-          child: Container(
+          child: SizedBox(
             height: height,
             width: width,
             child: Column(
               children: [
-                BMBadge(),
+                const BMBadge(),
                 Container(
                   margin: const EdgeInsets.all(15),
                   child: Material(
@@ -116,59 +112,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ],
                 ),
                 SingleChildScrollView(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 1.5,
-                          child: TabBarView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: _tabController,
-                            children: const [
-                              RadialDial(),
-                              AnimationTab(),
-                              EffectTab(),
-                            ],
-                          ),
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1.5,
+                        child: TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: _tabController,
+                          children: const [
+                            RadialDial(),
+                            AnimationTab(),
+                            EffectTab(),
+                          ],
                         ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              bottom: height * 0.2,
-                              top: height * 0.02), // Adjust the value as needed
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  if (cardData.getController().text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                      msg:
-                                          "Please enter some text to transfer.",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                    return;
-                                  }
-                                  transferData(context, cardData);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  child: Text('Transfer'),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(
+                            bottom: height * 0.2,
+                            top: height * 0.02), // Adjust the value as needed
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (cardData.getController().text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                    msg: "Please enter some text to transfer.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                                  return;
+                                }
+                                transferData(context, cardData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey.shade400,
                                 ),
+                                child: const Text('Transfer'),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
