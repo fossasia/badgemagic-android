@@ -60,8 +60,8 @@ class BadgeMagicBluetooth {
         (results) async {
           if (results.isNotEmpty) {
             foundDevice = results.firstWhere(
-              (result) =>
-                  result.device.remoteId.toString() == "50:54:7B:63:10:F5",
+              (result) => result.advertisementData.serviceUuids
+                  .contains(Guid("0000fee0-0000-1000-8000-00805f9b34fb")),
             );
             if (foundDevice != null) {
               await connectToDevice(foundDevice!, data);
