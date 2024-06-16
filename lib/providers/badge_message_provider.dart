@@ -3,6 +3,7 @@ import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/models/messages.dart';
 import 'package:badgemagic/bademagic_module/models/mode.dart';
 import 'package:badgemagic/bademagic_module/models/speed.dart';
+import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -36,7 +37,12 @@ class BadgeMessageProvider extends ChangeNotifier {
   void generateMessage(
       String text, bool flash, bool marq, Speed speed, Mode mode) {
     Data data = Data(messages: [
-      Message(text: text, flash: flash, marquee: marq, speed: speed, mode: mode)
+      Message(
+          text: Converters.messageTohex(text),
+          flash: flash,
+          marquee: marq,
+          speed: speed,
+          mode: mode)
     ]);
     dataFormed(data);
     transferData(data);
