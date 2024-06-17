@@ -91,7 +91,7 @@ class InnerPointerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width / 2, size.height / 2) * 0.8;
+    final radius = min(size.width / 2, size.height / 2) * 0.4;
 
     final pointerAngle = 3 * pi / 4 + 6 * pi / 4 * (value / max);
     final pointerLength = radius + 25;
@@ -232,8 +232,8 @@ class _RadialDialState extends State<RadialDial> {
                 max: maxValue,
                 color: Colors.red),
             child: const SizedBox(
-              width: 80,
-              height: 80,
+              width: 180,
+              height: 180,
             ),
           ),
         ),

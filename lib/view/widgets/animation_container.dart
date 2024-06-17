@@ -26,7 +26,7 @@ class _AniContainerState extends State<AniContainer> {
     double width = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.all(5),
-      height: height * 0.15,
+      height: height * 0.09,
       width: width * 0.307,
       child: GestureDetector(
         onTap: () {
@@ -37,12 +37,12 @@ class _AniContainerState extends State<AniContainer> {
           color: animationcardstate.getAnimationIndex() == widget.index
               ? Colors.red
               : Colors.white,
-          elevation: 10,
+          elevation: 5,
           child: Column(
             children: [
               Image(
                 image: AssetImage(widget.animation),
-                height: height * 0.1,
+                height: height * 0.04,
               ),
               Text(widget.aniName),
             ],
