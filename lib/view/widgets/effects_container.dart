@@ -35,7 +35,7 @@ class _EffectContainerState extends State<EffectContainer> {
           color: effectcardstate.getEffectIndex(widget.index) == 1
               ? Colors.red
               : Colors.white,
-          elevation: 10,
+          elevation: 5,
           child: Column(
             children: [
               Image(
