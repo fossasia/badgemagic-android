@@ -174,10 +174,10 @@ jobs:
           git branch -m apk
           git push --force origin apk
 
-      - name: Upload alpha version to playstore
+      - name: Update app in Open Testing track
         if: ${{ github.repository == 'fossasia/badgemagic-android' }}
         run: |
-          bundle exec fastlane uploadToPlaystore
+          bundle exec fastlane uploadToOpenTesting
           if [[ $? -ne 0 ]]; then
               exit 1
           fi
