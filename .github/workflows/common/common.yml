@@ -1,0 +1,21 @@
+name: Common Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  common:
+    steps:
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+
+      - name: Fetch Flutter Dependencies
+        run: flutter pub get
+
+      - name: Validate Code Format
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze Code
+        run: flutter analyze
