@@ -1,0 +1,29 @@
+name: "iOS Workflow"
+
+inputs:
+  VERSION_NAME:
+    description: 'Version Name to be used for build'
+    required: false
+    default: '1.0.0'
+  VERSION_CODE:
+    description: 'Version Code to be used for build'
+    required: true
+    default: '1'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        cache: true
+
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build iOS IPA
+      env:
+        VERSION_NAME: ${{inputs.VERSION_NAME}}
+        VERSION_CODE: ${{inputs.VERSION_CODE}}
+      run: |
+        flutter build ipa --no-codesign --build-name $VERSION_NAME --build-number $VERSION_CODE
