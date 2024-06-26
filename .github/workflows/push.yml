@@ -13,25 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          cache: true
-
-      - name: Fetch Flutter Dependencies
-        run: flutter pub get
-
-      - name: Validate Code Format
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Analyze Code
-        run: flutter analyze
+      - name: Common Workflow
+        uses: ./.github/actions/common
 
       - name: Hydrate and Update Version
         id: flutter-version
         run: |
-          git config --global user.name "${{ github.workflow }}"
-          git config --global user.email "gh-actions@${{ github.repository_owner }}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
           git clone --branch=version https://${{ github.repository_owner }}:${{ github.token }}@github.com/${{ github.repository }} version
           cd version
@@ -68,28 +57,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Setup Ruby
-        if: ${{ github.repository == 'fossasia/badgemagic-android' }}
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-      
-      - name: Prepare Bundler
-        if: ${{ github.repository == 'fossasia/badgemagic-android' }}
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-      
       - name: Pre Checks
         run: |
           bash scripts/check-screenshots.sh
@@ -102,25 +69,15 @@ jobs:
         run: |
           bash scripts/prep-key.sh
   
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Android Workflow
+        uses: ./.github/actions/android
         with:
-          cache: true
-
-      - name: Run tests
-        run: flutter test
-        
-      - name: Build Android APK/AAB
-        env:
           STORE_PASS: ${{ secrets.STORE_PASS }}
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PASS: ${{ secrets.KEY_PASS }}
           VERSION_NAME: ${{needs.common.outputs.VERSION_NAME}}
           VERSION_CODE: ${{needs.common.outputs.VERSION_CODE}}
-        run: |
-          flutter build apk --build-name $VERSION_NAME --build-number $VERSION_CODE
-          flutter build appbundle --build-name $VERSION_NAME --build-number $VERSION_CODE
-                
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -136,8 +93,8 @@ jobs:
       - name: Upload APK/AAB to apk branch
         if: ${{ github.repository == 'fossasia/badgemagic-android' }}
         run: |
-          git config --global user.name "${{ github.workflow }}"
-          git config --global user.email "gh-actions@${{ github.repository_owner }}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git clone --branch=apk https://${{ github.repository_owner }}:${{ github.token }}@github.com/${{ github.repository }} apk
           cd apk
@@ -174,6 +131,19 @@ jobs:
           git branch -m apk
           git push --force origin apk
 
+      - name: Setup Ruby
+        if: ${{ github.repository == 'fossasia/badgemagic-android' }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      
+      - name: Prepare Bundler
+        if: ${{ github.repository == 'fossasia/badgemagic-android' }}
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      
       - name: Update app in Open Testing track
         if: ${{ github.repository == 'fossasia/badgemagic-android' }}
         run: |
@@ -189,20 +159,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: iOS Workflow
+        uses: ./.github/actions/ios
         with:
-          cache: true
-
-      - name: Run tests
-        run: flutter test
-        
-      - name: Build iOS IPA
-        env:
           VERSION_NAME: ${{needs.common.outputs.VERSION_NAME}}
           VERSION_CODE: ${{needs.common.outputs.VERSION_CODE}}
-        run: |
-          flutter build ipa --no-codesign --build-name $VERSION_NAME --build-number $VERSION_CODE
   
   update-release:
     needs: [common, android, ios]
@@ -214,6 +175,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: ${{ needs.common.outputs.VERSION_NAME }}
-          name: 'Release v${{ needs.common.outputs.VERSION_NAME }} 🌈'
-          tag: 'v${{ needs.common.outputs.VERSION_CODE }}'
     

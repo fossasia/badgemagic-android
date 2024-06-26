@@ -1,5 +1,5 @@
-name-template: Release v$NEXT_MINOR_VERSION 🌈
-tag-template: v$NEXT_MINOR_VERSION
+name-template: Release v$RESOLVED_VERSION 🌈
+tag-template: v$RESOLVED_VERSION
 categories:
   - title: 🚀 Features
     label:
@@ -7,12 +7,12 @@ categories:
       - feat
   - title: 🐛 Bug Fixes
     label: fix
-  - title: 🧰 Maintenance
-    label: chore
-  - title: Dependencies and Libraries
-    label: 
-      - dependencies
-      - chore(deps)
+exclude-contributors:
+  - 'dependabot'
+  - 'dependabot[bot]'
+exclude-labels:
+  - 'Dependencies'
+  - 'Chore'
 change-template: '- $TITLE (#$NUMBER) - @$AUTHOR'
 template: |-
   ## Changes
