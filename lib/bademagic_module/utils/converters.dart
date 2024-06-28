@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
 
 class Converters {
@@ -6,17 +7,18 @@ class Converters {
   //then adds the hexstring to the list
   //thus generating the hex value of the message
   static List<String> messageTohex(String message) {
+    DataToByteArrayConverter converter = DataToByteArrayConverter();
     List<String> messages = [];
     int i = 0;
     while (i < message.length) {
       var ch = message[i];
-      logger.d("ch = $ch");
-      if (charCodes.containsKey(ch)) {
-        messages.add(charCodes[ch]!);
+      logger.d("character at $i = ${message[i]}");
+      if (converter.charCodes.containsKey(ch)) {
+        messages.add(converter.charCodes[ch]!);
       }
       i++;
     }
-    logger.d("message to hex = $message");
+    logger.d("message to hex = $messages");
     return messages;
   }
 

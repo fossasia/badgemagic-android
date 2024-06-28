@@ -6,13 +6,14 @@ import 'package:logger/logger.dart';
 
 class BadgeMagicBluetooth {
   static final Logger logger = Logger();
+  static DataToByteArrayConverter converter = DataToByteArrayConverter();
 
   static Future<void> writeCharacteristic(
     BluetoothDevice device,
     Guid characteristicId,
     Data data,
   ) async {
-    List<List<int>> dataChunks = convert(data);
+    List<List<int>> dataChunks = converter.convert(data);
     logger.d("Data to write: $dataChunks");
 
     try {
