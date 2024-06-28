@@ -1,0 +1,21 @@
+name: "Common Workflow"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        cache: true
+
+    - name: Fetch Flutter Dependencies
+      shell: bash
+      run: flutter pub get
+
+    - name: Validate Code Format
+      shell: bash
+      run: dart format --output=none --set-exit-if-changed .
+
+    - name: Analyze Code
+      shell: bash
+      run: flutter analyze

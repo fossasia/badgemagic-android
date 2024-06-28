@@ -8,19 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          cache: true
-
-      - name: Fetch Flutter Dependencies
-        run: flutter pub get
-
-      - name: Validate Code Format
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Analyze Code
-        run: flutter analyze
+      - name: Common Workflow
+        uses: ./.github/actions/common
 
   android:
     name: Android Flutter Build
@@ -29,18 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          cache: true
+      - name: Android Workflow
+        uses: ./.github/actions/android
 
-      - name: Run tests
-        run: flutter test
-        
-      - name: Build Android APK/AAB
-        run: |
-          flutter build apk
-          flutter build appbundle
 
   ios:
     name: iOS Flutter Build
@@ -49,15 +29,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          cache: true
-
-      - name: Run tests
-        run: flutter test
-        
-      - name: Build iOS IPA
-        run: |
-          flutter build ipa --no-codesign
+      - name: iOS Workflow
+        uses: ./.github/actions/ios
   
