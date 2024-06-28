@@ -119,7 +119,6 @@ class DataToByteArrayConverter {
     String message =
         ("$packetStart${getFlash(data)}${getMarquee(data)}${getOptions(data)}${getSizes(data)}000000000000${getTime(DateTime.now())}0000000000000000000000000000000000000000${getMessage(data)}");
     int length = message.length;
-    logger.d("Length is = $length");
     message += fillZeros(length);
     logger.d("Final Message is = $message");
     List<String> chunks = [];

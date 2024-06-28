@@ -15,8 +15,7 @@ void main() {
     ]);
 
     List<List<int>> result = converter.convert(data);
-    print(result);
-
+    
     expect(result[0].sublist(0, 6), [0x77, 0x61, 0x6E, 0x67, 0x00, 0x00]);
   });
 

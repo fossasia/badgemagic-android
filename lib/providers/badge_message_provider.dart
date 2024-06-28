@@ -37,8 +37,12 @@ class BadgeMessageProvider extends ChangeNotifier {
   void generateMessage(
       String text, bool flash, bool marq, Speed speed, Mode mode) {
     Data data = Data(messages: [
-      Message(text: Converters.messageTohex('AB')),
-      Message(text: Converters.messageTohex('ÈC')),
+      Message(
+          text: Converters.messageTohex(text),
+          flash: flash,
+          marquee: marq,
+          speed: speed,
+          mode: mode)
     ]);
     dataFormed(data);
     transferData(data);

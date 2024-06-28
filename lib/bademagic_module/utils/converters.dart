@@ -12,13 +12,11 @@ class Converters {
     int i = 0;
     while (i < message.length) {
       var ch = message[i];
-      logger.d("character at $i = ${message[i]}");
       if (converter.charCodes.containsKey(ch)) {
         messages.add(converter.charCodes[ch]!);
       }
       i++;
     }
-    logger.d("message to hex = $messages");
     return messages;
   }
 
