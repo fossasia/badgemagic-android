@@ -19,9 +19,11 @@ runs:
         cache: true
 
     - name: Run tests
+      shell: bash
       run: flutter test
       
     - name: Build iOS IPA
+      shell: bash
       env:
         VERSION_NAME: ${{inputs.VERSION_NAME}}
         VERSION_CODE: ${{inputs.VERSION_CODE}}
