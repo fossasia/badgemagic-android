@@ -10,8 +10,12 @@ String toHex(List<int> bytes) {
   return buffer.toString().toUpperCase();
 }
 
+bool isValidHex(String input) {
+  return RegExp(r'^[0-9a-fA-F]+$').hasMatch(input);
+}
+
 List<int> hexStringToByteArray(String hexString) {
-  if (hexString.length % 2 != 0) {
+  if (hexString.length % 2 != 0 || !isValidHex(hexString)) {
     throw ArgumentError("Invalid hex string: $hexString");
   }
 
