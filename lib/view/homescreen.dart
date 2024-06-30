@@ -4,7 +4,6 @@ import 'package:badgemagic/view/widgets/homescreentabs.dart';
 import 'package:badgemagic/view/widgets/speedial.dart';
 import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,50 +23,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  Future<void> transferData(BuildContext context, CardProvider cardData) async {
-    Fluttertoast.showToast(
-      msg: "Transferring...",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-
-    try {
-      badgeData.generateMessage(
-        cardData.getController().text,
-        cardData.getEffectIndex(1) == 1,
-        cardData.getEffectIndex(2) == 1,
-        badgeData.speedMap[cardData.getOuterValue()]!,
-        badgeData.modeValueMap[cardData.getAnimationIndex()]!,
-      );
-
-      Fluttertoast.showToast(
-        msg: "Transfer successful",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Transfer failed: $e",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     CardProvider cardData = Provider.of<CardProvider>(context);
+    //seting the context to be used by the scaffold messenger
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      cardData.setContext(context);
+    });
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -135,18 +99,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                if (cardData.getController().text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                    msg: "Please enter some text to transfer.",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0,
-                                  );
-                                  return;
-                                }
-                                transferData(context, cardData);
+                                badgeData.checkAndTransffer();
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

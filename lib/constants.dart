@@ -12,3 +12,15 @@ const String aniRight = 'assets/animations/ic_anim_right.gif';
 const String effFlash = 'assets/effects/ic_effect_flash.gif';
 const String effInvert = 'assets/effects/ic_effect_invert.gif';
 const String effMarque = 'assets/effects/ic_effect_marquee.gif';
+
+//enum to manage the state of the bluetooth connection
+enum TransferState {
+  search,
+  connecting,
+  connected,
+  notConnected,
+  transfer,
+  permission,
+  success,
+  failed,
+}
