@@ -4,7 +4,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'ble_state_interface.dart';
-import 'toast.dart';
+import 'bletoast.dart';
 
 class WriteState implements BleState {
   final BluetoothDevice device;

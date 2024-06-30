@@ -2,7 +2,7 @@ import 'package:badgemagic/bademagic_module/bluetooth/writestate.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:logger/logger.dart';
 import 'ble_state_interface.dart';
-import 'toast.dart';
+import 'bletoast.dart';
 
 class ConnectState implements BleState {
   final ScanResult scanResult;
