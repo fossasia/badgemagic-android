@@ -1,9 +1,16 @@
 name: Badge Magic PR CI
+
 on:
   pull_request:
     branches: ["flutter_app"]
+
+env:
+  ANDROID_EMULATOR_API: 34
+  ANDROID_EMULATOR_ARCH: x86_64
+
 jobs:
   common:
+    name: Common Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +28,6 @@ jobs:
       - name: Android Workflow
         uses: ./.github/actions/android
 
-
   ios:
     name: iOS Flutter Build
     needs: common
@@ -31,4 +37,16 @@ jobs:
 
       - name: iOS Workflow
         uses: ./.github/actions/ios
-  
+
+  screenshots:
+    name: Screenshots (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Android Screenshot Workflow
+        uses: ./.github/actions/screenshot-android
+        with:
+          ANDROID_EMULATOR_API: ${{ env.ANDROID_EMULATOR_API }}
+          ANDROID_EMULATOR_ARCH: ${{ env.ANDROID_EMULATOR_ARCH }}
+      
