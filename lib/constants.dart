@@ -1,3 +1,5 @@
+const homeScreenTitleKey = "bm_hm_title";
+
 //path to all the animation assets used
 const String animation = 'assets/animations/ic_anim_animation.gif';
 const String aniLeft = 'assets/animations/ic_anim_left.gif';

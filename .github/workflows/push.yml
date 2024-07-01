@@ -1,15 +1,20 @@
 name: Badge Magic Push CI
+
 on:
   push:
     branches: ["flutter_app"]
+
+env:
+  ANDROID_EMULATOR_API: 34
+  ANDROID_EMULATOR_ARCH: x86_64
+
 jobs:
   common:
+    name: Common Build
     runs-on: ubuntu-latest
-
     outputs:
       VERSION_NAME: ${{ steps.flutter-version.outputs.VERSION_NAME }}
       VERSION_CODE: ${{ steps.flutter-version.outputs.VERSION_CODE }}
-
     steps:
       - uses: actions/checkout@v4
 
@@ -166,6 +171,7 @@ jobs:
           VERSION_CODE: ${{needs.common.outputs.VERSION_CODE}}
   
   update-release:
+    name: Update Draft Release
     needs: [common, android, ios]
     runs-on: ubuntu-latest
     steps:
@@ -175,4 +181,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: ${{ needs.common.outputs.VERSION_NAME }}
-    
+
+  screenshots:
+    name: Screenshots (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Android Screenshot Workflow
+        uses: ./.github/actions/screenshot-android
+        with:
+          ANDROID_EMULATOR_API: ${{ env.ANDROID_EMULATOR_API }}
+          ANDROID_EMULATOR_ARCH: ${{ env.ANDROID_EMULATOR_ARCH }}
