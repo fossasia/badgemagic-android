@@ -49,5 +49,4 @@ class ScanState implements BleState {
     }
     return foundDevice != null ? ConnectState(scanResult: foundDevice!) : null;
   }
-
 }

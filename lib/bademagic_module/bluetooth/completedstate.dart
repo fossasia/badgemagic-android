@@ -9,7 +9,7 @@ class CompletedState implements BleState {
   CompletedState({required this.isSuccess, required this.message});
 
   @override
-  Future<BleState?> processState() async{
+  Future<BleState?> processState() async {
     if (isSuccess) {
       toast.successToast(message);
     }

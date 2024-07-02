@@ -57,22 +57,21 @@ class BadgeMessageProvider {
     return data;
   }
 
- Future<void> transferData() async {
-  BleState state = ScanState();
-  while (state is! CompletedState) {
-    BleState? nextState = await state.processState();
-    if (nextState != null) {
-      state = nextState;
-    } else {
-      break;
+  Future<void> transferData() async {
+    BleState state = ScanState();
+    while (state is! CompletedState) {
+      BleState? nextState = await state.processState();
+      if (nextState != null) {
+        state = nextState;
+      } else {
+        break;
+      }
     }
+    if (state is CompletedState) {
+      await state.processState(); // Ensure the toast is shown
+    }
+    logger.d(".......Data transfer completed.......");
   }
-  if (state is CompletedState) {
-    await state.processState();  // Ensure the toast is shown
-  }
-  logger.d(".......Data transfer completed.......");
-}
-
 
   Future<void> checkAndTransffer() async {
     //checks wether the bluetooth is supported by the device or not
