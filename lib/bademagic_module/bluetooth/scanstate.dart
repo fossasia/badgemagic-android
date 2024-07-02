@@ -28,7 +28,8 @@ class ScanState implements BleState {
             if (foundDevice != null) {
               toast.successToast('Device found. Connecting...');
               if (!nextStateCompleter.isCompleted) {
-                nextStateCompleter.complete(ConnectState(scanResult: foundDevice!));
+                nextStateCompleter
+                    .complete(ConnectState(scanResult: foundDevice!));
               }
             }
           }
@@ -44,7 +45,7 @@ class ScanState implements BleState {
 
       await FlutterBluePlus.startScan(
         withServices: [Guid("0000fee0-0000-1000-8000-00805f9b34fb")],
-        timeout: const Duration(seconds: 5),  // Reduced scan timeout
+        timeout: const Duration(seconds: 5), // Reduced scan timeout
       );
 
       await Future.delayed(const Duration(seconds: 6));
@@ -53,7 +54,8 @@ class ScanState implements BleState {
     }
 
     if (!nextStateCompleter.isCompleted) {
-      nextStateCompleter.complete(foundDevice != null ? ConnectState(scanResult: foundDevice!) : null);
+      nextStateCompleter.complete(
+          foundDevice != null ? ConnectState(scanResult: foundDevice!) : null);
     }
 
     return nextStateCompleter.future;
