@@ -123,6 +123,7 @@ class RadialDial extends StatefulWidget {
   const RadialDial({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RadialDialState createState() => _RadialDialState();
 }
 
