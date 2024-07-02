@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          badgeData.checkAndTransffer();
+                          badgeData.checkAndTransfer();
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(

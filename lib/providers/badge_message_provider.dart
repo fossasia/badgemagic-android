@@ -58,6 +58,7 @@ class BadgeMessageProvider {
   }
 
   Future<void> transferData() async {
+    DateTime now = DateTime.now();
     BleState state = ScanState();
     while (state is! CompletedState) {
       BleState? nextState = await state.processState();
@@ -70,36 +71,31 @@ class BadgeMessageProvider {
     if (state is CompletedState) {
       await state.processState(); // Ensure the toast is shown
     }
+    logger.d("Time to transfer data is = ${DateTime.now().difference(now)}");
     logger.d(".......Data transfer completed.......");
   }
 
-  Future<void> checkAndTransffer() async {
-    //checks wether the bluetooth is supported by the device or not
+  Future<void> checkAndTransfer() async {
     if (await FlutterBluePlus.isSupported == false) {
       toast.failureToast('Bluetooth is not supported by the device');
       return;
     }
 
-    //checks wether the text is empty or not
     if (cardData.getController().text.isEmpty) {
       toast.failureToast("Please enter a message");
       return;
     }
 
-    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
-      if (state == BluetoothAdapterState.on) {
-        transferData();
-      } else {
-        //check wether the platform is android
-        if (Platform.isAndroid) {
-          toast.successToast('Turning on Bluetooth...');
-          await FlutterBluePlus.turnOn();
-        }
-        //check wether the platform is ios
-        else if (Platform.isIOS) {
-          toast.successToast('Please turn on Bluetooth');
-        }
+    final adapterState = await FlutterBluePlus.adapterState.first;
+    if (adapterState == BluetoothAdapterState.on) {
+      await transferData();
+    } else {
+      if (Platform.isAndroid) {
+        toast.successToast('Turning on Bluetooth...');
+        await FlutterBluePlus.turnOn();
+      } else if (Platform.isIOS) {
+        toast.successToast('Please turn on Bluetooth');
       }
-    });
+    }
   }
 }

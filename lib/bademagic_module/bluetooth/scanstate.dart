@@ -15,6 +15,8 @@ class ScanState implements BleState {
     StreamSubscription<List<ScanResult>>? subscription;
     toast.successToast("Searching for device...");
 
+    Completer<BleState?> nextStateCompleter = Completer();
+
     try {
       subscription = FlutterBluePlus.scanResults.listen(
         (results) async {
@@ -25,28 +27,35 @@ class ScanState implements BleState {
             );
             if (foundDevice != null) {
               toast.successToast('Device found. Connecting...');
-              await FlutterBluePlus.stopScan();
-            } else {
-              toast.failureToast('Target device not found.');
-              logger.e("Target device not found.");
+              if (!nextStateCompleter.isCompleted) {
+                nextStateCompleter.complete(ConnectState(scanResult: foundDevice!));
+              }
             }
           }
         },
         onError: (e) async {
           logger.e("Scan error: $e");
           toast.failureToast('Scan error occurred.');
+          if (!nextStateCompleter.isCompleted) {
+            nextStateCompleter.complete(null);
+          }
         },
       );
 
       await FlutterBluePlus.startScan(
         withServices: [Guid("0000fee0-0000-1000-8000-00805f9b34fb")],
-        timeout: const Duration(seconds: 10),
+        timeout: const Duration(seconds: 5),  // Reduced scan timeout
       );
 
-      await Future.delayed(const Duration(seconds: 11));
+      await Future.delayed(const Duration(seconds: 6));
     } finally {
       await subscription?.cancel();
     }
-    return foundDevice != null ? ConnectState(scanResult: foundDevice!) : null;
+
+    if (!nextStateCompleter.isCompleted) {
+      nextStateCompleter.complete(foundDevice != null ? ConnectState(scanResult: foundDevice!) : null);
+    }
+
+    return nextStateCompleter.future;
   }
 }
