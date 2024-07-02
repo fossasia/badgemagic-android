@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:badgemagic/bademagic_module/bluetooth/ble_state_interface.dart';
+import 'package:badgemagic/bademagic_module/bluetooth/bletoast.dart';
+import 'package:badgemagic/bademagic_module/bluetooth/completedstate.dart';
 import 'package:badgemagic/bademagic_module/bluetooth/scanstate.dart';
 import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/models/messages.dart';
@@ -6,14 +9,14 @@ import 'package:badgemagic/bademagic_module/models/mode.dart';
 import 'package:badgemagic/bademagic_module/models/speed.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 class BadgeMessageProvider {
   static final Logger logger = Logger();
-  BleState state = ScanState();
   CardProvider cardData = GetIt.instance<CardProvider>();
+  BleStateToast toast = BleStateToast();
 
   Map<int, Mode> modeValueMap = {
     0: Mode.left,
@@ -54,73 +57,50 @@ class BadgeMessageProvider {
     return data;
   }
 
-  void transferData() {
-    state.processState();
-    logger.d(".......Data is being transferred.......");
+ Future<void> transferData() async {
+  BleState state = ScanState();
+  while (state is! CompletedState) {
+    BleState? nextState = await state.processState();
+    if (nextState != null) {
+      state = nextState;
+    } else {
+      break;
+    }
   }
+  if (state is CompletedState) {
+    await state.processState();  // Ensure the toast is shown
+  }
+  logger.d(".......Data transfer completed.......");
+}
 
-  void checkAndTransffer() {
-    if (cardData.getController().text.isEmpty) {
-      ScaffoldMessenger.of(cardData.getContext()!).showSnackBar(
-        SnackBar(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            elevation: 10,
-            duration: const Duration(seconds: 1),
-            content: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image(
-                  image: AssetImage('assets/icons/icon.png'),
-                  height: 20,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Please enter a message to send',
-                  style: TextStyle(color: Colors.black),
-                )
-              ],
-            ),
-            backgroundColor: Colors.white,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            )),
-      );
+
+  Future<void> checkAndTransffer() async {
+    //checks wether the bluetooth is supported by the device or not
+    if (await FlutterBluePlus.isSupported == false) {
+      toast.failureToast('Bluetooth is not supported by the device');
       return;
     }
 
-    ScaffoldMessenger.of(cardData.getContext()!).showSnackBar(
-      SnackBar(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        elevation: 10,
-        duration: const Duration(seconds: 1),
-        content: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage('assets/icons/icon.png'),
-              height: 20,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Searching for device...',
-              style: TextStyle(color: Colors.black),
-            )
-          ],
-        ),
-        backgroundColor: Colors.white,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        dismissDirection: DismissDirection.startToEnd,
-      ),
-    );
+    //checks wether the text is empty or not
+    if (cardData.getController().text.isEmpty) {
+      toast.failureToast("Please enter a message");
+      return;
+    }
 
-    transferData();
+    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
+      if (state == BluetoothAdapterState.on) {
+        transferData();
+      } else {
+        //check wether the platform is android
+        if (Platform.isAndroid) {
+          toast.successToast('Turning on Bluetooth...');
+          await FlutterBluePlus.turnOn();
+        }
+        //check wether the platform is ios
+        else if (Platform.isIOS) {
+          toast.successToast('Please turn on Bluetooth');
+        }
+      }
+    });
   }
 }

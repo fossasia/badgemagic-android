@@ -11,20 +11,9 @@ class ScanState implements BleState {
   BleStateToast toast = BleStateToast();
 
   @override
-  Future<BleState?> isFailed(String message) async {
-    toast.failureToast(message);
-    return null;
-  }
-
-  @override
-  Future<BleState?> isSuccess(String message) async {
-    toast.successToast(message);
-    return ConnectState(scanResult: foundDevice!).processState();
-  }
-
-  @override
   Future<BleState?> processState() async {
     StreamSubscription<List<ScanResult>>? subscription;
+    toast.successToast("Searching for device...");
 
     try {
       subscription = FlutterBluePlus.scanResults.listen(
@@ -35,16 +24,17 @@ class ScanState implements BleState {
                   .contains(Guid("0000fee0-0000-1000-8000-00805f9b34fb")),
             );
             if (foundDevice != null) {
-              await isSuccess('Device found. Connecting...');
+              toast.successToast('Device found. Connecting...');
+              await FlutterBluePlus.stopScan();
             } else {
-              await isFailed('Target device not found.');
+              toast.failureToast('Target device not found.');
               logger.e("Target device not found.");
             }
           }
         },
         onError: (e) async {
           logger.e("Scan error: $e");
-          await isFailed("Scan error");
+          toast.failureToast('Scan error occurred.');
         },
       );
 
@@ -57,6 +47,7 @@ class ScanState implements BleState {
     } finally {
       await subscription?.cancel();
     }
-    return null;
+    return foundDevice != null ? ConnectState(scanResult: foundDevice!) : null;
   }
+
 }

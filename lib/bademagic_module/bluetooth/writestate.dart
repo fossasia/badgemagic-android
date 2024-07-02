@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'ble_state_interface.dart';
 import 'bletoast.dart';
+import 'completedstate.dart';
 
 class WriteState implements BleState {
   final BluetoothDevice device;
@@ -16,18 +17,6 @@ class WriteState implements BleState {
   BleStateToast toast = BleStateToast();
 
   WriteState({required this.device});
-
-  @override
-  Future<BleState?> isFailed(String message) async {
-    toast.failureToast(message);
-    return null;
-  }
-
-  @override
-  Future<BleState?> isSuccess(String message) async {
-    toast.successToast(message);
-    return null;
-  }
 
   @override
   Future<BleState?> processState() async {
@@ -59,11 +48,13 @@ class WriteState implements BleState {
               }
             }
             logger.d("Characteristic written successfully");
-            return await isSuccess("Data transfered successfully");
+            return CompletedState(
+                isSuccess: true, message: "Data transferred successfully");
           }
         }
       }
-      return await isFailed("Please use the correct Badge");
+      return CompletedState(
+          isSuccess: false, message: "Please use the correct Badge");
     } catch (e) {
       logger.e("Failed to write characteristic: $e");
     }

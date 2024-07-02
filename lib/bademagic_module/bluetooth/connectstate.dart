@@ -13,18 +13,6 @@ class ConnectState implements BleState {
   ConnectState({required this.scanResult});
 
   @override
-  Future<BleState?> isFailed(String message) async {
-    toast.failureToast(message);
-    return null;
-  }
-
-  @override
-  Future<BleState?> isSuccess(String message) async {
-    toast.successToast(message);
-    return WriteState(device: scanResult.device).processState();
-  }
-
-  @override
   Future<BleState?> processState() async {
     int attempt = 0;
     bool connected = false;
@@ -38,7 +26,8 @@ class ConnectState implements BleState {
         if (connectionState == BluetoothConnectionState.connected) {
           logger.d("Device connected");
           connected = true;
-          return isSuccess('Device connected successfully.');
+          toast.successToast('Device connected successfully.');
+          return WriteState(device: scanResult.device);
         } else {
           logger.e("Failed to connect to the device");
         }
@@ -51,7 +40,7 @@ class ConnectState implements BleState {
               const Duration(seconds: 2)); // Wait before retrying
         } else {
           logger.e("Max retries reached. Connection failed.");
-          return isFailed('Failed to connect retry');
+          toast.failureToast('Failed to connect retry');
         }
       } finally {
         if (!connected) {
