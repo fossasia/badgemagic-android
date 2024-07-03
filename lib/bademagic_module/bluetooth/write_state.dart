@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/bluetooth/customexception.dart';
 import 'package:badgemagic/bademagic_module/bluetooth/datagenerator.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'base_ble_state.dart';
@@ -35,8 +36,8 @@ class WriteState extends NormalBleState {
                 }
               }
               if (!success) {
-                throw Exception(
-                    "Failed to write chunk after 3 attempts: $chunk");
+                throw CustomException(
+                    "Failed to transfer data. Please try again.");
               }
             }
             logger.d("Characteristic written successfully");
@@ -48,7 +49,7 @@ class WriteState extends NormalBleState {
       throw Exception("Please use the correct Badge");
     } catch (e) {
       logger.e("Failed to write characteristic: $e");
-      throw Exception("Failed to write characteristic: $e");
+      throw CustomException("Failed to transfer data. Please try again.");
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
 class ToastUtils {
@@ -22,9 +23,11 @@ class ToastUtils {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              message,
-              style: const TextStyle(color: Colors.black),
+            Flexible(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.black),
+              ),
             )
           ],
         ),

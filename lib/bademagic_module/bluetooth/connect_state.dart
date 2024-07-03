@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/bluetooth/customexception.dart';
 import 'package:badgemagic/bademagic_module/bluetooth/write_state.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'base_ble_state.dart';
@@ -24,10 +25,10 @@ class ConnectState extends RetryBleState {
 
         return WriteState(device: scanResult.device);
       } else {
-        throw Exception("Failed to connect to the device");
+        throw CustomException("Failed to connect to the device");
       }
     } catch (e) {
-      toast.showErrorToast('Failed to connect retry');
+      toast.showErrorToast('Failed to connect retrying...');
       rethrow;
     } finally {
       if (!connected) {
