@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:android="http://schemas.android.com/apk/res/android" width="@dimen/clip_width" height="@dimen/clip_height" viewportWidth="40" viewportHeight="11">
+	<path fill="#000000" d="M0,6h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v1h1v1h1v-1h1v3h1v1h1v1z"/>
+	<path fill="#000000" d="M2,6h3v3h3v-3h3v5hh-9"/>
+</svg>

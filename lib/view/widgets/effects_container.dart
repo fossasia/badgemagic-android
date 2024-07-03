@@ -1,16 +1,19 @@
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EffectContainer extends StatefulWidget {
   final String effect;
   final String effectName;
   final int index;
-  const EffectContainer(
-      {super.key,
-      required this.effect,
-      required this.effectName,
-      required this.index});
+
+  const EffectContainer({
+    super.key,
+    required this.effect,
+    required this.effectName,
+    required this.index,
+  });
 
   @override
   State<EffectContainer> createState() => _EffectContainerState();
@@ -19,28 +22,28 @@ class EffectContainer extends StatefulWidget {
 class _EffectContainerState extends State<EffectContainer> {
   @override
   Widget build(BuildContext context) {
-    CardProvider effectcardstate = Provider.of<CardProvider>(context);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    CardProvider effectCardState = Provider.of<CardProvider>(context);
+
     return Container(
-      margin: const EdgeInsets.all(5),
-      height: height * 0.15,
-      width: width * 0.307,
+      margin: EdgeInsets.all(5.w),
+      height: 90.h,
+      width: 110.w,
       child: GestureDetector(
         onTap: () {
-          effectcardstate.setEffectIndex(widget.index);
+          effectCardState.setEffectIndex(widget.index);
         },
         child: Card(
           surfaceTintColor: Colors.white,
-          color: effectcardstate.getEffectIndex(widget.index) == 1
+          color: effectCardState.getEffectIndex(widget.index) == 1
               ? Colors.red
               : Colors.white,
           elevation: 5,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                image: AssetImage(widget.effect),
-                height: height * 0.1,
+              Image.asset(
+                widget.effect,
+                height: 60.h,
               ),
               Text(widget.effectName),
             ],

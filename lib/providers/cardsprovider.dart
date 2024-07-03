@@ -5,6 +5,16 @@ class CardProvider extends ChangeNotifier {
 
   int getOuterValue() => outerValue;
 
+  //context for snackbar
+  BuildContext? context;
+
+  void setContext(BuildContext context) {
+    this.context = context;
+    notifyListeners();
+  }
+
+  BuildContext? getContext() => context;
+
   void setOuterValue(int value) {
     outerValue = value;
     notifyListeners();

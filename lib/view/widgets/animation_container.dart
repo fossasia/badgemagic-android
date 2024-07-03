@@ -1,48 +1,49 @@
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-//This the container that holds the UI appearence of the animation and effects Tabs
 class AniContainer extends StatefulWidget {
   final String animation;
   final String aniName;
   final int index;
-  const AniContainer(
-      {super.key,
-      required this.animation,
-      required this.aniName,
-      required this.index});
+
+  const AniContainer({
+    super.key,
+    required this.animation,
+    required this.aniName,
+    required this.index,
+  });
 
   @override
   State<AniContainer> createState() => _AniContainerState();
 }
 
 class _AniContainerState extends State<AniContainer> {
-  Color tintcolor = Colors.white;
   @override
   Widget build(BuildContext context) {
-    CardProvider animationcardstate = Provider.of<CardProvider>(context);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    CardProvider animationCardState = Provider.of<CardProvider>(context);
+
     return Container(
-      margin: const EdgeInsets.all(5),
-      height: height * 0.09,
-      width: width * 0.307,
+      margin: EdgeInsets.all(5.w),
+      height: 60.h,
+      width: 110.w,
       child: GestureDetector(
         onTap: () {
-          animationcardstate.setAnimationIndex(widget.index);
+          animationCardState.setAnimationIndex(widget.index);
         },
         child: Card(
           surfaceTintColor: Colors.white,
-          color: animationcardstate.getAnimationIndex() == widget.index
+          color: animationCardState.getAnimationIndex() == widget.index
               ? Colors.red
               : Colors.white,
           elevation: 5,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                image: AssetImage(widget.animation),
-                height: height * 0.04,
+              Image.asset(
+                widget.animation,
+                height: 20.h,
               ),
               Text(widget.aniName),
             ],
