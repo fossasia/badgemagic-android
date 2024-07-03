@@ -17,7 +17,8 @@ abstract class NormalBleState extends BleState {
     try {
       return await processState();
     } on Exception catch (e) {
-      return CompletedState(isSuccess: false, message: e.toString());
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      return CompletedState(isSuccess: false, message: errorMessage);
     }
   }
 }
