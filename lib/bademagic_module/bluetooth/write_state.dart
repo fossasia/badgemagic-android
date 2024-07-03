@@ -35,8 +35,7 @@ class WriteState extends NormalBleState {
                 }
               }
               if (!success) {
-                throw Exception(
-                    "Failed to transfer data. Please try again.");
+                throw Exception("Failed to transfer data. Please try again.");
               }
             }
             logger.d("Characteristic written successfully");
