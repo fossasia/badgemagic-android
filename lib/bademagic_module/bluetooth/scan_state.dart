@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:badgemagic/bademagic_module/bluetooth/connect_state.dart';
-import 'package:badgemagic/bademagic_module/bluetooth/customexception.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 import 'base_ble_state.dart';
@@ -61,7 +60,7 @@ class ScanState extends NormalBleState {
       return await nextStateCompleter.future;
     } catch (e) {
       logger.e("Exception during scanning: $e");
-      throw CustomException("please check the device is turned on and retry.");
+      throw Exception("please check the device is turned on and retry.");
     } finally {
       await subscription?.cancel();
     }
