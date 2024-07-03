@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:badgemagic/bademagic_module/bluetooth/ble_state_interface.dart';
-import 'package:badgemagic/bademagic_module/bluetooth/bletoast.dart';
-import 'package:badgemagic/bademagic_module/bluetooth/completedstate.dart';
-import 'package:badgemagic/bademagic_module/bluetooth/scanstate.dart';
+import 'package:badgemagic/bademagic_module/bluetooth/base_ble_state.dart';
+import 'package:badgemagic/bademagic_module/utils/toast_utils.dart';
+import 'package:badgemagic/bademagic_module/bluetooth/scan_state.dart';
 import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/models/messages.dart';
 import 'package:badgemagic/bademagic_module/models/mode.dart';
@@ -16,7 +15,7 @@ import 'package:logger/logger.dart';
 class BadgeMessageProvider {
   static final Logger logger = Logger();
   CardProvider cardData = GetIt.instance<CardProvider>();
-  BleStateToast toast = BleStateToast();
+  ToastUtils toast = ToastUtils();
 
   Map<int, Mode> modeValueMap = {
     0: Mode.left,
@@ -59,30 +58,23 @@ class BadgeMessageProvider {
 
   Future<void> transferData() async {
     DateTime now = DateTime.now();
-    BleState state = ScanState();
-    while (state is! CompletedState) {
-      BleState? nextState = await state.processState();
-      if (nextState != null) {
-        state = nextState;
-      } else {
-        break;
-      }
+    BleState? state = ScanState();
+    while (state != null) {
+      state = await state.process();
     }
-    if (state is CompletedState) {
-      await state.processState(); // Ensure the toast is shown
-    }
+
     logger.d("Time to transfer data is = ${DateTime.now().difference(now)}");
     logger.d(".......Data transfer completed.......");
   }
 
   Future<void> checkAndTransfer() async {
     if (await FlutterBluePlus.isSupported == false) {
-      toast.failureToast('Bluetooth is not supported by the device');
+      toast.showErrorToast('Bluetooth is not supported by the device');
       return;
     }
 
     if (cardData.getController().text.isEmpty) {
-      toast.failureToast("Please enter a message");
+      toast.showErrorToast("Please enter a message");
       return;
     }
 
@@ -91,10 +83,10 @@ class BadgeMessageProvider {
       await transferData();
     } else {
       if (Platform.isAndroid) {
-        toast.successToast('Turning on Bluetooth...');
+        toast.showToast('Turning on Bluetooth...');
         await FlutterBluePlus.turnOn();
       } else if (Platform.isIOS) {
-        toast.successToast('Please turn on Bluetooth');
+        toast.showToast('Please turn on Bluetooth');
       }
     }
   }

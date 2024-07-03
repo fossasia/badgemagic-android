@@ -1,21 +1,17 @@
 import 'dart:async';
-import 'package:badgemagic/bademagic_module/bluetooth/connectstate.dart';
+import 'package:badgemagic/bademagic_module/bluetooth/connect_state.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:logger/logger.dart';
-import 'ble_state_interface.dart';
-import 'bletoast.dart';
+import 'base_ble_state.dart';
 
-class ScanState implements BleState {
-  ScanResult? foundDevice;
-  final Logger logger = Logger();
-  BleStateToast toast = BleStateToast();
-
+class ScanState extends NormalBleState {
   @override
   Future<BleState?> processState() async {
     StreamSubscription<List<ScanResult>>? subscription;
-    toast.successToast("Searching for device...");
+    toast.showToast("Searching for device...");
 
     Completer<BleState?> nextStateCompleter = Completer();
+
+    ScanResult? foundDevice;
 
     try {
       subscription = FlutterBluePlus.scanResults.listen(
@@ -26,20 +22,22 @@ class ScanState implements BleState {
                   .contains(Guid("0000fee0-0000-1000-8000-00805f9b34fb")),
             );
             if (foundDevice != null) {
-              toast.successToast('Device found. Connecting...');
-              if (!nextStateCompleter.isCompleted) {
-                nextStateCompleter
-                    .complete(ConnectState(scanResult: foundDevice!));
-              }
+              toast.showToast('Device found. Connecting...');
+              nextStateCompleter
+                  .complete(ConnectState(scanResult: foundDevice!));
+            } else {
+              nextStateCompleter
+                  .completeError(Exception('BLE LED Device not found.'));
             }
+          } else {
+            nextStateCompleter
+                .completeError(Exception('No BLE Devices not found.'));
           }
         },
         onError: (e) async {
           logger.e("Scan error: $e");
-          toast.failureToast('Scan error occurred.');
-          if (!nextStateCompleter.isCompleted) {
-            nextStateCompleter.complete(null);
-          }
+          toast.showErrorToast('Scan error occurred.');
+          nextStateCompleter.completeError(e);
         },
       );
 
@@ -49,15 +47,13 @@ class ScanState implements BleState {
       );
 
       await Future.delayed(const Duration(seconds: 6));
+
+      return await nextStateCompleter.future;
+    } catch (e) {
+      logger.e("Exception during scanning: $e");
+      throw Exception("Exception during scanning: $e");
     } finally {
       await subscription?.cancel();
     }
-
-    if (!nextStateCompleter.isCompleted) {
-      nextStateCompleter.complete(
-          foundDevice != null ? ConnectState(scanResult: foundDevice!) : null);
-    }
-
-    return nextStateCompleter.future;
   }
 }

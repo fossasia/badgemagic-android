@@ -1,20 +1,12 @@
 import 'package:badgemagic/bademagic_module/bluetooth/datagenerator.dart';
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
-import 'ble_state_interface.dart';
-import 'bletoast.dart';
-import 'completedstate.dart';
+import 'base_ble_state.dart';
+import 'completed_state.dart';
 
-class WriteState implements BleState {
+class WriteState extends NormalBleState {
   final BluetoothDevice device;
-  final Logger logger = Logger();
 
-  GetIt getIt = GetIt.instance;
-  final CardProvider cardData = GetIt.instance<CardProvider>();
   DataTransferManager manager = DataTransferManager();
-  BleStateToast toast = BleStateToast();
 
   WriteState({required this.device});
 
@@ -53,11 +45,10 @@ class WriteState implements BleState {
           }
         }
       }
-      return CompletedState(
-          isSuccess: false, message: "Please use the correct Badge");
+      throw Exception("Please use the correct Badge");
     } catch (e) {
       logger.e("Failed to write characteristic: $e");
+      throw Exception("Failed to write characteristic: $e");
     }
-    return null;
   }
 }
