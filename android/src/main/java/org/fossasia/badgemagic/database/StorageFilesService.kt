@@ -30,7 +30,7 @@ class StorageFilesService : KoinComponent {
         storageUtils.saveFile(filename, json)
     }
 
-    fun getAbsPath(fileName: String): String? = storageUtils.getAbsolutePathofFiles(fileName)
+    fun getAbsPath(fileName: String): String = storageUtils.getAbsolutePathofFiles(fileName)
 
     fun checkIfFilePresent(fileName: String): Boolean = storageUtils.checkIfFilePresent(fileName)
 }

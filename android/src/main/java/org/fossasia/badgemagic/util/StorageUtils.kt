@@ -20,27 +20,22 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 
 class StorageUtils(val context: Context) {
-    private val externalStorageDir = context.getExternalFilesDir(null)?.absolutePath
-    private val externalClipartDir = "$externalStorageDir/ClipArts/"
+    private val clipartDir = File(context.filesDir, "ClipArts")
+    private val badgeDir = File(context.filesDir, "Badges")
     private val badgeExt = ".txt"
     private val clipExt = ".png"
 
     private fun checkDirectory(): Boolean {
-        externalStorageDir?.let {
-            val directory = File(it)
-            val directoryClips = File(externalClipartDir)
-            if (!directory.exists())
-                return directory.mkdirs()
-            if (!directoryClips.exists())
-                return directoryClips.mkdirs()
-            return true
-        }
-        return false
+        if (!clipartDir.exists())
+            return clipartDir.mkdirs()
+        if (!badgeDir.exists())
+            return badgeDir.mkdirs()
+        return true
     }
 
     fun saveFile(filename: String, json: String) {
         checkDirectory()
-        externalStorageDir?.let {
+        badgeDir.let {
             val saveFile = File(it, "$filename$badgeExt")
             saveFile.writeText(json)
         }
@@ -50,8 +45,8 @@ class StorageUtils(val context: Context) {
         checkDirectory()
         val list = mutableListOf<ConfigInfo>()
 
-        externalStorageDir?.let {
-            val files = File(externalStorageDir).listFiles() ?: return list
+        badgeDir.let {
+            val files = badgeDir.listFiles() ?: return list
             files.sortWith(Comparator<File> { a, b -> (b.lastModified() - a.lastModified()).toInt() })
             for (i in files.indices) {
                 if (getFileExtension(files[i].name) == badgeExt) {
@@ -73,22 +68,20 @@ class StorageUtils(val context: Context) {
 
     fun deleteFile(fileName: String) {
         checkDirectory()
-        val deleteFile = File(externalStorageDir, fileName)
+        val deleteFile = File(badgeDir, fileName)
         deleteFile.delete()
     }
 
-    fun getAbsolutePathofFiles(fileName: String): String {
-        return "$externalStorageDir/$fileName"
-    }
+    fun getAbsolutePathofFiles(fileName: String): String = File(badgeDir, fileName).absolutePath
 
     fun checkIfFilePresent(fileName: String): Boolean {
         checkDirectory()
-        return (File(externalStorageDir, "$fileName$badgeExt").exists())
+        return (File(badgeDir, "$fileName$badgeExt").exists())
     }
 
     fun checkIfFilePresent(context: Context, uri: Uri?): Boolean {
         checkDirectory()
-        return (File(externalStorageDir, getFileName(context, uri ?: Uri.EMPTY)).exists())
+        return (File(badgeDir, getFileName(context, uri ?: Uri.EMPTY)).exists())
     }
 
     fun copyFileToDirectory(context: Context, uri: Uri?): Boolean {
@@ -97,7 +90,7 @@ class StorageUtils(val context: Context) {
         var fileName = getFileName(context, uri ?: Uri.EMPTY)
         if (!fileName.contains(badgeExt))
             fileName += badgeExt
-        val dest = File(externalStorageDir, fileName)
+        val dest = File(badgeDir, fileName)
         inputStream?.let {
             val jsonString = BufferedReader(InputStreamReader(it)).readLine()
             if (checkValidJSON(jsonString)) {
@@ -149,13 +142,13 @@ class StorageUtils(val context: Context) {
 
     fun saveEditedBadge(badgeConfig: BadgeConfig, fileName: String) {
         checkDirectory()
-        val saveFile = File(externalStorageDir, fileName)
+        val saveFile = File(badgeDir, fileName)
         saveFile.writeText(JSONHelper.encodeJSON(badgeConfig))
     }
 
     fun saveClipArt(bitmap: Bitmap): Boolean {
         checkDirectory()
-        val file = File.createTempFile("clip", clipExt, File(externalClipartDir))
+        val file = File.createTempFile("clip", clipExt, clipartDir)
         try {
             val out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
@@ -169,7 +162,7 @@ class StorageUtils(val context: Context) {
 
     fun saveEditedClipart(bitmap: Bitmap, fileName: String): Boolean {
         checkDirectory()
-        val file = File(externalClipartDir, fileName)
+        val file = File(clipartDir, fileName)
         try {
             val out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
@@ -185,7 +178,7 @@ class StorageUtils(val context: Context) {
         checkDirectory()
         val list = mutableMapOf<String, Drawable?>()
 
-        val files = File(externalClipartDir).listFiles() ?: return list
+        val files = clipartDir.listFiles() ?: return list
         files.sortWith(Comparator<File> { a, b -> (b.lastModified() - a.lastModified()).toInt() })
         for (i in files.indices) {
             if (getFileExtension(files[i].name) == clipExt) {
@@ -196,12 +189,13 @@ class StorageUtils(val context: Context) {
     }
 
     fun getClipartFromPath(filename: String): Drawable? {
-        return Drawable.createFromPath(File(externalClipartDir, filename).absolutePath)
+        checkDirectory()
+        return Drawable.createFromPath(File(clipartDir, filename).absolutePath)
     }
 
     fun deleteClipart(fileName: String) {
         checkDirectory()
-        val deleteFile = File(externalClipartDir, fileName)
+        val deleteFile = File(clipartDir, fileName)
         deleteFile.delete()
     }
 }
