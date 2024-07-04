@@ -143,19 +143,20 @@ class SavedBadgesFragment : BaseFragment() {
 
     private fun transferItem(item: ConfigInfo) {
         val intentShareFile = Intent(Intent.ACTION_SEND)
-        intentShareFile.type = "text/*"
+        val fileUri = FileProvider.getUriForFile(
+            requireContext(),
+            getString(R.string.file_provider_authority),
+            File(viewModel.getAbsPath(item.fileName))
+        )
+        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intentShareFile.type = "text/plain"
+        intentShareFile.setDataAndType(fileUri, "text/plain")
         intentShareFile.putExtra(
             Intent.EXTRA_STREAM,
-            FileProvider.getUriForFile(
-                requireContext(),
-                getString(R.string.file_provider_authority),
-                File(
-                    viewModel.getAbsPath(item.fileName)
-                )
-            )
+            fileUri
         )
         intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Badge Magic Share: " + item.fileName)
-        intentShareFile.putExtra(Intent.EXTRA_TEXT, "Badge Magic Share: " + item.fileName)
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, File(viewModel.getAbsPath(item.fileName)).readText())
 
         this.startActivity(Intent.createChooser(intentShareFile, item.fileName))
     }

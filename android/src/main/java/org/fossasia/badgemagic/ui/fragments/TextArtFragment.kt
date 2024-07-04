@@ -3,7 +3,6 @@ package org.fossasia.badgemagic.ui.fragments
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -21,7 +20,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -61,7 +59,6 @@ import java.util.TimerTask
 class TextArtFragment : BaseFragment() {
     companion object {
         private const val SCAN_TIMEOUT_MS = 9500L
-        private const val REQUEST_PERMISSION_CODE = 10
         @JvmStatic
         fun newInstance() =
             TextArtFragment()
@@ -116,9 +113,7 @@ class TextArtFragment : BaseFragment() {
 
     private fun setupButton() = with(binding) {
         saveButton.setOnClickListener {
-            if (checkStoragePermission()) {
-                startSaveFile()
-            }
+            startSaveFile()
         }
 
         transferButton.setOnClickListener {
@@ -153,29 +148,6 @@ class TextArtFragment : BaseFragment() {
     private fun startSaveFile() {
         binding.textViewMainText.hideKeyboard()
         showSaveFileDialog()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startSaveFile()
-                }
-            }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
-    }
-
-    private fun checkStoragePermission(): Boolean {
-        return if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_CODE)
-            false
-        } else
-            true
     }
 
     private val textChangedListener = object : TextWatcher {
