@@ -16,11 +16,14 @@ class BadgeMagicPermission private constructor() {
 
     val allPermissions = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.BLUETOOTH_SCAN,
         Manifest.permission.BLUETOOTH_CONNECT,
     )
 
     val storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+    val locationPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
     val bluetoothPermissions = arrayOf(
         Manifest.permission.BLUETOOTH_CONNECT,
@@ -29,6 +32,7 @@ class BadgeMagicPermission private constructor() {
 
     val ALL_PERMISSION = 100
     val STORAGE_PERMISSION = 101
+    val LOCATION_PERMISSION = 102
     val BLUETOOTH_PERMISSION = 103
 
     val listPermissionsNeeded = arrayListOf<String>()
@@ -49,6 +53,13 @@ class BadgeMagicPermission private constructor() {
                 }
             }
         }
+        if (mode == LOCATION_PERMISSION) {
+            for (permission in locationPermissions) {
+                if (ContextCompat.checkSelfPermission(activity, permission) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(permission)
+                }
+            }
+        }
         if (mode == BLUETOOTH_PERMISSION) {
             for (permission in bluetoothPermissions) {
                 if (ContextCompat.checkSelfPermission(activity, permission) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
@@ -58,7 +69,20 @@ class BadgeMagicPermission private constructor() {
         }
         if (listPermissionsNeeded.size > 0) {
             for (permission in listPermissionsNeeded) {
-                if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                if (permission == Manifest.permission.ACCESS_FINE_LOCATION && android.os.Build.VERSION.SDK_INT <= 30) {
+                    AlertDialog.Builder(activity)
+                        .setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_caution))
+                        .setTitle(activity.getString(R.string.location_required_title))
+                        .setMessage(activity.getString(R.string.location_required_message))
+                        .setPositiveButton("OK") { _, _ ->
+                            activity.requestPermissions(locationPermissions, REQUEST_PERMISSION_CODE)
+                        }
+                        .setNegativeButton("Cancel") { _, _ ->
+                            Toast.makeText(activity, activity.getString(R.string.location_canceled_warning), Toast.LENGTH_SHORT).show()
+                        }
+                        .create()
+                        .show()
+                } else if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
                     AlertDialog.Builder(activity)
                         .setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_caution))
                         .setTitle(activity.getString(R.string.storage_required_title))
