@@ -3,14 +3,13 @@ name: Badge Magic CI
 on:
   push:
     branches: [ development ]
-  pull_request:
-    branches: [ development ]
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
     name: Android Build
-
+    
+    if: ${{ github.repository == 'fossasia/badgemagic-android' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -24,20 +23,17 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Setup Ruby
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
       
       - name: Prepare Bundler
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
 
       - name: Hydrate and Update Version
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         id: android-version
         run: |
           git config --global user.name "github-actions[bot]"
@@ -75,7 +71,6 @@ jobs:
           bash scripts/check-screenshots.sh
 
       - name: Prepare Build Keys
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         env:
           ENCRYPTED_F10B5E0E5262_IV: ${{ secrets.ENCRYPTED_F10B5E0E5262_IV }}
           ENCRYPTED_F10B5E0E5262_KEY: ${{ secrets.ENCRYPTED_F10B5E0E5262_KEY }}
@@ -118,8 +113,6 @@ jobs:
           path: android/build/outputs/bundle/release
 
       - name: Upload APK to apk branch
-        # Skip upload APK for pull requests
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         run: |
           git config --global user.name "${{ github.workflow }}"
           git config --global user.email "gh-actions@${{ github.repository_owner }}"
@@ -150,7 +143,6 @@ jobs:
           git push --force origin apk
 
       - name: Upload alpha version to playstore
-        if: ${{ github.event_name != 'pull_request' && github.repository == 'fossasia/badgemagic-android' }}
         run: |
           bundle exec fastlane uploadToPlaystore
           if [[ $? -ne 0 ]]; then

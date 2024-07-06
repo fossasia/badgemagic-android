@@ -1,0 +1,51 @@
+name: Badge Magic CI
+
+on:
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    name: Android Build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Syntax Check
+        run: ./gradlew spotlessCheck
+
+      - name: Build APK And Bundle with Gradle
+        run: |
+          ./gradlew build  --no-daemon --stacktrace
+          ./gradlew bundleRelease
+
+      - name: Upload APK Debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Debug generated
+          path: android/build/outputs/apk/debug
+                
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK Release generated
+          path: android/build/outputs/apk/release
+
+      - name: Upload AAB Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: AAB Release generated 
+          path: android/build/outputs/bundle/release
