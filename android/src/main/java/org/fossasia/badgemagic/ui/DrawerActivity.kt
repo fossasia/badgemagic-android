@@ -1,5 +1,6 @@
 package org.fossasia.badgemagic.ui
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -224,7 +225,7 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun prepareForScan() {
         if (isBleSupported()) {
             val permission = BadgeMagicPermission.instance
-            permission.checkPermissions(this, permission.BLUETOOTH_PERMISSION)
+            permission.checkPermissions(this, permission.LOCATION_PERMISSION)
         } else {
             Toast.makeText(this, "BLE is not supported", Toast.LENGTH_LONG).show()
             finish()
@@ -292,6 +293,15 @@ class DrawerActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             REQUEST_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Timber.d { "Required Permission Accepted" }
+                }
+                for (p in permissions) {
+                    if (
+                        p == Manifest.permission.ACCESS_FINE_LOCATION &&
+                        grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        val permission = BadgeMagicPermission.instance
+                        permission.checkPermissions(this, permission.BLUETOOTH_PERMISSION)
+                    }
                 }
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
