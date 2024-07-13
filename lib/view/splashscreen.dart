@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({super.key});
@@ -9,16 +11,21 @@ class SpalshScreen extends StatefulWidget {
 }
 
 class _SpalshScreenState extends State<SpalshScreen> {
+  InlineImageProvider cacheImageProvider =
+      GetIt.instance<InlineImageProvider>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _startImageCaching();
+  }
+
+  Future<void> _startImageCaching() async {
+    await cacheImageProvider.generateImageCache();
+    Navigator.of(context).pushReplacementNamed('/homescreen');
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 3),
-        () => Navigator.of(context).pushReplacementNamed('/homescreen'));
     return const Scaffold(
       body: Center(
         child: Image(

@@ -1,6 +1,8 @@
+import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 
 class CardProvider extends ChangeNotifier {
+  ImageUtils imageUtils = ImageUtils();
   int outerValue = 1;
 
   int getOuterValue() => outerValue;
@@ -15,18 +17,16 @@ class CardProvider extends ChangeNotifier {
 
   BuildContext? getContext() => context;
 
+  //outer value for the speed dial
   void setOuterValue(int value) {
     outerValue = value;
     notifyListeners();
   }
 
-  TextEditingController message = TextEditingController();
   int animationIndex = 0;
   List<int> effectsIndex = [0, 0, 0];
 
   int getAnimationIndex() => animationIndex;
-
-  TextEditingController getController() => message;
 
   int getEffectIndex(int index) => effectsIndex[index];
 

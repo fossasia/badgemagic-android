@@ -1,32 +1,40 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
+import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageUtils {
-  // Define target width and height for the bitmap
-  static double targetHeight = 11.0;
-  static double targetWidth = 44.0;
+  late double originalHeight;
+  late double originalWidth;
 
-  //function to load and scale the svg according to the badge size
-  Future<ui.Image> scaleSVG(String svg) async {
+  late ui.Picture picture;
+
+  //function that generates the Picture from the given asset
+  Future<void> loadSVG(String asset) async {
     //loading the Svg from the assets
-    String svgString = await rootBundle.loadString(svg);
+    String svgString = await rootBundle.loadString(asset);
 
     // Load SVG picture and information
     final SvgStringLoader svgStringLoader = SvgStringLoader(svgString);
     final PictureInfo pictureInfo = await vg.loadPicture(svgStringLoader, null);
-    final ui.Picture picture = pictureInfo.picture;
+    picture = pictureInfo.picture;
 
+    //setting the origin heigh and width of the svg
+    originalHeight = pictureInfo.size.height;
+    originalWidth = pictureInfo.size.width;
+  }
+
+  //function to load and scale the svg according to the badge size
+  Future<ui.Image> scaleSVG(double targetHeight, double targetWidth) async {
     //creating canvas to draw the svg on
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final ui.Canvas canvas = Canvas(recorder,
         Rect.fromPoints(Offset.zero, Offset(targetWidth, targetHeight)));
 
     //scaling the svg to the badge size
-    canvas.scale(targetWidth / pictureInfo.size.width,
-        targetHeight / pictureInfo.size.height);
+    canvas.scale(targetWidth / originalWidth, targetHeight / originalHeight);
 
     //drawing the svg on the canvas
     canvas.drawPicture(picture);
@@ -57,11 +65,8 @@ class ImageUtils {
       for (int x = 0; x < width; x++) {
         int index = (y * width + x) * bytesPerPixel;
         if (index + bytesPerPixel <= byteArray.length) {
-          int r = byteArray[index];
-          int g = byteArray[index + 1];
-          int b = byteArray[index + 2];
           int a = byteArray[index + 3];
-          int color = (a << 24) | (r << 16) | (g << 8) | b;
+          int color = (a << 24);
           pixelArray[y][x] = color;
         } else {
           // Handle out-of-bounds case gracefully, e.g., fill with a default color
@@ -72,85 +77,111 @@ class ImageUtils {
     return pixelArray;
   }
 
-  //function to trim the bitmap with the transparent pixels
-  //it iterates throught the 2D list of pixels and finds the bounding box of the non-transparent pixels
-  //and crops the bitmap to that bounding box
-  //it returns the cropped bitmap
-  List<List<int>> trimedBitmap(List<List<int>> source) {
-    int width = source[0].length;
-    int height = source.length;
+  //function to trim the svg
+  Future<ui.Image> trimSVG(ui.Image inputImage) async {
+    final ByteData? byteData =
+        await inputImage.toByteData(format: ui.ImageByteFormat.rawRgba);
+    if (byteData == null) {
+      throw Exception('Failed to get byte data from image');
+    }
 
-    int firstX = 0;
-    int firstY = 0;
-    int lastX = width;
-    int lastY = height;
+    final int width = inputImage.width;
+    final int height = inputImage.height;
+    final Uint8List pixels = byteData.buffer.asUint8List();
 
+    int top = 0, bottom = height - 1, left = 0, right = width - 1;
     bool found = false;
 
-    // Find firstX
-    for (int x = 0; x < width; x++) {
+    // Find the top boundary
+    for (int y = 0; y < height && !found; y++) {
+      for (int x = 0; x < width; x++) {
+        final int offset = (y * width + x) * 4;
+        if (pixels[offset + 3] > 0) {
+          // Check alpha channel
+          top = y;
+          found = true;
+          break;
+        }
+      }
+    }
+
+    found = false;
+    // Find the bottom boundary
+    for (int y = height - 1; y >= 0 && !found; y--) {
+      for (int x = 0; x < width; x++) {
+        final int offset = (y * width + x) * 4;
+        if (pixels[offset + 3] > 0) {
+          bottom = y;
+          found = true;
+          break;
+        }
+      }
+    }
+
+    found = false;
+    // Find the left boundary
+    for (int x = 0; x < width && !found; x++) {
       for (int y = 0; y < height; y++) {
-        if (source[y][x] != 0) {
-          firstX = x > 1 ? x - 1 : x;
+        final int offset = (y * width + x) * 4;
+        if (pixels[offset + 3] > 0) {
+          left = x;
           found = true;
           break;
         }
       }
-      if (found) break;
     }
 
     found = false;
-
-    // Find firstY
-    for (int y = 0; y < height; y++) {
-      for (int x = firstX; x < width; x++) {
-        if (source[y][x] != 0) {
-          firstY = y > 1 ? y - 1 : y;
+    // Find the right boundary
+    for (int x = width - 1; x >= 0 && !found; x--) {
+      for (int y = 0; y < height; y++) {
+        final int offset = (y * width + x) * 4;
+        if (pixels[offset + 3] > 0) {
+          right = x;
           found = true;
           break;
         }
       }
-      if (found) break;
     }
 
-    found = false;
+    final int newWidth = right - left + 1;
+    final int newHeight = bottom - top + 1;
 
-    // Find lastX
-    for (int x = width - 1; x >= firstX; x--) {
-      for (int y = height - 1; y >= firstY; y--) {
-        if (source[y][x] != 0) {
-          lastX = x < width - 2 ? x + 2 : x + 1;
-          found = true;
-          break;
-        }
-      }
-      if (found) break;
-    }
+    final PictureRecorder trimRecorder = ui.PictureRecorder();
+    final Canvas trimCanvas = Canvas(
+        trimRecorder,
+        Rect.fromPoints(
+            Offset.zero, Offset(newWidth.toDouble(), newHeight.toDouble())));
 
-    found = false;
+    final Paint paint = ui.Paint();
+    trimCanvas.drawImageRect(
+        inputImage,
+        Rect.fromLTWH(left.toDouble(), top.toDouble(), newWidth.toDouble(),
+            newHeight.toDouble()),
+        Rect.fromLTWH(0, 0, newWidth.toDouble(), newHeight.toDouble()),
+        paint);
 
-    // Find lastY
-    for (int y = height - 1; y >= firstY; y--) {
-      for (int x = width - 1; x >= firstX; x--) {
-        if (source[y][x] != 0) {
-          lastY = y < height - 2 ? y + 2 : y + 1;
-          found = true;
-          break;
-        }
-      }
-      if (found) break;
-    }
+    final trimmedImage =
+        await trimRecorder.endRecording().toImage(newWidth, newHeight);
 
-    // Create trimmed bitmap
-    List<List<int>> trimmedBitmap = List.generate(
-        lastY - firstY, (_) => List<int>.filled(lastX - firstX, 0));
-    for (int y = firstY; y < lastY; y++) {
-      for (int x = firstX; x < lastX; x++) {
-        trimmedBitmap[y - firstY][x - firstX] = source[y][x];
-      }
-    }
+    return trimmedImage;
+  }
 
-    // Scale the bitmap to the desired dimension
-    return trimmedBitmap;
+  //function to generate the view for the Dialog from the given asset
+  Future<ui.Image> generateImageView(String asset) async {
+    await loadSVG(asset);
+    final ui.Image scaledImage = await scaleSVG(30, 120);
+    return trimSVG(scaledImage);
+  }
+
+  //function to generate the LED hex from the given asset
+  Future<List<String>> generateLedHex(String asset) async {
+    await loadSVG(asset);
+    final ui.Image scaledImage = await scaleSVG(11, 44);
+    final ui.Image trimmedImage = await trimSVG(scaledImage);
+    final Uint8List? byteArray = await convertImageToByteArray(trimmedImage);
+    final List<List<int>> pixelArray = convertUint8ListTo2DList(
+        byteArray!, trimmedImage.width, trimmedImage.height);
+    return Converters.convertBitmapToLEDHex(pixelArray);
   }
 }

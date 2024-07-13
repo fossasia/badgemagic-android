@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   get_it: ^7.7.0
   flutter_screenutil: ^5.9.3
+  extended_text_field: ^14.0.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
     - assets/icons/
     - assets/animations/
     - assets/effects/
+    - assets/vectors/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
