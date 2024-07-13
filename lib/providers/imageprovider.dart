@@ -42,16 +42,14 @@ class InlineImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //updates the controller with the placeholder for the image
   void insertInlineImage(int index) {
-    if (index < 10) {
-      message.text += '<<0$index>>';
-    } else {
-      message.text += '<<$index>>';
-    }
-    print(message.text);
-    controllerLength = message.text.length;
-    notifyListeners();
+    String placeholder = index < 10 ? '<<0$index>>' : '<<$index>>';
+    int cursorPos = message.selection.baseOffset;
+    String beforeCursor = message.text.substring(0, cursorPos);
+    String afterCursor = message.text.substring(cursorPos);
+    message.text = beforeCursor + placeholder + afterCursor;
+    message.selection = TextSelection.fromPosition(
+        TextPosition(offset: cursorPos + placeholder.length));
   }
 
   void controllerListener() {
