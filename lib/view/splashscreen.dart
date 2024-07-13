@@ -21,7 +21,9 @@ class _SpalshScreenState extends State<SpalshScreen> {
 
   Future<void> _startImageCaching() async {
     await cacheImageProvider.generateImageCache();
-    Navigator.of(context).pushReplacementNamed('/homescreen');
+    if (mounted) {
+      Navigator.of(context).pushReplacementNamed('/homescreen');
+    }
   }
 
   @override
