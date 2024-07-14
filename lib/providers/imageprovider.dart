@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
-
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +31,9 @@ class InlineImageProvider extends ChangeNotifier {
   //if the length of the current controller length is greater than the previous (add operation)
   //else delte operation is performed.
   int controllerLength = 0;
+
+  //Map to store the hex values of the characters
+  final Map<int, List<String>> hexStrings = {};
 
   //object of ImageUtils class to generate ImageCache
   ImageUtils imageUtils = ImageUtils();
@@ -66,7 +68,8 @@ class InlineImageProvider extends ChangeNotifier {
 
   void insertInlineImage(int index) {
     String placeholder = index < 10 ? '<<0$index>>' : '<<$index>>';
-    int cursorPos = message.selection.baseOffset;
+    int cursorPos =
+        message.selection.baseOffset == -1 ? 0 : message.selection.baseOffset;
     String beforeCursor = message.text.substring(0, cursorPos);
     String afterCursor = message.text.substring(cursorPos);
     message.text = beforeCursor + placeholder + afterCursor;

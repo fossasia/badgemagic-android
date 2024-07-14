@@ -1,22 +1,33 @@
+import 'dart:math';
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
+import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
+import 'package:badgemagic/providers/imageprovider.dart';
+import 'package:get_it/get_it.dart';
 
 class Converters {
-  //this function converts the user entered message to hex
-  //compares the message to the map of characters and returns the hex value of the character
-  //then adds the hexstring to the list
-  //thus generating the hex value of the message
-  static List<String> messageTohex(String message) {
-    DataToByteArrayConverter converter = DataToByteArrayConverter();
-    List<String> messages = [];
-    int i = 0;
-    while (i < message.length) {
-      var ch = message[i];
-      if (converter.charCodes.containsKey(ch)) {
-        messages.add(converter.charCodes[ch]!);
+  InlineImageProvider controllerData =
+      GetIt.instance.get<InlineImageProvider>();
+  DataToByteArrayConverter converter = DataToByteArrayConverter();
+  ImageUtils imageUtils = ImageUtils();
+
+  int controllerLength = 0;
+
+  Future<List<String>> messageTohex(String message) async {
+    List<String> hexStrings = [];
+    for (int x = 0; x < message.length; x++) {
+      if (message[x] == '<' && message[min(x + 5, message.length - 1)] == '>') {
+        int index = int.parse(message[x + 2] + message[x + 3]);
+        print('Index = $index');
+        List<String> hs = await imageUtils.generateLedHex(controllerData.vectors[index]);
+        hexStrings.addAll(hs);
+        x += 5;
+      } else {
+        hexStrings.add(converter.charCodes[message[x]]!);
       }
-      i++;
     }
-    return messages;
+    print('Generated HexString = $hexStrings');
+    return hexStrings;
   }
 
   //function to convert the bitmap to the LED hex format
@@ -95,6 +106,8 @@ class Converters {
         list[i][k++] = 0; // Fill left-side padding
       }
     }
+
+    logger.d("Padded image: $list");
 
     // Convert each 8-bit segment into hexadecimal strings
     List<String> allHexs = [];

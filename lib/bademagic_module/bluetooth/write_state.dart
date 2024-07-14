@@ -1,10 +1,13 @@
 import 'package:badgemagic/bademagic_module/bluetooth/datagenerator.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:logger/logger.dart';
+
 import 'base_ble_state.dart';
 import 'completed_state.dart';
 
 class WriteState extends NormalBleState {
   final BluetoothDevice device;
+  final logger = Logger();
 
   DataTransferManager manager = DataTransferManager();
 
@@ -12,7 +15,7 @@ class WriteState extends NormalBleState {
 
   @override
   Future<BleState?> processState() async {
-    List<List<int>> dataChunks = manager.generateDataChunk();
+    List<List<int>> dataChunks = await manager.generateDataChunk();
     logger.d("Data to write: $dataChunks");
 
     try {

@@ -8,6 +8,7 @@ import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.da
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  Converters converters = Converters();
   DataToByteArrayConverter converter = DataToByteArrayConverter();
   test('result should start with 77616E670000', () {
     var data = Data(messages: [
@@ -30,16 +31,16 @@ void main() {
 
   test(
       "flash should contain 8 bits, each bit representing the flash value of each message, 1 when flash is enabled, 0 otherwise",
-      () {
+      () async {
     var data = Data(messages: [
-      Message(text: Converters.messageTohex('Hii'), flash: true),
-      Message(text: Converters.messageTohex('Hii'), flash: true),
-      Message(text: Converters.messageTohex('Hii'), flash: false),
-      Message(text: Converters.messageTohex('Hii'), flash: false),
-      Message(text: Converters.messageTohex('Hii'), flash: true),
-      Message(text: Converters.messageTohex('Hii'), flash: false),
-      Message(text: Converters.messageTohex('Hii'), flash: true),
-      Message(text: Converters.messageTohex('Hii'), flash: false)
+      Message(text: await await converters.messageTohex('Hii'), flash: true),
+      Message(text: await converters.messageTohex('Hii'), flash: true),
+      Message(text: await converters.messageTohex('Hii'), flash: false),
+      Message(text: await converters.messageTohex('Hii'), flash: false),
+      Message(text: await converters.messageTohex('Hii'), flash: true),
+      Message(text: await converters.messageTohex('Hii'), flash: false),
+      Message(text: await converters.messageTohex('Hii'), flash: true),
+      Message(text: await converters.messageTohex('Hii'), flash: false)
     ]);
 
     var result = converter.convert(data);
@@ -48,9 +49,9 @@ void main() {
   });
 
   test('marquee should be 0x00 when no messages have marquee option enabled',
-      () {
+      () async {
     var data = Data(messages: [
-      Message(text: Converters.messageTohex('Hii'), marquee: false)
+      Message(text: await converters.messageTohex('Hii'), marquee: false)
     ]);
 
     var result = converter.convert(data);
@@ -60,16 +61,16 @@ void main() {
 
   test(
       'marquee should contain 8 bits, each bit representing the marquee value of each message, 1 when marquee is enabled, 0 otherwise',
-      () {
+      () async {
     var data = Data(messages: [
-      Message(text: Converters.messageTohex('Hii'), marquee: true),
-      Message(text: Converters.messageTohex('Hii'), marquee: true),
-      Message(text: Converters.messageTohex('Hii'), marquee: false),
-      Message(text: Converters.messageTohex('Hii'), marquee: false),
-      Message(text: Converters.messageTohex('Hii'), marquee: true),
-      Message(text: Converters.messageTohex('Hii'), marquee: false),
-      Message(text: Converters.messageTohex('Hii'), marquee: true),
-      Message(text: Converters.messageTohex('Hii'), marquee: false)
+      Message(text: await converters.messageTohex('Hii'), marquee: true),
+      Message(text: await converters.messageTohex('Hii'), marquee: true),
+      Message(text: await converters.messageTohex('Hii'), marquee: false),
+      Message(text: await converters.messageTohex('Hii'), marquee: false),
+      Message(text: await converters.messageTohex('Hii'), marquee: true),
+      Message(text: await converters.messageTohex('Hii'), marquee: false),
+      Message(text: await converters.messageTohex('Hii'), marquee: true),
+      Message(text: await converters.messageTohex('Hii'), marquee: false)
     ]);
 
     var result = converter.convert(data);
@@ -79,34 +80,34 @@ void main() {
 
   test(
       'option should be a single byte containing the speed and the mode, repeated for all 8 messages',
-      () {
+      () async {
     Data data = Data(messages: [
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.one,
           mode: Mode.right),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.two,
           mode: Mode.left),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.three,
           mode: Mode.up),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.four,
           mode: Mode.fixed),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.six,
           mode: Mode.laser),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.seven,
           mode: Mode.snowflake),
       Message(
-          text: Converters.messageTohex('Hii'),
+          text: await converters.messageTohex('Hii'),
           speed: Speed.eight,
           mode: Mode.picture),
     ]);
@@ -119,15 +120,16 @@ void main() {
 
   test(
       'size should contain the 2 bytes hexadecimal value for each message, skipping invalid characters if any',
-      () {
+      () async {
     Data data = Data(messages: [
-      Message(text: Converters.messageTohex('A')),
-      Message(text: Converters.messageTohex('...')),
-      Message(text: Converters.messageTohex('abcdefghijklmnopqrstuvwxyz')),
-      Message(text: Converters.messageTohex('_' * 500)),
-      Message(text: Converters.messageTohex('É')),
-      Message(text: Converters.messageTohex('ÇÇÇÇÇabc')),
-      Message(text: Converters.messageTohex('')),
+      Message(text: await converters.messageTohex('A')),
+      Message(text: await converters.messageTohex('...')),
+      Message(
+          text: await converters.messageTohex('abcdefghijklmnopqrstuvwxyz')),
+      Message(text: await converters.messageTohex('_' * 500)),
+      Message(text: await converters.messageTohex('É')),
+      Message(text: await converters.messageTohex('ÇÇÇÇÇabc')),
+      Message(text: await converters.messageTohex('')),
     ]);
 
     List<List<int>> result = converter.convert(data);
@@ -152,8 +154,9 @@ void main() {
     ]);
   });
 
-  test('the 6 next bytes after the size should all be equal to 0x00', () {
-    var data = Data(messages: [Message(text: Converters.messageTohex('A'))]);
+  test('the 6 next bytes after the size should all be equal to 0x00', () async {
+    var data =
+        Data(messages: [Message(text: await converters.messageTohex('A'))]);
 
     var result = converter.convert(data);
     expect(result[2].sublist(0, 6), [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
@@ -172,10 +175,10 @@ void main() {
 
   test(
       '`message should be located at the end and containing hex code for each character, skipping invalid characters',
-      () {
+      () async {
     Data data = Data(messages: [
-      Message(text: Converters.messageTohex('AB')),
-      Message(text: Converters.messageTohex('ÈC')),
+      Message(text: await converters.messageTohex('AB')),
+      Message(text: await converters.messageTohex('ÈC')),
     ]);
 
     List<List<int>> result = converter.convert(data);
@@ -187,18 +190,19 @@ void main() {
     ]);
   });
 
-  test('each packet should contain 16 bytes', () {
+  test('each packet should contain 16 bytes', () async {
     // Given
-    final data1 = Data(messages: [Message(text: Converters.messageTohex('A'))]);
+    final data1 =
+        Data(messages: [Message(text: await converters.messageTohex('A'))]);
     final data2 = Data(messages: [
-      Message(text: Converters.messageTohex('B')),
-      Message(text: Converters.messageTohex('BBB'))
+      Message(text: await converters.messageTohex('B')),
+      Message(text: await converters.messageTohex('BBB'))
     ]);
     final data3 = Data(messages: [
-      Message(text: Converters.messageTohex('C')),
-      Message(text: Converters.messageTohex('CCC')),
-      Message(text: Converters.messageTohex('CCCCC')),
-      Message(text: Converters.messageTohex('CCCCCCCC'))
+      Message(text: await converters.messageTohex('C')),
+      Message(text: await converters.messageTohex('CCC')),
+      Message(text: await converters.messageTohex('CCCCC')),
+      Message(text: await converters.messageTohex('CCCCCCCC'))
     ]);
 
     // When
