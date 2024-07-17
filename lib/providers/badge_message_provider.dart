@@ -7,14 +7,15 @@ import 'package:badgemagic/bademagic_module/models/messages.dart';
 import 'package:badgemagic/bademagic_module/models/mode.dart';
 import 'package:badgemagic/bademagic_module/models/speed.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
-import 'package:badgemagic/providers/cardsprovider.dart';
+import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 class BadgeMessageProvider {
   static final Logger logger = Logger();
-  CardProvider cardData = GetIt.instance<CardProvider>();
+  InlineImageProvider controllerData =
+      GetIt.instance.get<InlineImageProvider>();
   ToastUtils toast = ToastUtils();
 
   Map<int, Mode> modeValueMap = {
@@ -73,7 +74,7 @@ class BadgeMessageProvider {
       return;
     }
 
-    if (cardData.getController().text.isEmpty) {
+    if (controllerData.getController().text.isEmpty) {
       toast.showErrorToast("Please enter a message");
       return;
     }
