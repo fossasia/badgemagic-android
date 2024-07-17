@@ -33,7 +33,7 @@ void main() {
       "flash should contain 8 bits, each bit representing the flash value of each message, 1 when flash is enabled, 0 otherwise",
       () async {
     var data = Data(messages: [
-      Message(text: await await converters.messageTohex('Hii'), flash: true),
+      Message(text: await converters.messageTohex('Hii'), flash: true),
       Message(text: await converters.messageTohex('Hii'), flash: true),
       Message(text: await converters.messageTohex('Hii'), flash: false),
       Message(text: await converters.messageTohex('Hii'), flash: false),

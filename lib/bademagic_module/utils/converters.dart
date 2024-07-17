@@ -18,7 +18,6 @@ class Converters {
     for (int x = 0; x < message.length; x++) {
       if (message[x] == '<' && message[min(x + 5, message.length - 1)] == '>') {
         int index = int.parse(message[x + 2] + message[x + 3]);
-        print('Index = $index');
         List<String> hs =
             await imageUtils.generateLedHex(controllerData.vectors[index]);
         hexStrings.addAll(hs);
@@ -27,7 +26,6 @@ class Converters {
         hexStrings.add(converter.charCodes[message[x]]!);
       }
     }
-    print('Generated HexString = $hexStrings');
     return hexStrings;
   }
 
