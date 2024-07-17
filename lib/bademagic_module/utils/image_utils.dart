@@ -12,7 +12,7 @@ class ImageUtils {
   late ui.Picture picture;
 
   //function that generates the Picture from the given asset
-  Future<void> loadSVG(String asset) async {
+  Future<void> _loadSVG(String asset) async {
     //loading the Svg from the assets
     String svgString = await rootBundle.loadString(asset);
 
@@ -27,7 +27,7 @@ class ImageUtils {
   }
 
   //function to load and scale the svg according to the badge size
-  Future<ui.Image> scaleSVG(double targetHeight, double targetWidth) async {
+  Future<ui.Image> _scaleSVG(double targetHeight, double targetWidth) async {
     //creating canvas to draw the svg on
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final ui.Canvas canvas = Canvas(recorder,
@@ -48,14 +48,14 @@ class ImageUtils {
   }
 
   //function to convert the ui.Image to byte array
-  Future<Uint8List?> convertImageToByteArray(ui.Image image) async {
+  Future<Uint8List?> _convertImageToByteArray(ui.Image image) async {
     final ByteData? byteData =
         await image.toByteData(format: ui.ImageByteFormat.rawRgba);
     return byteData?.buffer.asUint8List();
   }
 
   //function to convert the byte array to 2D list of pixels
-  List<List<int>> convertUint8ListTo2DList(
+  List<List<int>> _convertUint8ListTo2DList(
       Uint8List byteArray, int width, int height) {
     //initialize the 2D list of pixels
     List<List<int>> pixelArray =
@@ -78,7 +78,7 @@ class ImageUtils {
   }
 
   //function to trim the svg
-  Future<ui.Image> trimSVG(ui.Image inputImage) async {
+  Future<ui.Image> _trimSVG(ui.Image inputImage) async {
     final ByteData? byteData =
         await inputImage.toByteData(format: ui.ImageByteFormat.rawRgba);
     if (byteData == null) {
@@ -169,18 +169,18 @@ class ImageUtils {
 
   //function to generate the view for the Dialog from the given asset
   Future<ui.Image> generateImageView(String asset) async {
-    await loadSVG(asset);
-    final ui.Image scaledImage = await scaleSVG(30, 120);
-    return trimSVG(scaledImage);
+    await _loadSVG(asset);
+    final ui.Image scaledImage = await _scaleSVG(30, 120);
+    return _trimSVG(scaledImage);
   }
 
   //function to generate the LED hex from the given asset
   Future<List<String>> generateLedHex(String asset) async {
-    await loadSVG(asset);
-    final ui.Image scaledImage = await scaleSVG(11, 44);
-    final ui.Image trimmedImage = await trimSVG(scaledImage);
-    final Uint8List? byteArray = await convertImageToByteArray(trimmedImage);
-    final List<List<int>> pixelArray = convertUint8ListTo2DList(
+    await _loadSVG(asset);
+    final ui.Image scaledImage = await _scaleSVG(11, 44);
+    final ui.Image trimmedImage = await _trimSVG(scaledImage);
+    final Uint8List? byteArray = await _convertImageToByteArray(trimmedImage);
+    final List<List<int>> pixelArray = _convertUint8ListTo2DList(
         byteArray!, trimmedImage.width, trimmedImage.height);
     return Converters.convertBitmapToLEDHex(pixelArray);
   }

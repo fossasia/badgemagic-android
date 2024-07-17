@@ -11,6 +11,7 @@ import 'package:badgemagic/virtualbadge/view/badgeui.dart';
 import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,13 +25,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final TabController _tabController;
   BadgeMessageProvider badgeData = BadgeMessageProvider();
   ImageUtils imageUtils = ImageUtils();
+  InlineImageProvider cacheImageProvider =
+      GetIt.instance<InlineImageProvider>();
 
   bool isPrefixIconClicked = false;
 
   @override
   void initState() {
+    _startImageCaching();
     super.initState();
+
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  Future<void> _startImageCaching() async {
+    await cacheImageProvider.generateImageCache();
   }
 
   @override

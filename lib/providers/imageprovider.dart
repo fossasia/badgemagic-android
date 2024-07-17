@@ -1,11 +1,32 @@
-import 'dart:typed_data';
+import 'dart:convert';
 import 'dart:ui' as ui;
 
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
-import 'package:badgemagic/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InlineImageProvider extends ChangeNotifier {
+  //list of vectors
+  List<String> vectors = [];
+
+  //initializes the list of vectors
+  //uses the AssetManifest class to load the list of assets
+  Future<void> initVectors() async {
+    try {
+      final manifestContent = await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+
+      final imageAssetsList = manifestMap.keys
+          .where((String key) => key.startsWith('assets/vectors/'))
+          .toList();
+      vectors.addAll(imageAssetsList);
+      notifyListeners();
+    } catch (e) {
+      logger.e('Error loading asset manifest: $e');
+    }
+  }
+
   //to test the delete operation in TextField
   //used for compairing the length of the current textfield and the prevous
   //if the length of the current controller length is greater than the previous (add operation)
@@ -32,6 +53,7 @@ class InlineImageProvider extends ChangeNotifier {
   //function that generates the image cache
   //it fills the map with the Unit8List(byte Array) of the images
   Future<void> generateImageCache() async {
+    await initVectors();
     for (int x = 0; x < vectors.length; x++) {
       ui.Image image = await imageUtils.generateImageView(vectors[x]);
       ByteData? byteData =
