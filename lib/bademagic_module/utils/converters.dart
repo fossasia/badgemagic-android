@@ -19,7 +19,8 @@ class Converters {
       if (message[x] == '<' && message[min(x + 5, message.length - 1)] == '>') {
         int index = int.parse(message[x + 2] + message[x + 3]);
         print('Index = $index');
-        List<String> hs = await imageUtils.generateLedHex(controllerData.vectors[index]);
+        List<String> hs =
+            await imageUtils.generateLedHex(controllerData.vectors[index]);
         hexStrings.addAll(hs);
         x += 5;
       } else {
