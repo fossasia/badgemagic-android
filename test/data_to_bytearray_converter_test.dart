@@ -9,7 +9,6 @@ import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  Future.delayed(const Duration(seconds: 2));
   test('result should start with 77616E670000', () {
     DataToByteArrayConverter converter = DataToByteArrayConverter();
     var data = Data(messages: [

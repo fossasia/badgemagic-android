@@ -32,8 +32,6 @@ class InlineImageProvider extends ChangeNotifier {
   //else delte operation is performed.
   int controllerLength = 0;
 
-  //Map to store the hex values of the characters
-  final Map<int, List<String>> hexStrings = {};
 
   //object of ImageUtils class to generate ImageCache
   ImageUtils imageUtils = ImageUtils();
