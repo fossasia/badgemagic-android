@@ -32,7 +32,6 @@ class InlineImageProvider extends ChangeNotifier {
   //else delte operation is performed.
   int controllerLength = 0;
 
-
   //object of ImageUtils class to generate ImageCache
   ImageUtils imageUtils = ImageUtils();
 
