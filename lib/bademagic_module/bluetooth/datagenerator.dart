@@ -11,8 +11,8 @@ class DataTransferManager {
   CardProvider cardData = GetIt.instance<CardProvider>();
   InlineImageProvider controllerData = GetIt.instance<InlineImageProvider>();
 
-  List<List<int>> generateDataChunk() {
-    Data data = badgeData.generateData(
+  Future<List<List<int>>> generateDataChunk() async {
+    Data data = await badgeData.generateData(
       controllerData.getController().text,
       cardData.getEffectIndex(1) == 1,
       cardData.getEffectIndex(2) == 1,

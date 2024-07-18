@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
@@ -25,8 +26,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final TabController _tabController;
   BadgeMessageProvider badgeData = BadgeMessageProvider();
   ImageUtils imageUtils = ImageUtils();
-  InlineImageProvider cacheImageProvider =
+  InlineImageProvider inlineImageProvider =
       GetIt.instance<InlineImageProvider>();
+  Converters converters = Converters();
 
   bool isPrefixIconClicked = false;
 
@@ -39,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _startImageCaching() async {
-    await cacheImageProvider.generateImageCache();
+    await inlineImageProvider.generateImageCache();
   }
 
   @override

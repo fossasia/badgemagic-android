@@ -12,7 +12,7 @@ class WriteState extends NormalBleState {
 
   @override
   Future<BleState?> processState() async {
-    List<List<int>> dataChunks = manager.generateDataChunk();
+    List<List<int>> dataChunks = await manager.generateDataChunk();
     logger.d("Data to write: $dataChunks");
 
     try {

@@ -1,12 +1,15 @@
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
+import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test(
       'Message to hex function should be able to generate the hex with skipping invalid characters',
-      () {
+      () async {
+    setupLocator();
+    Converters converters = Converters();
     const String message = "Hii!";
-    List<String> result = Converters.messageTohex(message);
+    List<String> result = await converters.messageTohex(message);
     List<String> expected = [
       "00C6C6C6C6FEC6C6C6C600",
       "0018180038181818183C00",
