@@ -23,7 +23,9 @@ class Converters {
         hexStrings.addAll(hs);
         x += 5;
       } else {
-        hexStrings.add(converter.charCodes[message[x]]!);
+        if (converter.charCodes.containsKey(message[x])) {
+          hexStrings.add(converter.charCodes[message[x]]!);
+        }
       }
     }
     return hexStrings;

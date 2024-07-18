@@ -9,7 +9,7 @@ class DataToByteArrayConverter {
   var packetStart = "77616E670000";
   var packetByteSize = 16;
 
-  Map<String, String> charCodes = {
+  final Map<String, String> charCodes = {
     '0': "007CC6CEDEF6E6C6C67C00",
     '1': "0018387818181818187E00",
     '2': "007CC6060C183060C6FE00",
