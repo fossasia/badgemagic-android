@@ -12,7 +12,6 @@ import 'package:badgemagic/view/widgets/vectorview.dart';
 import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
 import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
