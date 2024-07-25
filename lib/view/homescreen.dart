@@ -6,11 +6,13 @@ import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
+import 'package:badgemagic/view/widgets/navigation_drawer.dart';
 import 'package:badgemagic/view/widgets/speedial.dart';
 import 'package:badgemagic/view/widgets/vectorview.dart';
-import 'package:badgemagic/virtualbadge/view/badgeui.dart';
+import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
 import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +59,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
           backgroundColor: Colors.red,
           title: const Text(
             key: Key(homeScreenTitleKey),
@@ -65,11 +80,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           centerTitle: true,
         ),
+        drawer: const BMDrawer(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const BMBadge(),
+                const BMBadgeHome(),
                 Container(
                   margin: EdgeInsets.all(15.w),
                   child: Material(

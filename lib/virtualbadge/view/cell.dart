@@ -1,53 +1,42 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class Cell extends StatefulWidget {
-  final int index;
-  final bool isSelected;
-  const Cell({super.key, required this.index, required this.isSelected});
+import 'package:flutter/material.dart';
+
+class BadgePainter extends CustomPainter {
+  final List<List<bool>> grid;
+
+  BadgePainter({required this.grid});
 
   @override
-  State<Cell> createState() => _CellState();
-}
+  void paint(Canvas canvas, Size size) {
+    double cellWidth = size.width / grid[0].length;
+    double cellHeight = size.height / grid.length;
 
-class _CellState extends State<Cell> {
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: const Size(10, 10), // Set your desired size
-      painter: TiltedParallelogramPainter(
-          index: widget.index, isSelected: widget.isSelected),
-    );
-  }
-}
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[row].length; col++) {
+        final Paint paint = Paint()
+          ..color = grid[row][col] ? Colors.red : Colors.grey.shade600
+          ..style = PaintingStyle.fill;
 
-class TiltedParallelogramPainter extends CustomPainter {
-  final int index;
-  final bool isSelected;
-  TiltedParallelogramPainter(
-      {Key? key, required this.index, required this.isSelected});
-  @override
-  void paint(
-    Canvas canvas,
-    Size size,
-  ) {
-    final Paint paint = Paint()
-      ..color = isSelected ? Colors.red : Colors.grey.shade600
-      ..style = PaintingStyle.fill;
+        final Path path = Path()
+          ..moveTo(col * cellWidth, row * cellHeight)
+          ..lineTo(col * cellWidth + cellWidth * 0.4, row * cellHeight)
+          ..lineTo(col * cellWidth + cellWidth * 0.655,
+              row * cellHeight + cellHeight)
+          ..lineTo(
+              col * cellWidth + cellWidth * 0.25, row * cellHeight + cellHeight)
+          ..close();
 
-    final Path path = Path()
-      ..moveTo(0, 0)
-      ..lineTo(size.width * 0.4, 0)
-      ..lineTo(size.width * 0.655, size.height)
-      ..lineTo(size.width * 0.25, size.height)
-      ..close();
+        const double radians = math.pi / 4;
+        canvas.save();
+        canvas.translate((col + 0.5) * cellWidth, (row + 0.5) * cellHeight);
+        canvas.rotate(radians);
+        canvas.translate(-(col + 0.5) * cellWidth, -(row + 0.5) * cellHeight);
 
-    const double radians = math.pi / 4;
-    canvas.translate(size.width / 2, size.height / 2);
-    canvas.rotate(radians);
-    canvas.translate(-size.width / 2, -size.height / 2);
-
-    canvas.drawPath(path, paint);
+        canvas.drawPath(path, paint);
+        canvas.restore();
+      }
+    }
   }
 
   @override
