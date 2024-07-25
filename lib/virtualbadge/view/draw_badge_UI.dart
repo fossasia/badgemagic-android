@@ -1,5 +1,5 @@
 import 'package:badgemagic/providers/imageprovider.dart';
-import 'package:badgemagic/virtualbadge/widgets/badgeWidget.dart';
+import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,7 +33,7 @@ class _BMBadgeState extends State<BMBadge> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: _handlePanUpdate,
-      child: BadgeWidget(),
+      child: const BadgeWidget(),
     );
   }
 }

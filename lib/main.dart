@@ -1,7 +1,7 @@
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
-import 'package:badgemagic/view/drawBadgeScreen.dart';
+import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:badgemagic/view/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

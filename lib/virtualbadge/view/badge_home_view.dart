@@ -1,4 +1,4 @@
-import 'package:badgemagic/virtualbadge/widgets/badgeWidget.dart';
+import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +22,7 @@ class _BMBadgeHomeState extends State<BMBadgeHome> {
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: BadgeWidget(),
+      child: const BadgeWidget(),
     );
   }
 }

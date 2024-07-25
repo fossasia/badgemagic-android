@@ -1,6 +1,6 @@
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/widgets/navigation_drawer.dart';
-import 'package:badgemagic/virtualbadge/view/draw_badge_UI.dart';
+import 'package:badgemagic/virtualbadge/view/draw_badge_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
