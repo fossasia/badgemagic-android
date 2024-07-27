@@ -18,8 +18,7 @@ class BadgeWidget extends StatefulWidget {
 class _BadgeWidgetState extends State<BadgeWidget> {
   @override
   Widget build(BuildContext context) {
-    DrawBadgeProvider cellStateToggle =
-        Provider.of<DrawBadgeProvider>(context);
+    DrawBadgeProvider cellStateToggle = Provider.of<DrawBadgeProvider>(context);
     return CustomPaint(
       size: const Size(400, 480),
       painter: BadgePainter(grid: cellStateToggle.getGrid()),

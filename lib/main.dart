@@ -11,26 +11,26 @@ import 'package:provider/provider.dart';
 void main() {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-    runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<CardProvider>(
-            create: (context) => getIt<CardProvider>()),
-        ChangeNotifierProvider<InlineImageProvider>(
-            create: (context) => getIt<InlineImageProvider>()),
-        ChangeNotifierProvider<DrawBadgeProvider>(
-            create: (context) => DrawBadgeProvider()), 
-      ],
-      child: const MyApp(),
-    ));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<CardProvider>(
+          create: (context) => getIt<CardProvider>()),
+      ChangeNotifierProvider<InlineImageProvider>(
+          create: (context) => getIt<InlineImageProvider>()),
+      ChangeNotifierProvider<DrawBadgeProvider>(
+          create: (context) => DrawBadgeProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
+
 Future<void> _startImageCaching() async {
-    InlineImageProvider inlineImageProvider = getIt<InlineImageProvider>();
-    await inlineImageProvider.generateImageCache();
-  }
+  InlineImageProvider inlineImageProvider = getIt<InlineImageProvider>();
+  await inlineImageProvider.generateImageCache();
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class InlineImageProvider extends ChangeNotifier {
-
   //list of vectors
   List<String> vectors = [];
 

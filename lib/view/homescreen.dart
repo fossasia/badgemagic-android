@@ -57,11 +57,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-
-
   Future<void> _startImageCaching() async {
-    if(!isCacheInitialized)
-    {
+    if (!isCacheInitialized) {
       await inlineImageProvider.generateImageCache();
       setState(() {
         isCacheInitialized = true;
