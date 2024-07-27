@@ -1,6 +1,4 @@
 import 'package:badgemagic/providers/drawbadge_provider.dart';
-import 'package:badgemagic/providers/imageprovider.dart';
-import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:badgemagic/virtualbadge/view/cell.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
