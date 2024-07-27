@@ -1,9 +1,11 @@
+import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/widgets/navigation_drawer.dart';
 import 'package:badgemagic/virtualbadge/view/draw_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class DrawBadge extends StatefulWidget {
@@ -14,20 +16,32 @@ class DrawBadge extends StatefulWidget {
 }
 
 class _DrawBadgeState extends State<DrawBadge> {
+  DrawBadgeProvider cellStateToggle = GetIt.instance<DrawBadgeProvider>();
+
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
+    super.initState();
+  }
+
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    cellStateToggle.resetGrid();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    InlineImageProvider drawToggle = Provider.of<InlineImageProvider>(context);
+    DrawBadgeProvider drawToggle = Provider.of<DrawBadgeProvider>(context);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
     return Scaffold(
       appBar: AppBar(
         leading: Builder(builder: (context) {

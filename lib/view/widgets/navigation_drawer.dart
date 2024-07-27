@@ -31,7 +31,6 @@ class BMDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            //Add Icons from assets
             leading: const Icon(Icons.draw_outlined),
             title: const Text('Draw Clipart'),
             onTap: () {

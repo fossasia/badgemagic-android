@@ -1,32 +1,36 @@
 import 'package:badgemagic/providers/cardsprovider.dart';
+import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:badgemagic/view/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<CardProvider>(
             create: (context) => getIt<CardProvider>()),
         ChangeNotifierProvider<InlineImageProvider>(
             create: (context) => getIt<InlineImageProvider>()),
+        ChangeNotifierProvider<DrawBadgeProvider>(
+            create: (context) => DrawBadgeProvider()), 
       ],
       child: const MyApp(),
     ));
-  });
 }
+Future<void> _startImageCaching() async {
+    InlineImageProvider inlineImageProvider = getIt<InlineImageProvider>();
+    await inlineImageProvider.generateImageCache();
+  }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
 
   @override
   Widget build(BuildContext context) {

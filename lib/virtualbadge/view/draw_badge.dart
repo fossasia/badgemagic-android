@@ -1,3 +1,4 @@
+import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class BMBadge extends StatefulWidget {
 }
 
 class _BMBadgeState extends State<BMBadge> {
-  InlineImageProvider cellStateToggle = GetIt.instance<InlineImageProvider>();
+  DrawBadgeProvider cellStateToggle = GetIt.instance<DrawBadgeProvider>();
   static const int rows = 11;
   static const int cols = 44;
 

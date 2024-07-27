@@ -12,6 +12,7 @@ import 'package:badgemagic/view/widgets/vectorview.dart';
 import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
 import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -30,19 +31,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   InlineImageProvider inlineImageProvider =
       GetIt.instance<InlineImageProvider>();
   Converters converters = Converters();
-
+  bool isCacheInitialized = false;
   bool isPrefixIconClicked = false;
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     _startImageCaching();
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
+
+
+
   Future<void> _startImageCaching() async {
-    await inlineImageProvider.generateImageCache();
+    if(!isCacheInitialized)
+    {
+      await inlineImageProvider.generateImageCache();
+      setState(() {
+        isCacheInitialized = true;
+      });
+    }
   }
 
   @override
