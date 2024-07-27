@@ -24,11 +24,6 @@ void main() {
   ));
 }
 
-Future<void> _startImageCaching() async {
-  InlineImageProvider inlineImageProvider = getIt<InlineImageProvider>();
-  await inlineImageProvider.generateImageCache();
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
