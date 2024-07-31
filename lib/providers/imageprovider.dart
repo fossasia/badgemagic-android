@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class InlineImageProvider extends ChangeNotifier {
+  //boolean variable to check for isCacheInitialized
+  bool isCacheInitialized = false;
+
   //list of vectors
   List<String> vectors = [];
 
-  //initializes the list of vectors
   //uses the AssetManifest class to load the list of assets
   Future<void> initVectors() async {
     try {

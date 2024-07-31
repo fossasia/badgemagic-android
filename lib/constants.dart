@@ -1,4 +1,5 @@
 const homeScreenTitleKey = "bm_hm_title";
+const drawBadgeScreen = "bm_db_screen";
 
 //path to all the animation assets used
 const String animation = 'assets/animations/ic_anim_animation.gif';
