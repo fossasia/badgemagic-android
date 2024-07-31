@@ -1,5 +1,6 @@
+import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/drawbadge_provider.dart';
-import 'package:badgemagic/view/widgets/navigation_drawer.dart';
+import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
 import 'package:badgemagic/virtualbadge/view/draw_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,25 +42,8 @@ class _DrawBadgeState extends State<DrawBadge> {
   Widget build(BuildContext context) {
     DrawBadgeProvider drawToggle = Provider.of<DrawBadgeProvider>(context);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    return Scaffold(
-      appBar: AppBar(
-        leading: Builder(builder: (context) {
-          return IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ));
-        }),
-        backgroundColor: Colors.red,
-        title: const Text(
-          'Badge Magic',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      drawer: const BMDrawer(),
+    return CommonScaffold(
+      title: 'BadgeMagic',
       body: Column(
         children: [
           Container(
@@ -157,6 +141,7 @@ class _DrawBadgeState extends State<DrawBadge> {
           )
         ],
       ),
+      key: const Key(drawBadgeScreen),
     );
   }
 }

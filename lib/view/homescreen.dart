@@ -5,8 +5,8 @@ import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/special_text_field.dart';
+import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
-import 'package:badgemagic/view/widgets/navigation_drawer.dart';
 import 'package:badgemagic/view/widgets/speedial.dart';
 import 'package:badgemagic/view/widgets/vectorview.dart';
 import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   InlineImageProvider inlineImageProvider =
       GetIt.instance<InlineImageProvider>();
   Converters converters = Converters();
-  bool isCacheInitialized = false;
   bool isPrefixIconClicked = false;
 
   @override
@@ -58,10 +57,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _startImageCaching() async {
-    if (!isCacheInitialized) {
+    if (!inlineImageProvider.isCacheInitialized) {
       await inlineImageProvider.generateImageCache();
       setState(() {
-        isCacheInitialized = true;
+        inlineImageProvider.isCacheInitialized = true;
       });
     }
   }
@@ -76,127 +75,105 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
 
     return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
-            },
-          ),
-          backgroundColor: Colors.red,
-          title: const Text(
-            key: Key(homeScreenTitleKey),
-            'Badge Magic',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-        ),
-        drawer: const BMDrawer(),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const BMBadgeHome(),
-                Container(
-                  margin: EdgeInsets.all(15.w),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(10.r),
-                    elevation: 10,
-                    child: ExtendedTextField(
-                      onChanged: (value) {
-                        inlineImageProvider.controllerListener();
-                      },
-                      controller: inlineImageProvider.getController(),
-                      specialTextSpanBuilder: MySpecialTextSpanBuilder(),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        prefixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isPrefixIconClicked = !isPrefixIconClicked;
-                            });
-                          },
-                          icon: const Icon(Icons.tag_faces_outlined),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
+        length: 3,
+        child: CommonScaffold(
+          title: 'BadgeMagic',
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const BMBadgeHome(),
+                  Container(
+                    margin: EdgeInsets.all(15.w),
+                    child: Material(
+                      borderRadius: BorderRadius.circular(10.r),
+                      elevation: 10,
+                      child: ExtendedTextField(
+                        onChanged: (value) {
+                          inlineImageProvider.controllerListener();
+                        },
+                        controller: inlineImageProvider.getController(),
+                        specialTextSpanBuilder: MySpecialTextSpanBuilder(),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          prefixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isPrefixIconClicked = !isPrefixIconClicked;
+                              });
+                            },
+                            icon: const Icon(Icons.tag_faces_outlined),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Visibility(
-                    visible: isPrefixIconClicked,
-                    child: Container(
-                      height: 99.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: Colors.grey.shade200,
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 15.w),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.h, horizontal: 10.w),
-                      child: const VectorGridView(),
-                    )),
-                TabBar(
-                  indicatorSize: TabBarIndicatorSize.label,
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Speed'),
-                    Tab(text: 'Animation'),
-                    Tab(text: 'Effects'),
-                  ],
-                ),
-                SizedBox(
-                  height: 230.h, // Adjust the height dynamically
-                  child: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    children: const [
-                      RadialDial(),
-                      AnimationTab(),
-                      EffectTab(),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          badgeData.checkAndTransfer();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 8.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: Colors.grey.shade400,
-                          ),
-                          child: const Text('Transfer'),
+                  Visibility(
+                      visible: isPrefixIconClicked,
+                      child: Container(
+                        height: 99.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Colors.grey.shade200,
                         ),
-                      ),
+                        margin: EdgeInsets.symmetric(horizontal: 15.w),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.h, horizontal: 10.w),
+                        child: const VectorGridView(),
+                      )),
+                  TabBar(
+                    indicatorSize: TabBarIndicatorSize.label,
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: 'Speed'),
+                      Tab(text: 'Animation'),
+                      Tab(text: 'Effects'),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 230.h, // Adjust the height dynamically
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _tabController,
+                      children: const [
+                        RadialDial(),
+                        AnimationTab(),
+                        EffectTab(),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            badgeData.checkAndTransfer();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 8.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: Colors.grey.shade400,
+                            ),
+                            child: const Text('Transfer'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+          scaffoldKey: const Key(homeScreenTitleKey),
+        ));
   }
 }
