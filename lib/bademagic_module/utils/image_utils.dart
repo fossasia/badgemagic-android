@@ -12,6 +12,54 @@ class ImageUtils {
 
   late ui.Picture picture;
 
+  //convert the 2D list to Uint8List
+  //this funcction will be ustilised to convert the user drawn badge to Uint8List
+  //and thus will be able to display with other vectors in the badge
+  Future<Uint8List> convert2DListToUint8List(List<List<int>> twoDList) async {
+    int height = twoDList.length;
+    int width = twoDList[0].length;
+
+    // Create a buffer to hold the pixel data
+    Uint8List pixels =
+        Uint8List(width * height * 4); // 4 bytes per pixel (RGBA)
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int value = twoDList[y][x] == 1 ? 0 : 255;
+        int offset = (y * width + x) * 4;
+        pixels[offset] = value; // Red
+        pixels[offset + 1] = value; // Green
+        pixels[offset + 2] = value; // Blue
+        pixels[offset + 3] = 255; // Alpha
+      }
+    }
+
+    // Create an ImmutableBuffer from the pixel data
+    ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(pixels);
+
+    // Create an ImageDescriptor from the buffer
+    ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(
+      buffer,
+      width: width,
+      height: height,
+      pixelFormat: ui.PixelFormat.rgba8888,
+    );
+
+    // Instantiate a codec
+    ui.Codec codec = await descriptor.instantiateCodec();
+
+    // Get the first frame from the codec
+    ui.FrameInfo frameInfo = await codec.getNextFrame();
+
+    // Get the image from the frame
+    ui.Image image = frameInfo.image;
+
+    // Convert the image to PNG format
+    ByteData? pngBytes = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    return pngBytes!.buffer.asUint8List();
+  }
+
   //function that generates the Picture from the given asset
   Future<void> _loadSVG(String asset) async {
     //loading the Svg from the assets

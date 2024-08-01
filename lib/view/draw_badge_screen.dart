@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
@@ -5,7 +6,6 @@ import 'package:badgemagic/virtualbadge/view/draw_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class DrawBadge extends StatefulWidget {
@@ -16,8 +16,6 @@ class DrawBadge extends StatefulWidget {
 }
 
 class _DrawBadgeState extends State<DrawBadge> {
-  DrawBadgeProvider cellStateToggle = GetIt.instance<DrawBadgeProvider>();
-
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([
@@ -34,13 +32,14 @@ class _DrawBadgeState extends State<DrawBadge> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    cellStateToggle.resetGrid();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    DrawBadgeProvider drawToggle = Provider.of<DrawBadgeProvider>(context);
+    DrawBadgeProvider drawToggle =
+        Provider.of<DrawBadgeProvider>(context, listen: false);
+    FileHelper fileHelper = FileHelper();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return CommonScaffold(
       title: 'BadgeMagic',
@@ -126,7 +125,9 @@ class _DrawBadgeState extends State<DrawBadge> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  fileHelper.saveImage(drawToggle.getGrid());
+                },
                 child: const Column(
                   children: [
                     Icon(

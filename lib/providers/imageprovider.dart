@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/services.dart';
 class InlineImageProvider extends ChangeNotifier {
   //boolean variable to check for isCacheInitialized
   bool isCacheInitialized = false;
+
+  //set of available keys
+  Set<int> availableKeys = {};
 
   //list of vectors
   List<String> vectors = [];
@@ -54,6 +58,7 @@ class InlineImageProvider extends ChangeNotifier {
   //function that generates the image cache
   //it fills the map with the Unit8List(byte Array) of the images
   Future<void> generateImageCache() async {
+    FileHelper fileHelper = FileHelper();
     await initVectors();
     for (int x = 0; x < vectors.length; x++) {
       ui.Image image = await imageUtils.generateImageView(vectors[x]);
@@ -62,6 +67,7 @@ class InlineImageProvider extends ChangeNotifier {
       var unit8List = byteData!.buffer.asUint8List();
       imageCache[x] = unit8List;
     }
+    fileHelper.loadImageCacheFromFiles();
     notifyListeners();
   }
 

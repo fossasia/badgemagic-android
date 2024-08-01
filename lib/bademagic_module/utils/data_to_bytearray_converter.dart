@@ -132,7 +132,6 @@ class DataToByteArrayConverter {
     for (int x = 0; x < chunks.length; x++) {
       ans.add(hexStringToByteArray(chunks[x]));
     }
-    logger.d("ans ka length ${ans[0].length}");
     return ans;
   }
 
