@@ -31,6 +31,7 @@ class _VectorGridViewState extends State<VectorGridView> {
                 borderRadius: BorderRadius.circular(5),
               ),
               surfaceTintColor: Colors.white,
+              color: Colors.white,
               elevation: 5,
               child: Padding(
                   padding: const EdgeInsets.all(10.0),

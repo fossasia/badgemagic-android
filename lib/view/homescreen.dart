@@ -3,6 +3,7 @@ import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
+import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
@@ -31,10 +32,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   InlineImageProvider inlineImageProvider =
       GetIt.instance<InlineImageProvider>();
   Converters converters = Converters();
+  DrawBadgeProvider drawBadgeProvider = GetIt.instance<DrawBadgeProvider>();
   bool isPrefixIconClicked = false;
 
   @override
   void initState() {
+    drawBadgeProvider.resetGrid();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
