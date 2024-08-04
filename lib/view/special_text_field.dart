@@ -17,7 +17,12 @@ class InlineImageText extends SpecialText {
     final String key = toString();
 
     // Parse the index from the placeholder text
-    final int vectorIndex = int.parse(key.substring(2, key.length - 2));
+    final int index = int.parse(key.substring(2, key.length - 2));
+    Object vectorIndex = index;
+    var keyAt = textData.imageCache.keys.toList()[index];
+    if (keyAt is List) {
+      vectorIndex = keyAt;
+    }
 
     return ImageSpan(MemoryImage(textData.imageCache[vectorIndex]!),
         imageWidth: 25.w,

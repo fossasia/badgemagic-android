@@ -45,8 +45,6 @@ abstract class RetryBleState extends BleState {
         attempt++;
         if (attempt < _maxRetries) {
           logger.d("Retrying ($attempt/$_maxRetries)...");
-          await Future.delayed(
-              const Duration(seconds: 2)); // Wait before retrying
         } else {
           logger.e("Max retries reached. Last exception: $lastException");
           lastException =
