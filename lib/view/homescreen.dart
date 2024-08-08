@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Converters converters = Converters();
   DrawBadgeProvider drawBadgeProvider = GetIt.instance<DrawBadgeProvider>();
   bool isPrefixIconClicked = false;
+  int textfieldLength = 0;
 
   @override
   void initState() {
@@ -45,6 +47,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  void _controllerListner() {
+    logger
+        .d('Controller Listener : ${inlineImageProvider.getController().text}');
+    converters.messageTohex(inlineImageProvider.getController().text);
+    inlineImageProvider.controllerListener();
   }
 
   @override
