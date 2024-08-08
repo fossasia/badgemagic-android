@@ -1,5 +1,5 @@
 import 'package:badgemagic/providers/cardsprovider.dart';
-import 'package:badgemagic/providers/drawbadge_provider.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:get_it/get_it.dart';
 
