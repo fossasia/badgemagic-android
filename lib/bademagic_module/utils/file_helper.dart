@@ -114,8 +114,6 @@ class FileHelper {
     // Convert the 2D list to JSON string
     String jsonData = jsonEncode(image);
 
-    logger.d('JSON data: $jsonData');
-
     // Write the JSON string to a file
     await _writeToFile(filename, jsonData);
 

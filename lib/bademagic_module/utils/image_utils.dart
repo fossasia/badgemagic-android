@@ -222,7 +222,6 @@ class ImageUtils {
         }
       }
     }
-    logger.d("Pixel Array generated = $pixelArray");
     return Converters.convertBitmapToLEDHex(pixelArray, false);
   }
 }

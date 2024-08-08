@@ -1,32 +1,33 @@
-import 'dart:math';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
+import 'package:badgemagic/providers/drawbadge_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:get_it/get_it.dart';
 
 class Converters {
   InlineImageProvider controllerData =
       GetIt.instance.get<InlineImageProvider>();
+  DrawBadgeProvider badgeList = GetIt.instance.get<DrawBadgeProvider>();
   DataToByteArrayConverter converter = DataToByteArrayConverter();
   ImageUtils imageUtils = ImageUtils();
   FileHelper fileHelper = FileHelper();
 
   int controllerLength = 0;
+  bool isEmpty = false;
 
   Future<List<String>> messageTohex(String message) async {
     List<String> hexStrings = [];
     for (int x = 0; x < message.length; x++) {
-      if (message[x] == '<' && message[min(x + 5, message.length - 1)] == '>') {
+      if (message[x] == '<' && message[x + 5] == '>') {
         int index = int.parse(message[x + 2] + message[x + 3]);
         var key = controllerData.imageCache.keys.toList()[index];
         if (key is List) {
           String filename = key[0];
-          logger.d("Filename: $filename");
           List<List<int>>? image = await fileHelper.readFromFile(filename);
-          logger.d("Image: $image");
-          hexStrings = convertBitmapToLEDHex(image!, true);
+          hexStrings += convertBitmapToLEDHex(image!, true);
           x += 5;
         } else {
           List<String> hs =
@@ -39,6 +40,15 @@ class Converters {
           hexStrings.add(converter.charCodes[message[x]]!);
         }
       }
+    }
+    if (message.isEmpty) {
+      badgeList.resetGrid();
+      isEmpty = true;
+    } else {
+      isEmpty = false;
+      List<int> byteArray = hexStringToByteArray(hexStrings.join());
+      List<List<int>> binaryArray = byteArrayToBinaryArray(byteArray);
+      badgeList.startAnimation(binaryArray, isEmpty);
     }
     return hexStrings;
   }
@@ -121,8 +131,6 @@ class Converters {
       }
     }
 
-    logger.d("Padded image: $list");
-
     // Convert each 8-bit segment into hexadecimal strings
     List<String> allHexs = [];
     for (int i = 0; i < list[0].length ~/ 8; i++) {
@@ -145,7 +153,6 @@ class Converters {
 
       allHexs.add(lineHex.toString()); // Store completed hexadecimal line
     }
-    logger.d("All hexs: $allHexs");
     return allHexs; // Return list of hexadecimal strings
   }
 }

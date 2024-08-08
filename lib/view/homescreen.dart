@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
@@ -26,6 +27,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  final ValueNotifier<String> textNotifier = ValueNotifier<String>('');
   late final TabController _tabController;
   BadgeMessageProvider badgeData = BadgeMessageProvider();
   ImageUtils imageUtils = ImageUtils();
@@ -34,9 +36,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Converters converters = Converters();
   DrawBadgeProvider drawBadgeProvider = GetIt.instance<DrawBadgeProvider>();
   bool isPrefixIconClicked = false;
+  int textfieldLength = 0;
 
   @override
   void initState() {
+    inlineImageProvider.getController().addListener(_controllerListner);
     drawBadgeProvider.resetGrid();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -45,6 +49,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  void _controllerListner() {
+    logger
+        .d('Controller Listener : ${inlineImageProvider.getController().text}');
+    converters.messageTohex(inlineImageProvider.getController().text);
+    inlineImageProvider.controllerListener();
   }
 
   @override
@@ -92,9 +103,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(10.r),
                       elevation: 10,
                       child: ExtendedTextField(
-                        onChanged: (value) {
-                          inlineImageProvider.controllerListener();
-                        },
+                        onChanged: (value) {},
                         controller: inlineImageProvider.getController(),
                         specialTextSpanBuilder: MySpecialTextSpanBuilder(),
                         decoration: InputDecoration(

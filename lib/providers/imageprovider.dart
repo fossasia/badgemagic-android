@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
+
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
@@ -87,10 +88,11 @@ class InlineImageProvider extends ChangeNotifier {
     message.text = beforeCursor + placeholder + afterCursor;
     message.selection = TextSelection.fromPosition(
         TextPosition(offset: cursorPos + placeholder.length));
+    logger.d('Message text: ${message.text}');
+    notifyListeners();
   }
 
   void controllerListener() {
-    // Assuming controllerLength is meant to be message.text.length
     int textLength = message.text.length;
 
     // Check if the text length is sufficient to contain the pattern
