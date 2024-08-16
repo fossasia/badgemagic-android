@@ -5,28 +5,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pub" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "pub" # Flutter/Dart dependencies
+    directory: "/" # Location of pubspec.yaml
     schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5  
-name: Auto-merge Dependabot PRs
-
-on:
-  pull_request:
-    types:
-      - labeled
-
-jobs:
-  automerge:
-    if: github.actor == 'dependabot[bot]' && github.event.pull_request.labels.*.name contains 'automerge'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge PR
-        run: |
-          git checkout ${{ github.head_ref }}
-          git merge --no-ff ${{ github.ref }}
-          git push origin HEAD:${{ github.ref }}
+      interval: "weekly" # Frequency of updates
+    open-pull-requests-limit: 5 # Max number of open PRs at a time
