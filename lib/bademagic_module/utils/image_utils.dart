@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -221,6 +222,7 @@ class ImageUtils {
         }
       }
     }
+    logger.d("Pixel Array generated = $pixelArray");
     return Converters.convertBitmapToLEDHex(pixelArray, false);
   }
 }

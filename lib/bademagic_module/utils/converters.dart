@@ -29,8 +29,10 @@ class Converters {
         var key = controllerData.imageCache.keys.toList()[index];
         if (key is List) {
           String filename = key[0];
+          logger.d("Filename: $filename");
           List<List<int>>? image = await fileHelper.readFromFile(filename);
-          hexStrings += convertBitmapToLEDHex(image!, true);
+          logger.d("Image: $image");
+          hexStrings = convertBitmapToLEDHex(image!, true);
           x += 5;
         } else {
           List<String> hs =
@@ -159,6 +161,7 @@ class Converters {
 
       allHexs.add(lineHex.toString()); // Store completed hexadecimal line
     }
+    logger.d("All hexs: $allHexs");
     return allHexs; // Return list of hexadecimal strings
   }
 }
