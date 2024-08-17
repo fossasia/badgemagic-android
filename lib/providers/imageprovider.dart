@@ -53,7 +53,7 @@ class InlineImageProvider extends ChangeNotifier {
   //Map to store the cache of the images generated
   //Image caches are generated at the splash screen
   //The cache generation time acts as a delay in the splash screen
-  Map<int, Uint8List?> imageCache = {};
+  Map<Object, Uint8List?> imageCache = {};
 
   //function that generates the image cache
   //it fills the map with the Unit8List(byte Array) of the images
@@ -71,7 +71,14 @@ class InlineImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void insertInlineImage(int index) {
+  void insertInlineImage(Object key) {
+    int index = 0;
+    if (key is int) {
+      index = key;
+    } else if (key is List) {
+      index = key[1];
+    }
+    logger.d('Inserting image at index: $index');
     String placeholder = index < 10 ? '<<0$index>>' : '<<$index>>';
     int cursorPos =
         message.selection.baseOffset == -1 ? 0 : message.selection.baseOffset;

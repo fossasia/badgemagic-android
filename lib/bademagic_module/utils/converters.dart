@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
+import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:get_it/get_it.dart';
@@ -10,6 +11,7 @@ class Converters {
       GetIt.instance.get<InlineImageProvider>();
   DataToByteArrayConverter converter = DataToByteArrayConverter();
   ImageUtils imageUtils = ImageUtils();
+  FileHelper fileHelper = FileHelper();
 
   int controllerLength = 0;
 
@@ -18,10 +20,20 @@ class Converters {
     for (int x = 0; x < message.length; x++) {
       if (message[x] == '<' && message[min(x + 5, message.length - 1)] == '>') {
         int index = int.parse(message[x + 2] + message[x + 3]);
-        List<String> hs =
-            await imageUtils.generateLedHex(controllerData.vectors[index]);
-        hexStrings.addAll(hs);
-        x += 5;
+        var key = controllerData.imageCache.keys.toList()[index];
+        if (key is List) {
+          String filename = key[0];
+          logger.d("Filename: $filename");
+          List<List<int>>? image = await fileHelper.readFromFile(filename);
+          logger.d("Image: $image");
+          hexStrings = convertBitmapToLEDHex(image!, true);
+          x += 5;
+        } else {
+          List<String> hs =
+              await imageUtils.generateLedHex(controllerData.vectors[index]);
+          hexStrings.addAll(hs);
+          x += 5;
+        }
       } else {
         if (converter.charCodes.containsKey(message[x])) {
           hexStrings.add(converter.charCodes[message[x]]!);
@@ -33,7 +45,8 @@ class Converters {
 
   //function to convert the bitmap to the LED hex format
   //it takes the 2D list of pixels and converts it to the LED hex format
-  static List<String> convertBitmapToLEDHex(List<List<int>> image) {
+  static List<String> convertBitmapToLEDHex(
+      List<List<int>> image, bool isDrawn) {
     // Determine the height and width of the image
     int height = image.length;
     int width = image.isNotEmpty ? image[0].length : 0;
@@ -132,7 +145,7 @@ class Converters {
 
       allHexs.add(lineHex.toString()); // Store completed hexadecimal line
     }
-
+    logger.d("All hexs: $allHexs");
     return allHexs; // Return list of hexadecimal strings
   }
 }

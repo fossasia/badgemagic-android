@@ -14,6 +14,7 @@ class _VectorGridViewState extends State<VectorGridView> {
   Widget build(BuildContext context) {
     InlineImageProvider inlineImageProvider =
         Provider.of<InlineImageProvider>(context);
+    List keys = inlineImageProvider.imageCache.keys.toList();
     return GridView.builder(
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -24,7 +25,7 @@ class _VectorGridViewState extends State<VectorGridView> {
       itemBuilder: (context, index) {
         return GestureDetector(
             onTap: () {
-              inlineImageProvider.insertInlineImage(index);
+              inlineImageProvider.insertInlineImage(keys[index]);
             },
             child: Card(
               shape: RoundedRectangleBorder(
@@ -35,10 +36,11 @@ class _VectorGridViewState extends State<VectorGridView> {
               elevation: 5,
               child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.memory(inlineImageProvider.imageCache[index]!)),
+                  child: Image.memory(
+                      inlineImageProvider.imageCache[keys[index]]!)),
             ));
       },
-      itemCount: inlineImageProvider.imageCache.length,
+      itemCount: keys.length,
     );
   }
 }

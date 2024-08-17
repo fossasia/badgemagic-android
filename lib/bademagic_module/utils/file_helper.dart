@@ -28,15 +28,6 @@ class FileHelper {
     return File(path).writeAsString(data);
   }
 
-  // static Future<String> _readFromFile(String filename) async {
-  //   try {
-  //     final path = await _getFilePath(filename);
-  //     return await File(path).readAsString();
-  //   } catch (e) {
-  //     return ''; // Return an empty string if there's an error
-  //   }
-  // }
-
   static String _generateUniqueFilename() {
     final String uniqueId = uuid.v4();
     final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
@@ -44,7 +35,7 @@ class FileHelper {
   }
 
   // Add a new image to the cache
-  void addToCache(Uint8List imageData) {
+  void addToCache(Uint8List imageData, String filename) {
     int key;
     if (imageCacheProvider.availableKeys.isNotEmpty) {
       // Reuse the lowest available key
@@ -57,7 +48,11 @@ class FileHelper {
         key++;
       }
     }
-    imageCacheProvider.imageCache[key] = imageData;
+    //storing the user drawn clipart to the badge in the form of a list
+    //the first element of the list is the filename and the second element is the key
+    //while parsing the vector we can take the filename and generate the hex for that vector
+    //therefore transfering the vector to the physiacl badge will be easier.
+    imageCacheProvider.imageCache[[filename, key]] = imageData;
   }
 
   // Remove an image from the cache
@@ -70,13 +65,14 @@ class FileHelper {
   }
 
   // Generate a Uint8List from a 2D list (image data) and add it to the cache
-  Future<void> _addImageDataToCache(List<List<dynamic>> imageData) async {
+  Future<void> _addImageDataToCache(
+      List<List<dynamic>> imageData, String filename) async {
     // Convert List<List<dynamic>> to List<List<int>>
     List<List<int>> intImageData =
         imageData.map((list) => list.cast<int>()).toList();
     Uint8List imageBytes =
         await imageUtils.convert2DListToUint8List(intImageData);
-    addToCache(imageBytes);
+    addToCache(imageBytes, filename);
   }
 
   // Read all files, parse the 2D lists, and add to cache
@@ -92,7 +88,7 @@ class FileHelper {
           final List<dynamic> decodedData = jsonDecode(content);
           final List<List<dynamic>> imageData =
               decodedData.cast<List<dynamic>>();
-          await _addImageDataToCache(imageData);
+          await _addImageDataToCache(imageData, file.path.split('/').last);
         }
       }
     }
@@ -126,6 +122,28 @@ class FileHelper {
     logger.d('Image saved to file: $filename');
 
     //Add the image to the image cache after saving it to a file
-    await _addImageDataToCache(image);
+    await _addImageDataToCache(image, filename);
+  }
+
+  Future<List<List<int>>?> readFromFile(String filename) async {
+    try {
+      final path = await _getFilePath(filename);
+      final file = File(path);
+      if (await file.exists()) {
+        final content = await file.readAsString();
+        final List<dynamic> decodedData = jsonDecode(content);
+        final List<List<dynamic>> image = decodedData.cast<List<dynamic>>();
+        //COnvert the List<list<Dynamic>> to List<List<int>>
+        List<List<int>> imageData =
+            image.map((list) => list.cast<int>()).toList();
+        return imageData;
+      } else {
+        logger.d('File not found: $filename');
+        return null;
+      }
+    } catch (e) {
+      logger.e('Error reading file: $e');
+      return null;
+    }
   }
 }
