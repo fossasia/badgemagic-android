@@ -41,7 +41,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   get_it: ^7.7.0
   flutter_screenutil: ^5.9.3
-  extended_text_field: ^15.0.0
+  extended_text_field: ^16.0.0
   path_provider: ^2.1.4
   uuid: ^4.4.2
 
