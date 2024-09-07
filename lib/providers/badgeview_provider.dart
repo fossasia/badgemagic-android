@@ -100,7 +100,8 @@ class DrawBadgeProvider extends ChangeNotifier {
   void startTimer() {
     logger.i("Timer started");
     logger.i("Animation speed: $animationSpeed");
-    timer = Timer.periodic(Duration(microseconds: animationSpeed), (Timer timer) {
+    timer =
+        Timer.periodic(Duration(microseconds: animationSpeed), (Timer timer) {
       animationIndex++;
     });
   }

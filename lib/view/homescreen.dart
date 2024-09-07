@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
@@ -55,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _controllerListner() {
     logger
         .d('Controller Listener : ${inlineImageProvider.getController().text}');
-    converters.messageTohex(inlineImageProvider.getController().text);
+    converters.badgeAnimation(inlineImageProvider.getController().text.isEmpty
+        ? ""
+        : inlineImageProvider.getController().text);
     inlineImageProvider.controllerListener();
   }
 

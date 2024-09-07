@@ -25,7 +25,9 @@ class _BMBadgeHomeState extends State<BMBadgeHome> {
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: BadgeWidget(grid: grid,),
+      child: BadgeWidget(
+        grid: grid,
+      ),
     );
   }
 }
