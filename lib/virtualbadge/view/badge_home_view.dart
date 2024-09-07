@@ -1,6 +1,8 @@
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class BMBadgeHome extends StatefulWidget {
   const BMBadgeHome({super.key});
@@ -12,6 +14,7 @@ class BMBadgeHome extends StatefulWidget {
 class _BMBadgeHomeState extends State<BMBadgeHome> {
   @override
   Widget build(BuildContext context) {
+    final grid = Provider.of<DrawBadgeProvider>(context).getGrid();
     return Container(
       margin: EdgeInsets.only(top: 8.h, left: 15.w, right: 15.w),
       padding: EdgeInsets.all(8.dg),
@@ -22,7 +25,7 @@ class _BMBadgeHomeState extends State<BMBadgeHome> {
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const BadgeWidget(),
+      child: BadgeWidget(grid: grid,),
     );
   }
 }

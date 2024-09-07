@@ -2,12 +2,16 @@ import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
-import 'package:badgemagic/providers/cardsprovider.dart';
-import 'package:badgemagic/providers/drawbadge_provider.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:get_it/get_it.dart';
 
 class Converters {
+  Converters._privateConstructor();
+  static final Converters _instance = Converters._privateConstructor();
+  factory Converters() {
+    return _instance;
+  }
   InlineImageProvider controllerData =
       GetIt.instance.get<InlineImageProvider>();
   DrawBadgeProvider badgeList = GetIt.instance.get<DrawBadgeProvider>();
@@ -16,7 +20,6 @@ class Converters {
   FileHelper fileHelper = FileHelper();
 
   int controllerLength = 0;
-  bool isEmpty = false;
 
   Future<List<String>> messageTohex(String message) async {
     List<String> hexStrings = [];
@@ -41,16 +44,19 @@ class Converters {
         }
       }
     }
-    if (message.isEmpty) {
-      badgeList.resetGrid();
-      isEmpty = true;
+    return hexStrings;
+  }
+
+  void badgeAnimation(String message) async {
+    if (message == "") {
+      badgeList.startAnimation();
     } else {
-      isEmpty = false;
+      List<String> hexStrings = await messageTohex(message);
       List<int> byteArray = hexStringToByteArray(hexStrings.join());
       List<List<int>> binaryArray = byteArrayToBinaryArray(byteArray);
-      badgeList.startAnimation(binaryArray, isEmpty);
+      badgeList.setNewGrid(binaryArray);
+      badgeList.startAnimation();
     }
-    return hexStrings;
   }
 
   //function to convert the bitmap to the LED hex format

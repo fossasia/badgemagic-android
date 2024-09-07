@@ -15,3 +15,15 @@ const String aniRight = 'assets/animations/ic_anim_right.gif';
 const String effFlash = 'assets/effects/ic_effect_flash.gif';
 const String effInvert = 'assets/effects/ic_effect_invert.gif';
 const String effMarque = 'assets/effects/ic_effect_marquee.gif';
+
+//constants for the animation speed
+const Duration aniBaseSpeed = Duration(microseconds: 200000); // in uS
+const Duration aniMarqueSpeed = Duration(microseconds: 100000); // in uS
+const Duration aniFlashSpeed = Duration(microseconds: 500000); // in uS
+
+// Function to calculate animation speed based on speed level
+int aniSpeedStrategy(int speedLevel) {
+  int speedInMicroseconds = aniBaseSpeed.inMicroseconds -
+      (speedLevel * aniBaseSpeed.inMicroseconds ~/ 8);
+  return speedInMicroseconds;
+}

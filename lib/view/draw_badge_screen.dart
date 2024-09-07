@@ -1,6 +1,6 @@
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/constants.dart';
-import 'package:badgemagic/providers/drawbadge_provider.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
 import 'package:badgemagic/virtualbadge/view/draw_badge.dart';
 import 'package:flutter/material.dart';
