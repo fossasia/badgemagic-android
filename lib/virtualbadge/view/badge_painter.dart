@@ -15,7 +15,9 @@ class BadgePainter extends CustomPainter {
     for (int row = 0; row < grid.length; row++) {
       for (int col = 0; col < grid[row].length; col++) {
         final Paint paint = Paint()
-          ..color = grid[row][col] ? Colors.red : Colors.grey.shade600
+          ..color = grid[row][col]
+              ? const Color.fromARGB(255, 255, 0, 0)
+              : Colors.grey.shade900
           ..style = PaintingStyle.fill;
 
         final Path path = Path()

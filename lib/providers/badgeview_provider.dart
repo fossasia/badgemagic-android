@@ -88,7 +88,7 @@ class DrawBadgeProvider extends ChangeNotifier {
   void initializeAnimation(TickerProvider vsync) {
     _controller = AnimationController(
       vsync: vsync,
-      duration: const Duration(seconds: 1000),
+      duration: const Duration(days: 1000),
     )..addListener(() {
         setAnimationMode();
         changeGridValue(newGrid);
