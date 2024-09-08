@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:badgemagic/badge_animation/anim_left.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
@@ -115,7 +116,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     switch (cardData.getAnimationIndex()) {
       //add cases from 0 to 8
       case 0:
-        currentAnimation = null;
+        currentAnimation = LeftAnimation();
         break;
       case 1:
         // currentAnimation = RightAnimation();
@@ -142,7 +143,7 @@ class DrawBadgeProvider extends ChangeNotifier {
         currentAnimation = null;
         break;
       default:
-        currentAnimation = null;
+        currentAnimation = LeftAnimation();
         break;
     }
   }
