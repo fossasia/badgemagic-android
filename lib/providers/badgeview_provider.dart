@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:badgemagic/badge_animation/anim_left.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
@@ -61,7 +62,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   //function to calculate duration for the animation
   void calculateDuration() {
-    int newSpeed = aniSpeedStrategy(cardData.getOuterValue());
+    int newSpeed = aniSpeedStrategy(cardData.getOuterValue() - 1);
     if (newSpeed != animationSpeed) {
       animationSpeed = newSpeed;
       timer?.cancel();
@@ -87,7 +88,7 @@ class DrawBadgeProvider extends ChangeNotifier {
   void initializeAnimation(TickerProvider vsync) {
     _controller = AnimationController(
       vsync: vsync,
-      duration: const Duration(seconds: 1000),
+      duration: const Duration(days: 1000),
     )..addListener(() {
         setAnimationMode();
         changeGridValue(newGrid);
@@ -115,7 +116,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     switch (cardData.getAnimationIndex()) {
       //add cases from 0 to 8
       case 0:
-        currentAnimation = null;
+        currentAnimation = LeftAnimation();
         break;
       case 1:
         // currentAnimation = RightAnimation();
@@ -142,7 +143,7 @@ class DrawBadgeProvider extends ChangeNotifier {
         currentAnimation = null;
         break;
       default:
-        currentAnimation = null;
+        currentAnimation = LeftAnimation();
         break;
     }
   }
