@@ -1,6 +1,6 @@
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 
-class LeftAnimation extends BadgeAnimation {
+class RightAnimation extends BadgeAnimation {
   @override
   void animation(
       List<List<bool>> grid,
@@ -15,15 +15,14 @@ class LeftAnimation extends BadgeAnimation {
       int newWidth,
       int badgeHeight,
       int badgeWidth) {
-    // Calculate how much of the new grid is currently visible in the grid
+    // Calculate the scroll offset to move from left to right
     int scrollOffset = animationIndex % (newWidth + badgeWidth);
 
-    // Get the corresponding column in the new grid based on the scroll position
-    int sourceCol = j + scrollOffset - badgeWidth;
+    // Get the corresponding column in the new grid based on the reversed scroll position
+    int sourceCol = newWidth - scrollOffset + j;
 
-    // If sourceCol is negative, display blank space (off-screen part of the grid)
+    // If sourceCol is within bounds of the new grid, display it, else blank space
     if (sourceCol >= 0 && sourceCol < newWidth) {
-      // Ensure flashLEDOn and validMarquee effects are applied
       grid[i][j] =
           validMarquee || flashLEDOn && newGrid[i % newHeight][sourceCol] == 1;
     } else {

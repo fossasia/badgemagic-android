@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/anim_left.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
@@ -62,7 +63,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   //function to calculate duration for the animation
   void calculateDuration() {
-    int newSpeed = aniSpeedStrategy(cardData.getOuterValue()-1);
+    int newSpeed = aniSpeedStrategy(cardData.getOuterValue() - 1);
     if (newSpeed != animationSpeed) {
       animationSpeed = newSpeed;
       timer?.cancel();
@@ -119,7 +120,7 @@ class DrawBadgeProvider extends ChangeNotifier {
         currentAnimation = LeftAnimation();
         break;
       case 1:
-        // currentAnimation = RightAnimation();
+        currentAnimation = RightAnimation();
         break;
       case 2:
         // currentAnimation = UpAnimation();
