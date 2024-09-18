@@ -1,4 +1,5 @@
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
+import 'package:badgemagic/badge_animation/reference_classes.dart';
 
 class RightAnimation extends BadgeAnimation {
   @override
@@ -8,13 +9,14 @@ class RightAnimation extends BadgeAnimation {
       int animationIndex,
       bool validMarquee,
       bool flashLEDOn,
-      int currentcountFrame,
+      IntReference currentcountFrame,
       int i,
       int j,
       int newHeight,
       int newWidth,
       int badgeHeight,
-      int badgeWidth) {
+      int badgeWidth,
+      IntReference lastFrame) {
     // Calculate the scroll offset to move from left to right
     int scrollOffset = animationIndex % (newWidth + badgeWidth);
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
+import 'package:badgemagic/badge_animation/ani_animation.dart';
 import 'package:badgemagic/badge_animation/ani_dpwn.dart';
 import 'package:badgemagic/badge_animation/ani_fixed.dart';
 import 'package:badgemagic/badge_animation/ani_right.dart';
@@ -8,6 +9,7 @@ import 'package:badgemagic/badge_animation/ani_snowflake.dart';
 import 'package:badgemagic/badge_animation/ani_up.dart';
 import 'package:badgemagic/badge_animation/anim_left.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
+import 'package:badgemagic/badge_animation/reference_classes.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +17,9 @@ import 'package:get_it/get_it.dart';
 
 class DrawBadgeProvider extends ChangeNotifier {
   CardProvider cardData = GetIt.instance<CardProvider>();
-  int countFrame = 0;
+  IntReference countFrame = IntReference(0);
   int animationIndex = 0;
-  int lastFrame = 0;
-  AnimationController? _controller;
+  IntReference lastFrame = IntReference(0);
   int animationSpeed = aniBaseSpeed.inMilliseconds;
   int counter = 0;
   Timer? timer;
@@ -91,16 +92,12 @@ class DrawBadgeProvider extends ChangeNotifier {
   }
 
   void initializeAnimation(TickerProvider vsync) {
-    _controller = AnimationController(
-      vsync: vsync,
-      duration: const Duration(days: 1000),
-    )..addListener(() {
-        setAnimationMode();
-        changeGridValue(newGrid);
-        calculateDuration();
-      });
+    // Listen for changes in animationIndex and update the animation mode
+    cardData.addListener(() {
+      setAnimationMode();
+      calculateDuration();
+    });
     startTimer();
-    _controller!.repeat();
   }
 
   void startTimer() {
@@ -108,13 +105,13 @@ class DrawBadgeProvider extends ChangeNotifier {
     logger.i("Animation speed: $animationSpeed");
     timer =
         Timer.periodic(Duration(microseconds: animationSpeed), (Timer timer) {
+      changeGridValue(newGrid);
       animationIndex++;
     });
   }
 
   void startAnimation() {
     animationIndex = 0;
-    _controller!.forward();
   }
 
   void setAnimationMode() {
@@ -142,7 +139,7 @@ class DrawBadgeProvider extends ChangeNotifier {
         currentAnimation = null;
         break;
       case 7:
-        currentAnimation = null;
+        currentAnimation = AniAnimation();
         break;
       case 8:
         currentAnimation = null;
@@ -200,10 +197,11 @@ class DrawBadgeProvider extends ChangeNotifier {
               newHeight,
               newWidth,
               badgeHeight,
-              badgeWidth);
+              badgeWidth,
+              lastFrame);
         }
       }
-      notifyListeners();
     }
+    notifyListeners();
   }
 }
