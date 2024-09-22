@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/badge_animation/ani_down.dart';
+import 'package:badgemagic/badge_animation/ani_fixed.dart';
 import 'package:badgemagic/badge_animation/ani_left.dart';
 import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/ani_up.dart';
@@ -108,7 +109,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     1: RightAnimation(),
     2: UpAnimation(),
     3: DownAnimation(),
-    // 4: FixedAnimation(),
+    4: FixedAnimation(),
     // 5: SnowFlakeAnimation(),
     // 6: PictureAnimation(),
     // 7: AniAnimation(),
