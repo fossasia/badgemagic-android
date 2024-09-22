@@ -1,7 +1,10 @@
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class CardProvider extends ChangeNotifier {
+  DrawBadgeProvider badgeViewProvider = GetIt.instance<DrawBadgeProvider>();
   ImageUtils imageUtils = ImageUtils();
   int outerValue = 1;
 
@@ -19,6 +22,7 @@ class CardProvider extends ChangeNotifier {
 
   //outer value for the speed dial
   void setOuterValue(int value) {
+    badgeViewProvider.calculateDuration(value);
     outerValue = value;
     notifyListeners();
   }
@@ -31,6 +35,7 @@ class CardProvider extends ChangeNotifier {
   int getEffectIndex(int index) => effectsIndex[index];
 
   void setAnimationIndex(int index) {
+    badgeViewProvider.setAnimationMode(index);
     animationIndex = index;
     notifyListeners();
   }

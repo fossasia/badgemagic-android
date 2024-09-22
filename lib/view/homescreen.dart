@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    drawBadgeProvider.initializeAnimation(this);
+    drawBadgeProvider.initializeAnimation();
     _startImageCaching();
     super.initState();
 
