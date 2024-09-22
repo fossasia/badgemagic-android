@@ -49,13 +49,11 @@ class Converters {
       List<List<int>> image =
           List.generate(11, (i) => List.generate(44, (j) => 0));
       badgeList.setNewGrid(image);
-      badgeList.startAnimation();
     } else {
       List<String> hexStrings = await messageTohex(message);
       List<int> byteArray = hexStringToByteArray(hexStrings.join());
       List<List<int>> binaryArray = byteArrayToBinaryArray(byteArray);
       badgeList.setNewGrid(binaryArray);
-      badgeList.startAnimation();
     }
   }
 

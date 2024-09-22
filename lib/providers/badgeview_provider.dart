@@ -1,18 +1,10 @@
 import 'dart:async';
-
-import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class DrawBadgeProvider extends ChangeNotifier {
-  CardProvider cardData = GetIt.instance<CardProvider>();
-  int countFrame = 0;
   int animationIndex = 0;
-  int lastFrame = 0;
-  AnimationController? _controller;
   int animationSpeed = aniBaseSpeed.inMilliseconds;
   int counter = 0;
   Timer? timer;
@@ -60,8 +52,8 @@ class DrawBadgeProvider extends ChangeNotifier {
   }
 
   //function to calculate duration for the animation
-  void calculateDuration() {
-    int newSpeed = aniSpeedStrategy(cardData.getOuterValue());
+  void calculateDuration(int speed) {
+    int newSpeed = aniSpeedStrategy(speed);
     if (newSpeed != animationSpeed) {
       animationSpeed = newSpeed;
       timer?.cancel();
@@ -72,132 +64,56 @@ class DrawBadgeProvider extends ChangeNotifier {
   //function to get the isDrawing variable
   bool getIsDrawing() => isDrawing;
 
-  List<List<int>> newGrid =
-      List.generate(11, (i) => List.generate(44, (j) => 0));
+  List<List<bool>> newGrid =
+      List.generate(11, (i) => List.generate(44, (j) => false));
 
   //getter for newGrid
-  List<List<int>> getNewGrid() => newGrid;
+  List<List<bool>> getNewGrid() => newGrid;
 
   //setter for newGrid
-  void setNewGrid(List<List<int>> newGrid) {
-    this.newGrid = newGrid;
+  void setNewGrid(List<List<int>> grid) {
+    newGrid = grid.map((row) => row.map((item) => item == 1).toList()).toList();
+    animationIndex = 0;
     notifyListeners();
   }
 
-  void initializeAnimation(TickerProvider vsync) {
-    _controller = AnimationController(
-      vsync: vsync,
-      duration: const Duration(seconds: 1000),
-    )..addListener(() {
-        setAnimationMode();
-        changeGridValue(newGrid);
-        calculateDuration();
-      });
+  void initializeAnimation() {
     startTimer();
-    _controller!.repeat();
   }
 
   void startTimer() {
-    logger.i("Timer started");
-    logger.i("Animation speed: $animationSpeed");
     timer =
         Timer.periodic(Duration(microseconds: animationSpeed), (Timer timer) {
+      renderGrid(newGrid);
       animationIndex++;
     });
   }
 
-  void startAnimation() {
+  Map<int, BadgeAnimation?> animationMap = {
+    // 0: LeftAnimation(),
+    // 1: RightAnimation(),
+    // 2: UpAnimation(),
+    // 3: DownAnimation(),
+    // 4: FixedAnimation(),
+    // 5: SnowFlakeAnimation(),
+    // 6: PictureAnimation(),
+    // 7: AniAnimation(),
+    // 8: LaserAnimation(),
+  };
+
+  void setAnimationMode(int animationIndex) {
     animationIndex = 0;
-    _controller!.forward();
+    //  currentAnimation = animationMap[animationIndex] ?? LeftAnimation();
   }
 
-  void setAnimationMode() {
-    switch (cardData.getAnimationIndex()) {
-      //add cases from 0 to 8
-      case 0:
-        currentAnimation = null;
-        break;
-      case 1:
-        // currentAnimation = RightAnimation();
-        break;
-      case 2:
-        // currentAnimation = UpAnimation();
-        break;
-      case 3:
-        // currentAnimation = DownAnimation();
-        break;
-      case 4:
-        // currentAnimation = FixedAnimation();
-        break;
-      case 5:
-        // currentAnimation = SnowFlakeAnimation();
-        break;
-      case 6:
-        currentAnimation = null;
-        break;
-      case 7:
-        currentAnimation = null;
-        break;
-      case 8:
-        currentAnimation = null;
-        break;
-      default:
-        currentAnimation = null;
-        break;
-    }
-  }
-
-  void changeGridValue(List<List<int>> newGrid) {
+  void renderGrid(List<List<bool>> newGrid) {
     int badgeWidth = homeViewGrid[0].length;
     int badgeHeight = homeViewGrid.length;
-    int newHeight = newGrid.length;
-    int newWidth = newGrid[0].length;
-
-    // Process grid
-    for (int i = 0; i < badgeHeight; i++) {
-      // bool matchFrame = false;
-
-      for (int j = 0; j < badgeWidth; j++) {
-        bool flashLEDOn = true;
-
-        if (cardData.getEffectIndex(1) == 1) {
-          int aIFlash = animationIndex % 2;
-          flashLEDOn = aIFlash == 0;
-        }
-
-        bool validMarquee = false;
-
-        if (cardData.getEffectIndex(2) == 1) {
-          int aIMarquee = animationIndex ~/ 2;
-          validMarquee =
-              (i == 0 || j == 0 || i == badgeHeight - 1 || j == badgeWidth - 1);
-
-          if (validMarquee) {
-            if ((i == 0 || j == badgeWidth - 1) &&
-                !(i == badgeHeight - 1 && j == badgeWidth - 1)) {
-              validMarquee = (i + j) % 4 == (aIMarquee % 4);
-            } else {
-              validMarquee = (i + j - 1) % 4 == (3 - (aIMarquee % 4));
-            }
-          }
-        }
-        if (currentAnimation != null) {
-          currentAnimation!.animation(
-              homeViewGrid,
-              newGrid,
-              animationIndex,
-              validMarquee,
-              flashLEDOn,
-              countFrame,
-              i,
-              j,
-              newHeight,
-              newWidth,
-              badgeHeight,
-              badgeWidth);
-        }
-      }
-      notifyListeners();
-    }
+    var canvas = List.generate(
+        badgeHeight, (i) => List.generate(badgeWidth, (j) => false));
+    currentAnimation!.processAnimation(
+        badgeHeight, badgeWidth, animationIndex, newGrid, canvas);
+    homeViewGrid = canvas;
+    notifyListeners();
   }
 }
