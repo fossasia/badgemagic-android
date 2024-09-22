@@ -1,11 +1,13 @@
 import 'dart:async';
+
+import 'package:badgemagic/badge_animation/ani_left.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:flutter/material.dart';
 
 class DrawBadgeProvider extends ChangeNotifier {
   int animationIndex = 0;
-  int animationSpeed = aniBaseSpeed.inMilliseconds;
+  int animationSpeed = aniSpeedStrategy(0);
   int counter = 0;
   Timer? timer;
   //List that contains the state of each cell of the badge for home view
@@ -25,7 +27,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  BadgeAnimation? currentAnimation;
+  BadgeAnimation currentAnimation = LeftAnimation();
 
   //function to update the state of the cell
   void updateGrid(int row, int col) {
@@ -53,7 +55,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   //function to calculate duration for the animation
   void calculateDuration(int speed) {
-    int newSpeed = aniSpeedStrategy(speed);
+    int newSpeed = aniSpeedStrategy(speed - 1);
     if (newSpeed != animationSpeed) {
       animationSpeed = newSpeed;
       timer?.cancel();
@@ -91,7 +93,7 @@ class DrawBadgeProvider extends ChangeNotifier {
   }
 
   Map<int, BadgeAnimation?> animationMap = {
-    // 0: LeftAnimation(),
+    0: LeftAnimation(),
     // 1: RightAnimation(),
     // 2: UpAnimation(),
     // 3: DownAnimation(),
@@ -104,7 +106,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   void setAnimationMode(int animationIndex) {
     animationIndex = 0;
-    //  currentAnimation = animationMap[animationIndex] ?? LeftAnimation();
+    currentAnimation = animationMap[animationIndex]!;
   }
 
   void renderGrid(List<List<bool>> newGrid) {
@@ -112,7 +114,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     int badgeHeight = homeViewGrid.length;
     var canvas = List.generate(
         badgeHeight, (i) => List.generate(badgeWidth, (j) => false));
-    currentAnimation!.processAnimation(
+    currentAnimation.processAnimation(
         badgeHeight, badgeWidth, animationIndex, newGrid, canvas);
     homeViewGrid = canvas;
     notifyListeners();
