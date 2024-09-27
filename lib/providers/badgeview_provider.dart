@@ -71,8 +71,8 @@ class DrawBadgeProvider extends ChangeNotifier {
   List<List<bool>> getNewGrid() => newGrid;
 
   //setter for newGrid
-  void setNewGrid(List<List<int>> grid) {
-    newGrid = grid.map((row) => row.map((item) => item == 1).toList()).toList();
+  void setNewGrid(List<List<bool>> grid) {
+    newGrid = grid;
     animationIndex = 0;
     notifyListeners();
   }

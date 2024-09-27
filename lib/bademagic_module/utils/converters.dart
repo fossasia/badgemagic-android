@@ -46,14 +46,13 @@ class Converters {
   void badgeAnimation(String message) async {
     if (message == "") {
       //geerate a 2d list with all values as 0
-      List<List<int>> image =
-          List.generate(11, (i) => List.generate(44, (j) => 0));
+      List<List<bool>> image =
+          List.generate(11, (i) => List.generate(44, (j) => false));
       badgeList.setNewGrid(image);
     } else {
       List<String> hexStrings = await messageTohex(message);
-      List<int> byteArray = hexStringToByteArray(hexStrings.join());
-      List<List<int>> binaryArray = byteArrayToBinaryArray(byteArray);
-      badgeList.setNewGrid(binaryArray);
+      List<List<bool>> processGrid = hexStringToBool(hexStrings.join());
+      badgeList.setNewGrid(processGrid);
     }
   }
 

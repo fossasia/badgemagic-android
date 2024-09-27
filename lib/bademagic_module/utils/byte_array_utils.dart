@@ -28,26 +28,31 @@ List<int> hexStringToByteArray(String hexString) {
   logger.d(data.length);
   return data;
 }
-
-List<List<int>> byteArrayToBinaryArray(List<int> byteArray) {
-  List<List<int>> binaryArray = List.generate(11, (_) => []);
-
-  int rowIndex = 0;
-  for (int byte in byteArray) {
-    List<int> binaryRepresentation = [];
-    for (int i = 7; i >= 0; i--) {
-      binaryRepresentation.add((byte >> i) & 1);
-    }
-
-    binaryArray[rowIndex].addAll(binaryRepresentation);
-
-    rowIndex = (rowIndex + 1) % 11;
+List<List<bool>> hexStringToBool(String hexString) {
+    int rows = 11;
+  if (hexString.length % 2 != 0 || !isValidHex(hexString)) {
+    throw ArgumentError("Invalid hex string: $hexString");
   }
 
-  logger.d(
-      "binaryArray: $binaryArray"); // Use print instead of logger for standalone example
-  return binaryArray;
+  List<List<bool>> boolArray = List.generate(rows, (_) => []);
+  int rowIndex = 0;
+
+  for (int i = 0; i < hexString.length; i += 2) {
+    // Convert the hex string into a byte (int)
+    int byte = int.parse(hexString.substring(i, i + 2), radix: 16);
+    
+    // Convert the byte into a binary representation and then into booleans
+    for (int bit = 7; bit >= 0; bit--) {
+      boolArray[rowIndex].add(((byte >> bit) & 1) == 1);
+    }
+    
+    // Move to the next row after filling current one
+    rowIndex = (rowIndex + 1) % rows;
+  }
+
+  return boolArray;
 }
+
 
 String hexToBin(String hex) {
   // Convert hex to binary string
