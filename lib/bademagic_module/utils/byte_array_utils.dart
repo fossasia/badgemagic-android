@@ -28,8 +28,9 @@ List<int> hexStringToByteArray(String hexString) {
   logger.d(data.length);
   return data;
 }
+
 List<List<bool>> hexStringToBool(String hexString) {
-    int rows = 11;
+  int rows = 11;
   if (hexString.length % 2 != 0 || !isValidHex(hexString)) {
     throw ArgumentError("Invalid hex string: $hexString");
   }
@@ -40,19 +41,18 @@ List<List<bool>> hexStringToBool(String hexString) {
   for (int i = 0; i < hexString.length; i += 2) {
     // Convert the hex string into a byte (int)
     int byte = int.parse(hexString.substring(i, i + 2), radix: 16);
-    
+
     // Convert the byte into a binary representation and then into booleans
     for (int bit = 7; bit >= 0; bit--) {
       boolArray[rowIndex].add(((byte >> bit) & 1) == 1);
     }
-    
+
     // Move to the next row after filling current one
     rowIndex = (rowIndex + 1) % rows;
   }
 
   return boolArray;
 }
-
 
 String hexToBin(String hex) {
   // Convert hex to binary string

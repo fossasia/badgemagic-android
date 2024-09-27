@@ -37,6 +37,13 @@ class BMDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/drawBadge');
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.draw_outlined),
+            title: const Text('Save Badge'),
+            onTap: () {
+              Navigator.pushNamed(context, '/drawBadge');
+            },
+          ),
         ],
       ),
     );
