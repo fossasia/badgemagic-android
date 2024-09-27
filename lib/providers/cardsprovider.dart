@@ -42,6 +42,7 @@ class CardProvider extends ChangeNotifier {
 
   void setEffectIndex(int index) {
     effectsIndex[index] = effectsIndex[index] == 1 ? 0 : 1;
+    badgeViewProvider.setEffectIndex(effectsIndex);
     notifyListeners();
   }
 }

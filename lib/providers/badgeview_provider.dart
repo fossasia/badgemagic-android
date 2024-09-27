@@ -10,6 +10,8 @@ import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/ani_snowflake.dart';
 import 'package:badgemagic/badge_animation/ani_up.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
+import 'package:badgemagic/badge_effect/badgeeffectabstract.dart';
+import 'package:badgemagic/badge_effect/badge_effect_impl.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +48,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   BadgeAnimation currentAnimation = LeftAnimation();
 
+  BadgeEffect currentEffect = BadgeEffectImpl([0, 0, 0]);
   //function to update the state of the cell
   void updateGrid(int row, int col) {
     homeViewGrid[row][col] = isDrawing;
@@ -96,6 +99,11 @@ class DrawBadgeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setEffectIndex(List<int> index) {
+    currentEffect = BadgeEffectImpl(index);
+    notifyListeners();
+  }
+
   void initializeAnimation() {
     startTimer();
   }
@@ -133,6 +141,8 @@ class DrawBadgeProvider extends ChangeNotifier {
         badgeHeight, (i) => List.generate(badgeWidth, (j) => false));
     currentAnimation.processAnimation(
         badgeHeight, badgeWidth, animationIndex, newGrid, canvas);
+    currentEffect.processEffect(animationIndex, canvas,
+        currentEffect.effectsIndex, badgeHeight, badgeWidth);
     homeViewGrid = canvas;
     notifyListeners();
   }

@@ -1,4 +1,6 @@
 abstract class BadgeEffect {
-  List<List<bool>> processEffect(
-      int animationIndex, List<List<bool>> animatedGrid, bool marq, bool flash);
+  List<int> effectsIndex = [0, 0, 0];
+  BadgeEffect(this.effectsIndex);
+  void processEffect(int animationIndex, List<List<bool>> canvas,
+      List<int> effectsIndex, int badgeHeight, int badgeWidth);
 }
