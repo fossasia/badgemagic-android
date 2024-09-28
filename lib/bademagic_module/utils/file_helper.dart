@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+
 
 class FileHelper {
   final InlineImageProvider imageCacheProvider =
@@ -125,25 +127,39 @@ class FileHelper {
     await _addImageDataToCache(image, filename);
   }
 
-  Future<List<List<int>>?> readFromFile(String filename) async {
-    try {
-      final path = await _getFilePath(filename);
-      final file = File(path);
-      if (await file.exists()) {
-        final content = await file.readAsString();
-        final List<dynamic> decodedData = jsonDecode(content);
-        final List<List<dynamic>> image = decodedData.cast<List<dynamic>>();
-        //COnvert the List<list<Dynamic>> to List<List<int>>
-        List<List<int>> imageData =
-            image.map((list) => list.cast<int>()).toList();
-        return imageData;
-      } else {
-        logger.d('File not found: $filename');
-        return null;
-      }
-    } catch (e) {
-      logger.e('Error reading file: $e');
+ Future<dynamic> readFromFile(String filename) async {
+  try {
+    final path = await _getFilePath(filename);
+    final file = File(path);
+    
+    if (await file.exists()) {
+      final content = await file.readAsString();
+      final dynamic decodedData = jsonDecode(content);
+
+      // Automatically return decoded JSON as a dynamic type
+      return decodedData;
+    } else {
+      logger.d('File not found: $filename');
       return null;
     }
+  } catch (e) {
+    logger.e('Error reading file: $e');
+    return null;
+  }
+}
+
+
+  Future<void> saveBadgeMessage(Data data) async {
+    String jsonData = jsonEncode(data.toJson());
+    String filename = _generateUniqueFilename();
+    await _writeToFile(filename, jsonData);
+  }
+
+  Future<Data?> loadBadgeMessage(String filename) async {
+    final jsonString = await readFromFile(filename);
+    if (jsonString != null) {
+      return Data.fromJson(json.decode(jsonString));
+    }
+    return null;
   }
 }

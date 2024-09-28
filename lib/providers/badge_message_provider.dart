@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'package:badgemagic/bademagic_module/bluetooth/base_ble_state.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
+import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/toast_utils.dart';
 import 'package:badgemagic/bademagic_module/bluetooth/scan_state.dart';
 import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/models/messages.dart';
 import 'package:badgemagic/bademagic_module/models/mode.dart';
 import 'package:badgemagic/bademagic_module/models/speed.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -17,7 +19,9 @@ class BadgeMessageProvider {
   InlineImageProvider controllerData =
       GetIt.instance.get<InlineImageProvider>();
   ToastUtils toast = ToastUtils();
+  FileHelper fileHelper = FileHelper();
   Converters converters = Converters();
+  CardProvider cardData = GetIt.instance<CardProvider>();
 
   Map<int, Mode> modeValueMap = {
     0: Mode.left,
@@ -42,8 +46,18 @@ class BadgeMessageProvider {
     8: Speed.eight,
   };
 
-  Future<Data> generateData(
-      String text, bool flash, bool marq, Speed speed, Mode mode) async {
+  void saveBadgeData()async {
+     Data data = await getBadgeData(
+      controllerData.getController().text,
+      cardData.getEffectIndex(1) == 1,
+      cardData.getEffectIndex(2) == 1,
+      speedMap[cardData.getOuterValue()]!,
+      modeValueMap[cardData.getAnimationIndex()]!,
+    );
+    fileHelper.saveBadgeMessage(data);
+  }
+
+  Future<Data> getBadgeData(String text, bool flash, bool marq, Speed speed, Mode mode) async {
     List<String> message = await converters.messageTohex(text);
     Data data = Data(messages: [
       Message(
@@ -54,6 +68,12 @@ class BadgeMessageProvider {
         mode: mode,
       )
     ]);
+    return data;
+  }
+
+  Future<Data> generateData(
+      String text, bool flash, bool marq, Speed speed, Mode mode) async {
+      Data data = await getBadgeData(text, flash, marq, speed, mode);
     logger.d(
         "${data.messages.length} message : ${data.messages[0].text} Flash : ${data.messages[0].flash} Marquee : ${data.messages[0].marquee} Mode : ${data.messages[0].mode}");
     return data;

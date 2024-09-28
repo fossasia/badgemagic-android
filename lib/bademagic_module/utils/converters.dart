@@ -25,8 +25,11 @@ class Converters {
         var key = controllerData.imageCache.keys.toList()[index];
         if (key is List) {
           String filename = key[0];
-          List<List<int>>? image = await fileHelper.readFromFile(filename);
-          hexStrings += convertBitmapToLEDHex(image!, true);
+          List<dynamic>? decodedData = await fileHelper.readFromFile(filename);
+
+          final List<List<dynamic>> image = decodedData!.cast<List<dynamic>>();
+          List<List<int>> imageData = image.map((list) => list.cast<int>()).toList();
+          hexStrings += convertBitmapToLEDHex(imageData!, true);
           x += 5;
         } else {
           List<String> hs =
