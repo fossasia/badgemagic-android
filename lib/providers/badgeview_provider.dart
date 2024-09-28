@@ -82,6 +82,7 @@ class DrawBadgeProvider extends ChangeNotifier {
   }
 
   void startTimer() {
+    setAnimationMode(animationIndex);
     timer =
         Timer.periodic(Duration(microseconds: animationSpeed), (Timer timer) {
       renderGrid(newGrid);
