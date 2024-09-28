@@ -1,5 +1,5 @@
 import 'package:badgemagic/providers/badgeview_provider.dart';
-import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
+import 'package:badgemagic/virtualbadge/view/draw_badge_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ class _BMBadgeState extends State<BMBadge> {
     int row = (localPosition.dy / cellHeight).clamp(0, rows - 1).toInt();
 
     setState(() {
-      cellStateToggle.updateGrid(row, col);
+      cellStateToggle.setDrawViewGrid(row, col);
     });
   }
 
@@ -34,10 +34,10 @@ class _BMBadgeState extends State<BMBadge> {
   Widget build(BuildContext context) {
     final grid = Provider.of<DrawBadgeProvider>(context).getDrawViewGrid();
     return GestureDetector(
-      onPanUpdate: _handlePanUpdate,
-      child: BadgeWidget(
-        grid: grid,
-      ),
-    );
+        onPanUpdate: _handlePanUpdate,
+        child: CustomPaint(
+          size: const Size(400, 480),
+          painter: DrawBadgePaint(grid: grid),
+        ));
   }
 }

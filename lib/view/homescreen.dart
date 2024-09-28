@@ -43,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     inlineImageProvider.getController().addListener(_controllerListner);
-    drawBadgeProvider.resetGrid();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      drawBadgeProvider.resetGrid();
+    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

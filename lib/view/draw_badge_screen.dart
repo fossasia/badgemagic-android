@@ -126,7 +126,7 @@ class _DrawBadgeState extends State<DrawBadge> {
               ),
               TextButton(
                 onPressed: () {
-                  fileHelper.saveImage(drawToggle.getGrid());
+                  fileHelper.saveImage(drawToggle.getDrawViewGrid());
                 },
                 child: const Column(
                   children: [

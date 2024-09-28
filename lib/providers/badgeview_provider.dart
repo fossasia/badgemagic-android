@@ -10,8 +10,8 @@ import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/ani_snowflake.dart';
 import 'package:badgemagic/badge_animation/ani_up.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
-import 'package:badgemagic/badge_effect/badgeeffectabstract.dart';
 import 'package:badgemagic/badge_effect/badge_effect_impl.dart';
+import 'package:badgemagic/badge_effect/badgeeffectabstract.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -41,8 +41,8 @@ class DrawBadgeProvider extends ChangeNotifier {
   List<List<bool>> getDrawViewGrid() => drawViewGrid;
 
   //setter for the drawViewGrid
-  void setDrawViewGrid(List<List<bool>> newGrid) {
-    drawViewGrid = newGrid;
+  void setDrawViewGrid(int row, int col) {
+    drawViewGrid[row][col] = isDrawing;
     notifyListeners();
   }
 
@@ -57,7 +57,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   //function to reset the state of the cell
   void resetGrid() {
-    homeViewGrid = List.generate(11, (i) => List.generate(44, (j) => false));
+    drawViewGrid = List.generate(11, (i) => List.generate(44, (j) => false));
     notifyListeners();
   }
 
