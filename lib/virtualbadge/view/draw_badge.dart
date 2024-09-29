@@ -1,7 +1,8 @@
-import 'package:badgemagic/providers/drawbadge_provider.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/virtualbadge/widgets/badge_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 class BMBadge extends StatefulWidget {
   const BMBadge({super.key});
@@ -31,9 +32,12 @@ class _BMBadgeState extends State<BMBadge> {
 
   @override
   Widget build(BuildContext context) {
+    final grid = Provider.of<DrawBadgeProvider>(context).getDrawViewGrid();
     return GestureDetector(
       onPanUpdate: _handlePanUpdate,
-      child: const BadgeWidget(),
+      child: BadgeWidget(
+        grid: grid,
+      ),
     );
   }
 }

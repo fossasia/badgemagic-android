@@ -1,9 +1,12 @@
+import 'dart:async';
+
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
-import 'package:badgemagic/providers/drawbadge_provider.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
@@ -26,6 +29,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  final ValueNotifier<String> textNotifier = ValueNotifier<String>('');
   late final TabController _tabController;
   BadgeMessageProvider badgeData = BadgeMessageProvider();
   ImageUtils imageUtils = ImageUtils();
@@ -34,17 +38,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Converters converters = Converters();
   DrawBadgeProvider drawBadgeProvider = GetIt.instance<DrawBadgeProvider>();
   bool isPrefixIconClicked = false;
+  int textfieldLength = 0;
 
   @override
   void initState() {
+    inlineImageProvider.getController().addListener(_controllerListner);
     drawBadgeProvider.resetGrid();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    drawBadgeProvider.initializeAnimation();
     _startImageCaching();
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  void _controllerListner() {
+    logger
+        .d('Controller Listener : ${inlineImageProvider.getController().text}');
+    converters.badgeAnimation(inlineImageProvider.getController().text.isEmpty
+        ? ""
+        : inlineImageProvider.getController().text);
+    inlineImageProvider.controllerListener();
   }
 
   @override
@@ -92,9 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(10.r),
                       elevation: 10,
                       child: ExtendedTextField(
-                        onChanged: (value) {
-                          inlineImageProvider.controllerListener();
-                        },
+                        onChanged: (value) {},
                         controller: inlineImageProvider.getController(),
                         specialTextSpanBuilder: MySpecialTextSpanBuilder(),
                         decoration: InputDecoration(

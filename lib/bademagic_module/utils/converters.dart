@@ -3,6 +3,7 @@ import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:get_it/get_it.dart';
 
@@ -12,6 +13,7 @@ class Converters {
   DataToByteArrayConverter converter = DataToByteArrayConverter();
   ImageUtils imageUtils = ImageUtils();
   FileHelper fileHelper = FileHelper();
+  DrawBadgeProvider badgeList = GetIt.instance.get<DrawBadgeProvider>();
 
   int controllerLength = 0;
 
@@ -23,10 +25,8 @@ class Converters {
         var key = controllerData.imageCache.keys.toList()[index];
         if (key is List) {
           String filename = key[0];
-          logger.d("Filename: $filename");
           List<List<int>>? image = await fileHelper.readFromFile(filename);
-          logger.d("Image: $image");
-          hexStrings = convertBitmapToLEDHex(image!, true);
+          hexStrings += convertBitmapToLEDHex(image!, true);
           x += 5;
         } else {
           List<String> hs =
@@ -41,6 +41,19 @@ class Converters {
       }
     }
     return hexStrings;
+  }
+
+  void badgeAnimation(String message) async {
+    if (message == "") {
+      //geerate a 2d list with all values as 0
+      List<List<bool>> image =
+          List.generate(11, (i) => List.generate(44, (j) => false));
+      badgeList.setNewGrid(image);
+    } else {
+      List<String> hexStrings = await messageTohex(message);
+      List<List<bool>> processGrid = hexStringToBool(hexStrings.join());
+      badgeList.setNewGrid(processGrid);
+    }
   }
 
   //function to convert the bitmap to the LED hex format
@@ -145,7 +158,6 @@ class Converters {
 
       allHexs.add(lineHex.toString()); // Store completed hexadecimal line
     }
-    logger.d("All hexs: $allHexs");
     return allHexs; // Return list of hexadecimal strings
   }
 }
