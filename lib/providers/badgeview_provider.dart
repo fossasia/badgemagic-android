@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:badgemagic/badge_animation/ani_left.dart';
+import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/animation_abstract.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class DrawBadgeProvider extends ChangeNotifier {
 
   Map<int, BadgeAnimation?> animationMap = {
     0: LeftAnimation(),
-    // 1: RightAnimation(),
+    1: RightAnimation(),
     // 2: UpAnimation(),
     // 3: DownAnimation(),
     // 4: FixedAnimation(),
@@ -104,9 +105,9 @@ class DrawBadgeProvider extends ChangeNotifier {
     // 8: LaserAnimation(),
   };
 
-  void setAnimationMode(int animationIndex) {
+  void setAnimationMode(int animationCard) {
     animationIndex = 0;
-    currentAnimation = animationMap[animationIndex]!;
+    currentAnimation = animationMap[animationCard] ?? LeftAnimation();
   }
 
   void renderGrid(List<List<bool>> newGrid) {
