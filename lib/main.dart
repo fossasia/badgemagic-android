@@ -1,5 +1,5 @@
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/draw_badge_screen.dart';
@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
             useMaterial3: true,
           ),
           initialRoute: '/',

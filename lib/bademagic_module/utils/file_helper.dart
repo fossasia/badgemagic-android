@@ -83,7 +83,7 @@ class FileHelper {
     final List<FileSystemEntity> files = directory.listSync();
 
     for (var file in files) {
-      if (file is File && file.path.endsWith('.json')) {
+      if (file is File && file.path.endsWith('.json') && file.path.contains('_data')) {
         final String content = await file.readAsString();
         if (content.isNotEmpty) {
           // Ensure correct type casting
