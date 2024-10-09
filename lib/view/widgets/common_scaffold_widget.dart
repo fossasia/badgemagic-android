@@ -5,9 +5,14 @@ class CommonScaffold extends StatelessWidget {
   final String title;
   final Widget body;
   final Key? scaffoldKey;
+  final List<Widget>? actions;
 
   const CommonScaffold(
-      {super.key, required this.body, required this.title, this.scaffoldKey});
+      {super.key,
+      required this.body,
+      required this.title,
+      this.scaffoldKey,
+      this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,9 @@ class CommonScaffold extends StatelessWidget {
           title,
           style: const TextStyle(color: Colors.white),
         ),
+        actions: [
+          if (actions != null) ...actions!,
+        ],
       ),
       drawer: const BMDrawer(),
       body: body,

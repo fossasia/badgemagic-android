@@ -63,7 +63,7 @@ class BMDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/savedBadge');
             },
           ),
           ListTile(

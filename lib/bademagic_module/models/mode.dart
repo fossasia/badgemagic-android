@@ -11,4 +11,12 @@ enum Mode {
 
   final String hexValue;
   const Mode(this.hexValue);
+
+  // Helper method to safely parse hex value
+  static Mode fromHex(String hexValue) {
+    return Mode.values.firstWhere(
+      (mode) => mode.hexValue == hexValue,
+      orElse: () => Mode.left, // Default to Mode.left if no match
+    );
+  }
 }

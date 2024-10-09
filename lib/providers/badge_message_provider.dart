@@ -46,18 +46,19 @@ class BadgeMessageProvider {
     8: Speed.eight,
   };
 
-  void saveBadgeData()async {
-     Data data = await getBadgeData(
+  void saveBadgeData(String filename) async {
+    Data data = await getBadgeData(
       controllerData.getController().text,
       cardData.getEffectIndex(1) == 1,
       cardData.getEffectIndex(2) == 1,
       speedMap[cardData.getOuterValue()]!,
       modeValueMap[cardData.getAnimationIndex()]!,
     );
-    fileHelper.saveBadgeMessage(data);
+    fileHelper.saveBadgeData(data, filename);
   }
 
-  Future<Data> getBadgeData(String text, bool flash, bool marq, Speed speed, Mode mode) async {
+  Future<Data> getBadgeData(
+      String text, bool flash, bool marq, Speed speed, Mode mode) async {
     List<String> message = await converters.messageTohex(text);
     Data data = Data(messages: [
       Message(
@@ -73,7 +74,7 @@ class BadgeMessageProvider {
 
   Future<Data> generateData(
       String text, bool flash, bool marq, Speed speed, Mode mode) async {
-      Data data = await getBadgeData(text, flash, marq, speed, mode);
+    Data data = await getBadgeData(text, flash, marq, speed, mode);
     logger.d(
         "${data.messages.length} message : ${data.messages[0].text} Flash : ${data.messages[0].flash} Marquee : ${data.messages[0].marquee} Mode : ${data.messages[0].mode}");
     return data;

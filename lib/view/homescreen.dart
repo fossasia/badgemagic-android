@@ -12,6 +12,7 @@ import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
 import 'package:badgemagic/view/widgets/speedial.dart';
+import 'package:badgemagic/view/widgets/svae_badge_dialog.dart';
 import 'package:badgemagic/view/widgets/vectorview.dart';
 import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
 import 'package:extended_text_field/extended_text_field.dart';
@@ -92,7 +93,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     InlineImageProvider inlineImageProvider =
         Provider.of<InlineImageProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      cardData.setContext(context);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        cardData.setContext(context);
+      });
     });
 
     return DefaultTabController(
@@ -199,7 +202,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                badgeData.saveBadgeData();
+                                //crate a custom dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    TextEditingController textController =
+                                        TextEditingController(
+                                            text: DateTime(
+                                                    DateTime.now().year,
+                                                    DateTime.now().month,
+                                                    DateTime.now().day,
+                                                    DateTime.now().hour,
+                                                    DateTime.now().minute,
+                                                    DateTime.now().second)
+                                                .toString());
+                                    return SaveBadgeDialog(
+                                        textController: textController);
+                                  },
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(

@@ -4,7 +4,7 @@ class Data {
   final List<Message> messages;
   Data({required this.messages});
 
-    // Convert Data object to JSON
+  // Convert Data object to JSON
   Map<String, dynamic> toJson() => {
         'messages': messages.map((message) => message.toJson()).toList(),
       };
