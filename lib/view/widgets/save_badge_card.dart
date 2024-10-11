@@ -1,12 +1,16 @@
+import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class SaveBadgeCard extends StatelessWidget {
   final MapEntry<String, Map<String, dynamic>> badgeData;
-  FileHelper file = FileHelper();
-  Converters converters = Converters();
+  final FileHelper file = FileHelper();
+  final Converters converters = Converters();
   SaveBadgeCard({
     super.key,
     required this.badgeData,
@@ -14,6 +18,8 @@ class SaveBadgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DrawBadgeProvider drawBadgeProvider =
+        Provider.of<DrawBadgeProvider>(context);
     return Container(
       width: 370.w,
       padding: EdgeInsets.all(6.dg),
@@ -66,8 +72,7 @@ class SaveBadgeCard extends StatelessWidget {
                       color: Colors.black,
                     ),
                     onPressed: () {
-                      converters
-                          .savedBadgeAnimation(file.jsonToData(badgeData));
+                      converters.savedBadgeAnimation(badgeData.value);
                     },
                   ),
                   IconButton(
@@ -75,7 +80,17 @@ class SaveBadgeCard extends StatelessWidget {
                       Icons.edit,
                       color: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      drawBadgeProvider.updateDrawViewGrid(hexStringToBool(
+                          file.jsonToData(badgeData).messages[0].text.join()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => DrawBadge(
+                                filename: badgeData.key,
+                                isSavedCard: true,
+                              )));
+                      // Navigator.pushNamed(context, '/drawBadge',
+                      //     arguments: badgeData);
+                    },
                   ),
                   IconButton(
                     icon: Image.asset(
@@ -122,7 +137,7 @@ class SaveBadgeCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Image.asset(
-                                "assets/icons/t_invert.png",
+                                "assets/icons/flash.png",
                                 color: Colors.white,
                                 height: 14.h,
                               )
@@ -135,6 +150,30 @@ class SaveBadgeCard extends StatelessWidget {
                       ),
                       Visibility(
                         visible: file.jsonToData(badgeData).messages[0].marquee,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/icons/square.png",
+                                color: Colors.white,
+                                height: 14.h,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Visibility(
+                        visible:
+                            badgeData.value['messages'][0]['invert'] ?? false,
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12.w, vertical: 4.h),

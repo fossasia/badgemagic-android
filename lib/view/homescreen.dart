@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
@@ -12,7 +11,6 @@ import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
 import 'package:badgemagic/view/widgets/homescreentabs.dart';
 import 'package:badgemagic/view/widgets/speedial.dart';
-import 'package:badgemagic/view/widgets/svae_badge_dialog.dart';
 import 'package:badgemagic/view/widgets/vectorview.dart';
 import 'package:badgemagic/virtualbadge/view/badge_home_view.dart';
 import 'package:extended_text_field/extended_text_field.dart';
@@ -44,13 +42,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     inlineImageProvider.getController().addListener(_controllerListner);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      drawBadgeProvider.resetGrid();
-    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    drawBadgeProvider.initializeAnimation();
+
+    if (drawBadgeProvider.timer == null) {
+      drawBadgeProvider.initializeAnimation();
+    }
+
     _startImageCaching();
     super.initState();
 
@@ -58,8 +57,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _controllerListner() {
-    logger
-        .d('Controller Listener : ${inlineImageProvider.getController().text}');
     converters.badgeAnimation(inlineImageProvider.getController().text.isEmpty
         ? ""
         : inlineImageProvider.getController().text);
@@ -93,9 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     InlineImageProvider inlineImageProvider =
         Provider.of<InlineImageProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        cardData.setContext(context);
-      });
+      cardData.setContext(context);
     });
 
     return DefaultTabController(
@@ -169,73 +164,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                badgeData.checkAndTransfer();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.w, vertical: 8.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Colors.grey.shade400,
-                                ),
-                                child: const Text('Transfer'),
-                              ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            badgeData.checkAndTransfer();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 8.h),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: Colors.grey.shade400,
                             ),
-                          ],
+                            child: const Text('Transfer'),
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                //crate a custom dialog
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    TextEditingController textController =
-                                        TextEditingController(
-                                            text: DateTime(
-                                                    DateTime.now().year,
-                                                    DateTime.now().month,
-                                                    DateTime.now().day,
-                                                    DateTime.now().hour,
-                                                    DateTime.now().minute,
-                                                    DateTime.now().second)
-                                                .toString());
-                                    return SaveBadgeDialog(
-                                        textController: textController);
-                                  },
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 30.w, vertical: 8.h),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Colors.grey.shade400,
-                                ),
-                                child: const Text('Save'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -54,7 +54,7 @@ class BadgeMessageProvider {
       speedMap[cardData.getOuterValue()]!,
       modeValueMap[cardData.getAnimationIndex()]!,
     );
-    fileHelper.saveBadgeData(data, filename);
+    fileHelper.saveBadgeData(data, filename, cardData.getEffectIndex(0) == 1);
   }
 
   Future<Data> getBadgeData(

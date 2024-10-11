@@ -7,6 +7,8 @@ class CardProvider extends ChangeNotifier {
   DrawBadgeProvider badgeViewProvider = GetIt.instance<DrawBadgeProvider>();
   ImageUtils imageUtils = ImageUtils();
   int outerValue = 1;
+  List<int> effectsIndex = [0, 0, 0];
+  int animationIndex = 0;
 
   int getOuterValue() => outerValue;
 
@@ -26,9 +28,6 @@ class CardProvider extends ChangeNotifier {
     outerValue = value;
     notifyListeners();
   }
-
-  int animationIndex = 0;
-  List<int> effectsIndex = [0, 0, 0];
 
   int getAnimationIndex() => animationIndex;
 

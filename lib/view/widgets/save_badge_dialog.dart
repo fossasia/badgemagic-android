@@ -1,4 +1,3 @@
-import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

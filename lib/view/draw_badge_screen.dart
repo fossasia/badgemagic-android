@@ -1,3 +1,4 @@
+import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class DrawBadge extends StatefulWidget {
-  const DrawBadge({super.key});
+  final String? filename;
+  final bool? isSavedCard;
+  const DrawBadge({super.key, this.filename, this.isSavedCard = false});
 
   @override
   State<DrawBadge> createState() => _DrawBadgeState();
@@ -108,7 +111,7 @@ class _DrawBadgeState extends State<DrawBadge> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    drawToggle.resetGrid();
+                    drawToggle.resetDrawViewGrid();
                   });
                 },
                 child: const Column(
@@ -126,7 +129,19 @@ class _DrawBadgeState extends State<DrawBadge> {
               ),
               TextButton(
                 onPressed: () {
-                  fileHelper.saveImage(drawToggle.getDrawViewGrid());
+                  List<List<int>> badgeGrid = drawToggle
+                      .getDrawViewGrid()
+                      .map((e) => e.map((e) => e ? 1 : 0).toList())
+                      .toList();
+                  List<String> hexString =
+                      Converters.convertBitmapToLEDHex(badgeGrid, false);
+                  !widget.isSavedCard!
+                      ? fileHelper.saveImage(drawToggle.getDrawViewGrid())
+                      : fileHelper.updateBadgeText(
+                          widget.filename!
+                              .substring(0, widget.filename!.length - 5),
+                          hexString,
+                        );
                 },
                 child: const Column(
                   children: [

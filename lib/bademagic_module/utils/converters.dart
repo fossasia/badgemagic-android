@@ -1,5 +1,6 @@
 import 'dart:math';
-import 'package:badgemagic/bademagic_module/models/data.dart';
+import 'package:badgemagic/bademagic_module/models/mode.dart';
+import 'package:badgemagic/bademagic_module/models/speed.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/data_to_bytearray_converter.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
@@ -33,7 +34,7 @@ class Converters {
           final List<List<dynamic>> image = decodedData!.cast<List<dynamic>>();
           List<List<int>> imageData =
               image.map((list) => list.cast<int>()).toList();
-          hexStrings += convertBitmapToLEDHex(imageData!, true);
+          hexStrings += convertBitmapToLEDHex(imageData, true);
           x += 5;
         } else {
           List<String> hs =
@@ -55,23 +56,28 @@ class Converters {
       //geerate a 2d list with all values as 0
       List<List<bool>> image =
           List.generate(11, (i) => List.generate(44, (j) => false));
-      badgeList.setNewGrid(image);
+      badgeList.setNewGrid(image, false);
     } else {
       List<String> hexString = await messageTohex(message);
       List<List<bool>> binaryArray = hexStringToBool(hexString.join());
-      badgeList.setNewGrid(binaryArray);
+      badgeList.setNewGrid(binaryArray, false);
     }
   }
 
-  void savedBadgeAnimation(Data data) {
+  void savedBadgeAnimation(Map<String, dynamic> data) {
     //set the animations and the modes from the json file
-    cardData.setOuterValue(data.messages[0].speed.index);
-    cardData.setAnimationIndex(data.messages[0].mode.index);
-    badgeList.setEffectIndex(
-        [0, data.messages[0].flash ? 1 : 0, data.messages[0].marquee ? 1 : 0]);
-    String hexString = data.messages[0].text.join();
+    cardData.setOuterValue(
+        Speed.getIntValue(Speed.fromHex(data['messages'][0]['speed'])) + 1);
+    cardData.setAnimationIndex(
+        Mode.getIntValue(Mode.fromHex(data['messages'][0]['mode'])));
+    badgeList.setEffectIndex([
+      data['messages'][0]['invert'] ? 1 : 0,
+      data['messages'][0]['flash'] ? 1 : 0,
+      data['messages'][0]['marquee'] ? 1 : 0
+    ]);
+    String hexString = data['messages'][0]['text'].join();
     List<List<bool>> binaryArray = hexStringToBool(hexString);
-    badgeList.setNewGrid(binaryArray);
+    badgeList.setNewGrid(binaryArray, true);
   }
 
   //function to convert the bitmap to the LED hex format

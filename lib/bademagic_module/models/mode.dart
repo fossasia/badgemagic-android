@@ -12,6 +12,11 @@ enum Mode {
   final String hexValue;
   const Mode(this.hexValue);
 
+  //method to get the integer value of the mode
+  static int getIntValue(Mode mode) {
+    return int.parse(mode.hexValue.substring(2), radix: 16);
+  }
+
   // Helper method to safely parse hex value
   static Mode fromHex(String hexValue) {
     return Mode.values.firstWhere(
