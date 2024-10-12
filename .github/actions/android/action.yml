@@ -25,6 +25,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+
     - uses: actions/cache@v3
       with:
         path: |
