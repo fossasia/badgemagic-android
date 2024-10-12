@@ -13,6 +13,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+        distribution: 'adopt'
+        cache: 'gradle'
+
     - name: Enable KVM group perms
       shell: bash
       run: |
