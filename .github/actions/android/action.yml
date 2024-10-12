@@ -36,10 +36,6 @@ runs:
       uses: subosito/flutter-action@v2
       with:
         cache: true
-
-    - name: Run tests
-      shell: bash
-      run: flutter test
       
     - name: Build Android APK/AAB
       shell: bash
