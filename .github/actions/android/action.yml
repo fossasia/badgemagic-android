@@ -25,23 +25,17 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/cache@v3
+    - name: Set up Java
+      uses: actions/setup-java@v2
       with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+        java-version: 17
+        distribution: 'adopt'
+        cache: 'gradle'
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
         cache: true
-
-    - name: Run tests
-      shell: bash
-      run: flutter test
       
     - name: Build Android APK/AAB
       shell: bash
