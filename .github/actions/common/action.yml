@@ -19,3 +19,7 @@ runs:
     - name: Analyze Code
       shell: bash
       run: flutter analyze
+
+    - name: Run tests
+      shell: bash
+      run: flutter test
