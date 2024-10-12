@@ -29,15 +29,8 @@ runs:
       uses: actions/setup-java@v2
       with:
         java-version: 17
-
-    - uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+        distribution: 'adopt'
+        cache: 'gradle'
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
