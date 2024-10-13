@@ -30,7 +30,6 @@ class Converters {
         if (key is List) {
           String filename = key[0];
           List<dynamic>? decodedData = await fileHelper.readFromFile(filename);
-
           final List<List<dynamic>> image = decodedData!.cast<List<dynamic>>();
           List<List<int>> imageData =
               image.map((list) => list.cast<int>()).toList();

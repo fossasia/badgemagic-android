@@ -142,6 +142,7 @@ class _DrawBadgeState extends State<DrawBadge> {
                               .substring(0, widget.filename!.length - 5),
                           hexString,
                         );
+                        fileHelper.generateClipartCache();
                 },
                 child: const Column(
                   children: [

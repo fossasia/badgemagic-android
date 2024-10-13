@@ -59,6 +59,31 @@ class FileHelper {
     imageCacheProvider.imageCache[[filename, key]] = imageData;
   }
 
+  Future<void> generateClipartCache() async {
+    imageCacheProvider.clipartsCache = {};
+    final directory = await getApplicationDocumentsDirectory();
+    final List<FileSystemEntity> files = directory.listSync();
+    for (var file in files) {
+      if (file is File &&
+          file.path.endsWith('.json') &&
+          file.path.contains('data_')) {
+
+        final String content = await file.readAsString();
+        if (content.isNotEmpty) {
+          // Ensure correct type casting
+          final List<dynamic> decodedData = jsonDecode(content);
+          final List<List<dynamic>> imageData =
+              decodedData.cast<List<dynamic>>();
+    List<List<int>> intImageData =
+        imageData.map((list) => list.cast<int>()).toList();
+    Uint8List imageBytes =
+        await imageUtils.convert2DListToUint8List(intImageData);
+        imageCacheProvider.clipartsCache[file.path.split('/').last] = imageBytes;
+        }
+      }
+    }
+  }
+
   // Remove an image from the cache
   void removeFromCache(int key) {
     if (imageCacheProvider.imageCache.containsKey(key)) {
@@ -81,13 +106,14 @@ class FileHelper {
 
   // Read all files, parse the 2D lists, and add to cache
   Future<void> loadImageCacheFromFiles() async {
+    generateClipartCache();
     final directory = await getApplicationDocumentsDirectory();
     final List<FileSystemEntity> files = directory.listSync();
 
     for (var file in files) {
       if (file is File &&
           file.path.endsWith('.json') &&
-          file.path.contains('data')) {
+          file.path.contains('data_')) {
         final String content = await file.readAsString();
         if (content.isNotEmpty) {
           // Ensure correct type casting
