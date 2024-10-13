@@ -15,12 +15,13 @@ class InlineImageProvider extends ChangeNotifier {
 
   //list of vectors
   List<String> vectors = [];
-  
+
   //cache for storing cliparts
-  Map<String,Uint8List?> clipartsCache = {};
+  Map<String, Uint8List?> clipartsCache = {};
 
   //uses the AssetManifest class to load the list of assets
   Future<void> initVectors() async {
+    vectors.clear();
     try {
       final manifestContent = await rootBundle.loadString('AssetManifest.json');
       final Map<String, dynamic> manifestMap = json.decode(manifestContent);
@@ -34,8 +35,6 @@ class InlineImageProvider extends ChangeNotifier {
       logger.e('Error loading asset manifest: $e');
     }
   }
-
-
 
   //to test the delete operation in TextField
   //used for compairing the length of the current textfield and the prevous
@@ -59,6 +58,12 @@ class InlineImageProvider extends ChangeNotifier {
   //Image caches are generated at the splash screen
   //The cache generation time acts as a delay in the splash screen
   Map<Object, Uint8List?> imageCache = {};
+
+  void removeFromCache(String key) {
+    imageCache.remove(key);
+    logger.d('Removed from cache: ${imageCache.containsKey(key)}');
+    notifyListeners();
+  }
 
   //function that generates the image cache
   //it fills the map with the Unit8List(byte Array) of the images

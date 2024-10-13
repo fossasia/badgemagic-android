@@ -76,6 +76,7 @@ class _SavedClipartState extends State<SavedClipart> {
                 setState(() {
                   logger.i('Clipart $fileName deleted');
                 });
+                imageprovider.removeFromCache(fileName);
                 imageprovider.generateImageCache();
               },
             ), // Use the separate ListView widget here
