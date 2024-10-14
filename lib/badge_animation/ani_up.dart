@@ -6,7 +6,7 @@ class UpAnimation extends BadgeAnimation {
       List<List<bool>> processGrid, List<List<bool>> canvas) {
     int newWidth = processGrid[0].length;
     int newHeight = processGrid.length;
-    int animationValue = animationIndex ~/ ((newWidth * 2 / badgeHeight));
+    int animationValue = animationIndex ~/ ((newWidth / badgeHeight));
 
     for (int i = 0; i < badgeHeight; i++) {
       for (int j = 0; j < badgeWidth; j++) {
