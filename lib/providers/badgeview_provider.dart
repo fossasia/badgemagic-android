@@ -5,6 +5,7 @@ import 'package:badgemagic/badge_animation/ani_down.dart';
 import 'package:badgemagic/badge_animation/ani_fixed.dart';
 import 'package:badgemagic/badge_animation/ani_laser.dart';
 import 'package:badgemagic/badge_animation/ani_left.dart';
+import 'package:badgemagic/badge_animation/ani_picture.dart';
 import 'package:badgemagic/badge_animation/ani_right.dart';
 import 'package:badgemagic/badge_animation/ani_snowflake.dart';
 import 'package:badgemagic/badge_animation/ani_up.dart';
@@ -114,7 +115,7 @@ class DrawBadgeProvider extends ChangeNotifier {
     3: DownAnimation(),
     4: FixedAnimation(),
     5: SnowFlakeAnimation(),
-    // 6: PictureAnimation(),
+    6: PictureAnimation(),
     7: AniAnimation(),
     8: LaserAnimation(),
   };
