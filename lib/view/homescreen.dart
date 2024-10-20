@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/constants.dart';
 import 'package:badgemagic/providers/badge_message_provider.dart';
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/special_text_field.dart';
 import 'package:badgemagic/view/widgets/common_scaffold_widget.dart';
@@ -43,13 +42,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     inlineImageProvider.getController().addListener(_controllerListner);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      drawBadgeProvider.resetGrid();
-    });
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    drawBadgeProvider.initializeAnimation();
+
+    if (drawBadgeProvider.timer == null) {
+      drawBadgeProvider.initializeAnimation();
+    }
+
     _startImageCaching();
     super.initState();
 
@@ -57,8 +57,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _controllerListner() {
-    logger
-        .d('Controller Listener : ${inlineImageProvider.getController().text}');
     converters.badgeAnimation(inlineImageProvider.getController().text.isEmpty
         ? ""
         : inlineImageProvider.getController().text);

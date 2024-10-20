@@ -1,6 +1,8 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
@@ -81,7 +83,9 @@ class FileHelper {
     final List<FileSystemEntity> files = directory.listSync();
 
     for (var file in files) {
-      if (file is File && file.path.endsWith('.json')) {
+      if (file is File &&
+          file.path.endsWith('.json') &&
+          file.path.contains('data')) {
         final String content = await file.readAsString();
         if (content.isNotEmpty) {
           // Ensure correct type casting
@@ -125,18 +129,17 @@ class FileHelper {
     await _addImageDataToCache(image, filename);
   }
 
-  Future<List<List<int>>?> readFromFile(String filename) async {
+  Future<dynamic> readFromFile(String filename) async {
     try {
       final path = await _getFilePath(filename);
       final file = File(path);
+
       if (await file.exists()) {
         final content = await file.readAsString();
-        final List<dynamic> decodedData = jsonDecode(content);
-        final List<List<dynamic>> image = decodedData.cast<List<dynamic>>();
-        //COnvert the List<list<Dynamic>> to List<List<int>>
-        List<List<int>> imageData =
-            image.map((list) => list.cast<int>()).toList();
-        return imageData;
+        final dynamic decodedData = jsonDecode(content);
+
+        // Automatically return decoded JSON as a dynamic type
+        return decodedData;
       } else {
         logger.d('File not found: $filename');
         return null;
@@ -145,5 +148,109 @@ class FileHelper {
       logger.e('Error reading file: $e');
       return null;
     }
+  }
+
+  Future<void> updateBadgeText(String filename, List<String> newText) async {
+    try {
+      // Get the document directory path
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$filename.json';
+
+      // Check if the file exists
+      File file = File(filePath);
+      if (await file.exists()) {
+        // Read the file's current content
+        String jsonString = await file.readAsString();
+
+        // Parse the JSON data
+        Map<String, dynamic> jsonData = jsonDecode(jsonString);
+
+        // Check if 'messages' exists and is a list
+        if (jsonData.containsKey('messages') && jsonData['messages'] is List) {
+          List<dynamic> messages = jsonData['messages'];
+
+          // Assuming you want to update the first message's 'text'
+          if (messages.isNotEmpty && messages[0] is Map<String, dynamic>) {
+            Map<String, dynamic> message = messages[0];
+
+            // Update the 'text' field with the new text
+            message['text'] = newText;
+
+            // Convert the updated data back to a JSON string
+            String updatedJsonString = jsonEncode(jsonData);
+
+            // Write the updated JSON string back to the file
+            await file.writeAsString(updatedJsonString, mode: FileMode.write);
+            logger.i('Text field updated in $filePath');
+          } else {
+            logger.i('No message found to update.');
+          }
+        } else {
+          logger.i('Invalid JSON structure: No messages found.');
+        }
+      } else {
+        logger.i('File not found: $filePath');
+      }
+    } catch (e) {
+      logger.i('Error updating text: $e');
+    }
+  }
+
+  Future<void> saveBadgeData(Data data, String filename, bool invert) async {
+    try {
+      Map<String, dynamic> jsonData = data.toJson();
+      //JSON data: {messages: [{text: [00E060606C76666666E600, 0018180038181818183C00, 0018180038181818183C00], flash: true, marquee: true, speed: 0x00, mode: 0x00}]
+      //add the invert value also in the messages in data
+      jsonData['messages'][0]['invert'] = invert;
+      logger.d('JSON data: $jsonData');
+      // Convert Data object to JSON string
+      String jsonString = jsonEncode(jsonData);
+
+      // Get the document directory path
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$filename.json';
+
+      // Save JSON string to the file
+      File file = File(filePath);
+      await file.writeAsString(jsonString);
+      logger.i('Data saved to $filePath');
+    } catch (e) {
+      logger.i('Error saving data: $e');
+    }
+  }
+
+  Future<List<MapEntry<String, Map<String, dynamic>>>>
+      getBadgeDataFiles() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final List<FileSystemEntity> files = directory.listSync();
+    List<MapEntry<String, Map<String, dynamic>>> badgeDataList = [];
+
+    for (var file in files) {
+      if (file is File &&
+          file.path.endsWith('.json') &&
+          !file.path.contains('data_')) {
+        try {
+          // Read the JSON file
+          String jsonString = await file.readAsString();
+
+          // Convert JSON string to Data object
+          Map<String, dynamic> jsonData = jsonDecode(jsonString);
+          logger.d('JSON data: $jsonData');
+
+          // Add the Data object to the list with the filename as the key
+          badgeDataList.add(MapEntry(file.path.split('/').last, jsonData));
+        } catch (e) {
+          logger.i('Error parsing file ${file.path}: $e');
+        }
+      }
+    }
+    return badgeDataList;
+  }
+
+//function that takes JsonSData and returns the Data object
+  Data jsonToData(MapEntry<String, Map<String, dynamic>> jsonData) {
+    // Convert JSON data to Data object
+    Data data = Data.fromJson(jsonData.value);
+    return data;
   }
 }

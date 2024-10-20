@@ -54,6 +54,26 @@ List<List<bool>> hexStringToBool(String hexString) {
   return boolArray;
 }
 
+List<List<int>> byteArrayToBinaryArray(List<int> byteArray) {
+  List<List<int>> binaryArray = List.generate(11, (_) => []);
+
+  int rowIndex = 0;
+  for (int byte in byteArray) {
+    List<int> binaryRepresentation = [];
+    for (int i = 7; i >= 0; i--) {
+      binaryRepresentation.add((byte >> i) & 1);
+    }
+
+    binaryArray[rowIndex].addAll(binaryRepresentation);
+
+    rowIndex = (rowIndex + 1) % 11;
+  }
+
+  logger.d(
+      "binaryArray: $binaryArray"); // Use print instead of logger for standalone example
+  return binaryArray;
+}
+
 String hexToBin(String hex) {
   // Convert hex to binary string
   String binaryString = BigInt.parse(hex, radix: 16).toRadixString(2);

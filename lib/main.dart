@@ -1,9 +1,10 @@
-import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/providers/getitlocator.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
 import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:badgemagic/view/homescreen.dart';
+import 'package:badgemagic/view/save_badge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -35,13 +36,13 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
             useMaterial3: true,
           ),
           initialRoute: '/',
           routes: {
             '/': (context) => const HomeScreen(),
             '/drawBadge': (context) => const DrawBadge(),
+            '/savedBadge': (context) => const SaveBadgeScreen(),
           },
         );
       },
