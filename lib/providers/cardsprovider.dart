@@ -10,6 +10,26 @@ class CardProvider extends ChangeNotifier {
   List<int> effectsIndex = [0, 0, 0];
   int animationIndex = 0;
 
+  //used for tranfer logic to find wether the.
+  //the transfer is from the jason or not.
+  bool isSavedBadgeData = false;
+
+  void setIsSavedBadgeData(bool value) {
+    isSavedBadgeData = value;
+    notifyListeners();
+  }
+
+  bool getIsSavedBadgeData() => isSavedBadgeData;
+
+  Map<String, dynamic> savedBadgeData = {};
+
+  void setSavedBadgeDataMap(Map<String, dynamic> data) {
+    savedBadgeData = data;
+    notifyListeners();
+  }
+
+  Map<String, dynamic> getSavedBadgeDataMap() => savedBadgeData;
+
   int getOuterValue() => outerValue;
 
   //context for snackbar

@@ -97,7 +97,8 @@ class BadgeMessageProvider {
       return;
     }
 
-    if (controllerData.getController().text.isEmpty) {
+    if (controllerData.getController().text.isEmpty &&
+        cardData.getIsSavedBadgeData() == false) {
       toast.showErrorToast("Please enter a message");
       return;
     }

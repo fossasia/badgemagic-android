@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
@@ -248,9 +248,33 @@ class FileHelper {
   }
 
 //function that takes JsonSData and returns the Data object
-  Data jsonToData(MapEntry<String, Map<String, dynamic>> jsonData) {
+  Data jsonToData(Map<String, dynamic> jsonData) {
     // Convert JSON data to Data object
-    Data data = Data.fromJson(jsonData.value);
+    Data data = Data.fromJson(jsonData);
     return data;
+  }
+
+  Future<void> shareBadgeData(String filename) async {
+    try {
+      // Get the document directory path
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$filename';
+
+      // Check if the file exists
+      File file = File(filePath);
+      if (await file.exists()) {
+        // Use share_plus to share the file
+        final result = await Share.shareXFiles([XFile(filePath)]);
+        if (result.status == ShareResultStatus.success) {
+          logger.i('File shared successfully');
+        } else {
+          logger.i('Error sharing file');
+        }
+      } else {
+        logger.i('File not found: $filePath');
+      }
+    } catch (e) {
+      logger.i('Error sharing file: $e');
+    }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/converters.dart';
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
+import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +20,8 @@ class SaveBadgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CardProvider cardProvider = Provider.of<CardProvider>(context);
+    BadgeMessageProvider badge = BadgeMessageProvider();
     DrawBadgeProvider drawBadgeProvider =
         Provider.of<DrawBadgeProvider>(context);
     return Container(
@@ -81,8 +85,11 @@ class SaveBadgeCard extends StatelessWidget {
                       color: Colors.black,
                     ),
                     onPressed: () {
-                      drawBadgeProvider.updateDrawViewGrid(hexStringToBool(
-                          file.jsonToData(badgeData).messages[0].text.join()));
+                      drawBadgeProvider.updateDrawViewGrid(hexStringToBool(file
+                          .jsonToData(badgeData.value)
+                          .messages[0]
+                          .text
+                          .join()));
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => DrawBadge(
                                 filename: badgeData.key,
@@ -98,14 +105,21 @@ class SaveBadgeCard extends StatelessWidget {
                       height: 24.h,
                       color: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      logger.d("BadgeData: ${badgeData.value}");
+                      cardProvider.setSavedBadgeDataMap(badgeData.value);
+                      cardProvider.setIsSavedBadgeData(true);
+                      badge.checkAndTransfer();
+                    },
                   ),
                   IconButton(
                     icon: const Icon(
                       Icons.share,
                       color: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      file.shareBadgeData(badgeData.key);
+                    },
                   ),
                   IconButton(
                     icon: const Icon(
@@ -126,7 +140,8 @@ class SaveBadgeCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Visibility(
-                        visible: file.jsonToData(badgeData).messages[0].flash,
+                        visible:
+                            file.jsonToData(badgeData.value).messages[0].flash,
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.w, vertical: 4.h),
@@ -149,7 +164,10 @@ class SaveBadgeCard extends StatelessWidget {
                         width: 8.w,
                       ),
                       Visibility(
-                        visible: file.jsonToData(badgeData).messages[0].marquee,
+                        visible: file
+                            .jsonToData(badgeData.value)
+                            .messages[0]
+                            .marquee,
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12.w, vertical: 4.h),
@@ -214,7 +232,7 @@ class SaveBadgeCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         file
-                            .jsonToData(badgeData)
+                            .jsonToData(badgeData.value)
                             .messages[0]
                             .speed
                             .hexValue
@@ -237,7 +255,7 @@ class SaveBadgeCard extends StatelessWidget {
                   ),
                   child: Text(
                     file
-                        .jsonToData(badgeData)
+                        .jsonToData(badgeData.value)
                         .messages[0]
                         .mode
                         .toString()
