@@ -16,8 +16,12 @@ class InlineImageProvider extends ChangeNotifier {
   //list of vectors
   List<String> vectors = [];
 
+  //cache for storing cliparts
+  Map<String, Uint8List?> clipartsCache = {};
+
   //uses the AssetManifest class to load the list of assets
   Future<void> initVectors() async {
+    vectors.clear();
     try {
       final manifestContent = await rootBundle.loadString('AssetManifest.json');
       final Map<String, dynamic> manifestMap = json.decode(manifestContent);
@@ -55,9 +59,16 @@ class InlineImageProvider extends ChangeNotifier {
   //The cache generation time acts as a delay in the splash screen
   Map<Object, Uint8List?> imageCache = {};
 
+  void removeFromCache(String key) {
+    imageCache.remove(key);
+    logger.d('Removed from cache: ${imageCache.containsKey(key)}');
+    notifyListeners();
+  }
+
   //function that generates the image cache
   //it fills the map with the Unit8List(byte Array) of the images
   Future<void> generateImageCache() async {
+    imageCache.clear();
     FileHelper fileHelper = FileHelper();
     await initVectors();
     for (int x = 0; x < vectors.length; x++) {

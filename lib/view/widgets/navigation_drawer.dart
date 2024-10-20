@@ -101,7 +101,7 @@ class BMDrawer extends StatelessWidget {
                   fontSize: 14),
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/savedClipart');
             },
           ),
           ListTile(

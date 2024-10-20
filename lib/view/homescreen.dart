@@ -133,16 +133,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Visibility(
                       visible: isPrefixIconClicked,
                       child: Container(
-                        height: 99.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: Colors.grey.shade200,
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: 15.w),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.h, horizontal: 10.w),
-                        child: const VectorGridView(),
-                      )),
+                          height: 99.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: Colors.grey.shade200,
+                          ),
+                          margin: EdgeInsets.symmetric(horizontal: 15.w),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 10.w),
+                          child: VectorGridView())),
                   TabBar(
                     indicatorSize: TabBarIndicatorSize.label,
                     controller: _tabController,
