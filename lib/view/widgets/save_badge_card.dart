@@ -5,17 +5,21 @@ import 'package:badgemagic/providers/badge_message_provider.dart';
 import 'package:badgemagic/providers/badgeview_provider.dart';
 import 'package:badgemagic/providers/cardsprovider.dart';
 import 'package:badgemagic/view/draw_badge_screen.dart';
+import 'package:badgemagic/view/widgets/badge_delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class SaveBadgeCard extends StatelessWidget {
   final MapEntry<String, Map<String, dynamic>> badgeData;
+  final Future<void> Function() refreshBadgesCallback;
   final FileHelper file = FileHelper();
   final Converters converters = Converters();
+
   SaveBadgeCard({
     super.key,
     required this.badgeData,
+    required this.refreshBadgesCallback,
   });
 
   @override
@@ -126,7 +130,17 @@ class SaveBadgeCard extends StatelessWidget {
                       Icons.delete,
                       color: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      // file.deleteFile(badgeData.key);
+                      // refreshBadgesCallback();
+                      //add a dialog for confirmation before deleting
+                      await _showDeleteDialog(context).then((value) async {
+                        if (value == true) {
+                          file.deleteFile(badgeData.key);
+                          await refreshBadgesCallback();
+                        }
+                      });
+                    },
                   ),
                 ],
               ),
@@ -270,6 +284,15 @@ class SaveBadgeCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<bool> _showDeleteDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DeleteBadgeDialog();
+      },
     );
   }
 }

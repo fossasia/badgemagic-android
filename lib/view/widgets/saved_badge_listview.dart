@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 
 class BadgeListView extends StatelessWidget {
   final Future<List<MapEntry<String, Map<String, dynamic>>>> futureBadges;
+  final Future<void> Function()
+      refreshBadgesCallback; // Add callback for refreshing badges
 
-  const BadgeListView({super.key, required this.futureBadges});
+  const BadgeListView(
+      {super.key,
+      required this.futureBadges,
+      required this.refreshBadgesCallback // Require the callback
+      });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<MapEntry<String, Map<String, dynamic>>>>(
-      future: futureBadges, // Pass the future
+      future: futureBadges,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -21,7 +27,9 @@ class BadgeListView extends StatelessWidget {
               itemCount: savedBadges.length,
               itemBuilder: (context, index) {
                 return SaveBadgeCard(
-                  badgeData: savedBadges[index], // Pass Data object to card
+                  badgeData: savedBadges[index],
+                  refreshBadgesCallback:
+                      refreshBadgesCallback, // Pass callback to card
                 );
               },
             ),

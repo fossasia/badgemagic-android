@@ -6,6 +6,8 @@ import 'package:badgemagic/bademagic_module/models/data.dart';
 import 'package:badgemagic/bademagic_module/utils/byte_array_utils.dart';
 import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
 import 'package:badgemagic/providers/imageprovider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
@@ -275,6 +277,67 @@ class FileHelper {
       }
     } catch (e) {
       logger.i('Error sharing file: $e');
+    }
+  }
+
+  Future<void> deleteFile(String filename) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$filename';
+
+      File file = File(filePath);
+      if (await file.exists()) {
+        await file.delete();
+        logger.i('File deleted: $filePath');
+      } else {
+        logger.i('File not found: $filePath');
+      }
+    } catch (e) {
+      logger.i('Error deleting file: $e');
+    }
+  }
+
+  Future<bool> importBadgeData(context) async {
+    try {
+      // Open file picker to select a JSON file
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'], // Only allow JSON files
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        // Get the selected file
+        File file = File(result.files.single.path!);
+
+        // Read the content of the file
+        String jsonContent = await file.readAsString();
+
+        // Parse the JSON data
+        Map<String, dynamic> importedBadge = jsonDecode(jsonContent);
+        logger.d('Imported badge: $importedBadge');
+        // Validate the structure of the JSON if necessary
+        if (importedBadge.containsKey('messages')) {
+          // Save the imported badge file to your application's directory
+          final directory = await getApplicationDocumentsDirectory();
+          final filePath = '${directory.path}/${result.files.single.name}';
+          logger.d('Importing badge to: $filePath');
+          File newFile = File(filePath);
+          await newFile.writeAsString(jsonContent);
+          return true;
+        } else {
+          throw Exception("Invalid Badge Data");
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No file selected')),
+        );
+        return false;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error importing badge: $e')),
+      );
+      return false;
     }
   }
 }
