@@ -78,7 +78,6 @@ class _SaveBadgeScreenState extends State<SaveBadgeScreen> {
                     child: SvgPicture.asset(
                       'assets/icons/empty_badge.svg',
                       height: 200.h,
-                      color: Colors.black,
                     ),
                   ),
                   SizedBox(
