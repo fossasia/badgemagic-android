@@ -1,13 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:badgemagic/bademagic_module/utils/file_helper.dart';
+import 'package:badgemagic/bademagic_module/utils/image_utils.dart';
+import 'package:badgemagic/providers/badgeview_provider.dart';
+import 'package:badgemagic/view/draw_badge_screen.dart';
 import 'package:badgemagic/view/widgets/badge_delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class SavedClipartListView extends StatelessWidget {
-  final Map<String, Uint8List?> images;
+  final Map<String, List<List<int>>?> images;
   final FileHelper file = FileHelper();
+  final ImageUtils imageUtils = ImageUtils();
 
   final void Function(String) refreshClipartCallback; // Pass the filename
 
@@ -19,9 +24,12 @@ class SavedClipartListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DrawBadgeProvider draw = Provider.of<DrawBadgeProvider>(context);
     return ListView.builder(
       itemCount: images.length, // Number of images
       itemBuilder: (context, index) {
+        Future<Uint8List?> image = imageUtils.convert2DListToUint8List(
+            images.values.elementAt(index)!); // Get the image
         String fileName = images.keys.elementAt(index); // Get the filename
         return Container(
           margin: EdgeInsets.all(10.dg),
@@ -33,11 +41,30 @@ class SavedClipartListView extends StatelessWidget {
           ),
           child: Row(
             children: [
+              // Padding(
+              //   padding: EdgeInsets.all(10.dg),
+              //   child: Image.memory(
+              //     scale: 0.5,
+              //     images.values.elementAt(index)!,
+              //   ),
+              // ),
+              //use future builder to load the image
               Padding(
                 padding: EdgeInsets.all(10.dg),
-                child: Image.memory(
-                  scale: 0.5,
-                  images.values.elementAt(index)!,
+                child: FutureBuilder<Uint8List?>(
+                  future: image,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Image.memory(
+                        snapshot.data!,
+                        scale: 0.5,
+                      );
+                    }
+                  },
                 ),
               ),
               Container(
@@ -48,7 +75,21 @@ class SavedClipartListView extends StatelessWidget {
               SizedBox(
                 width: 130.w,
               ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+              IconButton(
+                  onPressed: () {
+                    //map the 2D list of int to the 2D list of bool
+                    List<List<bool>> grid = images.values
+                        .elementAt(index)!
+                        .map((e) => e.map((e) => e == 1).toList())
+                        .toList();
+                    draw.updateDrawViewGrid(grid);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => DrawBadge(
+                              filename: fileName,
+                              isSavedClipart: true,
+                            )));
+                  },
+                  icon: const Icon(Icons.edit)),
               IconButton(
                 icon: const Icon(Icons.cancel),
                 onPressed: () {
