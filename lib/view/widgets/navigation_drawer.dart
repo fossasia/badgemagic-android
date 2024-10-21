@@ -40,7 +40,6 @@ class BMDrawer extends StatelessWidget {
             ),
             onTap: () {
               badgeProvider.stopAllAnimations();
-
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return const HomeScreen();
               }));
@@ -61,6 +60,7 @@ class BMDrawer extends StatelessWidget {
                   fontSize: 14),
             ),
             onTap: () {
+              badgeProvider.stopAllAnimations();
               Navigator.pushNamed(context, '/drawBadge');
             },
           ),
@@ -101,6 +101,7 @@ class BMDrawer extends StatelessWidget {
                   fontSize: 14),
             ),
             onTap: () {
+              badgeProvider.stopAllAnimations();
               Navigator.pushNamed(context, '/savedClipart');
             },
           ),

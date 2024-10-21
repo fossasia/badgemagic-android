@@ -80,10 +80,8 @@ class FileHelper {
                 decodedData.cast<List<dynamic>>();
             List<List<int>> intImageData =
                 imageData.map((list) => list.cast<int>()).toList();
-            Uint8List imageBytes =
-                await imageUtils.convert2DListToUint8List(intImageData);
             imageCacheProvider.clipartsCache[file.path.split('/').last] =
-                imageBytes;
+                intImageData;
           }
         } catch (e) {
           logger.i('Error reading or decoding the file: $e');
@@ -110,6 +108,35 @@ class FileHelper {
     Uint8List imageBytes =
         await imageUtils.convert2DListToUint8List(intImageData);
     addToCache(imageBytes, filename);
+  }
+
+  // Function to update the content of a file
+// Function to update the content of a file with a 2D list of bools
+  Future<void> updateClipart(String filename, List<List<int>> image) async {
+    logger.d('Updating clipart: $filename');
+    // Convert the 2D list of int to a JSON string
+    String jsonData = jsonEncode(image);
+
+    // Get the application's document directory
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/$filename';
+
+    logger.d('File path: $filePath');
+
+    final file = File(filePath);
+
+    // Check if the file exists
+    if (await file.exists()) {
+      logger.d('File found: $filename');
+      // Overwrite the content of the existing file
+      await file.writeAsString(jsonData);
+      logger.d('File content updated: $filename');
+    } else {
+      // Create a new file and write the content
+      await file.create(recursive: true);
+      await file.writeAsString(jsonData);
+      logger.d('New file created and content written: $filename');
+    }
   }
 
   // Read all files, parse the 2D lists, and add to cache

@@ -12,7 +12,12 @@ import 'package:provider/provider.dart';
 class DrawBadge extends StatefulWidget {
   final String? filename;
   final bool? isSavedCard;
-  const DrawBadge({super.key, this.filename, this.isSavedCard = false});
+  final bool? isSavedClipart;
+  const DrawBadge(
+      {super.key,
+      this.filename,
+      this.isSavedCard = false,
+      this.isSavedClipart = false});
 
   @override
   State<DrawBadge> createState() => _DrawBadgeState();
@@ -135,13 +140,16 @@ class _DrawBadgeState extends State<DrawBadge> {
                       .toList();
                   List<String> hexString =
                       Converters.convertBitmapToLEDHex(badgeGrid, false);
-                  !widget.isSavedCard!
-                      ? fileHelper.saveImage(drawToggle.getDrawViewGrid())
-                      : fileHelper.updateBadgeText(
+                  widget.isSavedCard!
+                      ? fileHelper.updateBadgeText(
                           widget.filename!
                               .substring(0, widget.filename!.length - 5),
                           hexString,
-                        );
+                        )
+                      : widget.isSavedClipart!
+                          ? fileHelper.updateClipart(
+                              widget.filename!, badgeGrid)
+                          : fileHelper.saveImage(drawToggle.getDrawViewGrid());
                   fileHelper.generateClipartCache();
                 },
                 child: const Column(

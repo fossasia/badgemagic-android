@@ -35,10 +35,6 @@ class _SaveBadgeScreenState extends State<SaveBadgeScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    // Set a new 2D array to store the badge data with all false
-    drawBadgeProvider.setNewGrid(
-        List.generate(11, (index) => List.generate(44, (index) => false)),
-        true);
   }
 
   // Method to load saved badges and refresh the list

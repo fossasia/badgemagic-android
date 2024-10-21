@@ -17,7 +17,7 @@ class InlineImageProvider extends ChangeNotifier {
   List<String> vectors = [];
 
   //cache for storing cliparts
-  Map<String, Uint8List?> clipartsCache = {};
+  Map<String, List<List<int>>?> clipartsCache = {};
 
   //uses the AssetManifest class to load the list of assets
   Future<void> initVectors() async {
